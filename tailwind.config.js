@@ -7,11 +7,18 @@ export default {
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
-        './resources/js/**/*.tsx',
+        './resources/js/**/*.{tsx,jsx,vue,mdx}',
+        "./node_modules/primereact/**/*.{js,ts,jsx,tsx}",
     ],
 
     theme: {
         extend: {
+            colors: {
+                primary: {
+                    DEFAULT: '#007bff',
+                    dark: '#005cbf',
+                },
+            },
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
