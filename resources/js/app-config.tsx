@@ -8,15 +8,14 @@ const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 const appConfig = {
     title: (title: string) => `${title} - ${appName}`,
     resolve: (name: string) => {
-        const pages = import.meta.glob('./Pages/**/*.jsx')
-        let currentPage = `./Pages/${name}.tsx`
-        let page = resolvePageComponent(currentPage, pages) as any;
-        console.log(page)
-        if (page) {
-            page.default.layout = page.default.layout || BaseLayout({ children: page })
-        }
-        console.log('after', page)
-        return page;
+        const page = resolvePageComponent(
+            `./Pages/${name}.tsx`,
+            import.meta.glob('./Pages/**/*.tsx'),
+        );
+        page.then((mod: any) => {
+            mod.default.layout = mod.default.layout || (page => <BaseLayout children={page} />);
+        });
+        return page
     }
 
 }
