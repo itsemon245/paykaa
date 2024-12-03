@@ -42,6 +42,7 @@
     "laravelVersion": true,
     "phpVersion": true,
     "window": true,
-    "IconHugeiconsAlertCircle": true
+    "IconHugeiconsAlertCircle": true,
+    "BaseLayout": true
   }
 }
