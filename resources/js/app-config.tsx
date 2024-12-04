@@ -13,7 +13,7 @@ const appConfig = {
             import.meta.glob('./Pages/**/*.tsx'),
         );
         page.then((mod: any) => {
-            mod.default.layout = mod.default.layout || (page => <BaseLayout children={page} />);
+            mod.default.layout = mod.default.layout || <BaseLayout children={page} />;
         });
         return page
     }

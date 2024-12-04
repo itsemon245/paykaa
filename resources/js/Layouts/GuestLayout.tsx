@@ -6,8 +6,9 @@ import BaseLayout from './BaseLayout';
 export default function Guest({ children }: PropsWithChildren) {
     return (
         <BaseLayout>
-            Guest Layout
-            {children}
+            <div className="grid min-h-screen w-full items-center justify-center py-12 sm:px-6 lg:px-8">
+                {children}
+            </div>
         </BaseLayout>
     );
 }

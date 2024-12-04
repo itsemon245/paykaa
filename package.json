@@ -42,6 +42,8 @@
         "vite": "^5.0"
     },
     "dependencies": {
-        "primereact": "^10.8.5"
+        "primeicons": "^7.0.0",
+        "primereact": "^10.8.5",
+        "tailwind-merge": "^2.5.5"
     }
 }

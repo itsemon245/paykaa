@@ -1,6 +1,6 @@
 export default function BaseLayout({ children }: { children?: any }) {
     return (
-        <main className="">
+        <main className="bg-base-gradient">
             {children}
         </main>
     )

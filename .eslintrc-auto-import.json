@@ -43,6 +43,8 @@
     "phpVersion": true,
     "window": true,
     "IconHugeiconsAlertCircle": true,
-    "BaseLayout": true
+    "BaseLayout": true,
+    "Password": true,
+    "Input": true
   }
 }

@@ -1,6 +1,8 @@
 import '../css/app.css';
 import './bootstrap';
+//Theme
 import 'primereact/resources/themes/lara-light-indigo/theme.css'
+import 'primeicons/primeicons.css';
 
 import { createInertiaApp } from '@inertiajs/react';
 import { createRoot, hydrateRoot } from 'react-dom/client';
