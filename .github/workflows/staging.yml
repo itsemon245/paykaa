@@ -44,7 +44,7 @@ jobs:
             git pull origin staging
 
             # Step 5: Install Node.js dependencies and build assets
-            npm ci  # Faster than npm install, as it uses lockfile
+            npm install  # Faster than npm install, as it uses lockfile
             npm run build
 
             # Step 6: Clean up Node.js modules to save space
