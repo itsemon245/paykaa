@@ -17,7 +17,7 @@ jobs:
           port: ${{ secrets.port }}
           command_timeout: 30m
           script: |
-            set -e  # Exit on any error
+            # set -e  # Exit on any error
 
             # Step 1: Install Node.js using NVM if not already installed
             if ! command -v npm &> /dev/null; then
