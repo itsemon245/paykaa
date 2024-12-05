@@ -1,0 +1,73 @@
+# You must clone your project first in your cpanel using git only then this workflow will work
+name: Staging
+on:
+  push:
+    branches: ["staging"] #Change the branch name as needed
+jobs:
+  Deploying:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: ssh to my cpanel
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: {{secrets.host}} #Change it to your cpanel host
+          username: {{secrets.username}} #Change it to your cpanel username
+          key: {{secrets.key}}
+          port: {{secrets.port}} #Change this to your cpanel port
+          command_timeout: 30m
+          script: |
+            #Step 1: Installing node using nvm if no npm is found
+            command -v npm &> /dev/null || {
+              curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash &&
+              source ~/.bashrc &&
+              nvm install --lts &&
+              source ~/.bashrc;
+            }
+
+            # Step 2: Change directory to the project directory where you have cloned your github repo
+            cd public_html/dev.paykaa.com
+
+            # Step 3: The git stuffs
+            export GIT_TRACE_PACKET=1
+            export GIT_TRACE=1
+            export GIT_CURL_VERBOSE=1
+            eval $(ssh-agent -s)
+            ssh-add ~/.ssh/paykaa_github
+
+            #Check if its a git repo, if not then clone it else pull from the staging branch
+            if [ ! -d .git ]; then
+              git clone git@github.com:itsemon245/paykaa.git .
+            fi
+            #Check and stash -u if there are any local changes
+            if [[ $(git status --porcelain) ]]; then
+              git stash -u
+            fi
+
+            #Check if already in staging branch else checkout to staging
+            if [[ $(git branch --show-current) != "staging" ]]; then
+              git checkout staging
+            fi
+
+            # Step 4: Pull from the staging branch
+            git pull origin staging
+
+            # Step 5: Install Node.js modules and build assets
+            npm i
+            npm run build
+
+            # Step 6: Clean up Node.js modules
+            rm -rf node_modules
+
+            # Step 7: Update Composer dependencies and optimize Laravel files
+            composer install --optimize-autoloader --no-dev
+            php artisan optimize:clear
+            php artisan optimize
+
+            # Step 8: Run Laravel migrations
+            php artisan migrate --force
+
+            # Step 9: Recreate the storage symlink
+            rm -rf public/storage
+            rm -rf public/temp
+            php artisan storage:link
