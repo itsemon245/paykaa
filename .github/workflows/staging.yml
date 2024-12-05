@@ -45,8 +45,7 @@ jobs:
             git pull origin staging
 
             # Step 5: Update Composer dependencies and optimize Laravel
-            composer install --optimize-autoloader --no-dev
-
+            ~/.local/share/bin/composer update
 
             # Step 6: Install Node.js dependencies and build assets
             npm install  # Faster than npm install, as it uses lockfile
