@@ -44,15 +44,17 @@ jobs:
             git checkout staging
             git pull origin staging
 
-            # Step 5: Install Node.js dependencies and build assets
+            # Step 5: Update Composer dependencies and optimize Laravel
+            composer install --optimize-autoloader --no-dev
+
+
+            # Step 6: Install Node.js dependencies and build assets
             npm install  # Faster than npm install, as it uses lockfile
             npm run build
 
-            # Step 6: Clean up Node.js modules to save space
+            # Step 7: Clean up Node.js modules to save space
             rm -rf node_modules
 
-            # Step 7: Update Composer dependencies and optimize Laravel
-            composer install --optimize-autoloader --no-dev
             php artisan optimize:clear
             php artisan optimize
 
