@@ -13,10 +13,18 @@ export default function Login({
     canResetPassword: boolean;
 }) {
     const { data, setData, post, processing, errors, reset } = useForm({
-        email: '',
+        email: 'admin@mail.com',
         password: '',
         remember: false,
     });
+    const config = useConfig();
+
+    const autoFill = () => {
+        if (config.app.env !== 'production') {
+            setData('email', 'admin@mail.com');
+            setData('password', '12345678');
+        }
+    }
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
@@ -37,6 +45,12 @@ export default function Login({
             )}
 
             <Card className="min-w-[90vw] sm:min-w-[465px]">
+                <img src="/assets/logo-short.png" className="mx-auto h-28 w-auto mb-3" alt="Paykaa Logo" />
+                {config.app.env !== 'production' && (
+                    <div className="flex justify-center mb-2">
+                        <Button label="Auto Fill" onClick={autoFill} />
+                    </div>
+                )}
                 <form onSubmit={submit}>
                     <div>
                         <Input
@@ -50,17 +64,18 @@ export default function Login({
                             error={errors.email}
                             autoFocus={true}
                             onChange={(e) => setData('email', e.target.value)}
+                            required
                         />
                     </div>
 
                     <div className="mt-4">
                         <InputLabel htmlFor="password" value="Password" />
-                        <Password placeholder="Password" feedback={false} invalid={errors.password !== undefined} value={data.password} onChange={(e) => setData('password', e.target.value)} toggleMask />
+                        <Password placeholder="Password" required feedback={false} invalid={errors.password !== undefined} value={data.password} onChange={(e) => setData('password', e.target.value)} toggleMask />
                         <InputError message={errors.password} className="mt-2" />
                     </div>
 
-                    <div className="mt-4 block">
-                        <label className="flex items-center">
+                    <div className="flex mt-2 items-center justify-between">
+                        <label className="inline-flex items-center mb-0">
                             <Checkbox
                                 name="remember"
                                 checked={data.remember}
@@ -69,23 +84,24 @@ export default function Login({
                                 }
                             />
                             <span className="ms-2 text-sm text-gray-600 dark:text-gray-400">
-                                Remember me
+                                Remember
                             </span>
                         </label>
+                        <Link
+                            href={route('password.request')}
+                            className="font-medium rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
+                        >
+                            Forgot your password?
+                        </Link>
                     </div>
-
-                    <div className="mt-4 flex items-center justify-end gap-3">
-                        {canResetPassword && (
-                            <Link
-                                href={route('password.request')}
-                                className="font-medium rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
-                            >
-                                Forgot your password?
-                            </Link>
-                        )}
-
-                        <Button className="ms-4" loading={processing}>
-                            Log in
+                    <div className="mt-4 flex items-center justify-between sm:justify-end gap-3">
+                        <Link
+                            href={route('register')}
+                            className="font-medium rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
+                        >
+                            Create an account
+                        </Link>
+                        <Button label="Login" loading={processing}>
                         </Button>
                     </div>
                 </form>
