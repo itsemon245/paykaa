@@ -24,7 +24,7 @@ jobs:
               curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
               source ~/.nvm/nvm.sh
               nvm install --lts
-              # source ~/.bashrc
+              source ~/.bashrc
             fi
 
             # Step 2: Change to project directory
@@ -32,6 +32,7 @@ jobs:
 
             # Step 3: Git setup
             if [ ! -d .git ]; then
+              rm -rf *
               git clone git@github.com:itsemon245/paykaa.git .
             else
               git fetch origin
