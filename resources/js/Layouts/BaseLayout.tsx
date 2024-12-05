@@ -1,7 +1,9 @@
 export default function BaseLayout({ children }: { children?: any }) {
     return (
-        <main className="bg-base-gradient">
-            {children}
-        </main>
+        <div className="grid min-h-screen w-full">
+            <main className="bg-base-gradient">
+                {children}
+            </main>
+        </div>
     )
 }

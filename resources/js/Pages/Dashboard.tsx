@@ -1,23 +1,13 @@
+import { Card } from "primereact/card";
+
 export default function Dashboard() {
     return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                    Dashboard
-                </h2>
-            }
-        >
+        <AuthenticatedLayout>
             <Head title="Dashboard" />
-
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
-                        <div className="p-6 text-gray-900 dark:text-gray-100">
-                            You're logged in!
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <Navbar />
+            <Card className="m-2">
+                You are browsing the dashboard
+            </Card>
         </AuthenticatedLayout>
     );
 }

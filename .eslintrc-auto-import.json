@@ -45,6 +45,14 @@
     "IconHugeiconsAlertCircle": true,
     "BaseLayout": true,
     "Password": true,
-    "Input": true
+    "Input": true,
+    "HugeiconsUserCircle": true,
+    "HeroiconsCurrencyBangladeshiSolid": true,
+    "useConfig": true,
+    "HugeiconsMenu02": true,
+    "HugeiconsNotification03": true,
+    "HugeiconsHome": true,
+    "HeroiconsUser": true,
+    "Navbar": true
   }
 }

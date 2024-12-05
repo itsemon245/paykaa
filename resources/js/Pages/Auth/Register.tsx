@@ -68,6 +68,7 @@ export default function Register() {
             <Head title="Register" />
 
             <Card className="min-w-[90vw] sm:min-w-[465px]">
+                <img src="/assets/logo-long.png" className="mx-auto w-52 mb-3" alt="Paykaa Logo" />
                 <form onSubmit={submit}>
                     <Input
                         id="name"
@@ -134,16 +135,15 @@ export default function Register() {
                         />
                     </div>
 
-                    <div className="mt-4 flex items-center justify-end gap-3">
+                    <div className="mt-4 flex items-center justify-between sm:justify-end gap-3">
                         <Link
                             href={route('login')}
                             className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
                         >
-                            Already registered?
+                            Already registered? Login
                         </Link>
 
-                        <Button loading={processing}>
-                            Register
+                        <Button label="Register" loading={processing}>
                         </Button>
                     </div>
                 </form>

@@ -35,6 +35,9 @@ export default {
                     ...primaryColors,
                 },
             },
+            transitionProperty: {
+                'w': 'width'
+            },
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
