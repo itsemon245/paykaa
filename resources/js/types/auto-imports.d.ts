@@ -11,6 +11,7 @@ declare global {
   const BaseLayout: typeof import('../Layouts/BaseLayout')['default']
   const Checkbox: typeof import('../Components/Checkbox')['default']
   const DangerButton: typeof import('../Components/DangerButton')['default']
+  const DashboarLayout: typeof import('../Layouts/DashboarLayout')['default']
   const Dropdown: typeof import('../Components/Dropdown')['default']
   const GuestLayout: typeof import('../Layouts/GuestLayout')['default']
   const Head: typeof import('../Components/Head')['default']

@@ -7,7 +7,6 @@ export default function Authenticated({
 }: PropsWithChildren<{ header?: ReactNode }>) {
     return (
         <BaseLayout>
-            <Navbar />
             {children}
         </BaseLayout>
     );
