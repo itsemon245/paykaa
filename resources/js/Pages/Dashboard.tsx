@@ -1,59 +1,40 @@
 import DashboardLayout from "@/Layouts/DashboarLayout";
+import { UserData } from "@/types/_generated";
 import { Link } from "@inertiajs/react";
-import { AutoComplete } from "primereact/autocomplete";
+import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { InputText } from "primereact/inputtext";
-import { OrderList } from "primereact/orderlist";
-import { VirtualScroller } from "primereact/virtualscroller";
+import { ScrollPanel } from "primereact/scrollpanel";
 
-interface User {
-    name: string;
-    image: string;
-    username: string;
-    id: number;
-    email: string;
-    phone: string;
-}
 export default function Dashboard() {
     const [searchString, setSearchString] = useState("");
-    const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
+    const [filteredUsers, setFilteredUsers] = useState<UserData[]>([]);
     const [loading, setLoading] = useState(false);
-    const search = (event: any) => {
+    const search = async (e: any) => {
         setLoading(true);
-        setTimeout(() => {
-            const _filteredUsers: User[] = [
-                {
-                    name: "John Smith",
-                    image: "https://primefaces.org/cdn/primevue/images/avatar/large/nicole.jpg",
-                    username: "john",
-                    id: 112202,
-                    email: "john@example.com",
-                    phone: "555-123-4567",
-                },
-                {
-                    name: "Jane Doe",
-                    image: "https://primefaces.org/cdn/primevue/images/avatar/large/alex.jpg",
-                    username: "jane",
-                    id: 122202,
-                    email: "jane@example.com",
-                    phone: "555-234-5678",
-                },
-            ]
-            setFilteredUsers(_filteredUsers);
-            setLoading(false);
-        }, 1500);
-
+        setSearchString(e.target.value);
+        const response = await fetch(route("search-users", { search: searchString }), {
+            method: "get",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+        const data = await response.json();
+        setFilteredUsers(data);
+        setLoading(false);
     }
-    const itemTemplate = (item: User) => {
+    const itemTemplate = (item: UserData) => {
         return (
-            <Link href={route('profile.edit')} className="flex align-items-center">
+            <Link href={route('profile.edit')} className="flex items-center p-3 h-max cursor-pointer">
                 <img
                     alt={item.name}
-                    src={item.image}
-                    className="rounded-full w-8 h-8 me-2"
-                    style={{ width: '18px' }}
+                    src={item.avatar}
+                    className="rounded-full w-10 me-2"
                 />
-                <div>{item.name}</div>
+                <div className="flex flex-col items-start select-none *:cursor-pointer">
+                    <label className="font-bold mb-0 leading-none">{item.name}</label>
+                    <label className="text-sm text-gray-500 mb-0">{item.email}</label>
+                </div>
             </Link>
         );
     };
@@ -61,15 +42,28 @@ export default function Dashboard() {
         <DashboardLayout>
             <Head title="Dashboard" />
             <Card>
-                <InputText placeholder="Search for users" value={searchString} onChange={search} />
+                <div className="p-inputgroup flex-1">
+                    <InputText placeholder="Search for using name, email, phone or uid" onKeyUp={search} />
+                    <Button label="Search" loading={loading} onClick={search} icon="pi pi-search" size="small" />
+                </div>
+                <small className="text-sm text-gray-500 ml-2">Type @ to search all users since all email has @ in it</small>
+
                 <div className="rounded-md border-gray-200 mt-2 shadow">
-                    <ul>
-                        {filteredUsers.map((user, i) => (
-                            <li key={i}>
-                                {itemTemplate(user)}
-                            </li>
-                        ))}
-                    </ul>
+                    {loading && <div className="flex justify-center items-center p-3">
+                        <i className="pi pi-spinner pi-spin" />
+                    </div>}
+                    {(filteredUsers.length > 0 && !loading) &&
+                        <ScrollPanel className="w-full bg-white h-40">
+                            <ul>
+
+                                {filteredUsers.map((user, i) => (
+                                    <li key={i}>
+                                        {itemTemplate(user)}
+                                    </li>
+                                ))}
+                            </ul>
+                        </ScrollPanel>
+                    }
                 </div>
             </Card>
         </DashboardLayout>

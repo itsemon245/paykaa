@@ -54,6 +54,9 @@
     "HugeiconsHome": true,
     "HeroiconsUser": true,
     "Navbar": true,
-    "DashboarLayout": true
+    "DashboarLayout": true,
+    "useAuth": true,
+    "MessageType": true,
+    "UserType": true
   }
 }
