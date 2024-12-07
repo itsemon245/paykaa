@@ -53,6 +53,10 @@
     "HugeiconsNotification03": true,
     "HugeiconsHome": true,
     "HeroiconsUser": true,
-    "Navbar": true
+    "Navbar": true,
+    "DashboarLayout": true,
+    "useAuth": true,
+    "MessageType": true,
+    "UserType": true
   }
 }

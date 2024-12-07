@@ -6,7 +6,22 @@
 
 @layer base {
     label {
-        @apply block mb-2 text-sm font-medium text-red-500;
+        @apply block mb-2 text-sm font-medium text-gray-500;
+    }
+}
+
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+}
+
+@layer components {
+    .bg-base-gradient{
+        background: rgb(235,234,241);
+        background: -moz-radial-gradient(circle, rgba(235,234,241,1) 0%, rgba(220,246,255,1) 51%, rgba(231,244,246,1) 100%);
+        background: -webkit-radial-gradient(circle, rgba(235,234,241,1) 0%, rgba(220,246,255,1) 51%, rgba(231,244,246,1) 100%);
+        background: radial-gradient(circle, rgba(235,234,241,1) 0%, rgba(220,246,255,1) 51%, rgba(231,244,246,1) 100%);
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ebeaf1",endColorstr="#e7f4f6",GradientType=1);
     }
 }
 
@@ -35,18 +50,8 @@
     .p-inputtext{
         @apply p-2 w-full
     }
-}
-@layer tailwind-utilities {
-  @tailwind components;
-  @tailwind utilities;
-}
-
-@layer components {
-    .bg-base-gradient{
-        background: rgb(235,234,241);
-        background: -moz-radial-gradient(circle, rgba(235,234,241,1) 0%, rgba(220,246,255,1) 51%, rgba(231,244,246,1) 100%);
-        background: -webkit-radial-gradient(circle, rgba(235,234,241,1) 0%, rgba(220,246,255,1) 51%, rgba(231,244,246,1) 100%);
-        background: radial-gradient(circle, rgba(235,234,241,1) 0%, rgba(220,246,255,1) 51%, rgba(231,244,246,1) 100%);
-        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ebeaf1",endColorstr="#e7f4f6",GradientType=1);
+    .p-scrollpanel-bar {
+        background: var(--primary-100);
     }
 }
+

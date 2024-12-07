@@ -11,6 +11,7 @@ declare global {
   const BaseLayout: typeof import('../Layouts/BaseLayout')['default']
   const Checkbox: typeof import('../Components/Checkbox')['default']
   const DangerButton: typeof import('../Components/DangerButton')['default']
+  const DashboarLayout: typeof import('../Layouts/DashboarLayout')['default']
   const Dropdown: typeof import('../Components/Dropdown')['default']
   const GuestLayout: typeof import('../Layouts/GuestLayout')['default']
   const Head: typeof import('../Components/Head')['default']
@@ -22,6 +23,7 @@ declare global {
   const Input: typeof import('../Components/Input')['default']
   const InputError: typeof import('../Components/InputError')['default']
   const InputLabel: typeof import('../Components/InputLabel')['default']
+  const MessageType: typeof import('./_generated')['MessageType']
   const Modal: typeof import('../Components/Modal')['default']
   const NavLink: typeof import('../Components/NavLink')['default']
   const Navbar: typeof import('../Components/Navbar')['default']
@@ -29,11 +31,13 @@ declare global {
   const ResponsiveNavLink: typeof import('../Components/ResponsiveNavLink')['default']
   const SecondaryButton: typeof import('../Components/SecondaryButton')['default']
   const TextInput: typeof import('../Components/TextInput')['default']
+  const UserType: typeof import('./_generated')['UserType']
   const createRef: typeof import('react')['createRef']
   const forwardRef: typeof import('react')['forwardRef']
   const lazy: typeof import('react')['lazy']
   const memo: typeof import('react')['memo']
   const startTransition: typeof import('react')['startTransition']
+  const useAuth: typeof import('../Hooks/useAuth')['default']
   const useCallback: typeof import('react')['useCallback']
   const useConfig: typeof import('../Hooks/useConfig')['default']
   const useContext: typeof import('react')['useContext']
@@ -50,4 +54,10 @@ declare global {
   const useState: typeof import('react')['useState']
   const useSyncExternalStore: typeof import('react')['useSyncExternalStore']
   const useTransition: typeof import('react')['useTransition']
+}
+// for type re-export
+declare global {
+  // @ts-ignore
+  export type { MessageType, UserType } from './_generated'
+  import('./_generated')
 }
