@@ -55,8 +55,8 @@
     "HeroiconsUser": true,
     "Navbar": true,
     "DashboarLayout": true,
-    "useAuth": true,
     "MessageType": true,
-    "UserType": true
+    "UserType": true,
+    "useAuth": true
   }
 }

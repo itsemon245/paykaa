@@ -8,6 +8,7 @@ export enum MessageType {
 export type UserData = {
     id: number;
     referral_id?: string;
+    email_verified_at?: string;
     name: string;
     email: string;
     username: string;
