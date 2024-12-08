@@ -26,6 +26,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('search-users', [UserController::class, 'index'])->name('search-users');
+    Route::get('chats/', function () {
+        return Inertia::render('Chat/Chats');
+    })->name('chats');
 });
 
 require __DIR__.'/auth.php';

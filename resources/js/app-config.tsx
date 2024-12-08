@@ -13,6 +13,9 @@ const appConfig = {
             import.meta.glob('./Pages/**/*.tsx'),
         );
         page.then((mod: any) => {
+            if (name.startsWith('Chat')) {
+                mod.default.layout = mod.default.layout || <AuthenticatedLayout children={page} />;
+            }
             mod.default.layout = mod.default.layout || <BaseLayout children={page} />;
         });
         return page

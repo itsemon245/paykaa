@@ -42,11 +42,22 @@ export default function Dashboard() {
         <DashboardLayout>
             <Head title="Dashboard" />
             <Card>
-                <div className="p-inputgroup flex-1">
-                    <InputText placeholder="Search for using name, email, phone or uid" onKeyUp={search} />
-                    <Button label="Search" loading={loading} onClick={search} icon="pi pi-search" size="small" />
+                <div className="flex items-start justify-between gap-5 flex-wrap">
+                    <Link href={route('chats')} className="flex items-center h-max cursor-pointer">
+                        <div className="flex hover:shadow transition-all hover:scale-105 rounded-lg items-center h-max cursor-pointer px-4 py-2.5 border gap-3">
+                            <HugeiconsBubbleChat className="h-14 w-14" />
+                            <span className="font-bold text-lg">Chats</span>
+                        </div>
+                    </Link>
+
+                    <div className="grow">
+                        <div className="p-inputgroup flex-1">
+                            <InputText placeholder="Search for using name, email, phone or uid" onKeyUp={search} />
+                            <Button loading={loading} onClick={search} icon="pi pi-search" className="p-3" size="small" />
+                        </div>
+                        <small className="text-sm text-gray-500 ml-2 text-wrap">Type @ to search all users since all email has @ in it</small>
+                    </div>
                 </div>
-                <small className="text-sm text-gray-500 ml-2">Type @ to search all users since all email has @ in it</small>
 
                 <div className="rounded-md border-gray-200 mt-2 shadow">
                     {loading && <div className="flex justify-center items-center p-3">
