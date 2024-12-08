@@ -57,6 +57,9 @@
     "DashboarLayout": true,
     "MessageType": true,
     "UserType": true,
-    "useAuth": true
+    "useAuth": true,
+    "Topbar": true,
+    "Sidebar": true,
+    "HugeiconsBubbleChat": true
   }
 }
