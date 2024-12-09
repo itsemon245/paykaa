@@ -87,6 +87,7 @@ export default function Dashboard() {
     return (
         <DashboardLayout>
             <Head title="Dashboard" />
+            <div className="md:pt-20" />
             <Card>
                 <div className="flex items-start justify-between gap-2 sm:gap-5 max-[320px]:flex-wrap">
                     <Link href={route('chats')} className="flex items-center h-max cursor-pointer">
