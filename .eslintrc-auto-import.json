@@ -60,6 +60,9 @@
     "useAuth": true,
     "Topbar": true,
     "Sidebar": true,
-    "HugeiconsBubbleChat": true
+    "HugeiconsBubbleChat": true,
+    "HugeiconsCash": true,
+    "HugeiconsWalletAdd01": true,
+    "SquareBg": true
   }
 }

@@ -2,8 +2,17 @@ import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { PrimeReactProvider, PrimeReactContext } from 'primereact/api';
 import BaseLayout from "./Layouts/BaseLayout";
 import { ReactNode } from "react";
+import DashboardLayout from "./Layouts/DashboarLayout";
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+Object.defineProperty(Array.prototype, 'chunk', {
+    value: function(chunkSize: number) {
+        var R = [];
+        for (var i = 0; i < this.length; i += chunkSize)
+            R.push(this.slice(i, i + chunkSize));
+        return R;
+    }
+});
 
 const appConfig = {
     title: (title: string) => `${title} - ${appName}`,
