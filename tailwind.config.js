@@ -41,8 +41,26 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            animation: {
+                'balloon-up': 'balloon-up 18s linear infinite',
+            },
+            keyframes: {
+                'balloon-up': {
+                    '0%': {
+                        transform: 'translateY(0px)',
+                        rotate: '0deg',
+                        opacity: '1',
+                        borderRadius: '0px',
+                    },
+                    '100%': {
+                        transform: 'translateY(-1000px)',
+                        rotate: '720deg',
+                        opacity: '0',
+                        borderRadius: '30%',
+                    },
+                },
+            }
         },
     },
-
     plugins: [forms],
 };

@@ -6,10 +6,56 @@ import { Card } from "primereact/card";
 import { InputText } from "primereact/inputtext";
 import { ScrollPanel } from "primereact/scrollpanel";
 
+interface MenuItem {
+    label: string;
+    icon: string;
+    url: string;
+    className?: string;
+}
 export default function Dashboard() {
     const [searchString, setSearchString] = useState("");
     const [filteredUsers, setFilteredUsers] = useState<UserData[]>([]);
     const [loading, setLoading] = useState(false);
+    const menuItems1: MenuItem[] = [
+        {
+            label: "Deposit",
+            icon: "pi pi-fw pi-money-bill-stack",
+            url: "#",
+        },
+        {
+            label: "Withdraw",
+            icon: "pi pi-fw pi-bank",
+            url: "#",
+        },
+        {
+            label: "P2P",
+            icon: "pi pi-fw pi-exchange",
+            url: "#",
+        },
+
+    ];
+    const menuItems2: MenuItem[] = [
+        {
+            label: "Refferal",
+            icon: "pi pi-fw pi-user-plus",
+            url: "#",
+        },
+        {
+            label: "Earn",
+            icon: "pi pi-fw pi-coins",
+            url: "#",
+        },
+        {
+            label: "Transaction",
+            icon: "pi pi-fw pi-list",
+            url: "#",
+        },
+        {
+            label: "Help Line",
+            icon: "pi pi-fw pi-question-circle",
+            url: "#",
+        },
+    ]
     const search = async (e: any) => {
         setLoading(true);
         setSearchString(e.target.value);
@@ -42,41 +88,45 @@ export default function Dashboard() {
         <DashboardLayout>
             <Head title="Dashboard" />
             <Card>
-                <div className="flex items-start justify-between gap-5 flex-wrap">
+                <div className="flex items-start justify-between gap-2 sm:gap-5 max-[320px]:flex-wrap">
                     <Link href={route('chats')} className="flex items-center h-max cursor-pointer">
-                        <div className="flex hover:shadow transition-all hover:scale-105 rounded-lg items-center h-max cursor-pointer px-4 py-2.5 border gap-3">
-                            <HugeiconsBubbleChat className="h-14 w-14" />
-                            <span className="font-bold text-lg">Chats</span>
+                        <div className="flex hover:shadow transition-all hover:scale-105 rounded-lg items-center h-max cursor-pointer sm:px-4 sm:py-2.5 p-2 border gap-3">
+                            <HugeiconsBubbleChat className="h-8 w-8 sm:h-14 sm:w-14" />
+                            <span className="font-bold sm:text-lg">Chats</span>
                         </div>
                     </Link>
 
                     <div className="grow">
-                        <div className="p-inputgroup flex-1">
-                            <InputText placeholder="Search for using name, email, phone or uid" onKeyUp={search} />
-                            <Button loading={loading} onClick={search} icon="pi pi-search" className="p-3" size="small" />
+                        <div className="flex-1 relative">
+                            <input placeholder="Search user" className="!py-2.5 !rounded-2xl border-2 w-full border-primary-300 active:border-primary-500" onKeyUp={search} />
+                            <button type="submit" className="absolute flex items-center h-full justify-end pe-4 w-full top-0 left-0">
+                                <i className="pi pi-search text-primary-500" />
+                            </button>
                         </div>
-                        <small className="text-sm text-gray-500 ml-2 text-wrap">Type @ to search all users since all email has @ in it</small>
                     </div>
                 </div>
 
-                <div className="rounded-md border-gray-200 mt-2 shadow">
-                    {loading && <div className="flex justify-center items-center p-3">
-                        <i className="pi pi-spinner pi-spin" />
-                    </div>}
-                    {(filteredUsers.length > 0 && !loading) &&
-                        <ScrollPanel className="w-full bg-white h-40">
-                            <ul>
+                {(filteredUsers.length > 0) &&
+                    <div className="rounded-md border-gray-200 mt-2 shadow">
+                        {loading && <div className="flex justify-center items-center p-3">
+                            <i className="pi pi-spinner pi-spin" />
+                        </div>}
+                        {!loading &&
+                            <ScrollPanel className="w-full bg-white h-40">
+                                <ul>
 
-                                {filteredUsers.map((user, i) => (
-                                    <li key={i}>
-                                        {itemTemplate(user)}
-                                    </li>
-                                ))}
-                            </ul>
-                        </ScrollPanel>
-                    }
-                </div>
+                                    {filteredUsers.map((user, i) => (
+                                        <li key={i}>
+                                            {itemTemplate(user)}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </ScrollPanel>
+                        }
+                    </div>
+                }
             </Card>
+
         </DashboardLayout>
     );
 }

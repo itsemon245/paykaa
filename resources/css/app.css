@@ -53,5 +53,14 @@
     .p-scrollpanel-bar {
         background: var(--primary-100);
     }
+    .p-card{
+        @apply rounded-2xl shadow-md
+    }
+    .p-card-body{
+        @apply max-sm:px-2 py-1
+    }
+    .p-card-content{
+        @apply max-sm:p-2
+    }
 }
 

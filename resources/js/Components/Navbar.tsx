@@ -2,7 +2,12 @@ import { Link, usePage } from "@inertiajs/react";
 import { Button } from "primereact/button";
 import { Sidebar } from "primereact/sidebar";
 
-export default function Navbar() {
+export default function Navbar({
+    className,
+    ...props
+}: {
+    className?: string
+}) {
     const { user } = usePage().props.auth;
     const [balance, setBalance] = useState(0);
     const [sidebar, setSidebar] = useState(false);
@@ -46,7 +51,7 @@ export default function Navbar() {
     }, [balance])
 
     return (
-        <div className="bg-primary px-0.5 py-3 sm:p-4 flex items-center justify-between">
+        <div className={`bg-primary px-0.5 py-3 sm:p-4 flex items-center justify-between ${className}`} {...props}>
             <div className="flex items-center gap-1 sm:gap-4">
                 <Button className="!p-1.5" onClick={() => setSidebar(!sidebar)} text icon={(options) => (<HugeiconsMenu02 className="text-white w-6 h-6" {...options} />)} />
                 <Sidebar visible={sidebar} onHide={() => setSidebar(false)}>
