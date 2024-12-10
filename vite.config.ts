@@ -9,6 +9,9 @@ import IconsResolver from 'unplugin-icons/resolver'
 const iconCollection = [
     'hugeicons',
     'heroicons',
+    'game-icons',
+    'lucide-lab',
+    'mingcute',
 ] as const satisfies string[];
 export default defineConfig({
     plugins: [
