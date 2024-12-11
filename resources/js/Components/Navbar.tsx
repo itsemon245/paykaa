@@ -8,7 +8,7 @@ export default function Navbar({
 }: {
     className?: string
 }) {
-    const { user } = usePage().props.auth;
+    const { user } = useAuth();
     const [balance, setBalance] = useState(0);
     const [sidebar, setSidebar] = useState(false);
     const [loadingBalance, setLoadingBalance] = useState(false);

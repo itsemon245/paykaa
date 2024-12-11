@@ -60,6 +60,9 @@
     "HugeiconsMoneyBag02": true,
     "GameIconsCash": true,
     "HugeiconsWorkHistory": true,
-    "HugeiconsCustomerSupport": true
+    "HugeiconsCustomerSupport": true,
+    "ChatLayout": true,
+    "Messages": true,
+    "Message": true
   }
 }

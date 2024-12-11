@@ -5,8 +5,8 @@ export default function Authenticated({
     children,
 }: { children?: any }) {
     return (
-        <BaseLayout>
+        <>
             {children}
-        </BaseLayout>
+        </>
     );
 }

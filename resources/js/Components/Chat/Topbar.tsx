@@ -1,51 +1,79 @@
+import { ChatData } from "@/types/_generated";
+import { usePage } from "@inertiajs/react";
+
 export default function Topbar() {
+    const chat = usePage().props.chat as ChatData;
+    console.log(chat);
     return (
-        <div className="navigation">
+        <div className="top">
             <div className="container">
-                <div className="inside">
-                    <div className="nav nav-tab menu">
-                        <a href="#settings" data-toggle="tab" title="User Setting">
-                            <i className="ti-panel"></i>
-                            Setting
-                        </a>
-                        <a href="#members" data-toggle="tab" title="All members">
-                            <i className="ti-home"></i>
-                            All Friends
-                        </a>
-                        <a
-                            href="#discussions"
-                            data-toggle="tab"
-                            className="active"
-                            title="Chat"
+                <div className="col-md-12">
+                    <div className="inside">
+                        {/*<div className="status online"></div>*/}
+                        <div className="data flex items-center gap-2">
+                            <img
+                                className="avatar-md"
+                                src={chat.receiver?.avatar}
+                                data-toggle="tooltip"
+                                data-placement="top"
+                                title={chat.receiver?.name}
+                                alt={chat.receiver?.name + "'s avatar"}
+                            />
+                            <h5><a href="#">{chat.receiver?.name}</a></h5>
+                            {/*<span>Active now</span>*/}
+                        </div>
+                        <button
+                            className="btn d-md-block d-none audio-call"
+                            title="Audio call"
                         >
-                            <i className="ti-comment-alt"></i>
-                            Recent Chat
-                        </a>
-                        <a
-                            href="#notifications"
-                            data-toggle="tab"
-                            className="f-grow1"
-                            title="Notifications"
+                            <i className="ti-headphone-alt"></i>
+                        </button>
+                        <button
+                            className="btn d-md-block d-none video-call"
+                            title="Video call"
                         >
-                            <i className="ti-bell"></i>
-                            Notifications
-                        </a>
-                        <a
-                            href="#"
-                            id="dark"
-                            className="dark-theme"
-                            title="Use Night Mode"
+                            <i className="ti-video-camera"></i>
+                        </button>
+                        <button
+                            className="btn d-md-block d-none"
+                            title="More Info"
                         >
-                            <i className="ti-wand"></i>
-                            Night Mode
-                        </a>
-                        <a href="sign-in.html" className="btn power" title="Sign Out"
-                        ><i className="ti-power-off"></i
-                        ></a>
+                            <i className="ti-info"></i>
+                        </button>
+                        <div className="dropdown">
+                            <button
+                                className="btn"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                            >
+                                <i className="ti-view-grid"></i>
+                            </button>
+                            <div className="dropdown-menu dropdown-menu-right">
+                                <a href="#" className="dropdown-item audio-call"
+                                ><i className="ti-headphone-alt"></i>Voice Call</a
+                                >
+                                <a href="#" className="dropdown-item video-call"
+                                ><i className="ti-video-camera"></i>Video Call</a
+                                >
+                                <hr />
+                                <a href="#" className="dropdown-item"
+                                ><i className="ti-server"></i>Clear History</a
+                                >
+                                <a href="#" className="dropdown-item"
+                                ><i className="ti-hand-stop"></i>Block Contact</a
+                                >
+                                <a href="#" className="dropdown-item"
+                                ><i className="ti-trash"></i>Delete Contact</a
+                                >
+                            </div>
+                        </div>
+                        <button className="btn back-to-mesg" title="Back">
+                            <i className="ti-arrow-right"></i>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     )
 }
-

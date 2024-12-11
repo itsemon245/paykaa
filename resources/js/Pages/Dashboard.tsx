@@ -79,17 +79,17 @@ export default function Dashboard() {
         setFilteredUsers(data);
         setLoading(false);
     }
-    const itemTemplate = (item: UserData) => {
+    const itemTemplate = (user: UserData) => {
         return (
-            <Link href={route('profile.edit')} className="flex items-center p-3 h-max cursor-pointer">
+            <Link href={route('chat.receiver-chat', { receiver: user.uuid })} className="flex items-center p-3 h-max cursor-pointer">
                 <img
-                    alt={item.name}
-                    src={item.avatar}
+                    alt={user.name}
+                    src={user.avatar}
                     className="rounded-full w-10 me-2"
                 />
                 <div className="flex flex-col items-start select-none *:cursor-pointer">
-                    <label className="font-bold mb-0 leading-none">{item.name}</label>
-                    <label className="text-sm text-gray-500 mb-0">{item.email}</label>
+                    <label className="font-bold mb-0 leading-none">{user.name}</label>
+                    <label className="text-sm text-gray-500 mb-0">{user.email}</label>
                 </div>
             </Link>
         );
@@ -97,11 +97,11 @@ export default function Dashboard() {
     return (
         <DashboardLayout>
             <Head title="Dashboard" />
-            <div className="md:pt-20" />
+            <div className="md:pt-20"></div>
             <div className="flex flex-col gap-3 sm:gap-6">
                 <Card>
                     <div className="flex items-start justify-between gap-2 sm:gap-5 max-[320px]:flex-wrap">
-                        <Link href={route('chats')} className="flex max-[320px]:w-full items-center h-max cursor-pointer">
+                        <Link href={route('chat.index')} className="flex max-[320px]:w-full items-center h-max cursor-pointer">
                             <div className="flex max-[320px]:w-full max-[320px]:py-3 justify-center hover:shadow transition-all hover:scale-105 rounded-lg items-center h-max cursor-pointer sm:px-4 sm:py-2.5 p-2 border gap-3">
                                 <HugeiconsBubbleChat className=" h-8 w-8 sm:h-14 sm:w-14" />
                                 <span className="font-bold sm:text-lg">Chats</span>
@@ -128,7 +128,7 @@ export default function Dashboard() {
                                     <ul>
 
                                         {filteredUsers.map((user, i) => (
-                                            <li key={i}>
+                                            <li key={"user-" + user.id}>
                                                 {itemTemplate(user)}
                                             </li>
                                         ))}
@@ -138,20 +138,21 @@ export default function Dashboard() {
                         </div>
                     }
                 </Card>
-                {menuItems.map((menuItems1, i) => (<Card>
-                    <div className="grid max-[400px]:grid-cols-2 grid-cols-4 items-center gap-1 gap-5 justify-between">
-                        {menuItems1.map(item =>
-                            <Link href={item.url} className="cursor-pointer">
-                                <div className="flex flex-col w-full justify-center hover:shadow transition-all hover:scale-105 rounded-lg items-center h-max cursor-pointer p-1 sm:px-4 sm:py-2.5 border gap-2">
-                                    <div className="h-8 w-8 sm:h-14 sm:w-14">
-                                        {item.icon}
+                {menuItems.map((menuItems1, i) => (
+                    <Card key={"menu-items-" + i}>
+                        <div className="grid max-[400px]:grid-cols-2 grid-cols-4 items-center gap-1 gap-5 justify-between" >
+                            {menuItems1.map(item =>
+                                <Link href={item.url} className="cursor-pointer" key={item.label + "-menu-item"}>
+                                    <div className="flex flex-col w-full justify-center hover:shadow transition-all hover:scale-105 rounded-lg items-center h-max cursor-pointer p-1 sm:px-4 sm:py-2.5 border gap-2">
+                                        <div className="h-8 w-8 sm:h-14 sm:w-14">
+                                            {item.icon}
+                                        </div>
+                                        <span className="text-xs font-medium sm:font-bold">{item.label}</span>
                                     </div>
-                                    <span className="text-xs font-medium sm:font-bold">{item.label}</span>
-                                </div>
-                            </Link>
-                        )}
-                    </div>
-                </Card>
+                                </Link>
+                            )}
+                        </div>
+                    </Card>
                 ))}
             </div>
 

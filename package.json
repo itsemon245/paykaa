@@ -47,6 +47,7 @@
     },
     "dependencies": {
         "@iconify-json/heroicons": "^1.2.1",
+        "date-fns": "^4.1.0",
         "motion": "^11.13.3",
         "primeicons": "^7.0.0",
         "primereact": "^10.8.5",

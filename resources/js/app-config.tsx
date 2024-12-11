@@ -21,11 +21,19 @@ const appConfig = {
             `./Pages/${name}.tsx`,
             import.meta.glob('./Pages/**/*.tsx'),
         );
-        page.then((mod: any) => {
-            if (name.startsWith('Chat')) {
-                mod.default.layout = mod.default.layout || <AuthenticatedLayout children={page} />;
+        const layoutMap = [
+            {
+                pageDir: 'Chat',
+                component: (page: any) => <ChatLayout children={page} />,
             }
-            mod.default.layout = mod.default.layout || <BaseLayout children={page} />;
+        ]
+        page.then((mod: any) => {
+            const layout = layoutMap.find(item => item.pageDir === name.split('/')[0]);
+            if (layout) {
+                mod.default.layout = mod.default.layout || layout.component;
+            } else {
+                mod.default.layout = mod.default.layout || ((page: any) => <BaseLayout children={page} />);
+            }
         });
         return page
     }

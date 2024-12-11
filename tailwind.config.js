@@ -62,5 +62,17 @@ export default {
             }
         },
     },
-    plugins: [forms],
+    plugins: [
+        forms,
+        function({ addUtilities }) {
+            addUtilities({
+                '.hide-scrollbar': {
+                    'scrollbar-width': 'none', /* Firefox */
+                    '&::-webkit-scrollbar': {
+                        'display': 'none', /* Chrome, Safari, and Opera */
+                    },
+                },
+            });
+        },
+    ],
 };

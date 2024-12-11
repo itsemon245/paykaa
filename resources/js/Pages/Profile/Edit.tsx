@@ -10,8 +10,7 @@ export default function Edit({
     status,
 }: PageProps<{ mustVerifyEmail: boolean; status?: string }>) {
     return (
-        <AuthenticatedLayout
-        >
+        <>
             <Head title="Profile" />
             <Navbar />
             <div className="py-6">
@@ -33,6 +32,6 @@ export default function Edit({
                     </div>
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </>
     );
 }
