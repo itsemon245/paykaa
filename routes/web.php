@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
@@ -26,9 +27,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('search-users', [UserController::class, 'index'])->name('search-users');
-    Route::get('chats/', function () {
-        return Inertia::render('Chat/Chats');
-    })->name('chats');
+
+    Route::prefix('chats')->name('chat.')->group(function () {
+        Route::get('/', [ChatController::class, 'index'])->name('index');
+        Route::get('/user-chats', [ChatController::class, 'getUserChats'])->name('user-chats');
+        Route::get('/receiver-chat/{receiver}', [ChatController::class, 'receiverChat'])->name('receiver-chat');
+        Route::get('/{chat}', [ChatController::class, 'show'])->name('show');
+    });
 });
 
 require __DIR__.'/auth.php';

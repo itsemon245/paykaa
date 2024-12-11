@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Data;
+use App\Data\Partials\TimestampData;
 use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
 use App\Enum\UserType;
 use Spatie\LaravelData\Data;
@@ -10,7 +11,10 @@ use Spatie\LaravelData\Data;
 */
 class UserData extends Data
 {
+    use TimestampData;
+
     public int $id;
+    public string $uuid;
     #[TypeScriptOptional]
     public ?string $referral_id;
     #[TypeScriptOptional]

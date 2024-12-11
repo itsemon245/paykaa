@@ -24,8 +24,9 @@ export default function SquareBg({
         return Math.floor(min + skewedRandom * (max - min));
     };
     const square = ({
+        key,
         ...props
-    }): JSX.Element => {
+    }: { key: any }): JSX.Element => {
         const size = between(65, 215, 45);
         const left = between(10, 90);
         const rotate = between(780, 1200);
@@ -43,7 +44,7 @@ export default function SquareBg({
             border: `2px solid var(--primary-400)`,
             backgroundColor: `var(--primary-500)`,
         }
-        return <motion.li style={styles} transition={{
+        return <motion.li key={key} style={styles} transition={{
             duration: duration,
             ease: "linear",
             repeat: Infinity,
@@ -58,7 +59,7 @@ export default function SquareBg({
     }
     return (
         <ul className={`fixed z-[-1] w-screen h-screen top-0 left-0 bg-primary-500 overflow-hidden ${className}`} {...props}>
-            {Array.from(Array(itemsCount)).map((_, i) => square({ key: i }))}
+            {Array.from(Array(itemsCount)).map((_, i) => square({ key: "square-" + i }))}
         </ul>
     )
 }
