@@ -1,14 +1,40 @@
 import { PaginatedCollection } from "@/types";
-import { MessageData } from "@/types/_generated";
-import { usePage } from "@inertiajs/react";
+import { ChatData, MessageData, MessageType } from "@/types/_generated";
+import { useForm, usePage } from "@inertiajs/react";
 
 export default function Show() {
-    const messagesProp = usePage().props.messages as PaginatedCollection<MessageData> | undefined;
-    const [messages, setMessages] = useState<PaginatedCollection<MessageData>>();
+    const messagesProp = usePage().props.messages as PaginatedCollection<MessageData>;
+    const chat = usePage().props.chat as ChatData;
+    const { user } = useAuth();
+    const [messages, setMessages] = useState<PaginatedCollection<MessageData>>(messagesProp);
+    const messageContainerRef = useRef<HTMLDivElement>(null);
+    const restoreScroll = useScrollRestoration(messageContainerRef, 'message-container-scroll');
+    const { data, setData, processing, post } = useForm({
+        body: "",
+        sender_id: user.id,
+        receiver_id: chat.from?.id,
+        chat_id: chat.id,
+        type: MessageType.Text,
+    });
+    const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const messageStoreUrl = route('message.store', { chat: chat.uuid })
+        post(messageStoreUrl, {
+            only: ['messages'],
+            preserveState: false,
+            preserveScroll: true,
+            onSuccess(data) {
+                console.log(data)
+                restoreScroll()
+            },
+            onError(error) {
+                console.error("Error while sending message", error);
+            }
+        })
+    };
     useEffect(() => {
-        setMessages(messagesProp);
-        console.log(messages);
-    }, []);
+        console.log("messagesProp", messagesProp);
+    }, [messagesProp]);
     return (
         <div className="tab-content" id="nav-tabContent">
             <div
@@ -19,52 +45,55 @@ export default function Show() {
             >
                 <div className="chat" id="chat1">
                     <Topbar />
-                    <Messages messages={messages} />
-                    <div className="container">
-                        <div className="col-md-12">
-                            <div className="bottom">
-                                <form className="text-area">
-                                    <textarea
-                                        className="form-control"
-                                        placeholder="Start typing for reply..."
-                                        rows={1}
-                                    ></textarea>
-                                    <div className="add-smiles">
-                                        <span title="add icon" className="em em-blush"></span>
-                                    </div>
-                                    <div className="smiles-bunch">
-                                        <i className="em em---1"></i>
-                                        <i className="em em-smiley"></i>
-                                        <i className="em em-anguished"></i>
-                                        <i className="em em-laughing"></i>
-                                        <i className="em em-angry"></i>
-                                        <i className="em em-astonished"></i>
-                                        <i className="em em-blush"></i>
-                                        <i className="em em-disappointed"></i>
-                                        <i className="em em-worried"></i>
-                                        <i className="em em-kissing_heart"></i>
-                                        <i className="em em-rage"></i>
-                                        <i className="em em-stuck_out_tongue"></i>
-                                        <i className="em em-expressionless"></i>
-                                        <i className="em em-bikini"></i>
-                                        <i className="em em-christmas_tree"></i>
-                                        <i className="em em-facepunch"></i>
-                                        <i className="em em-pushpin"></i>
-                                        <i className="em em-tada"></i>
-                                        <i className="em em-us"></i>
-                                        <i className="em em-rose"></i>
-                                    </div>
-                                    <button type="submit" className="btn send">
-                                        <i className="ti-location-arrow"></i>
-                                    </button>
-                                </form>
-                                <label>
-                                    <input type="file" />
-                                    <span className="btn attach"
-                                    ><i className="ti-clip"></i
-                                    ></span>
-                                </label>
-                            </div>
+                    <Messages messageContainerRef={messageContainerRef} messages={messages} />
+                    <div className="col-md-12">
+                        <div className="bottom">
+                            <form onSubmit={sendMessage} className="text-area">
+                                <textarea
+                                    className="form-control"
+                                    placeholder="Start typing for reply..."
+                                    value={data.body}
+                                    onChange={e => setData('body', e.target.value)}
+                                    rows={1}
+                                ></textarea>
+                                <div className="add-smiles">
+                                    <span title="add icon" className="em em-blush"></span>
+                                </div>
+                                <div className="smiles-bunch">
+                                    <i className="em em---1"></i>
+                                    <i className="em em-smiley"></i>
+                                    <i className="em em-anguished"></i>
+                                    <i className="em em-laughing"></i>
+                                    <i className="em em-angry"></i>
+                                    <i className="em em-astonished"></i>
+                                    <i className="em em-blush"></i>
+                                    <i className="em em-disappointed"></i>
+                                    <i className="em em-worried"></i>
+                                    <i className="em em-kissing_heart"></i>
+                                    <i className="em em-rage"></i>
+                                    <i className="em em-stuck_out_tongue"></i>
+                                    <i className="em em-expressionless"></i>
+                                    <i className="em em-bikini"></i>
+                                    <i className="em em-christmas_tree"></i>
+                                    <i className="em em-facepunch"></i>
+                                    <i className="em em-pushpin"></i>
+                                    <i className="em em-tada"></i>
+                                    <i className="em em-us"></i>
+                                    <i className="em em-rose"></i>
+                                </div>
+                                <button type="submit" className="btn send">
+                                    {processing
+                                        ? <i className="pi pi-spinner pi-spin"></i>
+                                        : <i className="ti-location-arrow"></i>
+                                    }
+                                </button>
+                            </form>
+                            <label>
+                                <input type="file" />
+                                <span className="btn attach"
+                                ><i className="ti-clip"></i
+                                ></span>
+                            </label>
                         </div>
                     </div>
                 </div>

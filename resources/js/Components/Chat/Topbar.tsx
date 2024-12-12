@@ -3,7 +3,6 @@ import { usePage } from "@inertiajs/react";
 
 export default function Topbar() {
     const chat = usePage().props.chat as ChatData;
-    console.log(chat);
     return (
         <div className="top">
             <div className="container">
@@ -13,13 +12,13 @@ export default function Topbar() {
                         <div className="data flex items-center gap-2">
                             <img
                                 className="avatar-md"
-                                src={chat.receiver?.avatar}
+                                src={chat.from?.avatar}
                                 data-toggle="tooltip"
                                 data-placement="top"
-                                title={chat.receiver?.name}
-                                alt={chat.receiver?.name + "'s avatar"}
+                                title={chat.from?.name}
+                                alt={chat.from?.name + "'s avatar"}
                             />
-                            <h5><a href="#">{chat.receiver?.name}</a></h5>
+                            <h5><a href="#">{chat.from?.name}</a></h5>
                             {/*<span>Active now</span>*/}
                         </div>
                         <button

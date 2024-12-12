@@ -21,6 +21,8 @@ class ChatData extends Data
     #[TypeScriptOptional]
     public ?MessageData $last_message;
     #[TypeScriptOptional]
+    public ?UserData $from;
+    #[TypeScriptOptional]
     public ?UserData $sender;
     #[TypeScriptOptional]
     public ?UserData $receiver;
