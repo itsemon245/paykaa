@@ -18,7 +18,6 @@ export default function Messages({
     return (
         <div className='content' scroll-region="true" ref={messageContainerRef}>
             <div className="flex flex-col-reverse w-full px-2">
-                <div ref={last}></div>
                 {!messages?.data ? (
                     <div className="flex flex-col items-center justify-center w-full h-full gap-2">
                         <i className="ti-comments text-xl sm:text-3xl"></i>
