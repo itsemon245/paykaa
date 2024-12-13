@@ -11,7 +11,9 @@ class MessageController extends Controller
 {
     public function checkNewMessages(Chat $chat)
     {
-        $messageCount = $chat->messages()->received()->where('is_read', false)->count();
+        $messageCount = $chat->messages()->received()->where('is_read', false)->update([
+            'is_read'=> true
+        ]);
         return response()->json([
             'success' => $messageCount > 0,
             'count' => $messageCount,

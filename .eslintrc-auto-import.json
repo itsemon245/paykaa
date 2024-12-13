@@ -70,6 +70,8 @@
     "Writer": true,
     "HugeiconsArrowLeft02": true,
     "HugeiconsArrowLeft04": true,
-    "HugeiconsArrowLeft01": true
+    "HugeiconsArrowLeft01": true,
+    "useNotification": true,
+    "Date": true
   }
 }

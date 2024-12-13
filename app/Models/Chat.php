@@ -31,6 +31,6 @@ class Chat extends Model
     }
     public function lastMessage()
     {
-        return $this->messages()->one();
+        return $this->messages()->latest()->one();
     }
 }

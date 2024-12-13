@@ -1,46 +1,12 @@
 import { PaginatedCollection } from '@/types';
 import { motion } from "motion/react"
 import { ChatData, MessageData } from '@/types/_generated';
-import { Link, router, usePage } from '@inertiajs/react';
-import React, { RefObject } from 'react'
+import { usePage } from '@inertiajs/react';
 import Message from './Message';
 import { poll } from '@/utils';
 import { throttle } from 'lodash';
-import { format, isThisWeek, isToday, isYesterday, parseISO } from 'date-fns';
+import Date from './Date';
 
-const Date = ({ date, prev }: { date: string, prev?: string }) => {
-    const getVisualDate = (date: Date) => {
-        const DATE_FORMAT = 'MMMM dd, yyyy';
-        let visualDate = format(date, DATE_FORMAT);
-        if (isToday(date)) {
-            visualDate = "Today"
-        } else if (isYesterday(date)) {
-            visualDate = "Yesterday"
-        } else if (isThisWeek(date)) {
-            visualDate = format(date, 'eeee, MMMM dd, yyyy');
-        } else {
-            visualDate = format(date, DATE_FORMAT);
-        }
-        return visualDate;
-    }
-
-    const parsedDate = parseISO(date);
-    let visualDate = getVisualDate(parsedDate);
-    if (prev) {
-        const getPrevVisualDate = getVisualDate(parseISO(prev));
-        if (getPrevVisualDate === visualDate) {
-            return null;
-        }
-    }
-
-    return (
-        <div className="date">
-            <hr />
-            <span className="text-nowrap">{visualDate}</span>
-            <hr />
-        </div>
-    )
-}
 export default function Messages({
     messages,
     setMessages,
@@ -49,6 +15,7 @@ export default function Messages({
     setMessages: (messages: PaginatedCollection<MessageData>) => void
 }) {
     const chat = usePage().props.chat as ChatData;
+    const { playSound } = useNotification();
     const messageContainerRef = useRef<HTMLDivElement>(null);
     const { restore, scrollToBottom } = useScrollRestoration(messageContainerRef, 'message-container-scroll');
     const [newMessageCount, setNewMessageCount] = useState(0);
@@ -58,6 +25,7 @@ export default function Messages({
         if (data.success) {
             if (data.count > 0) {
                 setNewMessageCount(data.count)
+                playSound()
             }
         }
     }
@@ -95,7 +63,7 @@ export default function Messages({
                 </div>
             )}
             <div className="content" ref={messageContainerRef}>
-                <div className="flex flex-col-reverse w-full px-2 relative" >
+                <div className="flex flex-col-reverse w-full px-4 relative" >
                     {!messages?.data ? (
                         <div className="flex flex-col items-center justify-center w-full h-full gap-2">
                             <i className="ti-comments text-xl sm:text-3xl"></i>

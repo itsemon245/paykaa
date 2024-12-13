@@ -24,6 +24,16 @@ class ChatController extends Controller
         return response()->json(ChatData::collect($chats));
     }
 
+    public function checkNewMessages()
+    {
+        $updateCount = Chat::where('recevier_id', auth()->id())
+            ->where('is_notified', false)
+            ->update(['is_notified'=> true]);
+        return response()->json([
+            'success' => $updateCount > 0,
+        ]);
+    }
+
     public function show(Chat $chat)
     {
         $chat->messages()->received()->unread()->update(['is_read' => true]);
