@@ -4,11 +4,20 @@ import { Link, useForm } from "@inertiajs/react";
 
 export default function Sidebar() {
     const [chats, setChats] = useState<PaginatedCollection<ChatData>>();
+    const { playSound } = useNotification();
     const form = useForm()
     const fetchChats = async () => {
         const response = await fetch(route('chat.user-chats'));
         const data: PaginatedCollection<ChatData> = await response.json();
         setChats(data);
+    };
+    const checkForNewMessagesInChats = async () => {
+        const res = await fetch(route('chat.check-new-messages'));
+        const data = await res.json()
+        if (data.success) {
+            fetchChats();
+            playSound()
+        }
     };
     const itemTemplate = (chat: ChatData, key?: any) => {
         return (<Link
@@ -36,8 +45,9 @@ export default function Sidebar() {
                 <span>{chat.last_message?.created_at_human}</span>
                 {chat.last_message ?
                     (
-                        <div>
-                            {chat.last_message.body}
+                        <div className="text-ellipsis text-nowrap overflow-hidden flex items-center gap-2">
+                            {chat.last_message.by_me && <div className="font-medium">You:</div>}
+                            <div>{chat.last_message.body}</div>
                         </div>
                     ) :
                     <p>No messages yet</p>
@@ -46,8 +56,6 @@ export default function Sidebar() {
         </Link>
         )
     }
-
-
 
     useEffect(() => {
         fetchChats();
@@ -58,15 +66,14 @@ export default function Sidebar() {
                 <div className="col-md-12 h-full px-0">
                     <div className="tab-content h-full">
                         <div id="discussions" className="tab-pane flex flex-col fade in active show">
-                            <div className="flex items-center gap-3">
+                            <Link href={route('dashboard')} className="flex items-center gap-3">
                                 <img
                                     className="avatar-xl"
-                                    src="/assets/chat/img/avatars/avatar-male-1.jpg"
+                                    src={useAuth().user?.avatar}
                                     alt="avatar"
                                 />
-                                <img src="/assets/chat/img/logo.png" alt=""
-                                />
-                            </div>
+                                <img src="/assets/logo-long.png" alt="" className="max-w-[160px] grow" />
+                            </Link>
                             <div className="search">
                                 <form className="form-inline position-relative">
                                     <input

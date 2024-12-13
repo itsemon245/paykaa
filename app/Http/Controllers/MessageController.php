@@ -9,10 +9,25 @@ use Illuminate\Http\Request;
 
 class MessageController extends Controller
 {
-    public function newMessages(Chat $chat)
+    public function checkNewMessages(Chat $chat)
     {
-        $messages = Message::where('chat_id', $chat->id)->latest()->paginate();
-        return response()->json(MessageData::collect($messages));
+        $messageCount = $chat->messages()->received()->where('is_read', false)->update([
+            'is_read'=> true
+        ]);
+        return response()->json([
+            'success' => $messageCount > 0,
+            'count' => $messageCount,
+        ]);
+    }
+    public function getNewMessages(Chat $chat)
+    {
+        $updated = $chat->messages()->received()->where('is_read', false)->update([
+            'is_read'=> true
+        ]);
+        $messages = $chat->messages()->paginate();
+        return response()->json([
+            'messages'=> MessageData::collect($messages)
+        ]);
     }
     public function store(Chat $chat, Request $request)
     {

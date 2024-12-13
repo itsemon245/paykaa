@@ -16,3 +16,11 @@ export const storage = {
     },
     removeItem: (key: string) => localStorage.removeItem(key),
 }
+export const poll = (fn: () => void, timeout: number) => {
+    console.log("polling", {
+        fn,
+        timeout,
+    });
+    const interval = setInterval(fn, timeout);
+    return () => clearInterval(interval);
+};

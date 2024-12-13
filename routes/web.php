@@ -31,12 +31,14 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('chats')->name('chat.')->group(function () {
         Route::get('/', [ChatController::class, 'index'])->name('index');
+        Route::get('/check-new-messages', [ChatController::class, 'checkNewMessages'])->name('check-new-messages');
         Route::get('/user-chats', [ChatController::class, 'getUserChats'])->name('user-chats');
         Route::get('/receiver-chat/{receiver}', [ChatController::class, 'receiverChat'])->name('receiver-chat');
         Route::get('/{chat}', [ChatController::class, 'show'])->name('show');
     });
     Route::get('/messages', [MessageController::class, 'index'])->name('messages');
-    Route::get('/new-messages', [MessageController::class, 'newMessages'])->name('messages.new');
+    Route::get('/check-new-messages/{chat}', [MessageController::class, 'checkNewMessages'])->name('messages.check-new');
+    Route::get('/get-new-messages/{chat}', [MessageController::class, 'getNewMessages'])->name('messages.get-new');
     Route::post('/messages/{chat}', [MessageController::class, 'store'])->name('message.store');
 });
 
