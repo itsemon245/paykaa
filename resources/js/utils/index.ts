@@ -1,5 +1,18 @@
 export const storage = {
-    getItem: (key: string) => localStorage.getItem(key),
-    setItem: (key: string, value: string) => localStorage.setItem(key, value),
+    getItem: (key: string) => {
+        const item = localStorage.getItem(key);
+        console.log("getting from localStorage", {
+            key,
+            item,
+        });
+        return item;
+    },
+    setItem: (key: string, value: string) => {
+        console.log("storing in localStorage", {
+            key,
+            value,
+        });
+        localStorage.setItem(key, value);
+    },
     removeItem: (key: string) => localStorage.removeItem(key),
 }

@@ -1,3 +1,4 @@
+import toast, { Toaster } from 'react-hot-toast';
 import { PaginatedCollection } from "@/types";
 import { ChatData, MessageData, MessageType } from "@/types/_generated";
 import { useForm, usePage } from "@inertiajs/react";
@@ -8,7 +9,7 @@ export default function Show() {
     const { user } = useAuth();
     const [messages, setMessages] = useState<PaginatedCollection<MessageData>>(messagesProp);
     const messageContainerRef = useRef<HTMLDivElement>(null);
-    const restoreScroll = useScrollRestoration(messageContainerRef, 'message-container-scroll');
+    const { restore, scrollToBottom } = useScrollRestoration(messageContainerRef, 'message-container-scroll');
     const { data, setData, processing, post } = useForm({
         body: "",
         sender_id: user.id,
@@ -19,13 +20,16 @@ export default function Show() {
     const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const messageStoreUrl = route('message.store', { chat: chat.uuid })
+        const loadingToast = toast.loading("Sending message...");
         post(messageStoreUrl, {
             only: ['messages'],
-            preserveState: false,
+            preserveState: true,
             preserveScroll: true,
             onSuccess(data) {
-                console.log(data)
-                restoreScroll()
+                setMessages(data.props.messages as PaginatedCollection<MessageData>);
+                toast.dismiss(loadingToast);
+                toast.success("Message sent successfully");
+                scrollToBottom();
             },
             onError(error) {
                 console.error("Error while sending message", error);
@@ -33,8 +37,8 @@ export default function Show() {
         })
     };
     useEffect(() => {
-        console.log("messagesProp", messagesProp);
-    }, [messagesProp]);
+        scrollToBottom();
+    }, [JSON.stringify(messages)]);
     return (
         <div className="tab-content" id="nav-tabContent">
             <div
@@ -45,7 +49,7 @@ export default function Show() {
             >
                 <div className="chat" id="chat1">
                     <Topbar />
-                    <Messages messageContainerRef={messageContainerRef} messages={messages} />
+                    <Messages messages={messages} messageContainerRef={messageContainerRef} />
                     <div className="col-md-12">
                         <div className="bottom">
                             <form onSubmit={sendMessage} className="text-area">

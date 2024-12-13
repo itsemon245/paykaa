@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/{chat}', [ChatController::class, 'show'])->name('show');
     });
     Route::get('/messages', [MessageController::class, 'index'])->name('messages');
+    Route::get('/new-messages', [MessageController::class, 'newMessages'])->name('messages.new');
     Route::post('/messages/{chat}', [MessageController::class, 'store'])->name('message.store');
 });
 

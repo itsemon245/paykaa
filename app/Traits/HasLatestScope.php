@@ -12,7 +12,7 @@ trait HasLatestScope {
     /**
      * The "booted" method of the model.
      */
-    protected static function bootHasBaseQueries() {
+    protected static function bootHasLatestScope() {
         static::addGlobalScope(new LatestScope);
     }
 }

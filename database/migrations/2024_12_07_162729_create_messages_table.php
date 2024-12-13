@@ -19,7 +19,8 @@ return new class extends Migration
             $table->foreignId('receiver_id')->constrained('users')->onDelete('cascade');
             $table->string('type')->default('text')->comment('text, money_request, release_request, money_request_accepted, release_request_accepted');
             $table->longText('body');
-            $table->boolean('is_read')->default(false);
+            $table->boolean('is_read_sender')->default(false);
+            $table->boolean('is_read_receiver')->default(false);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable()->useCurrentOnUpdate();
 

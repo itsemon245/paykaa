@@ -11,12 +11,14 @@ export default function Messages({
     messages: PaginatedCollection<MessageData> | undefined,
     messageContainerRef: RefObject<HTMLDivElement>
 }) {
-    useEffect(() => {
-        console.log("messages re-render");
-    }, [messages]);
+    const chat = usePage().props.chat as ChatData;
+    const checkForNewMessages = () => {
+        fetch(route('messages.new', { chat: chat.uuid }))
+    }
     return (
         <div className='content' scroll-region="true" ref={messageContainerRef}>
-            <div ref={messageContainerRef} className="col-md-12 mt-0 h-full">
+            <div className="flex flex-col-reverse w-full px-2">
+                <div ref={last}></div>
                 {!messages?.data ? (
                     <div className="flex flex-col items-center justify-center w-full h-full gap-2">
                         <i className="ti-comments text-xl sm:text-3xl"></i>

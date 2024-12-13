@@ -1,18 +1,7 @@
-
 export default function ChatLayout({ children }: { children: any }) {
-    const [isLoading, setIsLoading] = useState(true);
-    useEffect(() => {
-        setTimeout(() => {
-            setIsLoading(false);
-        }, 1500);
-    }, [])
-    if (isLoading) {
-        return <div className="h-screen w-screen flex items-center justify-center">
-            <i className="pi pi-spinner pi-spin text-5xl text-primary" />
-        </div>
-    }
+
     return (
-        <>
+        <BaseLayout>
             <Head title="Chats">
                 <link rel="stylesheet" href="/assets/chat/css/bootstrap.min.css" />
                 <link rel="stylesheet" href="/assets/chat/css/perfect-scrollbar.min.css" />
@@ -168,13 +157,10 @@ export default function ChatLayout({ children }: { children: any }) {
                 </div>
 
                     */}
-
-
                 <div className="main" id="chat-dialog">
                     {children}
                 </div>
             </div>
-        </>
-
+        </BaseLayout>
     )
 }

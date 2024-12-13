@@ -29,7 +29,7 @@ class ChatController extends Controller
         $chat->loadMissing('sender', 'receiver', 'lastMessage');
         return Inertia::render('Chat/Show', [
             'chat' => ChatData::from($chat),
-            'messages' => MessageData::collect($chat->messages()->paginate()),
+            'messages' => MessageData::collect($chat->messages()->latest()->paginate()),
         ]);
     }
     /**
