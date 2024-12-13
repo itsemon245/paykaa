@@ -26,10 +26,11 @@ class ChatController extends Controller
 
     public function show(Chat $chat)
     {
+        $chat->messages()->received()->unread()->update(['is_read' => true]);
         $chat->loadMissing('sender', 'receiver', 'lastMessage');
         return Inertia::render('Chat/Show', [
             'chat' => ChatData::from($chat),
-            'messages' => MessageData::collect($chat->messages()->latest()->paginate()),
+            'messages' => MessageData::collect($chat->messages()->paginate()),
         ]);
     }
     /**

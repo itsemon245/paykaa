@@ -47,8 +47,6 @@ export default function Sidebar() {
         )
     }
 
-
-
     useEffect(() => {
         fetchChats();
     }, []);

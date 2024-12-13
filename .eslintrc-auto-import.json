@@ -64,6 +64,12 @@
     "ChatLayout": true,
     "Messages": true,
     "Message": true,
-    "useScrollRestoration": true
+    "useScrollRestoration": true,
+    "HugeiconsArrowDown01": true,
+    "HugeiconsArrowDown04": true,
+    "Writer": true,
+    "HugeiconsArrowLeft02": true,
+    "HugeiconsArrowLeft04": true,
+    "HugeiconsArrowLeft01": true
   }
 }

@@ -1,9 +1,10 @@
 import { MessageData } from "@/types/_generated"
-import { format, parseISO } from "date-fns"
+import { format, isThisWeek, isToday, isTomorrow, isYesterday, parseISO } from "date-fns"
 
-const Message = ({ message }: { message: MessageData }) => {
+const Message = ({ message, children }: { message: MessageData, children?: React.ReactNode }) => {
     return (
-        <>
+        <div key={"message-" + message.uuid}>
+            {children}
             <div className={`message ${message.by_me ? 'me' : ''}`}>
                 {!message.by_me && (
                     <img
@@ -17,7 +18,7 @@ const Message = ({ message }: { message: MessageData }) => {
                 )}
                 <div className="text-main">
                     <div className={`text-group ${message.by_me ? 'me' : ''}`}>
-                        <div className={`text ${message.by_me ? 'me' : ''}`}>
+                        <div className={`text ${message.by_me ? 'me font-medium text-white' : ''}`}>
                             <div>{message.body}</div>
                         </div>
                     </div>
@@ -28,6 +29,7 @@ const Message = ({ message }: { message: MessageData }) => {
             <div className="message me">
                 <div className="text-main">
                     <div className="text-group me">
+
                         <div className="text me">
                             <p>
                                 But if you are not available to talk, then
@@ -41,7 +43,7 @@ const Message = ({ message }: { message: MessageData }) => {
 
             */}
 
-        </>
+        </div>
     )
 }
 export default Message

@@ -4,7 +4,7 @@
         min-width: auto;
         max-width: 100%;
     }
-	
+
 }
 
 @media (max-width: 1024px){
@@ -36,7 +36,7 @@
         -ms-flex-align: start;
         align-items: flex-start;
     }
-    
+
     .main .start .content .callout,
     .sidebar .settings .categories .category:last-of-type {
         display: none;
@@ -44,7 +44,7 @@
     .navigation .inside .menu .avatar-xl {
         margin-bottom: 50px;
     }
-    
+
     .sidebar::-webkit-scrollbar {
         width: 5px;
     }
@@ -67,8 +67,8 @@
     .main .start .content .form-parent .form-group:last-child {
         margin-right: 0;
     }
-	
-	
+
+
 }
 
 @media (max-width:991px) {
@@ -102,11 +102,11 @@
         display: block;
     }
     .main .chat .content {
-        height: 100%;
-        min-height: 600px;
-        max-height: 600px
+        /* height: 100%; */
+        /* min-height: 600px; */
+        /* max-height: 600px */
     }
-	
+
 	.navigation {
 		position: fixed;
 		z-index: 99;
@@ -128,7 +128,7 @@
 	.sidebar.slide {
 		padding-left: 90px;
 	}
-	
+
 	.main {
 		position: fixed;
 		right: -100%;
@@ -142,13 +142,13 @@
 		transition: all 0.3s ease-in;
 	}
 	.main .chat .content {
-		max-height: 400px;
-		min-height: 400px;
+		/* max-height: 400px; */
+		/* min-height: 400px; */
 	}
 	.main .chat .content .date{
 		padding-top: 0;
 	}
-	
+
 .page-meta > h2 {
     font-size: 26px;
 }
@@ -162,8 +162,8 @@
     padding: 20px;
 }
 
-	
-	
+
+
 
 
 
@@ -173,11 +173,11 @@
     .container {
         max-width: 100%
     }
-	
+
 }
 
 @media (max-width:768px) {
-	
+
     .main .chat .top {
         padding: 20px 0
     }
@@ -186,9 +186,9 @@
 		margin-left: 10px;
     	margin-right: 0;
 	}
-	
-	
-    
+
+
+
 }
 
 @media (max-width:740px) {
@@ -223,8 +223,8 @@
     .main .start .content h1 {
         font-size: 36px
     }
-	
-	
+
+
 .navigation {
     max-width: 70px;
     min-width: 70px;
@@ -236,7 +236,7 @@
 .navigation .inside > .nav.menu > a, .navigation .inside > .nav.menu > button {
     font-size: 9px;
 }
-	
+
 
 }
 
