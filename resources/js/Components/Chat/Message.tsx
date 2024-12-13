@@ -5,7 +5,7 @@ const Message = ({ message }: { message: MessageData }) => {
     return (
         <>
             <div className={`message ${message.by_me ? 'me' : ''}`}>
-                {message.by_me && (
+                {!message.by_me && (
                     <img
                         className="avatar-md"
                         src="/assets/chat/img/avatars/avatar-female-5.jpg"

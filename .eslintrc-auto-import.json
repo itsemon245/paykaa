@@ -63,6 +63,7 @@
     "HugeiconsCustomerSupport": true,
     "ChatLayout": true,
     "Messages": true,
-    "Message": true
+    "Message": true,
+    "useScrollRestoration": true
   }
 }

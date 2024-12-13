@@ -20,7 +20,7 @@ class ChatController extends Controller
         return Inertia::render('Chat/Index');
     }
     public function getUserChats() {
-        $chats = Chat::with('lastMessage', 'sender', 'receiver')->where('sender_id', auth()->user()->id)->paginate();
+        $chats = Chat::with('lastMessage', 'sender', 'receiver')->where('sender_id', auth()->user()->id)->orWhere('receiver_id', auth()->id())->paginate();
         return response()->json(ChatData::collect($chats));
     }
 
@@ -29,7 +29,7 @@ class ChatController extends Controller
         $chat->loadMissing('sender', 'receiver', 'lastMessage');
         return Inertia::render('Chat/Show', [
             'chat' => ChatData::from($chat),
-            'messages' => MessageData::collect($chat->messages),
+            'messages' => MessageData::collect($chat->messages()->latest()->paginate()),
         ]);
     }
     /**

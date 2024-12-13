@@ -10,23 +10,24 @@ export default function Sidebar() {
         const data: PaginatedCollection<ChatData> = await response.json();
         setChats(data);
     };
-    const itemTemplate = (chat: ChatData) => {
+    const itemTemplate = (chat: ChatData, key?: any) => {
         return (<Link
             href={route('chat.show', { chat: chat.uuid })}
+            key={key}
             className="filterDiscussions all unread single active"
         >
             <img
                 className="avatar-md"
-                src={chat.receiver?.avatar}
+                src={chat.from?.avatar}
                 data-toggle="tooltip"
                 data-placement="top"
-                title={chat.receiver?.name}
-                alt={chat.receiver?.name + "'s avatar"}
+                title={chat.from?.name}
+                alt={chat.from?.name + "'s avatar"}
             />
             {/* <div className="status online"></div> */}
 
             <div className="data">
-                <h5>{chat.receiver?.name}</h5>
+                <h5>{chat.from?.name}</h5>
                 {/*
                 <div className="new bg-yellow">
                     <span>5+</span>
@@ -134,7 +135,7 @@ export default function Sidebar() {
                             </div>
                             <div className="discussions h-[700px] hide-scrollbar overflow-y-scroll my-2" id="scroller">
                                 <div className="list-group px-0" id="chats" role="tablist">
-                                    {chats?.data.map(item => itemTemplate(item))}
+                                    {chats?.data.map(item => itemTemplate(item, "chat-" + item.uuid))}
                                 </div>
                             </div>
                         </div>

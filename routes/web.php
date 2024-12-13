@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
@@ -34,6 +35,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/receiver-chat/{receiver}', [ChatController::class, 'receiverChat'])->name('receiver-chat');
         Route::get('/{chat}', [ChatController::class, 'show'])->name('show');
     });
+    Route::get('/messages', [MessageController::class, 'index'])->name('messages');
+    Route::get('/new-messages', [MessageController::class, 'newMessages'])->name('messages.new');
+    Route::post('/messages/{chat}', [MessageController::class, 'store'])->name('message.store');
 });
 
 require __DIR__.'/auth.php';

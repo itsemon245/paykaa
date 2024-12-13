@@ -6,6 +6,7 @@ export type ChatData = {
     is_archived: boolean;
     is_pinned: boolean;
     last_message?: MessageData;
+    from?: UserData;
     sender?: UserData;
     receiver?: UserData;
     sender_id: number;

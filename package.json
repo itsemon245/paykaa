@@ -51,6 +51,7 @@
         "motion": "^11.13.3",
         "primeicons": "^7.0.0",
         "primereact": "^10.8.5",
+        "react-hot-toast": "^2.4.1",
         "tailwind-merge": "^2.5.5"
     }
 }

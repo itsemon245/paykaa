@@ -17,6 +17,13 @@ class Chat extends Model
     {
         return $this->belongsTo(User::class, 'receiver_id');
     }
+    public function getFromAttribute(){
+        if($this->sender_id == auth()->id()) {
+            return $this->receiver;
+        } else {
+            return $this->sender;
+        }
+    }
 
     public function messages()
     {
