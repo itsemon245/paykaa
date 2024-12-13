@@ -44,16 +44,16 @@ jobs:
             git checkout staging
             git pull origin staging
 
+            npm install
+
             # Step 5: Update Composer dependencies and optimize Laravel
             ~/.local/share/bin/composer update
 
             # Step 6: Install Node.js dependencies and build assets
-            npm install  # Faster than npm install, as it uses lockfile
             npm run build
 
-            # Step 7: Clean up Node.js modules to save space
-            rm -rf node_modules
 
+            # Step 7: Clear cache and optimize Laravel
             php artisan optimize:clear
             php artisan optimize
 
@@ -61,5 +61,6 @@ jobs:
             php artisan migrate --force
 
             # Step 9: Recreate storage symlink
+            rm -rf node_modules
             rm -rf public/storage public/temp
             php artisan storage:link
