@@ -24,13 +24,15 @@ class ChatController extends Controller
         return response()->json(ChatData::collect($chats));
     }
 
-    public function checkNewMessages()
+    public function checkNewMessages(Request $request)
     {
+        $chat = Chat::where('uuid', $request->chat)->with('lastMessage', 'sender', 'receiver')->first();
         $updateCount = Chat::where('recevier_id', auth()->id())
             ->where('is_notified', false)
             ->update(['is_notified'=> true]);
         return response()->json([
             'success' => $updateCount > 0,
+            'chat' => ChatData::from($chat),
         ]);
     }
 
@@ -43,9 +45,32 @@ class ChatController extends Controller
             'messages' => MessageData::collect($chat->messages()->paginate()),
         ]);
     }
-    /**
-     * Display the specified resource.
-     */
+    public function typing(Request $request, Chat $chat)
+    {
+        if(auth()->id() !== $chat->sender_id ) {
+            if(auth()->id() !== $chat->receiver_id) {
+                return response()->json([
+                    'message' => 'You are not allowed to do this action in this chat',
+                ], 403);
+            }
+        }
+        $oldIndex = collect($chat->typing ?? [])->search(auth()->user()->uuid);
+        $newTyping = collect($chat->typing ?? []);
+        if($request->is_typing === '1' && $oldIndex === false) {
+            $newTyping->push(auth()->user()->uuid);
+        } else {
+            $newTyping->splice($oldIndex, 1);
+        }
+        $chat->update([
+            'typing'=> $newTyping->toArray(),
+        ]);
+        $chat->refresh();
+        return response()->json([
+            'success' => true,
+            'typing' => $chat->typing,
+        ]);
+    }
+
     public function receiverChat(User $receiver)
     {
         $chat = Chat::where('receiver_id', $receiver->id)->where('sender_id', auth()->user()->id)->first();

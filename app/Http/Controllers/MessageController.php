@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Data\ChatData;
 use App\Data\MessageData;
 use App\Models\Chat;
 use App\Models\Message;
@@ -14,9 +15,12 @@ class MessageController extends Controller
         $messageCount = $chat->messages()->received()->where('is_read', false)->update([
             'is_read'=> true
         ]);
+        $chat->loadMissing('sender', 'receiver', 'lastMessage');
+        $chat->refresh();
         return response()->json([
             'success' => $messageCount > 0,
             'count' => $messageCount,
+            'chat' => ChatData::from($chat),
         ]);
     }
     public function getNewMessages(Chat $chat)

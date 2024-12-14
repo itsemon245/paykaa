@@ -9,6 +9,8 @@ export type ChatData = {
     from?: UserData;
     sender?: UserData;
     receiver?: UserData;
+    typing?: Array<any>;
+    is_typing?: any;
     sender_id: number;
     receiver_id: number;
     created_at: string;

@@ -72,6 +72,8 @@
     "HugeiconsArrowLeft04": true,
     "HugeiconsArrowLeft01": true,
     "useNotification": true,
-    "Date": true
+    "Date": true,
+    "SvgSpinners3DotsBounce": true,
+    "useTyping": true
   }
 }

@@ -1,9 +1,10 @@
 import { PaginatedCollection } from "@/types";
 import { ChatData } from "@/types/_generated";
-import { Link, useForm } from "@inertiajs/react";
+import { Link, useForm, usePage } from "@inertiajs/react";
 
 export default function Sidebar() {
     const [chats, setChats] = useState<PaginatedCollection<ChatData>>();
+    const chat = usePage().props.chat as ChatData | undefined;
     const { playSound } = useNotification();
     const form = useForm()
     const fetchChats = async () => {
@@ -12,7 +13,7 @@ export default function Sidebar() {
         setChats(data);
     };
     const checkForNewMessagesInChats = async () => {
-        const res = await fetch(route('chat.check-new-messages'));
+        const res = await fetch(route('chat.check-new-messages', { chat: chat?.uuid }));
         const data = await res.json()
         if (data.success) {
             fetchChats();
@@ -43,15 +44,20 @@ export default function Sidebar() {
                 </div>
                 */}
                 <span>{chat.last_message?.created_at_human}</span>
-                {chat.last_message ?
-                    (
-                        <div className="text-ellipsis text-nowrap overflow-hidden flex items-center gap-2">
-                            {chat.last_message.by_me && <div className="font-medium">You:</div>}
-                            <div>{chat.last_message.body}</div>
-                        </div>
-                    ) :
-                    <p>No messages yet</p>
-                }
+                {chat.is_typing ? <div className="flex items-center gap-1 text-sm text-green-500 font-bold">
+                    <div>Typing</div>
+                    <SvgSpinners3DotsBounce className="w-6 h-4" />
+
+                </div> : (
+                    chat.last_message ?
+                        (
+                            <div className="text-ellipsis text-nowrap overflow-hidden flex items-center gap-2">
+                                {chat.last_message.by_me && <div className="font-medium">You:</div>}
+                                <div>{chat.last_message.body}</div>
+                            </div>
+                        ) :
+                        <p>No messages yet</p>
+                )}
             </div>
         </Link>
         )

@@ -51,6 +51,7 @@ declare global {
   const SecondaryButton: typeof import('../Components/SecondaryButton')['default']
   const Sidebar: typeof import('../Components/Chat/Sidebar')['default']
   const SquareBg: typeof import('../Components/Animations/SquareBg')['default']
+  const SvgSpinners3DotsBounce: typeof import('~icons/svg-spinners/3-dots-bounce.tsx')['default']
   const TextInput: typeof import('../Components/TextInput')['default']
   const Topbar: typeof import('../Components/Chat/Topbar')['default']
   const UserType: typeof import('./_generated')['UserType']
@@ -79,6 +80,7 @@ declare global {
   const useState: typeof import('react')['useState']
   const useSyncExternalStore: typeof import('react')['useSyncExternalStore']
   const useTransition: typeof import('react')['useTransition']
+  const useTyping: typeof import('../Hooks/useTyping')['default']
 }
 // for type re-export
 declare global {

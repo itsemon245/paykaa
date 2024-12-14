@@ -12,6 +12,7 @@ const iconCollection = [
     'game-icons',
     'lucide-lab',
     'mingcute',
+    'svg-spinners'
 ] as const satisfies string[];
 export default defineConfig({
     plugins: [

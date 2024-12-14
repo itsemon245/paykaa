@@ -26,6 +26,11 @@ class ChatData extends Data
     public ?UserData $sender;
     #[TypeScriptOptional]
     public ?UserData $receiver;
+    #[TypeScriptOptional]
+    public ?array $typing;
+    #[TypeScriptOptional]
+    public $is_typing = false;
+
     public function __construct(
         public int $sender_id,
         public int $receiver_id

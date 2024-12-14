@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('chats')->name('chat.')->group(function () {
         Route::get('/', [ChatController::class, 'index'])->name('index');
+        Route::get('/{chat}/typing', [ChatController::class, 'typing'])->name('typing');
         Route::get('/check-new-messages', [ChatController::class, 'checkNewMessages'])->name('check-new-messages');
         Route::get('/user-chats', [ChatController::class, 'getUserChats'])->name('user-chats');
         Route::get('/receiver-chat/{receiver}', [ChatController::class, 'receiverChat'])->name('receiver-chat');
