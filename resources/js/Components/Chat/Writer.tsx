@@ -23,7 +23,7 @@ export default function Writer({
         chat_id: chat.id,
         type: MessageType.Text,
     });
-    const sendThrottledMessage = throttle(() => {
+    const sendThrottledMessage = throttle(async () => {
         const messageStoreUrl = route('message.store', { chat: chat.uuid });
         const loadingToast = toast.loading("Sending message...");
         post(messageStoreUrl, {
@@ -40,26 +40,33 @@ export default function Writer({
                 console.error("Error while sending message", error);
             }
         });
-        toggleTyping(false);
-    }, 1000);
+    }, 1000, { leading: true, trailing: false });
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key !== 'Enter') {
-            toggleTyping(true);
             return;
         }
-        e.preventDefault();
         if (e.shiftKey === false) {
+            e.preventDefault();
             sendThrottledMessage();
+            toggleTyping(false);
         } else {
             setData('body', data.body + "\n");
-            toggleTyping(true);
         }
     };
     const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         sendThrottledMessage();
+        toggleTyping(false);
     };
+    useEffect(() => {
+        console.log("body: ", data.body)
+        if (!data.body) {
+            toggleTyping(false);
+        } else {
+            toggleTyping(true);
+        }
+    }, [data.body]);
     return (<div className="col-md-12">
         <div className="bottom">
             <form onSubmit={sendMessage} className="text-area">

@@ -27,12 +27,12 @@ class ChatController extends Controller
     public function checkNewMessages(Request $request)
     {
         $chat = Chat::where('uuid', $request->chat)->with('lastMessage', 'sender', 'receiver')->first();
-        $updateCount = Chat::where('recevier_id', auth()->id())
+        $updateCount = Chat::where('receiver_id', auth()->id())
             ->where('is_notified', false)
             ->update(['is_notified'=> true]);
         return response()->json([
             'success' => $updateCount > 0,
-            'chat' => ChatData::from($chat),
+            'chat' => $chat ? ChatData::from($chat) : null,
         ]);
     }
 
@@ -58,16 +58,15 @@ class ChatController extends Controller
         $newTyping = collect($chat->typing ?? []);
         if($request->is_typing === '1' && $oldIndex === false) {
             $newTyping->push(auth()->user()->uuid);
-        } else {
+        }
+        if($request->is_typing === '0' && $oldIndex !== false) {
             $newTyping->splice($oldIndex, 1);
         }
         $chat->update([
             'typing'=> $newTyping->toArray(),
         ]);
-        $chat->refresh();
         return response()->json([
             'success' => true,
-            'typing' => $chat->typing,
         ]);
     }
 
