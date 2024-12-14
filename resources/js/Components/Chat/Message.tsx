@@ -1,7 +1,9 @@
-import { MessageData } from "@/types/_generated"
+import { ChatData, MessageData } from "@/types/_generated"
+import { usePage } from "@inertiajs/react";
 import { format, isThisWeek, isToday, isTomorrow, isYesterday, parseISO } from "date-fns"
 
 const Message = ({ message, children }: { message: MessageData, children?: React.ReactNode }) => {
+    const chat = usePage().props.chat as ChatData;
     return (
         <div key={"message-" + message.uuid}>
             {children}
@@ -9,10 +11,10 @@ const Message = ({ message, children }: { message: MessageData, children?: React
                 {!message.by_me && (
                     <img
                         className="avatar-md"
-                        src="/assets/chat/img/avatars/avatar-female-5.jpg"
+                        src={chat.from?.avatar}
                         data-toggle="tooltip"
                         data-placement="top"
-                        title="Karen joye"
+                        title={chat.from?.name}
                         alt="avatar"
                     />
                 )}

@@ -1,12 +1,13 @@
 import { PaginatedCollection } from "@/types";
 import { ChatData } from "@/types/_generated";
+import { poll } from "@/utils";
 import { Link, useForm, usePage } from "@inertiajs/react";
+import toast from "react-hot-toast";
 
 export default function Sidebar() {
     const [chats, setChats] = useState<PaginatedCollection<ChatData>>();
-    const chat = usePage().props.chat as ChatData | undefined;
+    const chat = usePage().props.chat as ChatData;
     const { playSound } = useNotification();
-    const form = useForm()
     const fetchChats = async () => {
         const response = await fetch(route('chat.user-chats'));
         const data: PaginatedCollection<ChatData> = await response.json();
@@ -14,11 +15,11 @@ export default function Sidebar() {
     };
     const checkForNewMessagesInChats = async () => {
         const res = await fetch(route('chat.check-new-messages', { chat: chat?.uuid }));
-        const data = await res.json()
-        if (data.success) {
-            fetchChats();
-            playSound()
-        }
+        const data = await res.json() as { success: boolean, chat?: ChatData }
+        // if (data.success) {
+        fetchChats();
+        // playSound()
+        // }
     };
     const itemTemplate = (chat: ChatData, key?: any) => {
         return (<Link
@@ -47,7 +48,6 @@ export default function Sidebar() {
                 {chat.is_typing ? <div className="flex items-center gap-1 text-sm text-green-500 font-bold">
                     <div>Typing</div>
                     <SvgSpinners3DotsBounce className="w-6 h-4" />
-
                 </div> : (
                     chat.last_message ?
                         (
@@ -65,6 +65,7 @@ export default function Sidebar() {
 
     useEffect(() => {
         fetchChats();
+        poll(checkForNewMessagesInChats, 1000);
     }, []);
     return (
         <div className="sidebar" id="sidebar">

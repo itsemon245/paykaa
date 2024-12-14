@@ -52,7 +52,12 @@ export default function Messages({
     }, [JSON.stringify(messages)]);
 
     useEffect(() => {
-        console.log(messages)
+        if (isTyping) {
+            scrollToBottom();
+        }
+    }, [isTyping]);
+
+    useEffect(() => {
         poll(checkForNewMessages, 1000)
     }, [])
     return (
@@ -71,7 +76,7 @@ export default function Messages({
                     </motion.div>
                 </div>
             )}
-            <div className="content !h-[calc(100dvh - 218px)]" ref={messageContainerRef}>
+            <div className="content !h-[calc(100dvh - 240px)]" ref={messageContainerRef}>
                 <div className="flex flex-col-reverse w-full px-4 relative" >
                     {!messages?.data ? (
                         <div className="flex flex-col items-center justify-center w-full h-full gap-2">
