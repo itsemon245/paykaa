@@ -13,6 +13,7 @@ export default function Writer({
     setMessages
 }: WriterProps) {
     const chat = usePage().props.chat as ChatData;
+    const { toggleTyping } = useTyping(chat);
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
     const { user } = useAuth();
     const { data, setData, processing, post } = useForm({
@@ -22,7 +23,7 @@ export default function Writer({
         chat_id: chat.id,
         type: MessageType.Text,
     });
-    const debouncedSendMessage = throttle(() => {
+    const sendThrottledMessage = throttle(() => {
         const messageStoreUrl = route('message.store', { chat: chat.uuid });
         const loadingToast = toast.loading("Sending message...");
         post(messageStoreUrl, {
@@ -39,19 +40,25 @@ export default function Writer({
                 console.error("Error while sending message", error);
             }
         });
+        toggleTyping(false);
     }, 1000);
-    const handleOnEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-        if (e.key !== 'Enter') return;
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (e.key !== 'Enter') {
+            toggleTyping(true);
+            return;
+        }
         e.preventDefault();
         if (e.shiftKey === false) {
-            debouncedSendMessage();
+            sendThrottledMessage();
         } else {
             setData('body', data.body + "\n");
+            toggleTyping(true);
         }
     };
     const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        debouncedSendMessage();
+        sendThrottledMessage();
     };
     return (<div className="col-md-12">
         <div className="bottom">
@@ -62,7 +69,7 @@ export default function Writer({
                     value={data.body}
                     autoResize
                     ref={textAreaRef}
-                    onKeyDown={handleOnEnter}
+                    onKeyDown={handleKeyDown}
                     onChange={e => setData('body', e.target.value)}
                     rows={1}
                 ></InputTextarea>

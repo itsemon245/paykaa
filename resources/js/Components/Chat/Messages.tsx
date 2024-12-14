@@ -15,13 +15,22 @@ export default function Messages({
     setMessages: (messages: PaginatedCollection<MessageData>) => void
 }) {
     const chat = usePage().props.chat as ChatData;
+    const { isTyping, setIsTyping } = useTyping(chat);
     const { playSound } = useNotification();
     const messageContainerRef = useRef<HTMLDivElement>(null);
     const { restore, scrollToBottom } = useScrollRestoration(messageContainerRef, 'message-container-scroll');
     const [newMessageCount, setNewMessageCount] = useState(0);
     const checkForNewMessages = async () => {
         const res = await fetch(route('messages.check-new', { chat: chat.uuid }))
-        const data = await res.json()
+        if (!res.ok) {
+            console.error('Error while checking for new messages', res);
+            return;
+        }
+        const data = await res.json() as { success: boolean, count: number, chat: ChatData }
+        setIsTyping(data.chat.is_typing);
+        console.log("is_typing: ", data.chat.is_typing)
+        console.log("data: ", data)
+
         if (data.success) {
             if (data.count > 0) {
                 setNewMessageCount(data.count)
@@ -62,7 +71,7 @@ export default function Messages({
                     </motion.div>
                 </div>
             )}
-            <div className="content" ref={messageContainerRef}>
+            <div className="content !h-[calc(100dvh - 218px)]" ref={messageContainerRef}>
                 <div className="flex flex-col-reverse w-full px-4 relative" >
                     {!messages?.data ? (
                         <div className="flex flex-col items-center justify-center w-full h-full gap-2">
@@ -72,15 +81,32 @@ export default function Messages({
                                 send the first message.
                             </p>
                         </div>
-                    ) : (messages.data?.map((message, i) => (
-                        <>
-                            <Message message={message}>
-                                {i > 0 && <Date date={message.created_at} prev={messages.data[i + 1]?.created_at} />}
-                            </Message>
-                            {i === 0 && <Date date={message.created_at} prev={messages.data[i + 1]?.created_at} />}
-                        </>
+                    ) : <>
+                        {isTyping && <div className="message">
+                            <img className="avatar-md" src={chat.from?.avatar} data-toggle="tooltip" data-placement="top" title="" alt="avatar" data-original-title={chat.from?.avatar} />
+                            <div className="text-main">
+                                <div className="text-group">
+                                    <div className="text typing">
+                                        <div className="wave">
+                                            <span className="dot"></span>
+                                            <span className="dot"></span>
+                                            <span className="dot"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>}
+                        {(messages.data?.map((message, i) => (
+                            <>
+                                <Message message={message}>
+                                    {i > 0 && <Date date={message.created_at} prev={messages.data[i + 1]?.created_at} />}
+                                </Message>
+                                {i === 0 && <Date date={message.created_at} prev={messages.data[i + 1]?.created_at} />}
+                            </>
 
-                    )))}
+                        )))}
+                    </>
+                    }
                 </div>
 
             </div >
