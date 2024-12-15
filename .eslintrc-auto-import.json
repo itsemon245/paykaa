@@ -74,6 +74,8 @@
     "useNotification": true,
     "Date": true,
     "SvgSpinners3DotsBounce": true,
-    "useTyping": true
+    "useTyping": true,
+    "useUsers": true,
+    "AddNewChat": true
   }
 }

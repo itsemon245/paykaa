@@ -1,7 +1,10 @@
 import { PaginatedCollection } from "@/types";
-import { ChatData } from "@/types/_generated";
+import { ChatData, UserData } from "@/types/_generated";
 import { poll } from "@/utils";
 import { Link, useForm, usePage } from "@inertiajs/react";
+import { Button } from "primereact/button";
+import { Dialog } from "primereact/dialog";
+import { ScrollPanel } from "primereact/scrollpanel";
 import toast from "react-hot-toast";
 
 export default function Sidebar() {
@@ -21,39 +24,39 @@ export default function Sidebar() {
         // playSound()
         // }
     };
-    const itemTemplate = (chat: ChatData, key?: any) => {
+    const itemTemplate = (item: ChatData, key?: any) => {
         return (<Link
-            href={route('chat.show', { chat: chat.uuid })}
+            href={route('chat.show', { chat: item.uuid })}
             key={key}
-            className="filterDiscussions all unread single active"
+            className={`filterDiscussions all unread single ${item.uuid === chat.uuid ? 'active' : ''}`}
         >
             <img
                 className="avatar-md"
-                src={chat.from?.avatar}
+                src={item.from?.avatar}
                 data-toggle="tooltip"
                 data-placement="top"
-                title={chat.from?.name}
-                alt={chat.from?.name + "'s avatar"}
+                title={item.from?.name}
+                alt={item.from?.name + "'s avatar"}
             />
             {/* <div className="status online"></div> */}
 
             <div className="data">
-                <h5>{chat.from?.name}</h5>
+                <h5>{item.from?.name}</h5>
                 {/*
                 <div className="new bg-yellow">
                     <span>5+</span>
                 </div>
                 */}
-                <span>{chat.last_message?.created_at_human}</span>
-                {chat.is_typing ? <div className="flex items-center gap-1 text-sm text-green-500 font-bold">
+                <span>{item.last_message?.created_at_human}</span>
+                {item.is_typing ? <div className="flex items-center gap-1 text-sm text-green-500 font-bold">
                     <div>Typing</div>
                     <SvgSpinners3DotsBounce className="w-6 h-4" />
                 </div> : (
-                    chat.last_message ?
+                    item.last_message ?
                         (
                             <div className="text-ellipsis text-nowrap overflow-hidden flex items-center gap-2">
-                                {chat.last_message.by_me && <div className="font-medium">You:</div>}
-                                <div>{chat.last_message.body}</div>
+                                {item.last_message.by_me && <div className="font-medium">You:</div>}
+                                <div>{item.last_message.body}</div>
                             </div>
                         ) :
                         <p>No messages yet</p>
@@ -62,6 +65,7 @@ export default function Sidebar() {
         </Link>
         )
     }
+
 
     useEffect(() => {
         fetchChats();
@@ -81,7 +85,7 @@ export default function Sidebar() {
                                 />
                                 <img src="/assets/logo-long.png" alt="" className="max-w-[160px] grow" />
                             </Link>
-                            <div className="search">
+                            <div className="search relative">
                                 <form className="form-inline position-relative">
                                     <input
                                         type="search"
@@ -93,14 +97,9 @@ export default function Sidebar() {
                                         <i className="ti-search"></i>
                                     </button>
                                 </form>
-                                <button
-                                    className="btn create"
-                                    data-toggle="modal"
-                                    data-target="#startnewchat"
-                                >
-                                    <i className="ti-pencil"></i>
-                                </button>
+                                <AddNewChat />
                             </div>
+                            {/*
                             <div className="flex items-center gap-3 sort pb-0">
                                 <button
                                     className="btn filterDiscussionsBtn active show"
@@ -123,10 +122,10 @@ export default function Sidebar() {
                                 >
                                     Unread
                                 </button>
-                            </div>
+                            </div>*/}
                             <div className="discussions mt-3">
                                 <h1>Chats</h1>
-                                <div className="btn-group add-group mt-3" role="group">
+                                {/*                                <div className="btn-group add-group mt-3" role="group">
                                     <button
                                         id="btnGroupDrop2"
                                         type="button"
@@ -146,6 +145,7 @@ export default function Sidebar() {
                                         <a className="dropdown-item" href="#">Private Chat +</a>
                                     </div>
                                 </div>
+*/}
                             </div>
                             <div className="discussions h-[700px] hide-scrollbar overflow-y-scroll my-2" id="scroller">
                                 <div className="list-group px-0" id="chats" role="tablist">

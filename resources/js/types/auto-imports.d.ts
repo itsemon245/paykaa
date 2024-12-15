@@ -6,6 +6,7 @@
 // biome-ignore lint: disable
 export {}
 declare global {
+  const AddNewChat: typeof import('../Components/Chat/AddNewChat')['default']
   const ApplicationLogo: typeof import('../Components/ApplicationLogo')['default']
   const AuthenticatedLayout: typeof import('../Layouts/AuthenticatedLayout')['default']
   const BaseLayout: typeof import('../Layouts/BaseLayout')['default']
@@ -81,6 +82,7 @@ declare global {
   const useSyncExternalStore: typeof import('react')['useSyncExternalStore']
   const useTransition: typeof import('react')['useTransition']
   const useTyping: typeof import('../Hooks/useTyping')['default']
+  const useUsers: typeof import('../Hooks/useUsers')['default']
 }
 // for type re-export
 declare global {
