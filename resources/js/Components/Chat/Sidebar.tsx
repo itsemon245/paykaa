@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 
 export default function Sidebar() {
     const [chats, setChats] = useState<PaginatedCollection<ChatData>>();
-    const chat = usePage().props.chat as ChatData;
+    const chat = usePage().props.chat as ChatData | undefined;
     const { playSound } = useNotification();
     const fetchChats = async () => {
         const response = await fetch(route('chat.user-chats'));
@@ -28,7 +28,7 @@ export default function Sidebar() {
         return (<Link
             href={route('chat.show', { chat: item.uuid })}
             key={key}
-            className={`filterDiscussions all unread single ${item.uuid === chat.uuid ? 'active' : ''}`}
+            className={`filterDiscussions all unread single ${item.uuid === chat?.uuid ? 'active' : ''}`}
         >
             <img
                 className="avatar-md"

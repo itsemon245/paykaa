@@ -32,7 +32,8 @@ export default function AddNewChat() {
         </Button>
         <Dialog header="Start a new chat" visible={visible} onHide={() => { if (!visible) return; setVisible(false); }}
             className="max-w-max min-w-[300px] min-h-[400px]">
-            <div className="form-group">
+            <div className="form-group relative">
+                <i className="pi pi-search absolute left-4 top-0 text-xl text-primary flex items-center justify-start"></i>
                 <input type="text" onKeyUp={search} className="form-control" id="topic" placeholder="Search for user" />
             </div>
             {(users.length > 0 && searchString !== "") &&
