@@ -1,10 +1,12 @@
 import DashboardLayout from "@/Layouts/DashboarLayout";
 import { UserData } from "@/types/_generated";
 import { Link } from "@inertiajs/react";
+import { throttle } from "lodash";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { InputText } from "primereact/inputtext";
 import { ScrollPanel } from "primereact/scrollpanel";
+import toast from "react-hot-toast";
 
 interface MenuItem {
     label: string;
@@ -13,9 +15,7 @@ interface MenuItem {
     className?: string;
 }
 export default function Dashboard() {
-    const [searchString, setSearchString] = useState("");
-    const [filteredUsers, setFilteredUsers] = useState<UserData[]>([]);
-    const [loading, setLoading] = useState(false);
+    const { users, loading, searchString, search } = useUsers();
     const menuItems1: MenuItem[] = [
         {
             label: "Deposit",
@@ -65,20 +65,6 @@ export default function Dashboard() {
         menuItems1,
         menuItems2
     ]
-    const search = async (e: any) => {
-        if (e.target.value.length < 2) return;
-        setLoading(true);
-        setSearchString(e.target.value);
-        const response = await fetch(route("search-users", { search: searchString }), {
-            method: "get",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-        const data = await response.json();
-        setFilteredUsers(data);
-        setLoading(false);
-    }
     const itemTemplate = (user: UserData) => {
         return (
             <Link href={route('chat.receiver-chat', { receiver: user.uuid })} className="flex items-center p-3 h-max cursor-pointer">
@@ -115,28 +101,32 @@ export default function Dashboard() {
                                     <i className="pi pi-search text-primary-500" />
                                 </button>
                             </div>
+                            {(users.length > 0 && searchString !== "") &&
+                                <div className="rounded-md border-gray-200 mt-2 shadow">
+                                    {loading ? (<div className="flex justify-center items-center p-3">
+                                        <i className="pi pi-spinner pi-spin" />
+                                    </div>)
+                                        :
+                                        <ScrollPanel className="w-full bg-white min-h-[100px]">
+                                            <ul>
+                                                {users.map((user) => (
+                                                    <li key={"user-" + user.id}>
+                                                        {itemTemplate(user)}
+                                                    </li>
+                                                ))}
+                                                {users.length === 0 &&
+                                                    <li className="text-center">
+                                                        <p>No users found</p>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </ScrollPanel>
+                                    }
+                                </div>
+                            }
                         </div>
                     </div>
 
-                    {(filteredUsers.length > 0) &&
-                        <div className="rounded-md border-gray-200 mt-2 shadow">
-                            {loading && <div className="flex justify-center items-center p-3">
-                                <i className="pi pi-spinner pi-spin" />
-                            </div>}
-                            {!loading &&
-                                <ScrollPanel className="w-full bg-white h-40">
-                                    <ul>
-
-                                        {filteredUsers.map((user, i) => (
-                                            <li key={"user-" + user.id}>
-                                                {itemTemplate(user)}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </ScrollPanel>
-                            }
-                        </div>
-                    }
                 </Card>
                 {menuItems.map((menuItems1, i) => (
                     <Card key={"menu-items-" + i}>
