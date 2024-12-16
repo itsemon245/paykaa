@@ -76,6 +76,14 @@
     "SvgSpinners3DotsBounce": true,
     "useTyping": true,
     "useUsers": true,
-    "AddNewChat": true
+    "AddNewChat": true,
+    "Bkash": true,
+    "Textarea": true,
+    "WalletRemark": true,
+    "ManualMobileBanking": true,
+    "usePage": true,
+    "WalletTransactionType": true,
+    "WalletStatus": true,
+    "WalletType": true
   }
 }

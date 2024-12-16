@@ -16,12 +16,12 @@ export default function Writer({
     const { toggleTyping } = useTyping(chat);
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
     const { user } = useAuth();
-    const { data, setData, processing, post } = useForm({
+    const { data, setData, processing, post } = useForm<Partial<MessageData>>({
         body: "",
         sender_id: user.id,
         receiver_id: chat.from?.id,
         chat_id: chat.id,
-        type: MessageType.Text,
+        type: "text"
     });
     const sendThrottledMessage = throttle(async () => {
         const messageStoreUrl = route('message.store', { chat: chat.uuid });

@@ -21,7 +21,7 @@ export type ChatData = {
 export type MessageData = {
     id: number;
     uuid: string;
-    chat: ChatData;
+    chat?: ChatData;
     by_me: boolean;
     chat_id: number;
     sender_id: number;
@@ -33,13 +33,12 @@ export type MessageData = {
     created_at_human: string;
     updated_at_human: string;
 };
-export enum MessageType {
-    'Text' = 'text',
-    'MoneyRequest' = 'money_request',
-    'ReleaseRequest' = 'release_request',
-    'MoneyRequestAccepted' = 'money_request_accepted',
-    'ReleaseRequestAccepted' = 'release_request_accepted',
-}
+export type MessageType =
+    | 'text'
+    | 'money_request'
+    | 'release_request'
+    | 'money_request_accepted'
+    | 'release_request_accepted';
 export type UserData = {
     id: number;
     uuid: string;
@@ -56,7 +55,34 @@ export type UserData = {
     created_at_human: string;
     updated_at_human: string;
 };
-export enum UserType {
-    'Customer' = 'customer',
-    'Admin' = 'admin',
-}
+export type UserType = 'customer' | 'admin';
+export type WalletData = {
+    id: number;
+    uuid: string;
+    user: UserData;
+    status: WalletStatus;
+    type: WalletType;
+    transaction_type: WalletTransactionType;
+    amount: number;
+    currency: string;
+    method?: string;
+    transaction_id?: string;
+    note?: string;
+    payment_number?: string;
+    approved_at?: string;
+    cancelled_at?: string;
+    failed_at?: string;
+    created_at: string;
+    updated_at: string;
+    created_at_human: string;
+    updated_at_human: string;
+};
+export type WalletStatus = 'pending' | 'approved' | 'failed' | 'cancelled';
+export type WalletTransactionType =
+    | 'deposit'
+    | 'withdraw'
+    | 'transfer_in'
+    | 'transfer_out'
+    | 'earn'
+    | 'service_charge';
+export type WalletType = 'debit' | 'credit';

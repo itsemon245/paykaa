@@ -4,8 +4,8 @@ namespace App\Enum\Wallet;
 
 enum WalletStatus : string
 {
-    const PENDING = 'pending';
-    const COMPLETED = 'completed';
-    const APPROVED = 'approved';
-    const FAILED = 'failed';
+    case PENDING = 'pending';
+    case APPROVED = 'approved';
+    case FAILED = 'failed';
+    case CANCELLED = 'cancelled';
 }

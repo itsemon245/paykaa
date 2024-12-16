@@ -6,7 +6,7 @@
 
 @layer base {
     label {
-        @apply block mb-2 text-sm font-medium text-gray-500;
+        @apply block mb-1 text-sm font-medium text-gray-500;
     }
 }
 

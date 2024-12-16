@@ -13,5 +13,11 @@ declare global {
 }
 
 declare module '@inertiajs/core' {
-    interface PageProps extends InertiaPageProps, AppPageProps {}
+    interface PageProps extends InertiaPageProps, AppPageProps { }
+}
+declare module '@inertiajs/react' {
+    type SetData<T> = {
+        <K extends keyof T>(key: K, value: T[K]): void;//key value style
+        (data: Partial<T>): void;
+    }
 }

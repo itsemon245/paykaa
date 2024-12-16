@@ -3,8 +3,11 @@
 namespace Database\Seeders;
 
 use App\Enum\UserType;
+use App\Enum\Wallet\WalletTransactionType;
+use App\Enum\Wallet\WalletType;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Wallet;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -30,6 +33,9 @@ class DatabaseSeeder extends Seeder
             'password'=> \Hash::make('12345678'),
         ]);
         User::factory(10)->create([
+        ]);
+        Wallet::factory(100)->create([
+            'transaction_type'=> WalletTransactionType::DEPOSIT->value,
         ]);
     }
 }

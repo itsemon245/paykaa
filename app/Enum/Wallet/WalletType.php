@@ -2,8 +2,8 @@
 
 namespace App\Enum\Wallet;
 
-enum WalletType : string
+enum WalletType: string
 {
-    const DEBIT = 'debit';
-    const CREDIT = 'credit';
+    case DEBIT = 'debit';
+    case CREDIT = 'credit';
 }

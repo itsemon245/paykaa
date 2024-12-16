@@ -1,6 +1,4 @@
-import { InputProps } from '@headlessui/react'
-import { InputNumber, InputNumberProps } from 'primereact/inputnumber'
-import { InputText, InputTextProps } from 'primereact/inputtext'
+import { InputTextarea, InputTextareaProps } from 'primereact/inputtextarea'
 
 export default function Input({
     id,
@@ -8,13 +6,13 @@ export default function Input({
     invalid,
     label,
     ...props
-}: InputTextProps & { label: string, error: string | undefined }) {
+}: InputTextareaProps & { label: string, error: string | undefined }) {
     return (
         <div>
             <InputLabel htmlFor={id} value={label} />
-            <InputText
+            <InputTextarea
                 invalid={invalid || error !== undefined}
-                {...props as InputTextProps}
+                {...props}
             />
             <InputError message={error} className="mt-2" />
         </div>

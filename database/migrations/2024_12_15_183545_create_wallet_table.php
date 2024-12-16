@@ -16,12 +16,16 @@ return new class extends Migration
             $table->id();
             $table->uuid('uuid')->unique();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('transaction_id')->nullable();
+            $table->string('transaction_type')->comment('deposit|withdraw|transfer_in|transfer_out|earn|service_charge');
             $table->string('type')->comment('debit|credit');
-            $table->string('remark')->comment('deposit|withdraw|transfer_in|transfer_out|earn|service_charge');
             $table->decimal('amount', 12, 2)->default(0);
-            $table->string('currency')->default('usd');
-            $table->timestamp('completed_at')->nullable();
+            $table->string('currency')->default('bdt');
+            $table->string('note')->nullable();
+            $table->string('method')->nullable();
+            $table->string('payment_number')->nullable();
             $table->timestamp('approved_at')->nullable();
+            $table->timestamp('cancelled_at')->nullable();
             $table->timestamp('failed_at')->nullable();
 
             $table->timestamp('created_at')->useCurrent();
@@ -29,11 +33,9 @@ return new class extends Migration
 
             $table->index('uuid');
             $table->index('type');
-            $table->index('remark');
+            $table->index('transaction_type');
             $table->index('created_at');
-            $table->index('completed_at');
             $table->index('approved_at');
-
         });
     }
 

@@ -2,7 +2,7 @@
 
 namespace App\Enum\Wallet;
 
-enum WalletRemark: string
+enum WalletTransactionType: string
 {
     case DEPOSIT = 'deposit';
     case WITHDRAW = 'withdraw';

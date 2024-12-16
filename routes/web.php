@@ -1,10 +1,7 @@
 <?php
 
-use App\Http\Controllers\ChatController;
-use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UserController;
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\Wallet\DepositController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -29,9 +26,7 @@ Route::middleware('auth')->group(function () {
 
     //Wallet Routes
     Route::prefix('wallet')->name('wallet.')->group(function () {
-        Route::get('deposit', function(){
-            return Inertia::render('Wallet/Deposit');
-        })->name('deposit');
+        Route::resource('deposit', DepositController::class)->only(['index', 'store']);
     });
 });
 
