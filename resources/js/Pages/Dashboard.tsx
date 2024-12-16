@@ -20,7 +20,7 @@ export default function Dashboard() {
         {
             label: "Deposit",
             icon: <HugeiconsWalletAdd01 className="w-full h-full" />,
-            url: "#",
+            url: route('wallet.deposit.index'),
         },
         {
             label: "Withdraw",

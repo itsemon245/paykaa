@@ -16,7 +16,7 @@ class MessageData extends Data
 
     public int $id;
     public string $uuid;
-    #[Computed]
+    #[TypeScriptOptional]
     public ChatData $chat;
     #[Computed]
     public bool $by_me;

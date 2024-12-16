@@ -1,10 +1,7 @@
 <?php
 
-use App\Http\Controllers\ChatController;
-use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UserController;
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\Wallet\DepositController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -27,20 +24,11 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('search-users', [UserController::class, 'index'])->name('search-users');
-
-    Route::prefix('chats')->name('chat.')->group(function () {
-        Route::get('/', [ChatController::class, 'index'])->name('index');
-        Route::get('/{chat}/typing', [ChatController::class, 'typing'])->name('typing');
-        Route::get('/check-new-messages', [ChatController::class, 'checkNewMessages'])->name('check-new-messages');
-        Route::get('/user-chats', [ChatController::class, 'getUserChats'])->name('user-chats');
-        Route::get('/receiver-chat/{receiver}', [ChatController::class, 'receiverChat'])->name('receiver-chat');
-        Route::get('/{chat}', [ChatController::class, 'show'])->name('show');
+    //Wallet Routes
+    Route::prefix('wallet')->name('wallet.')->group(function () {
+        Route::resource('deposit', DepositController::class)->only(['index', 'store']);
     });
-    Route::get('/messages', [MessageController::class, 'index'])->name('messages');
-    Route::get('/check-new-messages/{chat}', [MessageController::class, 'checkNewMessages'])->name('messages.check-new');
-    Route::get('/get-new-messages/{chat}', [MessageController::class, 'getNewMessages'])->name('messages.get-new');
-    Route::post('/messages/{chat}', [MessageController::class, 'store'])->name('message.store');
 });
 
 require __DIR__.'/auth.php';
+require __DIR__.'/chat.php';

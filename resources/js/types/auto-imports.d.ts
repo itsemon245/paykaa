@@ -10,6 +10,7 @@ declare global {
   const ApplicationLogo: typeof import('../Components/ApplicationLogo')['default']
   const AuthenticatedLayout: typeof import('../Layouts/AuthenticatedLayout')['default']
   const BaseLayout: typeof import('../Layouts/BaseLayout')['default']
+  const Bkash: typeof import('../Components/Deposit/Bkash')['default']
   const ChatLayout: typeof import('../Layouts/ChatLayout')['default']
   const Checkbox: typeof import('../Components/Checkbox')['default']
   const DangerButton: typeof import('../Components/DangerButton')['default']
@@ -40,6 +41,7 @@ declare global {
   const InputError: typeof import('../Components/InputError')['default']
   const InputLabel: typeof import('../Components/InputLabel')['default']
   const LucideLabCoinsExchange: typeof import('~icons/lucide-lab/coins-exchange.tsx')['default']
+  const ManualMobileBanking: typeof import('../Components/Deposit/ManualMobileBanking')['default']
   const Message: typeof import('../Components/Chat/Message')['default']
   const MessageType: typeof import('./_generated')['MessageType']
   const Messages: typeof import('../Components/Chat/Messages')['default']
@@ -54,8 +56,13 @@ declare global {
   const SquareBg: typeof import('../Components/Animations/SquareBg')['default']
   const SvgSpinners3DotsBounce: typeof import('~icons/svg-spinners/3-dots-bounce.tsx')['default']
   const TextInput: typeof import('../Components/TextInput')['default']
+  const Textarea: typeof import('../Components/Textarea')['default']
   const Topbar: typeof import('../Components/Chat/Topbar')['default']
   const UserType: typeof import('./_generated')['UserType']
+  const WalletRemark: typeof import('./_generated')['WalletRemark']
+  const WalletStatus: typeof import('./_generated')['WalletStatus']
+  const WalletTransactionType: typeof import('./_generated')['WalletTransactionType']
+  const WalletType: typeof import('./_generated')['WalletType']
   const Writer: typeof import('../Components/Chat/Writer')['default']
   const createRef: typeof import('react')['createRef']
   const forwardRef: typeof import('react')['forwardRef']
@@ -83,10 +90,4 @@ declare global {
   const useTransition: typeof import('react')['useTransition']
   const useTyping: typeof import('../Hooks/useTyping')['default']
   const useUsers: typeof import('../Hooks/useUsers')['default']
-}
-// for type re-export
-declare global {
-  // @ts-ignore
-  export type { MessageType, UserType } from './_generated'
-  import('./_generated')
 }

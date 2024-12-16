@@ -4,9 +4,11 @@
     "scripts": {
         "build": "tsc && vite build && vite build --ssr",
         "dev": "vite",
-        "lint": "eslint resources/js --ext .js,.jsx,.ts,.tsx --ignore-path .gitignore --fix"
+        "lint": "eslint resources/js --ext .js,.jsx,.ts,.tsx --ignore-path .gitignore --fix",
+        "typegen": "laravel-typegen --ziggy"
     },
     "devDependencies": {
+        "@7nohe/laravel-typegen": "^0.6.1",
         "@headlessui/react": "^2.0.0",
         "@iconify-json/game-icons": "^1.2.0",
         "@iconify-json/hugeicons": "^1.2.1",
