@@ -20,13 +20,16 @@ class WalletData extends Data
 
     public int $id;
     public string $uuid;
-    public UserData $user;
+    public int $owner_id;
+    public UserData $owner;
     public WalletStatus $status;
     public function __construct(
         public WalletType $type,
         public WalletTransactionType $transaction_type,
         public float $amount,
         public string $currency = 'bdt',
+        #[Optional]
+        public ?float $commission = 0,
         #[Optional]
         public ?string $method,
         #[Optional]

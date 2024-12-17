@@ -24,7 +24,7 @@ class WalletFactory extends Factory
             'amount' => fake()->randomFloat(2, 2),
             'transaction_type' => fake()->randomElement(array_values(WalletTransactionType::cases())),
             'note' => fake()->sentence(),
-            'user_id' => 1,
+            'owner_id' => 1,
             'method' => 'bkash',
             'transaction_id' => Str::random(10),
             'payment_number' => fake()->numerify('+88018########'),

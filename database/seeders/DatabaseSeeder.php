@@ -36,6 +36,7 @@ class DatabaseSeeder extends Seeder
         ]);
         Wallet::factory(100)->create([
             'transaction_type'=> WalletTransactionType::DEPOSIT->value,
+            'type' => WalletType::CREDIT->value,
         ]);
     }
 }

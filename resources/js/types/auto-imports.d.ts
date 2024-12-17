@@ -30,6 +30,7 @@ declare global {
   const HugeiconsArrowLeft04: typeof import('~icons/hugeicons/arrow-left04.tsx')['default']
   const HugeiconsBubbleChat: typeof import('~icons/hugeicons/bubble-chat.tsx')['default']
   const HugeiconsCustomerSupport: typeof import('~icons/hugeicons/customer-support.tsx')['default']
+  const HugeiconsLogout03: typeof import('~icons/hugeicons/logout03.tsx')['default']
   const HugeiconsMenu02: typeof import('~icons/hugeicons/menu02.tsx')['default']
   const HugeiconsMoneyBag02: typeof import('~icons/hugeicons/money-bag02.tsx')['default']
   const HugeiconsNotification03: typeof import('~icons/hugeicons/notification03.tsx')['default']

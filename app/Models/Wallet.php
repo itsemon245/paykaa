@@ -13,14 +13,8 @@ class Wallet extends Model
 {
     use HasFactory;
     use HasUuid;
-    protected $table = 'wallet';
 
-    /**
-     * @return BelongsTo
-     */
-    public function user():BelongsTo {
-        return $this->belongsTo(User::class);
-    }
+    protected $table = 'wallet';
 
     public function getStatusAttribute(): string
     {
@@ -35,13 +29,33 @@ class Wallet extends Model
         }
         return WalletStatus::PENDING->value;
     }
+    public static function getBalance():float
+    {
+        $balance = \DB::table('wallet')
+            ->where('owner_id', auth()->id())
+            ->whereNotNull('approved_at')
+            ->selectRaw('SUM(CASE WHEN type = "credit" THEN amount ELSE 0 END) - SUM(CASE WHEN type = "debit" THEN amount ELSE 0 END) AS balance')
+            ->value('balance');
+        return $balance ?? 0;
+    }
 
     public function scopeDeposits(Builder $query): Builder
     {
         return $query->where('transaction_type', WalletTransactionType::DEPOSIT->value);
     }
+
     public function scopeWithdrawals(Builder $query): Builder
     {
         return $query->where('transaction_type', WalletTransactionType::WITHDRAW->value);
+    }
+
+    public function scopeApproved(Builder $query): Builder
+    {
+        return $query->whereNotNull('approved_at');
+    }
+
+    public function scopePending(Builder $query): Builder
+    {
+        return $query->whereNull('approved_at');
     }
 }

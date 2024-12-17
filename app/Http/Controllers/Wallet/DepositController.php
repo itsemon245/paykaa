@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Wallet;
 use App\Services\Wallet as WalletService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 
 class DepositController extends Controller
@@ -18,7 +19,7 @@ class DepositController extends Controller
     public function index()
     {
         $perPage = request()->query('per_page', 15);
-        $deposits = Wallet::deposits()->paginate($perPage);
+        $deposits = Wallet::deposits()->pending()->paginate($perPage);
         return Inertia::render('Wallet/Deposit', [
             'deposits'=> WalletData::collect($deposits)
         ]);
@@ -30,5 +31,11 @@ class DepositController extends Controller
         return backWithError(function() use ($data, $wallet) {
             $wallet->deposit($data);
         });
+    }
+
+    public function checkBalance(){
+        return response()->json([
+            'balance' => Wallet::getBalance()
+        ]);
     }
 }

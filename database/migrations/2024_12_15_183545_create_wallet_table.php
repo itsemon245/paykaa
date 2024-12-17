@@ -15,11 +15,12 @@ return new class extends Migration
 
             $table->id();
             $table->uuid('uuid')->unique();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('owner_id')->constrained('users')->onDelete('cascade');
             $table->string('transaction_id')->nullable();
-            $table->string('transaction_type')->comment('deposit|withdraw|transfer_in|transfer_out|earn|service_charge');
+            $table->string('transaction_type')->comment('deposit|withdraw|transfer_in|transfer_out|earn');
             $table->string('type')->comment('debit|credit');
             $table->decimal('amount', 12, 2)->default(0);
+            $table->decimal('commission', 12, 2)->default(0);
             $table->string('currency')->default('bdt');
             $table->string('note')->nullable();
             $table->string('method')->nullable();

@@ -27,6 +27,7 @@ Route::middleware('auth')->group(function () {
     //Wallet Routes
     Route::prefix('wallet')->name('wallet.')->group(function () {
         Route::resource('deposit', DepositController::class)->only(['index', 'store']);
+        Route::get('check-balance', [DepositController::class, 'checkBalance'])->name('check-balance');
     });
 });
 
