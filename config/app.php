@@ -1,7 +1,10 @@
 <?php
 
 return [
-
+    'payment'=> [
+        'charge' => env('PAYMENT_CHARGE', 3),
+        'is_fixed_amount' => env('PAYMENT_IS_FIXED_AMOUNT', false),
+    ],
     /*
     |--------------------------------------------------------------------------
     | Application Name
