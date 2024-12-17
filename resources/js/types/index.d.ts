@@ -1,6 +1,14 @@
 import { Config } from 'ziggy-js';
 import { UserData } from './_generated';
 
+export interface ServerAppConfig {
+    name: string;
+    env: string;
+    payment: {
+        charge: number;
+        is_fixed_amount: boolean;
+    }
+}
 export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>,
 > = T & {
@@ -11,10 +19,7 @@ export type PageProps<
     error?: string,
     success?: string,
     config: {
-        app: {
-            name: string;
-            env: string;
-        }
+        app: ServerAppConfig
     }
 };
 export type PaginatedCollection<T extends object> = {

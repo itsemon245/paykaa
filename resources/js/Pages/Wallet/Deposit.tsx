@@ -15,6 +15,8 @@ interface DepositMethod {
     logo: string | ReactNode,
     label: string,
     component?: ReactNode,
+    account_type?: "Personal" | "Merchant",
+    number?: string,
     type: "manual" | "auto"
 }
 interface Page {
@@ -46,9 +48,29 @@ export default function Deposit() {
         {
             name: "bkash",
             logo: "/assets/logos/bkash.svg",
+            number: "+8801622002200",
+            account_type: "Personal",
             label: "Bkash",
             type: "manual"
+        },
+        {
+            name: "nagad",
+            logo: "/assets/logos/nagad.svg",
+            number: "+8801622002200",
+            account_type: "Personal",
+            label: "Nagad",
+            type: "manual"
+        },
+        {
+            name: "rocket",
+            logo: "/assets/logos/rocket.png",
+            number: "+8801622002200",
+            account_type: "Personal",
+            label: "Rocket",
+            type: "manual"
         }
+
+
     ]
     const [activeDepositMethod, setActiveDepositMethod] = useState<DepositMethod | undefined>();
     const dialogOpened = useMemo(() => activeDepositMethod !== undefined, [activeDepositMethod]);
@@ -131,11 +153,19 @@ export default function Deposit() {
             <Navbar />
 
             <div className="container">
-                <Dialog header="Deposit" footer={<DepositFooter />} visible={dialogOpened} className="w-[95%] sm:w-[70vw] md:w-[50vw]" onHide={() => setActiveDepositMethod(undefined)}>
+                <Dialog header={`Deposit using ${activeDepositMethod?.label}`} footer={<DepositFooter />} visible={dialogOpened} className="w-[95%] sm:w-[70vw] md:w-[50vw]" onHide={() => setActiveDepositMethod(undefined)}>
                     <form onSubmit={e => {
                         e.preventDefault()
                         deposit(e)
                     }}>
+                        <div className="flex flex-col justify-center items-center w-full my-4 gap-2">
+                            {typeof activeDepositMethod?.logo === "string" ? <img src={activeDepositMethod?.logo} className="w-40 p-3 border rounded-lg" /> : activeDepositMethod?.logo}
+                            <div className="text-center text-xl font-bold">
+                                <div>{`${activeDepositMethod?.account_type}: ${activeDepositMethod?.number}`}</div>
+                                <div className="text-sm font-medium text-center">Send money to this number and fill the form below</div>
+                            </div>
+
+                        </div>
                         {activeDepositMethod?.type == "auto" && activeDepositMethod?.component}
                         {activeDepositMethod?.type == "manual" && (
                             <ManualMobileBanking errors={errors} data={data} setData={setData} />
@@ -145,15 +175,18 @@ export default function Deposit() {
                 <div className="flex flex-col gap-6 w-full my-6">
                     <Card className="mt-6">
                         <h1 className="text-xl font-bold mb-3">Choose a deposit method</h1>
-                        {depositMethods.map((method, index) => {
-                            return (
-                                <Card key={index} onClick={e => setActiveDepositMethod(method)} role="button" className="border hover:scale-105 transition-all cursor-pointer flex flex-col w-max gap-1 items-center justify-center">
-                                    <div>
-                                        {typeof method.logo === "string" ? <img src={method.logo} className="w-32" /> : method.logo}
-                                    </div>
-                                </Card>
-                            )
-                        })}
+                        <div className="flex items-center flex-wrap gap-3 ">
+                            {depositMethods.map((method, index) => {
+                                return (
+                                    <Card key={index} onClick={e => setActiveDepositMethod(method)} role="button" className="border hover:scale-105 transition-all cursor-pointer flex flex-col w-max gap-1 items-center justify-center">
+                                        <div>
+                                            {typeof method.logo === "string" ? <img src={method.logo} className="w-32" /> : method.logo}
+                                        </div>
+                                    </Card>
+                                )
+                            })}
+
+                        </div>
                     </Card>
                     <Card>
                         <h1 className="text-xl font-bold mb-3">Recent Deposits</h1>
