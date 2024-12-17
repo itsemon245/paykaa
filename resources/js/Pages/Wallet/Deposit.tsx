@@ -110,7 +110,8 @@ export default function Deposit() {
     useEffect(() => {
         if (activeDepositMethod) {
             setData('method', activeDepositMethod?.name)
-            console.log(activeDepositMethod?.name)
+            setData('type', "credit")
+            setData('transaction_type', "deposit")
         }
     }, [JSON.stringify(activeDepositMethod)])
 
@@ -190,7 +191,7 @@ export default function Deposit() {
                     </Card>
                     <Card>
                         <h1 className="text-xl font-bold mb-3">Recent Deposits</h1>
-                        <DataTable onPage={onPage} emptyMessage="No Deposits Yet" dataKey="uuid" pageLinkSize={5} totalRecords={deposits.total} value={deposits.data} rows={perPage} rowsPerPageOptions={[15, 30, 50, 100]} tableStyle={{ minWidth: '50rem' }}>
+                        <DataTable onPage={onPage} emptyMessage="No Deposits Yet. Approved deposits will be listed in transaction history." dataKey="uuid" pageLinkSize={5} totalRecords={deposits.total} value={deposits.data} rows={perPage} rowsPerPageOptions={[15, 30, 50, 100]} tableStyle={{ minWidth: '50rem' }}>
                             <Column field="id" header="No." body={slBodyTemplate} style={{ width: 'max-content' }}></Column>
                             <Column field="created_at_human" header="Date" style={{ width: '25%' }}></Column>
                             <Column field="amount" header="Amount" body={amountBodyTemplate} style={{ width: '25%' }}></Column>

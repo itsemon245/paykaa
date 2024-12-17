@@ -65,6 +65,7 @@ export type WalletData = {
     transaction_type: WalletTransactionType;
     amount: number;
     currency: string;
+    commission?: number;
     method?: string;
     transaction_id?: string;
     note?: string;
@@ -83,6 +84,5 @@ export type WalletTransactionType =
     | 'withdraw'
     | 'transfer_in'
     | 'transfer_out'
-    | 'earn'
-    | 'service_charge';
+    | 'earn';
 export type WalletType = 'debit' | 'credit';

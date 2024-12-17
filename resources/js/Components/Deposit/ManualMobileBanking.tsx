@@ -15,14 +15,10 @@ export default function ManualMobileBanking({
 }: ManualMobileBankingProps) {
     const { app } = useConfig()
 
-    const commission = useMemo(() => {
-        if (!data.amount) return 0;
-        let com = app.payment.is_fixed_amount ? app.payment.charge : data.amount * (app.payment.charge / 100)
-        return Math.round(com)
-    }, [data.amount])
-
     const total = useMemo(() => {
         if (!data.amount) return 0;
+        let commission = Math.round(app.payment.is_fixed_amount ? app.payment.charge : data.amount * (app.payment.charge / 100))
+        setData('commission', commission)
         return data.amount + commission
     }, [data.amount])
 
@@ -37,7 +33,6 @@ export default function ManualMobileBanking({
     useEffect(() => {
         console.log(data)
     }, [JSON.stringify(data)])
-
     return (
         <div className="flex flex-col gap-3 w-full">
             {total > 0 && (

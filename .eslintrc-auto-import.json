@@ -84,6 +84,7 @@
     "usePage": true,
     "WalletTransactionType": true,
     "WalletStatus": true,
-    "WalletType": true
+    "WalletType": true,
+    "HugeiconsLogout03": true
   }
 }

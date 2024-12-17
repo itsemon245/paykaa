@@ -8,16 +8,12 @@ use App\Enum\Wallet\WalletType;
 use App\Models\Wallet as WalletModel;
 
 class Wallet {
-    public function deposit(WalletData $data, array $overrides = []) {
+    public function deposit(WalletData $data) {
         return WalletModel::create([
-            'type'=> WalletType::CREDIT->value,
-            'amount'=> $data->amount,
-            'transaction_id'=> $data->transaction_id,
+            ...$data->toArray(),
             'transaction_type'=> WalletTransactionType::DEPOSIT->value,
-            'payment_number'=> $data->payment_number,
-            'note'=> $data->note,
-            'user_id'=> auth()->user()->id,
-            ...$overrides
+            'type'=> WalletType::CREDIT->value,
+            'commission'=> config('app.payment.is_fixed_amount') ? config('app.payment.charge') : $data->amount * (config('app.payment.charge') / 100),
         ]);
     }
 }
