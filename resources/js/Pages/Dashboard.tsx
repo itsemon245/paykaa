@@ -25,7 +25,7 @@ export default function Dashboard() {
         {
             label: "Withdraw",
             icon: <GameIconsTakeMyMoney className="w-full h-full" />,
-            url: "#",
+            url: route('wallet.withdraw.index'),
         },
         {
             label: "P2P",
