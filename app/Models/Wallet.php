@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enum\Wallet\WalletStatus;
+use App\Traits\HasOwner;
 use App\Traits\HasUuid;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,6 +14,7 @@ class Wallet extends Model
 {
     use HasFactory;
     use HasUuid;
+    use HasOwner;
 
     protected $table = 'wallet';
 

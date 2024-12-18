@@ -74,9 +74,7 @@ export default function Deposit() {
     ]
     const [activeDepositMethod, setActiveDepositMethod] = useState<DepositMethod | undefined>();
     const dialogOpened = useMemo(() => activeDepositMethod !== undefined, [activeDepositMethod]);
-    const slBodyTemplate = (item: WalletData, options: ColumnBodyOptions) => {
-        return <div className="font-bold">{options.rowIndex + 1}</div>
-    }
+
 
     const onPage = async (e: DataTableStateEvent) => {
         if (e.page == deposits.current_page && e.rows == deposits.per_page) {
@@ -119,6 +117,9 @@ export default function Deposit() {
         console.log(deposits)
     }, [deposits])
 
+    const slBodyTemplate = (item: WalletData, options: ColumnBodyOptions) => {
+        return <div className="font-bold">{options.rowIndex + 1}</div>
+    }
     const getSeverity = (status: WalletData['status']): TagProps['severity'] => {
         switch (status) {
             case "approved":

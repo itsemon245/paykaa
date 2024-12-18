@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Wallet;
 use App\Services\Wallet as WalletService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 
 class DepositController extends Controller

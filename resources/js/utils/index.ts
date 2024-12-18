@@ -24,3 +24,8 @@ export const poll = (fn: () => void, timeout: number) => {
     const interval = setInterval(fn, timeout);
     return () => clearInterval(interval);
 };
+
+export const titleCase = (title: string) => {
+    //convert any case (camelCase, PascaleCase, kebab-case, snake_case) to Title Case
+    return title.replace(/([a-z])([A-Z])/g, "$1 $2").replace(/([A-Z])([A-Z][a-z])/g, "$1 $2");
+};
