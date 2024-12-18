@@ -53,7 +53,7 @@ export default function Dashboard() {
         {
             label: "Transaction",
             icon: <HugeiconsWorkHistory className="w-full h-full" />,
-            url: "#",
+            url: route('wallet.transactions.index'),
         },
         {
             label: "Help Line",
