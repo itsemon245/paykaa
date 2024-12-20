@@ -8,7 +8,7 @@ export default function Input({
     invalid,
     label,
     ...props
-}: InputTextProps & { label: string, error: string | undefined }) {
+}: InputTextProps & { label?: string, error?: string | undefined }) {
     return (
         <div>
             <InputLabel htmlFor={id} value={label} />

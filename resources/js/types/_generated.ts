@@ -50,6 +50,11 @@ export type UserData = {
     avatar?: string;
     phone?: string;
     type?: UserType;
+    gender?: string;
+    date_of_birth?: string;
+    country?: string;
+    address?: string;
+    password?: string;
     created_at: string;
     updated_at: string;
     created_at_human: string;
@@ -59,12 +64,13 @@ export type UserType = 'customer' | 'admin';
 export type WalletData = {
     id: number;
     uuid: string;
-    user: UserData;
+    owner_id: number;
+    owner: UserData;
     status: WalletStatus;
     type: WalletType;
     transaction_type: WalletTransactionType;
     amount: number;
-    currency: string;
+    currency: string | null;
     commission?: number;
     method?: string;
     transaction_id?: string;
