@@ -85,6 +85,8 @@
     "WalletTransactionType": true,
     "WalletStatus": true,
     "WalletType": true,
-    "HugeiconsLogout03": true
+    "HugeiconsLogout03": true,
+    "HeroiconsPlus": true,
+    "HeroiconsCameraSolid": true
   }
 }

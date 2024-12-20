@@ -2,9 +2,11 @@ import { CSSProperties } from 'react';
 import { motion } from "motion/react"
 export default function SquareBg({
     className,
+    animate,
     ...props
 }: {
-    className?: string
+    className?: string,
+    animate?: boolean
 }) {
     const itemsCount = 21;
     const between = (min: number, max: number, weight = 50): number => {
@@ -58,8 +60,8 @@ export default function SquareBg({
             }} {...props} />
     }
     return (
-        <ul className={`fixed z-[-1] w-screen h-screen top-0 left-0 bg-primary-500 overflow-hidden ${className}`} {...props}>
-            {Array.from(Array(itemsCount)).map((_, i) => square({ key: "square-" + i }))}
+        <ul className={`fixed z-[-1] w-screen h-screen top-0 left-0 bg-primary-gradient overflow-hidden ${className}`} {...props}>
+            {animate && Array.from(Array(itemsCount)).map((_, i) => square({ key: "square-" + i }))}
         </ul>
     )
 }

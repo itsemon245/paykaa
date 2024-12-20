@@ -29,6 +29,16 @@ class UserData extends Data
         public ?string $phone,
         #[TypeScriptOptional]
         public ?UserType $type,
+        #[TypeScriptOptional]
+        public ?string $gender,
+        #[TypeScriptOptional]
+        public ?string $date_of_birth,
+        #[TypeScriptOptional]
+        public ?string $country,
+        #[TypeScriptOptional]
+        public ?string $address,
+        #[TypeScriptOptional]
+        public ?string $password,
     ) {
         $this->type = $type ?? UserType::Customer->value;
         $this->avatar = $avatar ?? avatar($this->name);
