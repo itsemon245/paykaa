@@ -21,7 +21,7 @@ export default function Edit({
             <Head title="Profile" />
             <Navbar />
             <SquareBg className="max-h-screen" />
-            <div className="px-4 mt-5 flex flex-col gap-2 justify-center">
+            <div className="px-4 mt-5 flex flex-col gap-2 justify-center max-w-7xl mx-auto">
                 <InputLabel className='!text-white text-md !font-bold' value="Personal Data:" />
                 <div className="flex items-center gap-2">
                     <div className='relative'>
