@@ -17,6 +17,8 @@ declare global {
   const DashboarLayout: typeof import('../Layouts/DashboarLayout')['default']
   const Date: typeof import('../Components/Chat/Date')['default']
   const Dropdown: typeof import('../Components/Dropdown')['default']
+  const FlowbiteBellRingOutline: typeof import('~icons/flowbite/bell-ring-outline.tsx')['default']
+  const FlowbiteBellRingSolid: typeof import('~icons/flowbite/bell-ring-solid.tsx')['default']
   const GameIconsCash: typeof import('~icons/game-icons/cash.tsx')['default']
   const GameIconsTakeMyMoney: typeof import('~icons/game-icons/take-my-money.tsx')['default']
   const GuestLayout: typeof import('../Layouts/GuestLayout')['default']
