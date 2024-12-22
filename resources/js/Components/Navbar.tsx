@@ -1,7 +1,11 @@
 import { Link, usePage } from "@inertiajs/react";
 import { Button } from "primereact/button";
+import { Card } from "primereact/card";
 import { Sidebar } from "primereact/sidebar";
+import { Tag } from "primereact/tag";
 import toast from "react-hot-toast";
+import autoAnimate from '@formkit/auto-animate'
+import { useRef } from "react";
 
 export default function Navbar({
     className,
@@ -10,6 +14,7 @@ export default function Navbar({
     className?: string
 }) {
     const { user } = useAuth();
+    const animationParentRef = useRef<HTMLDivElement>(null);
     const [balance, setBalance] = useState(0);
     const [sidebar, setSidebar] = useState(false);
     const [isBalanceVisible, setIsBalanceVisible] = useState(false);
@@ -56,43 +61,27 @@ export default function Navbar({
             return () => clearTimeout(timeout);
         }
     }, [isBalanceVisible])
+    useEffect(() => {
+        if (animationParentRef.current) {
+            autoAnimate(animationParentRef.current);
+        }
+    }, [animationParentRef])
 
     return (
-        <div className={`bg-transparent px-0.5 py-3 sm:p-4 flex items-center justify-between ${className}`} {...props}>
+        <div className={`mt-4 md:mt-8 bg-transparent px-0.5 py-3 sm:p-4 flex items-center justify-between ${className}`} {...props}>
             <div className="flex items-center gap-1 sm:gap-4">
-                <Button className="!p-1.5" onClick={() => setSidebar(!sidebar)} text icon={(options) => (<HugeiconsMenu02 className="text-white w-6 h-6" {...options} />)} />
-                <Sidebar visible={sidebar} onHide={() => setSidebar(false)}>
-                    <Link href="/dashboard" className="flex items-center gap-2 text-white mb-4">
-                        <img src="/assets/logo-long.png" className="mx-auto w-52 mb-4" alt="Paykaa Logo" />
-                    </Link>
-                    <ul className="flex flex-col justify-start gap-1">
-                        <li>
-                            <Link href={route('profile.edit')}>
-                                <Button severity="contrast" link text label="Profile" className="flex !p-3 gap-3 w-full text-start items-center" icon={(options) => (<HeroiconsUser className="w-6 h-6" {...options} />)} />
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href={route('logout')} method="post">
-                                <Button severity="contrast" link text label="Logout" className="flex !p-3 gap-3 w-full text-start items-center" icon={(options) => (< HugeiconsLogout03 className="w-6 h-6" {...options} />)} />
-                            </Link>
-                        </li>
-                    </ul>
-                </Sidebar>
-                <div className="flex gap-1 items-center">
-                    <HugeiconsUserCircle className="w-10 h-10 text-white" />
-                    <div>
-                        <label className="text-white text-sm font-medium mb-0 ms-1">{user.name}</label>
-                        <Button onClick={e => refreshBalance()} rounded text className="bg-white !py-1 ring-0 text-primary inline-flex relative items-center justify-center gap-2 text-white w-44">
-                            <HeroiconsCurrencyBangladeshiSolid className={"h-5 w-5 absolute text-primary " + balanceIconTransitionClass} />
-                            <div className="grow px-2 text-primary text-xs">
-                                {label}
-                            </div>
-                        </Button>
+                <div className="flex gap-2 items-center">
+                    <img src={user.avatar} className="w-10 h-10 md:w-[72px] md:h-[72px] rounded-full border-white border-2 object-cover" />
+                    <div ref={animationParentRef} className="flex flex-col items-start">
+                        <label className="text-white text-lg font-bold mb-0">{user.name}</label>
+                        <button onClick={refreshBalance} className="bg-white min-w-48 text-center py-1.5 rounded-xl text-primary text-base font-medium">{label}</button>
                     </div>
                 </div>
 
             </div>
-            <Button className="!p-1.5" text icon={(options) => (<HugeiconsNotification03 className="text-white w-6 h-6" {...options} />)} />
+            <Button className="!p-1.5 border border-white" text rounded>
+                <FlowbiteBellRingSolid className="text-white w-8 h-8" />
+            </Button>
         </div>
 
     )

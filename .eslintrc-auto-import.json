@@ -87,6 +87,8 @@
     "WalletType": true,
     "HugeiconsLogout03": true,
     "HeroiconsPlus": true,
-    "HeroiconsCameraSolid": true
+    "HeroiconsCameraSolid": true,
+    "FlowbiteBellRingOutline": true,
+    "FlowbiteBellRingSolid": true
   }
 }

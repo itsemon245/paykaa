@@ -60,9 +60,11 @@ export default function SquareBg({
             }} {...props} />
     }
     return (
-        <ul className={`fixed z-[-1] w-screen h-screen top-0 left-0 bg-primary-gradient overflow-hidden ${className}`} {...props}>
-            {animate && Array.from(Array(itemsCount)).map((_, i) => square({ key: "square-" + i }))}
-        </ul>
+        <div className={`fixed z-[-1] bg-primary-gradient overflow-hidden ${className}`} >
+            <ul {...props}>
+                {animate && Array.from(Array(itemsCount)).map((_, i) => square({ key: "square-" + i }))}
+            </ul>
+        </div>
     )
 }
 
