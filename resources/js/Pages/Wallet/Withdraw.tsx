@@ -64,7 +64,6 @@ export default function Withdraw() {
     return (
         <>
             <Head title="Withdraw" />
-            <Navbar />
             <div className="container mx-auto my-6">
                 <Card>
                     <h1 className="text-xl font-bold mb-3">Choose your withdrawal method</h1>
