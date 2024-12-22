@@ -68,7 +68,6 @@ export default function Transactions() {
     return (
         <>
             <Head title="Transactions" />
-            <Navbar />
             <div className="container mx-auto my-6">
                 <Card>
                     <h1 className="text-xl font-bold mb-3">Transactions</h1>

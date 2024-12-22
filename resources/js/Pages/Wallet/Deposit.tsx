@@ -152,7 +152,6 @@ export default function Deposit() {
     return (
         <>
             <Head title="Deposit" />
-            <Navbar />
             <div className="container">
                 <Dialog header={`Deposit using ${activeDepositMethod?.label}`} footer={<DepositFooter />} visible={dialogOpened} className="w-[95%] sm:w-[70vw] md:w-[50vw]" onHide={() => setActiveDepositMethod(undefined)}>
                     <form onSubmit={e => {
