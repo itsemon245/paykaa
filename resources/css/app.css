@@ -26,11 +26,13 @@
     .bg-primary-gradient{
         background-color: var(--primary-300);
         width: 120vw;
-        height: 50dvh;
-        top: -150px;
-        left: -200px;
-        background: linear-gradient(225.55deg, rgba(0, 188, 212, 0.5) -68.45%, rgba(103, 58, 183, 0.5) 65.76%);
-        filter: blur(150px);
+        height: 52dvh;
+        top: -140px;
+        left: -70px;
+        rotate: -5deg;
+        background-image: linear-gradient(to left bottom, var(--primary-400), var(--primary-700), var(--primary-500), var(--primary-300), var(--primary-200), var(--primary-50));
+        /* background: linear-gradient(225.55deg, var(--primary-200) -68.45%, var(--primary-500) 65.76%); */
+        filter: blur(65px);
         /* background-image: url("/assets/dashboard/primary-gradient-bg.png"); */
         background-size: cover;
     }
@@ -43,6 +45,20 @@
 }
 
 @layer primevue-overrides {
+        :root {
+        --primary-50: #e9f0f7!important;
+        --primary-100: #d6e4ef!important;
+        --primary-200: #aec9e0!important;
+        --primary-300: #85add0!important;
+        --primary-400: #5d92c1!important;
+        --primary-500: #3f75a4!important;
+        --primary-600: #335f85!important;
+        --primary-700: #264763!important;
+        --primary-800: #192f42!important;
+        --primary-900: #0d1821!important;
+        --primary-950: #060b0f!important;
+    }
+
     [data-pc-section="hideicon"], [data-pc-section="showicon"]{
         @apply m-0 right-0
     }
