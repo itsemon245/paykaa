@@ -1,3 +1,5 @@
+import { classNames } from "primereact/utils";
+
 export const storage = {
     getItem: (key: string) => {
         const item = localStorage.getItem(key);
@@ -29,3 +31,4 @@ export const titleCase = (title: string) => {
     //convert any case (camelCase, PascaleCase, kebab-case, snake_case) to Title Case
     return title.replace(/([a-z])([A-Z])/g, "$1 $2").replace(/([A-Z])([A-Z][a-z])/g, "$1 $2");
 };
+export const cn = classNames

@@ -1,70 +1,13 @@
-import DashboardLayout from "@/Layouts/DashboarLayout";
+import menuItems from "@/data/menuItems";
 import { UserData } from "@/types/_generated";
 import { Link } from "@inertiajs/react";
-import { throttle } from "lodash";
-import { Button } from "primereact/button";
+import { chunk } from "lodash";
 import { Card } from "primereact/card";
-import { InputText } from "primereact/inputtext";
 import { ScrollPanel } from "primereact/scrollpanel";
-import toast from "react-hot-toast";
 
-interface MenuItem {
-    label: string;
-    icon: string;
-    url: string;
-    className?: string;
-}
 export default function Dashboard() {
     const { users, loading, searchString, search } = useUsers();
-    const menuItems1: MenuItem[] = [
-        {
-            label: "Deposit",
-            icon: "/assets/dashboard/deposit.png",
-            url: route('wallet.deposit.index'),
-        },
-        {
-            label: "Withdraw",
-            icon: "/assets/dashboard/withdraw.png",
-            url: route('wallet.withdraw.index'),
-        },
-        {
-            label: "P2P",
-            icon: "/assets/dashboard/p2p.png",
-            url: "#",
-        },
-        {
-            label: "Ads",
-            icon: "/assets/dashboard/ads.png",
-            url: "#",
-        }
-
-    ];
-    const menuItems2: MenuItem[] = [
-        {
-            label: "Referral",
-            icon: "/assets/dashboard/referral.png",
-            url: "#",
-        },
-        {
-            label: "Earn",
-            icon: "/assets/dashboard/earn.png",
-            url: "#",
-        },
-        {
-            label: "Transaction",
-            icon: "/assets/dashboard/transaction.png",
-            url: route('wallet.transactions.index'),
-        },
-        {
-            label: "Help Line",
-            icon: "/assets/dashboard/help.png",
-            url: "#",
-        },
-    ]
-    const menuItems = [
-        menuItems1,
-        menuItems2
-    ]
+    const menus = chunk(menuItems, 4);
     const itemTemplate = (user: UserData) => {
         return (
             <Link href={route('chat.receiver-chat', { receiver: user.uuid })} className="flex items-center p-3 h-max cursor-pointer">
@@ -127,10 +70,10 @@ export default function Dashboard() {
                     </div>
 
                 </Card>
-                {menuItems.map((menuItems1, i) => (
+                {menus.map((items, i) => (
                     <Card key={"menu-items-" + i}>
                         <div className="grid grid-cols-4 items-center gap-2 sm:gap-5 justify-between" >
-                            {menuItems1.map(item =>
+                            {items.map(item =>
                                 <Link href={item.url} className="cursor-pointer" key={item.label + "-menu-item"}>
                                     <div className="flex flex-col w-full justify-center hover:shadow-md transition-all hover:scale-105 rounded-lg items-center h-max cursor-pointer p-1 sm:px-4 sm:py-2.5 gap-2">
                                         <div className="h-8 w-8 sm:h-14 sm:w-14">

@@ -1,6 +1,7 @@
 import { Config } from 'ziggy-js';
 import { UserData } from './_generated';
 
+export type ButtonSeverity = "contrast" | "secondary" | "success" | "info" | "warning" | "danger" | "help" | undefined;
 export interface ServerAppConfig {
     name: string;
     env: string;
