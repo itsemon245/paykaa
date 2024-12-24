@@ -89,6 +89,10 @@
     "HeroiconsPlus": true,
     "HeroiconsCameraSolid": true,
     "FlowbiteBellRingOutline": true,
-    "FlowbiteBellRingSolid": true
+    "FlowbiteBellRingSolid": true,
+    "useBrakpoints": true,
+    "Logo": true,
+    "HugeiconsCancel01": true,
+    "SidebarCloseBtn": true
   }
 }

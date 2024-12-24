@@ -6,17 +6,24 @@ import { Tag } from "primereact/tag";
 import toast from "react-hot-toast";
 import autoAnimate from '@formkit/auto-animate'
 import { useRef } from "react";
+import { motion } from "motion/react"
+import useBreakpoint from "@/Hooks/useBrakpoints";
+import { cn } from "@/utils";
 
 export default function Navbar({
     className,
+    toggleSidebar,
+    isSidebarOpen,
     ...props
 }: {
-    className?: string
+    className?: string,
+    toggleSidebar: () => void,
+    isSidebarOpen: boolean
 }) {
     const { user } = useAuth();
     const animationParentRef = useRef<HTMLDivElement>(null);
     const [balance, setBalance] = useState(0);
-    const [sidebar, setSidebar] = useState(false);
+    const { min, max } = useBreakpoint();
     const [isBalanceVisible, setIsBalanceVisible] = useState(false);
     const [loadingBalance, setLoadingBalance] = useState(false);
     const label = useMemo(() => {
@@ -68,13 +75,14 @@ export default function Navbar({
     }, [animationParentRef])
 
     return (
-        <div className={`mt-4 md:mt-8 bg-transparent px-0.5 py-3 sm:p-4 flex items-center justify-between ${className}`} {...props}>
+        <div className={`mt-4 md:mt-8 py-3 flex items-center justify-between ${className}`} {...props}>
             <div className="flex items-center gap-1 sm:gap-4">
                 <div className="flex gap-2 items-center">
-                    <img src={user.avatar} className="w-10 h-10 md:w-[72px] md:h-[72px] rounded-full border-white border-2 object-cover" />
+                    {max('md') && <SidebarCloseBtn isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />}
+                    <img src={user.avatar} className="w-16 h-16 md:w-[72px] md:h-[72px] rounded-full border-white border-2 object-cover" />
                     <div ref={animationParentRef} className="flex flex-col items-start">
-                        <label className="text-white text-lg font-bold mb-0">{user.name}</label>
-                        <button onClick={refreshBalance} className="bg-white min-w-48 text-center py-1.5 rounded-xl text-primary text-base font-medium">{label}</button>
+                        <label className="text-white text-base md:text-lg font-bold mb-0">{user.name}</label>
+                        <button onClick={refreshBalance} className="bg-white min-w-36 md:min-w-48 text-center py-1 md:py-1.5 rounded-xl text-primary text-sm md:text-base font-medium">{label}</button>
                     </div>
                 </div>
 

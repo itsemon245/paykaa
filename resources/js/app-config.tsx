@@ -1,18 +1,8 @@
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
-import { PrimeReactProvider, PrimeReactContext } from 'primereact/api';
 import BaseLayout from "./Layouts/BaseLayout";
-import { ReactNode } from "react";
 import DashboardLayout from "./Layouts/DashboarLayout";
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
-Object.defineProperty(Array.prototype, 'chunk', {
-    value: function(chunkSize: number) {
-        var R = [];
-        for (var i = 0; i < this.length; i += chunkSize)
-            R.push(this.slice(i, i + chunkSize));
-        return R;
-    }
-});
 
 const appConfig = {
     title: (title: string) => `${title} - ${appName}`,
@@ -27,20 +17,12 @@ const appConfig = {
                 component: (page: any) => <ChatLayout children={page} />,
             },
             {
-                pageDir: 'Dashboard',
+                pageDir: ['Dashboard', 'Profile', 'Wallet'],
                 component: (page: any) => <DashboardLayout children={page} />,
             },
-            {
-                pageDir: 'Profile',
-                component: (page: any) => <DashboardLayout children={page} />,
-            },
-            {
-                pageDir: 'Wallet',
-                component: (page: any) => <DashboardLayout children={page} />,
-            }
         ]
         page.then((mod: any) => {
-            const layout = layoutMap.find(item => item.pageDir === name.split('/')[0]);
+            const layout = layoutMap.find(item => item.pageDir.indexOf(name.split('/')[0]) !== -1);
             if (layout) {
                 mod.default.layout = mod.default.layout || layout.component;
             } else {
@@ -49,6 +31,5 @@ const appConfig = {
         });
         return page
     }
-
 }
 export default appConfig;

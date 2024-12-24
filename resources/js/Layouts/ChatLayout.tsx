@@ -1,9 +1,20 @@
-import { router } from "@inertiajs/react";
+import useBreakpoint from "@/Hooks/useBrakpoints";
 
 export default function ChatLayout({ children }: { children: any }) {
-    const [isMobile, setIsMobile] = useState(false);
+    const main = useRef<HTMLDivElement>(null);
+    const preloader = useRef<HTMLDivElement>(null);
     useEffect(() => {
-        setIsMobile(window.innerWidth < 768);
+        if (main.current) {
+            setTimeout(() => {
+                preloader.current?.remove();
+            }, 500);
+        }
+    }, [main.current])
+
+    const [isMobile, setIsMobile] = useState(false);
+    const { max } = useBreakpoint();
+    useEffect(() => {
+        setIsMobile(max('md'));
     }, [window.innerWidth]);
     return (
         <BaseLayout>
@@ -22,9 +33,12 @@ export default function ChatLayout({ children }: { children: any }) {
                 <script src="/assets/chat/js/perfect-scrollbar.min.js" defer></script>
                 <script src="/assets/chat/js/script.js" defer></script>
             </Head>
+            <div ref={preloader} className="h-screen w-screen flex items-center justify-center z-50 bg-base-gradient overflow-hidden">
+                <i className="pi pi-spinner pi-spin text-5xl text-primary" />
+            </div>
             <div className="overflow-hidden lg:flex h-full">
                 {(route().current('chat.index') || !isMobile) && <Sidebar />}
-                <div className={`main h-full ${route().current('chat.show') ? '!right-0' : ''}`}>
+                <div ref={main} className={`main h-full ${route().current('chat.show') ? '!right-0' : ''}`}>
                     {children}
                 </div>
             </div>
