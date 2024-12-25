@@ -201,7 +201,6 @@ export default function Deposit() {
                                 {activeDepositMethod?.category === 'Cryptocurrency' && <div className="text-sm font-medium text-center">Scan the QR code to send money to this address and fill the form below</div>}
                                 {activeDepositMethod?.category !== 'Cryptocurrency' && <div className="text-sm font-medium text-center">Send money to this number and fill the form below</div>}
                             </div>
-
                         </div>
                         {activeDepositMethod?.type == "auto" && activeDepositMethod?.component}
                         {activeDepositMethod?.type == "manual" && (
