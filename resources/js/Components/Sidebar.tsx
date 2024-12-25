@@ -15,19 +15,13 @@ export default function Sidebar({
     const { max } = useBreakpoint();
     const extraMenus: MenuItem[] = [
         {
-            label: "Dashboard",
-            icon: "/assets/dashboard/dashboard.png",
-            url: route('dashboard'),
-            isActive: () => route().current('dashboard'),
-        },
-        {
             label: "Profile",
             icon: "/assets/dashboard/profile.png",
             url: route('profile.edit'),
             isActive: () => route().current('profile.edit'),
         },
         {
-            label: "Pyakaa Wallet",
+            label: "PyaKaa Wallet",
             icon: "/assets/dashboard/wallet.png",
             url: "#",
             isActive: () => false,
@@ -35,32 +29,25 @@ export default function Sidebar({
     ]
     return <motion.aside initial={{ x: -500 }} animate={{ x: 0 }} exit={{ x: -500 }} transition={{ duration: 0.5 }} className={cn("h-max max-w-[245px] xl:max-w-[300px] w-full my-auto", className)}>
         <Card className="bg-white bg-opacity-55 shadow-md h-max">
-            <div className="flex flex-col items-center w-full h-[calc(90dvh)] px-3 gap-10 overflow-y-scroll hide-scrollbar">
-                <div>
-                    <div className="flex items-center gap-2 w-full justify-between">
-                        {max('md') && <SidebarCloseBtn className="!text-primary" isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />}
-                        <Link href={route('dashboard')} className="cursor-pointer w-full" >
-                            <Logo />
-                        </Link>
-                    </div>
-
-                    <div className="flex flex-col w-full items-center mt-7">
-                        {extraMenus.map(item => (
-                            <Link href={item.url} className="cursor-pointer w-full" key={item.label + "-menu-item-sidebar"}>
-                                <Button label={item.label} className={cn("w-full !p-3 rounded-2xl text-nowrap")} text={!item.isActive()} severity={item.isActive() ? undefined : 'contrast' as ButtonSeverity}>
-                                </Button>
-                            </Link>
-                        ))}
-                    </div>
+            <div className="flex flex-col items-center w-full h-[90dvh] px-3 gap-1 overflow-y-scroll hide-scrollbar">
+                <div className="flex items-center gap-2 w-full justify-between mb-10">
+                    {max('md') && <SidebarCloseBtn className="!text-primary" isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />}
+                    <Link href={route('dashboard')} className="cursor-pointer w-full" >
+                        <Logo />
+                    </Link>
                 </div>
-                <div className="flex flex-col w-full items-center">
-                    {menuItems.map(item => (
-                        <Link href={item.url} className="cursor-pointer w-full" key={item.label + "-menu-item-sidebar"}>
-                            <Button label={item.label} className={cn("w-full !p-3 rounded-2xl text-nowrap")} text={!item.isActive()} severity={item.isActive() ? undefined : 'contrast' as ButtonSeverity}>
-                            </Button>
-                        </Link>
-                    ))}
-                </div>
+                {extraMenus.map(item => (
+                    <Link href={item.url} className="cursor-pointer w-full" key={item.label + "-menu-item-sidebar"}>
+                        <Button label={item.label} className={cn("w-full !p-3 rounded-2xl text-nowrap")} text={!item.isActive()} severity={item.isActive() ? undefined : 'contrast' as ButtonSeverity}>
+                        </Button>
+                    </Link>
+                ))}
+                {menuItems.map(item => (
+                    <Link href={item.url} className="cursor-pointer w-full" key={item.label + "-menu-item-sidebar"}>
+                        <Button label={item.label} className={cn("w-full !p-3 rounded-2xl text-nowrap")} text={!item.isActive()} severity={item.isActive() ? undefined : 'contrast' as ButtonSeverity}>
+                        </Button>
+                    </Link>
+                ))}
             </div>
         </Card>
     </motion.aside>
