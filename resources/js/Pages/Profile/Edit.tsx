@@ -39,11 +39,11 @@ export default function Edit({
                 <div className='flex flex-col gap-2'>
                     <div>
                         <label className='text-white font-bold'>Name</label>
-                        <InputText className="!bg-transparent !text-white" value={user.name} />
+                        <InputText className="" value={user.name} />
                     </div>
                     <div>
                         <label className='text-white font-bold'>Email</label>
-                        <InputText className="!bg-transparent !text-white" value={user.email} />
+                        <InputText className="" value={user.email} />
                     </div>
                 </div>
 

@@ -7,7 +7,7 @@ export default function ChatLayout({ children }: { children: any }) {
         if (main.current) {
             setTimeout(() => {
                 preloader.current?.remove();
-            }, 500);
+            }, 1000);
         }
     }, [main.current])
 
@@ -33,14 +33,14 @@ export default function ChatLayout({ children }: { children: any }) {
                 <script src="/assets/chat/js/perfect-scrollbar.min.js" defer></script>
                 <script src="/assets/chat/js/script.js" defer></script>
             </Head>
-            <div ref={preloader} className="h-screen w-screen flex items-center justify-center z-50 bg-base-gradient overflow-hidden">
-                <i className="pi pi-spinner pi-spin text-5xl text-primary" />
-            </div>
             <div className="overflow-hidden lg:flex h-full">
                 {(route().current('chat.index') || !isMobile) && <Sidebar />}
                 <div ref={main} className={`main h-full ${route().current('chat.show') ? '!right-0' : ''}`}>
                     {children}
                 </div>
+            </div>
+            <div ref={preloader} className="h-screen w-screen flex items-center justify-center z-50 bg-base-gradient overflow-hidden">
+                <i className="pi pi-spinner pi-spin text-5xl text-primary" />
             </div>
         </BaseLayout>
     )
