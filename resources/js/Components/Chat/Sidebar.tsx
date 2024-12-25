@@ -77,13 +77,13 @@ export default function Sidebar() {
                 <div className="col-md-12 h-full px-0">
                     <div className="tab-content h-full">
                         <div id="discussions" className="tab-pane flex flex-col fade in active show">
-                            <Link href={route('dashboard')} className="flex items-center gap-3">
+                            <Link href={route('dashboard')} className="flex items-center justify-center gap-5">
                                 <img
                                     className="avatar-xl"
                                     src={useAuth().user?.avatar}
                                     alt="avatar"
                                 />
-                                <img src="/assets/logo-long.png" alt="" className="max-w-[160px] grow" />
+                                <Logo className="!h-10 w-auto" />
                             </Link>
                             <div className="search relative">
                                 <form className="form-inline position-relative">
@@ -150,6 +150,9 @@ export default function Sidebar() {
                             <div className="discussions h-[700px] hide-scrollbar overflow-y-scroll my-2" id="scroller">
                                 <div className="list-group px-0" id="chats" role="tablist">
                                     {chats?.data.map(item => itemTemplate(item, "chat-" + item.uuid))}
+                                    {chats?.data.length === 0 && <div className="flex items-center justify-center gap-3 mt-10">
+                                        <div>No chats yet</div>
+                                    </div>}
                                 </div>
                             </div>
                         </div>

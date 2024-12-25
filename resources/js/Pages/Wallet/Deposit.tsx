@@ -1,5 +1,6 @@
 import { PaginatedCollection } from "@/types";
 import { WalletData, WalletType } from "@/types/_generated";
+import { titleCase } from "@/utils";
 import { router, useForm, usePage } from "@inertiajs/react";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
@@ -12,12 +13,14 @@ import toast from "react-hot-toast";
 
 interface DepositMethod {
     name: string,
-    logo: string | ReactNode,
+    logo: string,
     label: string,
     component?: ReactNode,
+    qr_code?: string,
     account_type?: "Personal" | "Merchant",
     number?: string,
-    type: "manual" | "auto"
+    type: "manual" | "auto",
+    category: string
 }
 interface Page {
     first: number,
@@ -51,7 +54,8 @@ export default function Deposit() {
             number: "+8801622002200",
             account_type: "Personal",
             label: "Bkash",
-            type: "manual"
+            type: "manual",
+            category: "Mobile Banking"
         },
         {
             name: "nagad",
@@ -59,7 +63,8 @@ export default function Deposit() {
             number: "+8801622002200",
             account_type: "Personal",
             label: "Nagad",
-            type: "manual"
+            type: "manual",
+            category: "Mobile Banking"
         },
         {
             name: "rocket",
@@ -67,11 +72,42 @@ export default function Deposit() {
             number: "+8801622002200",
             account_type: "Personal",
             label: "Rocket",
-            type: "manual"
+            type: "manual",
+            category: "Mobile Banking"
+        },
+        {
+            name: "City Bank",
+            logo: "/assets/logos/city-bank.webp",
+            number: "9501622002200",
+            account_type: "Personal",
+            label: "City Bank",
+            type: "manual",
+            category: "Banks"
+        },
+        {
+            name: "Bitcoin",
+            logo: "https://api.iconify.design/mdi:bitcoin.svg?color=%23ff7800",
+            qr_code: "/assets/logos/qr_code.png",
+            number: "9501622002200",
+            account_type: "Personal",
+            label: "Bitcoin",
+            type: "manual",
+            category: "Cryptocurrency"
         }
-
-
     ]
+    //group deposit methods by category
+    const mappedDepositMethods = depositMethods.reduce((acc, method) => {
+        const existing = acc.find(item => item.category === method.category);
+        if (existing) {
+            existing.methods.push(method);
+        } else {
+            acc.push({
+                category: method.category,
+                methods: [method]
+            })
+        }
+        return acc;
+    }, [] as { category: string, methods: DepositMethod[] }[])
     const [activeDepositMethod, setActiveDepositMethod] = useState<DepositMethod | undefined>();
     const dialogOpened = useMemo(() => activeDepositMethod !== undefined, [activeDepositMethod]);
 
@@ -159,10 +195,11 @@ export default function Deposit() {
                         deposit(e)
                     }}>
                         <div className="flex flex-col justify-center items-center w-full my-4 gap-2">
-                            {typeof activeDepositMethod?.logo === "string" ? <img src={activeDepositMethod?.logo} className="w-40 p-3 border rounded-lg" /> : activeDepositMethod?.logo}
+                            {activeDepositMethod?.category === "Cryptocurrency" ? <img src={activeDepositMethod?.qr_code} className="w-40 p-3 border rounded-lg" /> : <img src={activeDepositMethod?.logo} className="w-40 p-3 border rounded-lg" />}
                             <div className="text-center text-xl font-bold">
-                                <div>{`${activeDepositMethod?.account_type}: ${activeDepositMethod?.number}`}</div>
-                                <div className="text-sm font-medium text-center">Send money to this number and fill the form below</div>
+                                <div>{`${activeDepositMethod?.category === 'Cryptocurrency' ? 'Address' : activeDepositMethod?.account_type}: ${activeDepositMethod?.number}`}</div>
+                                {activeDepositMethod?.category === 'Cryptocurrency' && <div className="text-sm font-medium text-center">Scan the QR code to send money to this address and fill the form below</div>}
+                                {activeDepositMethod?.category !== 'Cryptocurrency' && <div className="text-sm font-medium text-center">Send money to this number and fill the form below</div>}
                             </div>
 
                         </div>
@@ -172,23 +209,29 @@ export default function Deposit() {
                         )}
                     </form>
                 </Dialog>
-                <div className="flex flex-col gap-6 w-full my-6">
-                    <Card className="mt-6">
-                        <h1 className="text-xl font-bold mb-3">Choose a deposit method</h1>
-                        <div className="flex items-center flex-wrap gap-3 ">
-                            {depositMethods.map((method, index) => {
-                                return (
-                                    <Card key={index} onClick={e => setActiveDepositMethod(method)} role="button" className="border hover:scale-105 transition-all cursor-pointer flex flex-col w-max gap-1 items-center justify-center">
-                                        <div>
-                                            {typeof method.logo === "string" ? <img src={method.logo} className="w-32" /> : method.logo}
-                                        </div>
-                                    </Card>
-                                )
-                            })}
+                <div className="flex flex-col gap-6 w-full my-6 px-2">
+                    {mappedDepositMethods.map((item) => (
+                        <div className="">
+                            <h1 className="md:text-xl font-bold mb-3 text-gray-800">{item.category}</h1>
+                            <div className="flex max-sm:flex-col items-center flex-wrap gap-2 sm:gap-3 w-full">
+                                {item.methods.map((method, index) => {
+                                    return (
+                                        <Card className="border hover:scale-105 transition-all cursor-pointer max-sm:w-full" key={index} onClick={e => setActiveDepositMethod(method)} role="button">
+                                            <div className="flex w-full gap-5 items-center justify-start">
+                                                {typeof method.logo === "string" ? <img src={method.logo} className="h-12 w-auto sm:w-32" /> : method.logo}
+                                                <div className="text-center text-sm sm:text-base font-bold sm:hidden">
+                                                    {titleCase(method.label)}
+                                                </div>
+                                            </div>
+                                        </Card>
+                                    )
+                                })}
 
+                            </div>
                         </div>
-                    </Card>
-                    <Card>
+                    ))}
+                    {/*
+                      <Card>
                         <h1 className="text-xl font-bold mb-3">Recent Deposits</h1>
                         <DataTable onPage={onPage} emptyMessage="No Deposits Yet. Approved deposits will be listed in transaction history." dataKey="uuid" pageLinkSize={5} totalRecords={deposits.total} value={deposits.data} rows={perPage} rowsPerPageOptions={[15, 30, 50, 100]} tableStyle={{ minWidth: '50rem' }}>
                             <Column field="id" header="No." body={slBodyTemplate} style={{ width: 'max-content' }}></Column>
@@ -199,6 +242,8 @@ export default function Deposit() {
                             <Column field="approved_at" body={StatusBodyTemplate} header="Status" style={{ width: '25%' }}></Column>
                         </DataTable>
                     </Card>
+
+                    */}
                 </div>
             </div>
         </>

@@ -20,30 +20,30 @@ export default function Edit({
         <>
             <Head title="Profile" />
             <div className="px-4 mt-5 flex flex-col gap-2 justify-center max-w-7xl mx-auto">
-                <InputLabel className='!text-white text-md !font-bold' value="Personal Data:" />
+                <InputLabel className='!text-gray-800 text-md !font-bold' value="Personal Data:" />
                 <div className="flex items-center gap-2">
                     <div className='relative'>
                         <img src={user.avatar} className="w-20 rounded-full" alt="Avatar" />
-                        <div className="absolute top-0 right-0 bg-primary-gradient p-1 rounded-full flex items-center justify-center">
+                        <div className="absolute top-0 right-0 p-1 rounded-full flex items-center justify-center">
                             <HeroiconsCameraSolid className="w-5 h-5" />
                         </div>
                     </div>
 
-                    <div className="flex flex-col leading-5 text-white">
+                    <div className="flex flex-col leading-5 text-gray-800">
                         <div className="font-bold">{user.email}</div>
                         <div className="font-medium">ID: {user.id}</div>
                         {!user.email_verified_at && <Tag className="w-max" icon="pi pi-exclamation-triangle" severity="warning" value="Not Verified"></Tag>}
                         {user.email_verified_at && <Tag className="w-max" icon="pi pi-check" severity="success" value="Verified"></Tag>}
                     </div>
                 </div>
-                <div className='flex flex-col gap-2'>
+                <div className='flex flex-col gap-2 mt-5'>
                     <div>
-                        <label className='text-white font-bold'>Name</label>
-                        <InputText className="!bg-transparent !text-white" value={user.name} />
+                        <label className='text-gray-800 font-bold'>Name</label>
+                        <InputText className="" value={user.name} />
                     </div>
                     <div>
-                        <label className='text-white font-bold'>Email</label>
-                        <InputText className="!bg-transparent !text-white" value={user.email} />
+                        <label className='text-gray-800 font-bold'>Email</label>
+                        <InputText className="" value={user.email} />
                     </div>
                 </div>
 
