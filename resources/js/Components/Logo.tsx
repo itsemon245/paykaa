@@ -8,6 +8,6 @@ export default function Logo({
 }) {
     const config = useConfig();
     return <>
-        <img src="/assets/logo-long.png" alt={config.app.name + " Logo"} className={cn("w-full max-w-[220px]", className)} {...props} />
+        <img src="/assets/logo-long.png" alt={config.app.name + " Logo"} className={cn("w-full max-w-[200px]", className)} {...props} />
     </>
 }
