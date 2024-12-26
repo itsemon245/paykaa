@@ -64,6 +64,10 @@ export type User = {
     avatar?: string;
     phone?: string;
     email: string;
+    date_of_birth?: string;
+    gender?: string;
+    country?: string;
+    address?: string;
     email_verified_at?: string;
     type: string;
     referral_id?: string;
@@ -73,16 +77,23 @@ export type User = {
 export type Wallet = {
     id: any;
     uuid: string;
-    user_id: any;
+    owner_id: any;
+    transaction_id?: string;
+    transaction_type: string;
     type: string;
-    remark: string;
     amount: any;
+    commission: any;
     currency: string;
-    completed_at?: any;
+    note?: string;
+    method?: string;
+    payment_number?: string;
     approved_at?: any;
+    cancelled_at?: any;
     failed_at?: any;
     created_at: string;
     updated_at?: string;
+    status: any;
     created_at_human: any;
     updated_at_human: any;
+    owner?: User;
 };

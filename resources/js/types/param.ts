@@ -43,6 +43,10 @@ export type RouteParams = {
         id: string;
         hash: string;
     };
-    "wallet.deposit": {};
+    "wallet.check-balance": {};
+    "wallet.deposit.index": {};
     "wallet.deposit.store": {};
+    "wallet.transactions.index": {};
+    "wallet.withdraw.index": {};
+    "wallet.withdraw.store": {};
 };
