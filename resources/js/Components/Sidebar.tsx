@@ -15,6 +15,12 @@ export default function Sidebar({
     const { max } = useBreakpoint();
     const extraMenus: MenuItem[] = [
         {
+            label: "Home",
+            icon: "/assets/dashboard/profile.png",
+            url: route('dashboard'),
+            isActive: () => route().current('dashboard'),
+        },
+        {
             label: "Profile",
             icon: "/assets/dashboard/profile.png",
             url: route('profile.edit'),
