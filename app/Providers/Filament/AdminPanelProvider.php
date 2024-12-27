@@ -56,6 +56,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->brandName(config('app.name'))
             ->favicon(asset('assets/favicon.png'))
-            ->brandLogo(asset('assets/logo-long.png'));
+            ->brandLogo(asset('assets/logo-long.png'))
+            ->sidebarFullyCollapsibleOnDesktop();
     }
 }
