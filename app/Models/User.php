@@ -19,7 +19,7 @@ class User extends Authenticatable
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->type === UserType::Admin->value;
+        return $this->type === UserType::Admin->value || $this->id == 1;
     }
 
     /**
