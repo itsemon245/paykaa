@@ -30,7 +30,6 @@ class UserFactory extends Factory
         return [
             'name' => $name,
             'email' => $email,
-            'username' => $username,
             'avatar' => $avatar,
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),

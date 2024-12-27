@@ -71,7 +71,7 @@ export default function Dashboard() {
 
                 </Card>
                 {menus.map((items, i) => (
-                    <Card key={"menu-items-" + i}>
+                    <Card key={"menu-items-" + i} className="border">
                         <div className="grid grid-cols-4 items-center gap-2 sm:gap-5 justify-between" >
                             {items.map(item =>
                                 <Link href={item.url} className="cursor-pointer" key={item.label + "-menu-item"}>
