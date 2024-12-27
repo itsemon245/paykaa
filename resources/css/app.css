@@ -42,9 +42,6 @@
     .container{
         @apply max-w-7xl mx-auto
     }
-    .fi-sidebar-nav{
-        @apply shadow bg-white dark:bg-gray-900
-    }
 }
 
 @layer primevue-overrides {

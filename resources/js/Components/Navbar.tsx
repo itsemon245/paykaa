@@ -87,9 +87,15 @@ export default function Navbar({
                 </div>
 
             </div>
-            <Button className="!p-1.5 border border-white" text rounded>
-                <FlowbiteBellRingSolid className="text-white w-8 h-8" />
-            </Button>
+            <div className="flex items-center gap-2 md:gap-4">
+                {user.type === 'admin' && <a href="/admin">
+                    <HugeiconsPresentationBarChart02 className="text-white w-10 h-10" />
+                </a>}
+                <Button className="!p-1.5 border border-white" text rounded>
+                    <FlowbiteBellRingSolid className="text-white w-8 h-8" />
+                </Button>
+
+            </div>
         </div>
 
     )

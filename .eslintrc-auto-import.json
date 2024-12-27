@@ -93,6 +93,7 @@
     "useBrakpoints": true,
     "Logo": true,
     "HugeiconsCancel01": true,
-    "SidebarCloseBtn": true
+    "SidebarCloseBtn": true,
+    "HugeiconsPresentationBarChart02": true
   }
 }

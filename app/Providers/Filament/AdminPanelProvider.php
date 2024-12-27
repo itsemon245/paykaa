@@ -54,6 +54,7 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
+            ->viteTheme('resources/css/filament/admin/theme.css')
             ->brandName(config('app.name'))
             ->favicon(asset('assets/favicon.png'))
             ->brandLogo(asset('assets/logo-long.png'))
