@@ -3,8 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enum\UserType;
 use App\Traits\HasLatestScope;
 use App\Traits\HasUuid;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -14,6 +16,11 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
     use HasUuid;
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->type === UserType::Admin->value;
+    }
 
     /**
      * The attributes that are mass assignable.
