@@ -26,9 +26,9 @@ class DepositMethodData extends Data
         #[Optional]
         public ?string $description,
         #[Optional]
-        public ?array $secrets,
+        public ?object $secrets,
         #[Optional]
-        public ?DepositMethodMetaData $metadata,
+        public ?array $metadata,
     ) {
     }
 }

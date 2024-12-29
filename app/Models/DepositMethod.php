@@ -11,8 +11,8 @@ class DepositMethod extends Model
     use HasFactory;
     use HasUuid;
 
-    // protected $casts = [
-    //     'secrets' => EncryptedJson::class,
-    //     'metadata' => Json::class,
-    // ];
+    protected $casts = [
+        'secrets' => \App\Casts\EncryptedJson::class,
+        'metadata' => 'array',
+    ];
 }

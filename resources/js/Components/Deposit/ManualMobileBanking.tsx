@@ -17,7 +17,6 @@ export default function ManualMobileBanking({
 }: ManualMobileBankingProps) {
     const { app } = useConfig()
 
-    const amountInput = useRef(null)
     const total = useMemo(() => {
         if (!data.amount) return 0;
         let commission = Math.round(app.payment.is_fixed_amount ? app.payment.charge : data.amount * (app.payment.charge / 100))
@@ -51,7 +50,7 @@ export default function ManualMobileBanking({
             {total > 0 && (
                 <div className="mb-2">
                     <InputLabel value="Amount to pay" />
-                    <div className="flex items-center justify-center border-primary-200 border-2 p-2 rounded-lg text-lg font-bold opacity-75 cursor-not-allowed">{total + ".00"} BDT</div>
+                    <div className="flex items-center justify-center border p-1.5 rounded-lg text-lg font-bold opacity-75 cursor-not-allowed">{total + ".00"} BDT</div>
                     <div className="text-sm text-gray-500 text-start">We charge a <span className="font-bold">{app.payment.charge}{app.payment.is_fixed_amount ? 'BDT' : "%"}</span> service charge on top of each deposits.</div>
                 </div>
             )}
