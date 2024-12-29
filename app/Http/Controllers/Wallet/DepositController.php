@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Wallet;
 
+use App\Data\DepositMethodData;
 use App\Data\WalletData;
 use App\Http\Controllers\Controller;
+use App\Models\DepositMethod;
 use App\Models\Wallet;
 use App\Services\Wallet as WalletService;
 use Illuminate\Http\Request;
@@ -19,8 +21,10 @@ class DepositController extends Controller
     {
         $perPage = request()->query('per_page', 15);
         $deposits = Wallet::deposits()->pending()->paginate($perPage);
+        $depositMethods = DepositMethod::all();
         return Inertia::render('Wallet/Deposit', [
-            'deposits'=> WalletData::collect($deposits)
+            'deposits'=> WalletData::collect($deposits),
+            'depositMethods' => DepositMethodData::collect($depositMethods)
         ]);
     }
     public function store(Request $request)

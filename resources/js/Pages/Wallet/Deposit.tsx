@@ -1,6 +1,7 @@
+import useBreakpoint from "@/Hooks/useBrakpoints";
 import { PaginatedCollection } from "@/types";
-import { WalletData, WalletType } from "@/types/_generated";
-import { titleCase } from "@/utils";
+import { DepositMethodData, WalletData, WalletType } from "@/types/_generated";
+import { cn, titleCase } from "@/utils";
 import { router, useForm, usePage } from "@inertiajs/react";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
@@ -34,7 +35,9 @@ interface Page {
 }
 export default function Deposit() {
     const pageProps = usePage().props
+    const { min } = useBreakpoint()
     const initialDeposits = pageProps.deposits as PaginatedCollection<WalletData>
+    const depositMethods = pageProps.depositMethods as DepositMethodData[]
     const [deposits, setDeposits] = useState(initialDeposits)
     const [perPage, setPerPage] = useState(deposits.per_page)
     const { data, setData, setError, post, errors, processing } = useForm<Partial<WalletData>>({
@@ -47,54 +50,6 @@ export default function Deposit() {
         currency: "bdt",
         type: "credit"
     })
-    const depositMethods: DepositMethod[] = [
-        {
-            name: "bkash",
-            logo: "/assets/logos/bkash.svg",
-            number: "+8801622002200",
-            account_type: "Personal",
-            label: "Bkash",
-            type: "manual",
-            category: "Mobile Banking"
-        },
-        {
-            name: "nagad",
-            logo: "/assets/logos/nagad.svg",
-            number: "+8801622002200",
-            account_type: "Personal",
-            label: "Nagad",
-            type: "manual",
-            category: "Mobile Banking"
-        },
-        {
-            name: "rocket",
-            logo: "/assets/logos/rocket.png",
-            number: "+8801622002200",
-            account_type: "Personal",
-            label: "Rocket",
-            type: "manual",
-            category: "Mobile Banking"
-        },
-        {
-            name: "City Bank",
-            logo: "/assets/logos/city-bank.webp",
-            number: "9501622002200",
-            account_type: "Personal",
-            label: "City Bank",
-            type: "manual",
-            category: "Banks"
-        },
-        {
-            name: "Bitcoin",
-            logo: "https://api.iconify.design/mdi:bitcoin.svg?color=%23ff7800",
-            qr_code: "/assets/logos/qr_code.png",
-            number: "9501622002200",
-            account_type: "Personal",
-            label: "Bitcoin",
-            type: "manual",
-            category: "Cryptocurrency"
-        }
-    ]
     //group deposit methods by category
     const mappedDepositMethods = depositMethods.reduce((acc, method) => {
         const existing = acc.find(item => item.category === method.category);
@@ -107,8 +62,8 @@ export default function Deposit() {
             })
         }
         return acc;
-    }, [] as { category: string, methods: DepositMethod[] }[])
-    const [activeDepositMethod, setActiveDepositMethod] = useState<DepositMethod | undefined>();
+    }, [] as { category: string, methods: DepositMethodData[] }[])
+    const [activeDepositMethod, setActiveDepositMethod] = useState<DepositMethodData | undefined>();
     const dialogOpened = useMemo(() => activeDepositMethod !== undefined, [activeDepositMethod]);
 
 
@@ -143,7 +98,7 @@ export default function Deposit() {
     }
     useEffect(() => {
         if (activeDepositMethod) {
-            setData('method', activeDepositMethod?.name)
+            setData('method', activeDepositMethod?.label)
             setData('type', "credit")
             setData('transaction_type', "deposit")
         }
@@ -194,17 +149,21 @@ export default function Deposit() {
                         e.preventDefault()
                         deposit(e)
                     }}>
-                        <div className="flex flex-col justify-center items-center w-full my-4 gap-2">
-                            {activeDepositMethod?.category === "Cryptocurrency" ? <img src={activeDepositMethod?.qr_code} className="w-40 p-3 border rounded-lg" /> : <img src={activeDepositMethod?.logo} className="w-40 p-3 border rounded-lg" />}
-                            <div className="text-center text-xl font-bold">
-                                <div>{`${activeDepositMethod?.category === 'Cryptocurrency' ? 'Address' : activeDepositMethod?.account_type}: ${activeDepositMethod?.number}`}</div>
-                                {activeDepositMethod?.category === 'Cryptocurrency' && <div className="text-sm font-medium text-center">Scan the QR code to send money to this address and fill the form below</div>}
-                                {activeDepositMethod?.category !== 'Cryptocurrency' && <div className="text-sm font-medium text-center">Send money to this number and fill the form below</div>}
+                        <div className="flex flex-col justify-center items-center w-full my-2 gap-3">
+                            {activeDepositMethod?.category === "Cryptocurrency" ? <img src={`/storage/${activeDepositMethod?.metadata?.qr_code}`} className="w-32 md:w-40 p-3 border rounded-lg" /> : <img src={`/storage/${activeDepositMethod?.logo}`} className="w-32 md:w-40  p-3 border rounded-lg" />}
+                            <div className="text-center md:text-xl font-bold">
+                                <div>
+                                    {activeDepositMethod?.category === 'Cryptocurrency' && 'Address: '}
+                                    {activeDepositMethod?.category === 'Bank' && 'Account Number: '}
+                                    {activeDepositMethod?.category === 'Mobile Banking' && 'Personal Number: '}
+                                    {activeDepositMethod?.number}
+                                </div>
+                                {activeDepositMethod?.category === 'Cryptocurrency' && <div className="text-xs md:text-sm font-medium text-center">Scan the QR code to send money to this address and fill the form below</div>}
+                                {activeDepositMethod?.category !== 'Cryptocurrency' && <div className="text-xs md:text-sm font-medium text-center">Send money to this number and fill the form below</div>}
                             </div>
                         </div>
-                        {activeDepositMethod?.type == "auto" && activeDepositMethod?.component}
-                        {activeDepositMethod?.type == "manual" && (
-                            <ManualMobileBanking errors={errors} data={data} setData={setData} />
+                        {activeDepositMethod?.mode == "manual" && (
+                            <ManualMobileBanking depositMethod={activeDepositMethod} errors={errors} data={data} setData={setData} />
                         )}
                     </form>
                 </Dialog>
@@ -215,17 +174,16 @@ export default function Deposit() {
                             <div className="flex max-sm:flex-col items-center flex-wrap gap-2 sm:gap-3 w-full">
                                 {item.methods.map((method, index) => {
                                     return (
-                                        <Card className="border hover:scale-105 transition-all cursor-pointer max-sm:w-full" key={index} onClick={e => setActiveDepositMethod(method)} role="button">
+                                        <Card className={cn("border transition-all cursor-pointer max-sm:w-full", min("md") && 'hover:scale-105')} key={index} onClick={e => setActiveDepositMethod(method)} role="button">
                                             <div className="flex w-full gap-5 items-center justify-start">
-                                                {typeof method.logo === "string" ? <img src={method.logo} className="h-12 w-auto sm:w-32" /> : method.logo}
+                                                <img src={`/storage/${method.logo}`} className="h-12 w-auto sm:w-32" alt={method.label} />
                                                 <div className="text-center text-sm sm:text-base font-bold sm:hidden">
-                                                    {titleCase(method.label)}
+                                                    {method.label}
                                                 </div>
                                             </div>
                                         </Card>
                                     )
                                 })}
-
                             </div>
                         </div>
                     ))}
@@ -241,7 +199,6 @@ export default function Deposit() {
                             <Column field="approved_at" body={StatusBodyTemplate} header="Status" style={{ width: '25%' }}></Column>
                         </DataTable>
                     </Card>
-
                     */}
                 </div>
             </div>
