@@ -17,6 +17,11 @@ class Wallet extends Model
     use HasOwner;
 
     protected $table = 'wallet';
+    protected $casts = [
+        'approved_at' => 'datetime',
+        'cancelled_at' => 'datetime',
+        'failed_at' => 'datetime',
+    ];
 
     public function getStatusAttribute(): string
     {

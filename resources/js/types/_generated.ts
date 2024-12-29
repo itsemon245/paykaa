@@ -18,6 +18,25 @@ export type ChatData = {
     created_at_human: string;
     updated_at_human: string;
 };
+export type DepositMethodData = {
+    id: number;
+    uuid: string;
+    label: string;
+    logo: string;
+    category: MethodCategory;
+    mode: MethodMode;
+    number: string;
+    description?: string;
+    secrets?: Array<any>;
+    metadata?: DepositMethodMetaData;
+    created_at: string;
+    updated_at: string;
+    created_at_human: string;
+    updated_at_human: string;
+};
+export type DepositMethodMetaData = {
+    qr_code: string;
+};
 export type MessageData = {
     id: number;
     uuid: string;
@@ -39,6 +58,8 @@ export type MessageType =
     | 'release_request'
     | 'money_request_accepted'
     | 'release_request_accepted';
+export type MethodCategory = 'Bank' | 'Cryptocurrency' | 'Mobile Banking';
+export type MethodMode = 'auto' | 'manual';
 export type UserData = {
     id: number;
     uuid: string;
