@@ -139,7 +139,6 @@ export default function Deposit() {
             </div>
         )
     }
-
     return (
         <>
             <Head title="Deposit" />
@@ -150,7 +149,7 @@ export default function Deposit() {
                         deposit(e)
                     }}>
                         <div className="flex flex-col justify-center items-center w-full my-2 gap-3">
-                            {activeDepositMethod?.category === "Cryptocurrency" ? <img src={`/storage/${activeDepositMethod?.metadata?.qr_code}`} className="w-32 md:w-40 p-3 border rounded-lg" /> : <img src={`/storage/${activeDepositMethod?.logo}`} className="w-32 md:w-40  p-3 border rounded-lg" />}
+                            {activeDepositMethod?.category === "Cryptocurrency" ? <img src={`/storage/${activeDepositMethod?.metadata![0]?.qr_code}`} className="w-32 md:w-40 p-3 border rounded-lg" /> : <img src={`/storage/${activeDepositMethod?.logo}`} className="w-32 md:w-40  p-3 border rounded-lg" />}
                             <div className="text-center md:text-xl font-bold">
                                 <div>
                                     {activeDepositMethod?.category === 'Cryptocurrency' && 'Address: '}

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Enum\MethodCategory;
+use App\Enum\MethodMode;
 use App\Filament\Resources\DepositMethodResource\Pages;
 use App\Filament\Resources\DepositMethodResource\RelationManagers;
 use App\Models\DepositMethod;
@@ -26,6 +27,7 @@ class DepositMethodResource extends Resource
     public static function form(Form $form): Form
     {
         $methodCateogries = collect(MethodCategory::cases())->mapWithKeys(fn ($item) => [$item->value => $item->name])->toArray();
+        $methodModes = collect(MethodMode::cases())->mapWithKeys(fn ($item) => [$item->value => $item->name])->toArray();
         return $form
             ->schema([
                 Forms\Components\Select::make('category')
@@ -34,29 +36,41 @@ class DepositMethodResource extends Resource
                     ->reactive()
                     ->required(),
                 Forms\Components\Select::make('mode')
-                    ->options([
-                        'manual' => 'Manual',
-                        'auto' => 'Auto',
-                    ])
+                    ->options($methodModes)
                     ->default('manual')
                     ->required(),
                 Forms\Components\TextInput::make('label')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('number')
-                    ->label('Address')
-                    ->hidden(fn (Get $get) => $get('category') !== 'crypto')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('number')
-                    ->label('Account Number')
-                    ->hidden(fn (Get $get) => $get('category') === 'crypto')
+                    ->label(fn (Get $get) => $get('category') !== MethodCategory::CRYPTO->value ? 'Account Number' : 'Wallet Address')
+                    ->placeholder(fn (Get $get) => $get('category') !== MethodCategory::CRYPTO->value ? 'Account Number' : '0x...')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\FileUpload::make('logo')
                     ->extraAttributes(['accept' => 'image/*' ])
                     ->columnSpanFull()
+                    // ->columnSpan(fn (Get $get) => $get('category') !== MethodCategory::CRYPTO->value ? 2 : 1)
                     ->required(),
+                // Forms\Components\FileUpload::make('metadata.qr_code')
+                //     ->label('QR Code')
+                //     ->hidden(fn (Get $get) => $get('category') !== MethodCategory::CRYPTO->value)
+                //     ->extraAttributes(['accept' => 'image/*' ])
+                //     ->required(),
+                Forms\Components\Repeater::make('metadata')
+                    ->label('QR Code')
+                    ->hidden(fn (Get $get) => $get('category') !== MethodCategory::CRYPTO->value)
+                    ->addable(false)
+                    ->deletable(false)
+                    ->reorderable(false)
+                    ->collapsible(false)
+                    ->columnSpanFull()
+                    ->schema([
+                        Forms\Components\FileUpload::make('qr_code')
+                            ->label('')
+                            ->extraAttributes(['accept' => 'image/*' ])
+                            ->required(),
+                    ])
             ]);
     }
 

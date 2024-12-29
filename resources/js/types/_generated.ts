@@ -28,7 +28,7 @@ export type DepositMethodData = {
     number: string;
     description?: string;
     secrets?: Array<any>;
-    metadata?: DepositMethodMetaData;
+    metadata?: Array<any>;
     created_at: string;
     updated_at: string;
     created_at_human: string;
