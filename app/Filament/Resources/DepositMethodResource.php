@@ -32,6 +32,7 @@ class DepositMethodResource extends Resource
             ->schema([
                 Forms\Components\Select::make('category')
                     ->options($methodCateogries)
+                    ->default(MethodCategory::MOBILE_BANKING->value)
                     ->live()
                     ->reactive()
                     ->required(),
@@ -40,6 +41,7 @@ class DepositMethodResource extends Resource
                     ->default('manual')
                     ->required(),
                 Forms\Components\TextInput::make('label')
+                    ->placeholder('Label')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('number')
@@ -50,13 +52,7 @@ class DepositMethodResource extends Resource
                 Forms\Components\FileUpload::make('logo')
                     ->extraAttributes(['accept' => 'image/*' ])
                     ->columnSpanFull()
-                    // ->columnSpan(fn (Get $get) => $get('category') !== MethodCategory::CRYPTO->value ? 2 : 1)
                     ->required(),
-                // Forms\Components\FileUpload::make('metadata.qr_code')
-                //     ->label('QR Code')
-                //     ->hidden(fn (Get $get) => $get('category') !== MethodCategory::CRYPTO->value)
-                //     ->extraAttributes(['accept' => 'image/*' ])
-                //     ->required(),
                 Forms\Components\Repeater::make('metadata')
                     ->label('QR Code')
                     ->hidden(fn (Get $get) => $get('category') !== MethodCategory::CRYPTO->value)
