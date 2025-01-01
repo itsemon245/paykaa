@@ -27,6 +27,9 @@ class WalletData extends Data
         public WalletType $type,
         public WalletTransactionType $transaction_type,
         public float $amount,
+        #[Optional]
+        /** @var AdditionalFields[] */
+        public ?array $additional_fields,
         public ?string $currency = 'bdt',
         #[Optional]
         public ?float $commission = 0,

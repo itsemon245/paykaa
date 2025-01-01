@@ -8,8 +8,8 @@ use App\Filament\Resources\DepositResource\Pages\ManageDeposits;
 use App\Models\Model;
 use App\Models\Wallet;
 use Filament\Forms;
-use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Form;
+use Filament\Resources\Components\Tab;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\ActionSize;
 use Filament\Tables;
@@ -26,6 +26,7 @@ class DepositResource extends Resource
     protected static ?string $modelLabel = 'Deposit Request';
     protected static ?string $pluralModelLabel = 'Deposit Requests';
     protected static ?string $navigationIcon = 'heroicon-o-arrow-down-on-square';
+
 
 
 
