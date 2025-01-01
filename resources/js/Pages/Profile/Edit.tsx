@@ -1,15 +1,9 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { PageProps } from '@/types';
 import { Head } from '@inertiajs/react';
-import DeleteUserForm from './Partials/DeleteUserForm';
-import UpdatePasswordForm from './Partials/UpdatePasswordForm';
-import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
 import { Tag } from 'primereact/tag';
-import { FloatLabel } from 'primereact/floatlabel';
-import { InputText } from 'primereact/inputtext';
-import { Card } from 'primereact/card';
+import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
-import { parseISO } from 'date-fns';
+import { subYears } from 'date-fns';
 
 export default function Edit({
     mustVerifyEmail,
@@ -19,7 +13,7 @@ export default function Edit({
     return (
         <>
             <Head title="Profile" />
-            <div className="px-4 mt-5 flex flex-col gap-2 justify-center max-w-7xl mx-auto">
+            <div className="px-4 mt-5 flex flex-col gap-2 justify-center max-w-xl mx-auto">
                 <InputLabel className='!text-gray-800 text-md !font-bold' value="Personal Data:" />
                 <div className="flex items-center gap-2">
                     <div className='relative'>
@@ -36,14 +30,28 @@ export default function Edit({
                         {user.email_verified_at && <Tag className="w-max" icon="pi pi-check" severity="success" value="Verified"></Tag>}
                     </div>
                 </div>
-                <div className='flex flex-col gap-2 mt-5'>
-                    <div>
-                        <label className='text-gray-800 font-bold'>Name</label>
-                        <InputText className="" value={user.name} />
+                <div className='flex flex-col gap-3 mt-5'>
+                    <Input label='Name' placeholder='Enter your name' value={user.name} />
+                    <Input label='Email' value={user.email} placeholder='Enter your email' />
+                    <Input label='Phone' value={user.phone} placeholder='Enter your phone' />
+                    <Input label='Country' value={user.country} placeholder='Enter your country' />
+                    <Input label='Address' value={user.address} placeholder='Enter your address' />
+                    {/*<div>
+                        <InputLabel value="Date of Birth" />
+                        <Calendar showButtonBar className='w-full' value={user.date_of_birth ? new Date(user.date_of_birth) : null} placeholder="Select your date of birth" dateFormat='M dd, yy' maxDate={subYears(new Date(), 12)} />
                     </div>
+                    */}
                     <div>
-                        <label className='text-gray-800 font-bold'>Email</label>
-                        <InputText className="" value={user.email} />
+                        <InputLabel value="Gender" />
+                        <Dropdown options={[{
+                            name: 'Male',
+                            value: 'male',
+                        }, {
+                            name: 'Female',
+                            value: 'female',
+                        }]}
+                            optionLabel="name"
+                            placeholder="Select your gender" className='w-full' checkmark={true} highlightOnSelect={true} />
                     </div>
                 </div>
 
