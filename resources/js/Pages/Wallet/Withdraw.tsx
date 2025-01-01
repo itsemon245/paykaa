@@ -131,7 +131,7 @@ export default function Withdraw() {
                             {activeWithdrawalMethod?.fields?.map(field => (
                                 <div>
                                     <InputLabel value={field.label} />
-                                    <FieldInput field={field} />
+                                    <FieldInput field={field} fieldStates={fieldStates} setFieldStates={setFieldStates} />
                                 </div>
                             ))}
                         </div>
