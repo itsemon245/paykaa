@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Wallet;
 
 use App\Data\WalletData;
+use App\Data\WithdrawMethodData;
 use App\Http\Controllers\Controller;
 use App\Models\Wallet;
+use App\Models\WithdrawMethod;
 use App\Services\Wallet as WalletService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -16,7 +18,11 @@ class WithdrawController extends Controller
     }
     public function index()
     {
-        return Inertia::render('Wallet/Withdraw', ['balance'=> Wallet::getBalance()]);
+        $withdrawMethods = WithdrawMethod::all();
+        return Inertia::render('Wallet/Withdraw', [
+            'balance'=> Wallet::getBalance(),
+            'withdrawMethods'=> WithdrawMethodData::collect($withdrawMethods)
+        ]);
     }
 
     public function store(Request $request)

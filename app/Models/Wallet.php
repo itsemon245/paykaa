@@ -18,6 +18,7 @@ class Wallet extends Model
 
     protected $table = 'wallet';
     protected $casts = [
+        'additional_fields' => 'array',
         'approved_at' => 'datetime',
         'cancelled_at' => 'datetime',
         'failed_at' => 'datetime',

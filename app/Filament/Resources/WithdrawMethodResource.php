@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enum\InputType;
 use App\Enum\MethodCategory;
 use App\Filament\Resources\WithdrawMethodResource\Pages;
 use App\Filament\Resources\WithdrawMethodResource\RelationManagers;
@@ -62,14 +63,7 @@ class WithdrawMethodResource extends Resource
                             ->visible(false)
                             ->maxLength(255),
                         Forms\Components\Select::make('type')
-                            ->options([
-                                'text' => 'Text',
-                                'number' => 'Number',
-                                'email' => 'Email',
-                                'date' => 'Date',
-                                'textarea' => 'Textarea',
-                                'file' => 'File',
-                            ])
+                            ->options(collect(InputType::cases())->mapWithKeys(fn($item)=>[$item->value => $item->name])->toArray())
                             ->required()
                             ->default('text'),
                         Forms\Components\Select::make('required')

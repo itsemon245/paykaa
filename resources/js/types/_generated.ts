@@ -1,3 +1,7 @@
+export type AdditionalFields = {
+    name: string;
+    value?: string;
+};
 export type ChatData = {
     id: number;
     uuid: string;
@@ -27,7 +31,7 @@ export type DepositMethodData = {
     mode: MethodMode;
     number: string;
     description?: string;
-    secrets?: Array<any>;
+    secrets?: object;
     metadata?: Array<any>;
     created_at: string;
     updated_at: string;
@@ -37,6 +41,21 @@ export type DepositMethodData = {
 export type DepositMethodMetaData = {
     qr_code: string;
 };
+export type FieldsData = {
+    name: string;
+    label: string;
+    type?: InputType;
+    placeholder?: string;
+    required: boolean;
+};
+export type InputType =
+    | 'text'
+    | 'number'
+    | 'email'
+    | 'file'
+    | 'date'
+    | 'time'
+    | 'datetime';
 export type MessageData = {
     id: number;
     uuid: string;
@@ -91,6 +110,7 @@ export type WalletData = {
     type: WalletType;
     transaction_type: WalletTransactionType;
     amount: number;
+    additional_fields?: Array<AdditionalFields>;
     currency: string | null;
     commission?: number;
     method?: string;
@@ -113,3 +133,16 @@ export type WalletTransactionType =
     | 'transfer_out'
     | 'earn';
 export type WalletType = 'debit' | 'credit';
+export type WithdrawMethodData = {
+    id: number;
+    uuid: string;
+    label: string;
+    logo: string;
+    category: MethodCategory;
+    description?: string;
+    fields?: Array<FieldsData>;
+    created_at: string;
+    updated_at: string;
+    created_at_human: string;
+    updated_at_human: string;
+};

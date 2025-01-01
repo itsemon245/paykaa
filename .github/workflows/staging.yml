@@ -61,6 +61,5 @@ jobs:
             php artisan migrate --force
 
             # Step 9: Recreate storage symlink
-            rm -rf node_modules
             rm -rf public/storage public/temp
             php artisan storage:link
