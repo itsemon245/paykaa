@@ -27,6 +27,10 @@ class WithdrawController extends Controller
 
     public function store(Request $request)
     {
+        $pendingWithdrawExists = Wallet::withdrawals()->pending()->exists();
+        if($pendingWithdrawExists){
+            return back()->with('error', "You already have a withdraw pending!");
+        }
         $balance = Wallet::getBalance();
         $request->validate([
             'amount' => ['required', 'numeric', 'min:1', 'max:'.$balance],

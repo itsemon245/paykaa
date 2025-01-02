@@ -47,9 +47,7 @@ class {{ resourceClass }} extends Resource
 
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
 {{ tableBulkActions }}
-                ]),
             ]);
     }
 {{ relations }}

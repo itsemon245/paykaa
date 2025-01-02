@@ -13,11 +13,11 @@ class FieldsData extends Data{
     public function __construct(
         public string $name,
         public string $label,
+        public bool $required = true,
         #[Optional]
         public ?InputType $type = InputType::TEXT->value,
         #[Optional]
         public ?string $placeholder,
-        public bool $required = true,
     ) {
     }
 }

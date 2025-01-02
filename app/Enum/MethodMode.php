@@ -4,6 +4,7 @@ namespace App\Enum;
 
 enum MethodMode: string
 {
-    case AUTO = 'auto';
-    case MANUAL = 'manual';
+    case PERSONAL = 'personal';
+    case AGENT = 'agent';
+    case PAYMENT = 'payment';
 }

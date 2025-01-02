@@ -18,6 +18,7 @@ class Wallet {
         ]);
     }
     public function withdraw(WalletData $data) {
+        dd($data->toArray());
         return WalletModel::create([
             ...$data->toArray(),
             'currency'=> 'bdt',

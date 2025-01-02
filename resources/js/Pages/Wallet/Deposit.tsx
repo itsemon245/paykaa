@@ -154,21 +154,21 @@ export default function Deposit() {
                                 <div>
                                     {activeDepositMethod?.category === 'Cryptocurrency' && 'Address: '}
                                     {activeDepositMethod?.category === 'Bank' && 'Account Number: '}
-                                    {activeDepositMethod?.category === 'Mobile Banking' && 'Personal Number: '}
+                                    {activeDepositMethod?.category === 'Mobile Banking' && titleCase(activeDepositMethod?.mode || '') + ' Number: '}
                                     {activeDepositMethod?.number}
                                 </div>
                                 {activeDepositMethod?.category === 'Cryptocurrency' && <div className="text-xs md:text-sm font-medium text-center">Scan the QR code to send money to this address and fill the form below</div>}
                                 {activeDepositMethod?.category !== 'Cryptocurrency' && <div className="text-xs md:text-sm font-medium text-center">Send money to this number and fill the form below</div>}
                             </div>
                         </div>
-                        {activeDepositMethod?.mode == "manual" && (
+                        {activeDepositMethod?.mode !== "payment" && (
                             <ManualMobileBanking depositMethod={activeDepositMethod} errors={errors} data={data} setData={setData} />
                         )}
                     </form>
                 </Dialog>
                 <div className="flex flex-col gap-6 w-full my-6 px-2">
                     {mappedDepositMethods.map((item) => (
-                        <div className="">
+                        <div className="" key={item.category}>
                             <h1 className="md:text-xl font-bold mb-3 text-gray-800">{item.category}</h1>
                             <div className="flex max-sm:flex-col items-center flex-wrap gap-2 sm:gap-3 w-full">
                                 {item.methods.map((method, index) => {

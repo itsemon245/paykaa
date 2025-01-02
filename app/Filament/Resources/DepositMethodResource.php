@@ -8,6 +8,7 @@ use App\Filament\Resources\DepositMethodResource\Pages;
 use App\Filament\Resources\DepositMethodResource\RelationManagers;
 use App\Models\DepositMethod;
 use Filament\Forms;
+use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
@@ -32,23 +33,72 @@ class DepositMethodResource extends Resource
             ->schema([
                 Forms\Components\Select::make('category')
                     ->options($methodCateogries)
-                    ->default(MethodCategory::MOBILE_BANKING->value)
+                    ->placeholder('Choose a category')
                     ->live()
                     ->reactive()
                     ->required(),
                 Forms\Components\Select::make('mode')
+                    ->live()
+                    ->placeholder('Choose a mode')
+                    ->hidden(fn (Get $get) => $get('category') !== MethodCategory::MOBILE_BANKING->value)
                     ->options($methodModes)
-                    ->default('manual')
                     ->required(),
                 Forms\Components\TextInput::make('label')
-                    ->placeholder('Label')
+                    ->label('Name')
+                    ->placeholder('Name')
+                    ->columnSpan(fn(Get $get)=> $get('mode') === MethodMode::PAYMENT->value ? 'full' : 1)
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('number')
                     ->label(fn (Get $get) => $get('category') !== MethodCategory::CRYPTO->value ? 'Account Number' : 'Wallet Address')
+                    ->hidden(fn (Get $get) => !$get('category') || $get('mode') === MethodMode::PAYMENT->value)
                     ->placeholder(fn (Get $get) => $get('category') !== MethodCategory::CRYPTO->value ? 'Account Number' : '0x...')
+                    ->columnSpan(fn(Get $get)=> $get('category') === MethodCategory::CRYPTO->value ? 'full' : 1)
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('country')
+                    ->hidden(fn (Get $get) => $get('category') !== MethodCategory::BANK->value)
+                    ->placeholder('Country')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('swift_code')
+                    ->hidden(fn (Get $get) => $get('category') !== MethodCategory::BANK->value)
+                    ->placeholder('Swift Code')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('routing_number')
+                    ->hidden(fn (Get $get) => $get('category') !== MethodCategory::BANK->value)
+                    ->placeholder('Routing Number')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\Repeater::make('secrets')
+                    ->hidden(fn (Get $get) => $get('mode') !== MethodMode::PAYMENT->value)
+                    ->label('Secrets')
+                    ->columns(2)
+                    ->schema([
+                        Forms\Components\TextInput::make('username')
+                            ->placeholder('Username')
+                            ->required(),
+                        Forms\Components\TextInput::make('password')
+                            ->password()
+                            ->revealable()
+                            ->placeholder('Password')
+                            ->required(),
+                        Forms\Components\TextInput::make('app_id')
+                            ->label('App ID')
+                            ->placeholder('App ID')
+                            ->required(),
+                        Forms\Components\TextInput::make('app_secret')
+                            ->password()
+                            ->revealable()
+                            ->placeholder('App Secret')
+                            ->required(),
+                    ])
+                    ->addable(false)
+                    ->deletable(false)
+                    ->reorderable(false)
+                    ->collapsible(false)
+                    ->columnSpanFull(),
                 Forms\Components\FileUpload::make('logo')
                     ->extraAttributes(['accept' => 'image/*' ])
                     ->columnSpanFull()
@@ -76,6 +126,7 @@ class DepositMethodResource extends Resource
             ->columns([
                 Tables\Columns\ImageColumn::make('logo'),
                 Tables\Columns\TextColumn::make('label')
+                    ->label('Name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('category')
                     ->badge()
@@ -87,9 +138,11 @@ class DepositMethodResource extends Resource
                     ->extraAttributes(['class'=> 'capitalize'])
                     ->searchable(),
                 Tables\Columns\TextColumn::make('number')
+                    ->placeholder('Not applicable')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('mode')
                     ->badge()
+                    ->placeholder('Not applicable')
                     ->colors([
                         'manual' => 'success',
                         'auto' => 'warning',
@@ -115,9 +168,7 @@ class DepositMethodResource extends Resource
 
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 

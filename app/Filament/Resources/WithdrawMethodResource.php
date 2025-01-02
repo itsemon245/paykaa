@@ -35,11 +35,12 @@ class WithdrawMethodResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('label')
                     ->required()
-                    ->placeholder('Label')
+                    ->label(fn(Get $get)=> $get('catgeory') ? $get('catgeory'). ' Name' : 'Name')
+                    ->placeholder(fn(Get $get)=> $get('catgeory') ? $get('catgeory'). ' Name' : 'Name')
+                    ->helperText('This is a visual name for the withdraw method')
                     ->maxLength(255),
                 Forms\Components\Select::make('category')
                     ->options($methodCateogries)
-                    ->default(MethodCategory::MOBILE_BANKING->value)
                     ->live()
                     ->reactive()
                     ->required(),
@@ -48,6 +49,7 @@ class WithdrawMethodResource extends Resource
                     ->columnSpanFull()
                     ->required(),
                 Forms\Components\Repeater::make('fields')
+                    ->hidden(fn (Get $get) => !$get('category'))
                     ->label('Additional Fields')
                     ->columnSpanFull()
                     ->schema([

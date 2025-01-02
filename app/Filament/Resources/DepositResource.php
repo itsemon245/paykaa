@@ -15,6 +15,7 @@ use Filament\Support\Enums\ActionSize;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -120,7 +121,6 @@ class DepositResource extends Resource
                     ->searchable(),
             ])
             ->filters([
-                //
             ])
             ->actions([
                 Action::make('Approve')
