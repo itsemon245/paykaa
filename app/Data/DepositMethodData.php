@@ -21,12 +21,14 @@ class DepositMethodData extends Data
         public string $label,
         public string $logo,
         public MethodCategory $category,
-        public MethodMode $mode = MethodMode::MANUAL->value,
-        public string $number,
+        #[Optional]
+        public ?MethodMode $mode,
+        #[Optional]
+        public ?string $number,
         #[Optional]
         public ?string $description,
         #[Optional]
-        public ?object $secrets,
+        public ?array $secrets,
         #[Optional]
         public ?array $metadata,
     ) {

@@ -8,6 +8,7 @@ use App\Filament\Resources\WithdrawResource\Pages\ManageWithdraws;
 use App\Models\Model;
 use App\Models\Wallet;
 use Filament\Forms;
+use Filament\Forms\Components\Grid;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\ActionSize;
@@ -30,20 +31,12 @@ class WithdrawResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('owner_id')
-                    ->label('Requested By')
-                    ->searchable()
-                    ->relationship('owner', 'name')
-                    ->required(),
-                Forms\Components\TextInput::make('transaction_id')
+                Forms\Components\TextInput::make('payment_number')
                     ->maxLength(255)
                     ->default(null),
-                Forms\Components\TextInput::make('transaction_type')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('type')
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\TextInput::make('method')
+                    ->maxLength(255)
+                    ->default(null),
                 Forms\Components\TextInput::make('amount')
                     ->required()
                     ->numeric()
@@ -52,18 +45,23 @@ class WithdrawResource extends Resource
                     ->required()
                     ->numeric()
                     ->default(0.00),
-                Forms\Components\TextInput::make('currency')
-                    ->required()
+                    Forms\Components\TextInput::make('currency')
+                        ->required()
+                        ->maxLength(255)
+                        ->default('bdt'),
+                    Forms\Components\TextInput::make('transaction_id')
+                        ->maxLength(255)
+                        ->default(null),
+
+                Forms\Components\Repeater::make('additional_fields')
+                    ->hidden(fn(Model $record)=> count($record?->additional_fields) == 0 )
+                    ->columnSpanFull()
+                    ->schema([
+
+                    ]),
+                Forms\Components\Textarea::make('note')
                     ->maxLength(255)
-                    ->default('bdt'),
-                Forms\Components\TextInput::make('note')
-                    ->maxLength(255)
-                    ->default(null),
-                Forms\Components\TextInput::make('method')
-                    ->maxLength(255)
-                    ->default(null),
-                Forms\Components\TextInput::make('payment_number')
-                    ->maxLength(255)
+                    ->columnSpanFull()
                     ->default(null),
             ]);
     }

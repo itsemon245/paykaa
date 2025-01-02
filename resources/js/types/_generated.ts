@@ -28,8 +28,8 @@ export type DepositMethodData = {
     label: string;
     logo: string;
     category: MethodCategory;
-    mode: MethodMode;
-    number: string;
+    mode?: MethodMode;
+    number?: string;
     description?: string;
     secrets?: object;
     metadata?: Array<any>;
@@ -44,18 +44,11 @@ export type DepositMethodMetaData = {
 export type FieldsData = {
     name: string;
     label: string;
+    required: boolean;
     type?: InputType;
     placeholder?: string;
-    required: boolean;
 };
-export type InputType =
-    | 'text'
-    | 'number'
-    | 'email'
-    | 'file'
-    | 'date'
-    | 'time'
-    | 'datetime';
+export type InputType = 'text' | 'file' | 'textarea';
 export type MessageData = {
     id: number;
     uuid: string;
@@ -78,7 +71,7 @@ export type MessageType =
     | 'money_request_accepted'
     | 'release_request_accepted';
 export type MethodCategory = 'Bank' | 'Cryptocurrency' | 'Mobile Banking';
-export type MethodMode = 'auto' | 'manual';
+export type MethodMode = 'personal' | 'agent' | 'payment';
 export type UserData = {
     id: number;
     uuid: string;

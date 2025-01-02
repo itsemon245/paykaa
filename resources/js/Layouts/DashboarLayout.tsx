@@ -12,7 +12,7 @@ export default function DashboardLayout({ children, animate }: { children?: JSX.
         setIsSidebarOpen(min('md'));
     }, [])
     return (
-        <AuthenticatedLayout>
+        <BaseLayout>
             <SquareBg animate={animate} />
             <div className="flex gap-4 relative justify-center z-10 h-screen px-2 w-screen overflow-x-hidden">
                 {isSidebarOpen && <Sidebar className={cn("sticky", max('sm') ? '!w-[300px] flex-1 grow' : '')} isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />}
@@ -22,6 +22,6 @@ export default function DashboardLayout({ children, animate }: { children?: JSX.
                 </div>
             </div>
             <div className="z-[-1] fixed blur-lg -bottom-5 left-0 w-full h-[18vh] bg-gradient-to-t from-primary-200 to-transparent"></div>
-        </AuthenticatedLayout>
+        </BaseLayout>
     );
 }

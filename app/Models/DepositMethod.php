@@ -12,7 +12,7 @@ class DepositMethod extends Model
     use HasUuid;
 
     protected $casts = [
-        'secrets' => \App\Casts\EncryptedJson::class,
+        'secrets' => 'array',
         'metadata' => 'array',
     ];
 }
