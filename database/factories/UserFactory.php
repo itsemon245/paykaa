@@ -25,7 +25,6 @@ class UserFactory extends Factory
     {
         $name = fake()->name();
         $email = fake()->unique()->safeEmail();
-        $username = str($email)->explode('@')[0];
         $avatar = avatar($name);
         return [
             'name' => $name,
