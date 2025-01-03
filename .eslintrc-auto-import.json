@@ -97,6 +97,7 @@
     "HugeiconsPresentationBarChart02": true,
     "ProfileLayout": true,
     "useBalance": true,
-    "MessageDate": true
+    "MessageDate": true,
+    "Filedrop": true
   }
 }

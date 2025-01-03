@@ -16,6 +16,7 @@ declare global {
   const DangerButton: typeof import('../Components/DangerButton')['default']
   const DashboarLayout: typeof import('../Layouts/DashboarLayout')['default']
   const Dropdown: typeof import('../Components/Dropdown')['default']
+  const Filedrop: typeof import('../Components/Filedrop')['default']
   const FlowbiteBellRingOutline: typeof import('~icons/flowbite/bell-ring-outline.tsx')['default']
   const FlowbiteBellRingSolid: typeof import('~icons/flowbite/bell-ring-solid.tsx')['default']
   const GameIconsCash: typeof import('~icons/game-icons/cash.tsx')['default']

@@ -32,4 +32,5 @@ class ProfileUpdateRequest extends FormRequest
             'gender' => ['nullable', 'string', 'max:255'],
         ];
     }
+
 }
