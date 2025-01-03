@@ -18,11 +18,12 @@ class UserData extends Data
     #[TypeScriptOptional]
     public ?string $referral_id;
     #[TypeScriptOptional]
-    public string|null $email_verified_at;
+    public ?float $balance;
+    #[TypeScriptOptional]
+    public ?string $email_verified_at;
     public function __construct(
         public string $name,
         public string $email,
-        public string $username,
         #[TypeScriptOptional]
         public ?string $avatar,
         #[TypeScriptOptional]

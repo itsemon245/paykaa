@@ -21,6 +21,9 @@ export type PageProps<
     success?: string,
     config: {
         app: ServerAppConfig
+    },
+    options?: {
+        hideSidebar?: boolean
     }
 };
 export type PaginatedCollection<T extends object> = {
