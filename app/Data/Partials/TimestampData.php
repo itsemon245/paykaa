@@ -8,10 +8,8 @@ use Spatie\TypeScriptTransformer\Attributes\Optional;
 
 trait TimestampData
 {
-    #[Optional]
-    public ?Carbon $created_at;
-    #[Optional]
-    public ?Carbon $updated_at;
+    public Carbon $created_at;
+    public Carbon $updated_at;
     #[Optional, Computed]
     public ?string $created_at_human;
     #[Optional, Computed]

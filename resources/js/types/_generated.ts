@@ -17,8 +17,8 @@ export type ChatData = {
     is_typing?: any;
     sender_id: number;
     receiver_id: number;
-    created_at?: string;
-    updated_at?: string;
+    created_at: string;
+    updated_at: string;
     created_at_human?: string;
     updated_at_human?: string;
 };
@@ -33,8 +33,8 @@ export type DepositMethodData = {
     description?: string;
     secrets?: Array<any>;
     metadata?: Array<any>;
-    created_at?: string;
-    updated_at?: string;
+    created_at: string;
+    updated_at: string;
     created_at_human?: string;
     updated_at_human?: string;
 };
@@ -50,13 +50,14 @@ export type FieldsData = {
 };
 export type InputType = 'text' | 'file' | 'textarea';
 export type KycData = {
+    user_id: number;
     doc_type?: KycDocType;
     front_image: string;
     back_image: string;
     approved_at?: string;
     rejected_at?: string;
-    created_at?: string;
-    updated_at?: string;
+    created_at: string;
+    updated_at: string;
     created_at_human?: string;
     updated_at_human?: string;
 };
@@ -71,8 +72,8 @@ export type MessageData = {
     receiver_id: number;
     type: MessageType;
     body: string;
-    created_at?: string;
-    updated_at?: string;
+    created_at: string;
+    updated_at: string;
     created_at_human?: string;
     updated_at_human?: string;
 };
@@ -100,8 +101,8 @@ export type UserData = {
     country?: string;
     address?: string;
     password?: string;
-    created_at?: string;
-    updated_at?: string;
+    created_at: string;
+    updated_at: string;
     created_at_human?: string;
     updated_at_human?: string;
 };
@@ -125,8 +126,8 @@ export type WalletData = {
     approved_at?: string;
     cancelled_at?: string;
     failed_at?: string;
-    created_at?: string;
-    updated_at?: string;
+    created_at: string;
+    updated_at: string;
     created_at_human?: string;
     updated_at_human?: string;
 };
@@ -146,8 +147,8 @@ export type WithdrawMethodData = {
     category: MethodCategory;
     description?: string;
     fields?: Array<FieldsData>;
-    created_at?: string;
-    updated_at?: string;
+    created_at: string;
+    updated_at: string;
     created_at_human?: string;
     updated_at_human?: string;
 };
