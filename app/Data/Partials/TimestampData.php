@@ -10,8 +10,8 @@ trait TimestampData
 {
     public Carbon $created_at;
     public Carbon $updated_at;
-    #[Optional, Computed]
+    #[Optional]
     public ?string $created_at_human;
-    #[Optional, Computed]
+    #[Optional]
     public ?string $updated_at_human;
 }
