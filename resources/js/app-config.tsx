@@ -17,9 +17,13 @@ const appConfig = {
                 component: (page: any) => <ChatLayout children={page} />,
             },
             {
-                pageDir: ['Dashboard', 'Profile', 'Wallet'],
+                pageDir: ['Dashboard', 'Wallet'],
                 component: (page: any) => <DashboardLayout children={page} />,
             },
+            {
+                pageDir: ['Profile'],
+                component: (page: any) => <ProfileLayout children={page} />,
+            }
         ]
         page.then((mod: any) => {
             const layout = layoutMap.find(item => item.pageDir.indexOf(name.split('/')[0]) !== -1);

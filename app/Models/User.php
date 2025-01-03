@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enum\UserType;
+use App\Models\Wallet;
 use App\Traits\HasLatestScope;
 use App\Traits\HasUuid;
 use Filament\Models\Contracts\FilamentUser;
@@ -21,6 +22,13 @@ class User extends Authenticatable implements FilamentUser
     public function canAccessPanel(Panel $panel): bool
     {
         return $this->type === UserType::Admin->value || $this->id == 1;
+    }
+
+    /**
+     * @return float
+     */
+    public function getBalanceAttribute():float {
+        return Wallet::getBalance();
     }
 
     /**

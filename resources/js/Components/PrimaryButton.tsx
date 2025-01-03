@@ -1,4 +1,4 @@
-import { Button } from 'primereact/button';
+import { Button, ButtonProps } from 'primereact/button';
 import { ButtonHTMLAttributes } from 'react';
 
 export default function PrimaryButton({
@@ -6,7 +6,7 @@ export default function PrimaryButton({
     disabled,
     children,
     ...props
-}: ButtonHTMLAttributes<HTMLButtonElement>) {
+}: ButtonProps) {
     return (
         <Button
             {...props}

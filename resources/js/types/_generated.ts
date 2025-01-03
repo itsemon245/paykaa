@@ -31,7 +31,7 @@ export type DepositMethodData = {
     mode?: MethodMode;
     number?: string;
     description?: string;
-    secrets?: object;
+    secrets?: Array<any>;
     metadata?: Array<any>;
     created_at: string;
     updated_at: string;
@@ -77,6 +77,7 @@ export type UserData = {
     uuid: string;
     referral_id?: string;
     email_verified_at?: string;
+    balance?: number;
     name: string;
     email: string;
     username: string;

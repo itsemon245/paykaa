@@ -5,7 +5,7 @@ import { usePage } from '@inertiajs/react';
 import Message from './Message';
 import { poll } from '@/utils';
 import { throttle } from 'lodash';
-import Date from './Date';
+import MessageDate from './MessageDate';
 
 export default function Messages({
     messages,
@@ -104,9 +104,9 @@ export default function Messages({
                         {(messages.data?.map((message, i) => (
                             <>
                                 <Message message={message}>
-                                    {i > 0 && <Date date={message.created_at} prev={messages.data[i + 1]?.created_at} />}
+                                    {i > 0 && <MessageDate date={message.created_at} prev={messages.data[i + 1]?.created_at} />}
                                 </Message>
-                                {i === 0 && <Date date={message.created_at} prev={messages.data[i + 1]?.created_at} />}
+                                {i === 0 && <MessageDate date={message.created_at} prev={messages.data[i + 1]?.created_at} />}
                             </>
 
                         )))}

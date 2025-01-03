@@ -7,11 +7,12 @@ export default function Input({
     error = undefined,
     invalid,
     label,
+    color,
     ...props
-}: InputTextProps & { label?: string, error?: string | undefined }) {
+}: InputTextProps & { label?: string, error?: string | undefined, color?: string }) {
     return (
         <div>
-            <InputLabel htmlFor={id} value={label} />
+            <InputLabel htmlFor={id} value={label} className={color && 'text-' + color} />
             <InputText
                 invalid={invalid || error !== undefined}
                 {...props as InputTextProps}

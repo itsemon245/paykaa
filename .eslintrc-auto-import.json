@@ -94,6 +94,9 @@
     "Logo": true,
     "HugeiconsCancel01": true,
     "SidebarCloseBtn": true,
-    "HugeiconsPresentationBarChart02": true
+    "HugeiconsPresentationBarChart02": true,
+    "ProfileLayout": true,
+    "useBalance": true,
+    "MessageDate": true
   }
 }
