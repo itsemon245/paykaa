@@ -32,6 +32,7 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
+            'csrf_token' => csrf_token(),
             'auth' => [
                 'user' => $request->user(),
             ],
@@ -41,6 +42,12 @@ class HandleInertiaRequests extends Middleware
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
+            ],
+            'paths'=> [
+                'resources' => resource_path(),
+                'public' => public_path(),
+                'storage' => storage_path(),
+                'base' => base_path(),
             ],
             'error' => session()->get('error'),
             'success' => session()->get('success'),

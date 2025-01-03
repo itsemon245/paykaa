@@ -24,6 +24,12 @@ export type PageProps<
     },
     options?: {
         hideSidebar?: boolean
+    },
+    paths: {
+        resources: string,
+        public: string,
+        storage: string,
+        base: string,
     }
 };
 export type PaginatedCollection<T extends object> = {

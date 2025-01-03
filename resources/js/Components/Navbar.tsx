@@ -8,7 +8,7 @@ import autoAnimate from '@formkit/auto-animate'
 import { useRef } from "react";
 import { motion } from "motion/react"
 import useBreakpoint from "@/Hooks/useBrakpoints";
-import { cn } from "@/utils";
+import { cn, image } from "@/utils";
 
 export default function Navbar({
     className,
@@ -45,7 +45,7 @@ export default function Navbar({
             <div className="flex items-center gap-1 sm:gap-4">
                 <div className="flex gap-2 items-center">
                     {max('md') && toggleSidebar && <SidebarCloseBtn isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />}
-                    <img src={user.avatar} className="w-14 h-14 md:w-[72px] md:h-[72px] rounded-full border-white border-2 object-cover" />
+                    <img src={image(user.avatar)} className="w-14 h-14 md:w-[72px] md:h-[72px] rounded-full border-white border-2 object-cover" />
                     <div ref={animationParentRef} className="flex flex-col items-start">
                         <label className="text-white text-base md:text-lg font-bold mb-0">{user.name}</label>
                         <button onClick={refreshBalance} className="bg-white min-w-36 md:min-w-48 text-center py-1 md:py-1.5 rounded-xl text-primary text-sm md:text-base font-medium">{label}</button>

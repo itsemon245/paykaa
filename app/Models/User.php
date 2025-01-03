@@ -19,6 +19,9 @@ class User extends Authenticatable implements FilamentUser
     use HasFactory, Notifiable;
     use HasUuid;
 
+    public function kyc(){
+        return $this->hasOne(Kyc::class);
+    }
     public function canAccessPanel(Panel $panel): bool
     {
         return $this->type === UserType::Admin->value || $this->id == 1;

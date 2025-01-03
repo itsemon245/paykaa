@@ -4,7 +4,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Wallet\DepositController;
 use App\Http\Controllers\Wallet\TransactionController;
 use App\Http\Controllers\Wallet\WithdrawController;
+use App\Models\KycController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UploadController;
 use Inertia\Inertia;
 
 Route::get('/', function () {
@@ -16,6 +18,8 @@ Route::get('/', function () {
     //     'phpVersion' => PHP_VERSION,
     // ]);
 });
+Route::post('/upload/chunk', [UploadController::class, 'store'])->name('upload.chunk.start');
+Route::patch('/upload/chunk', [UploadController::class, 'update'])->name('upload.chunk.update');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard/Index');
@@ -24,6 +28,7 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::patch('/profile-avatar', [ProfileController::class, 'updateAvatar'])->name('profile.update.avatar');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     //Wallet Routes
@@ -35,6 +40,7 @@ Route::middleware('auth')->group(function () {
         Route::get('withdraw', [WithdrawController::class, 'index'])->name('withdraw.index');
         Route::post('withdraw', [WithdrawController::class, 'store'])->name('withdraw.store');
     });
+    Route::post('kyc', [KycController::class, 'store'])->name('kyc.store');
 });
 
 require __DIR__.'/auth.php';

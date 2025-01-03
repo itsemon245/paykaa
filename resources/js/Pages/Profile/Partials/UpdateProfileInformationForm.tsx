@@ -4,20 +4,22 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Transition } from '@headlessui/react';
 import { Link, router, useForm, usePage } from '@inertiajs/react';
-import { FormEventHandler, HTMLProps } from 'react';
+import { ChangeEvent, FormEventHandler, HTMLProps } from 'react';
 import { Tag } from 'primereact/tag';
 import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
 import { subYears } from 'date-fns';
-import { UserData } from '@/types/_generated';
+import { KycData, UserData } from '@/types/_generated';
 import toast from 'react-hot-toast';
 import { PageProps } from '@/types';
 import { Tooltip } from 'primereact/tooltip';
+import { image } from '@/utils';
 
 const EmailVerifiedTag = ({ user, id, ...props }: HTMLProps<HTMLDivElement> & { user: UserData, id?: string }) => {
     const [loading, setLoading] = useState(false);
     const verifyEmail = async () => {
         if (user.email_verified_at) {
+            toast.success('Email already verified');
             return;
         }
         const toastId = toast.loading('Sending verification email...');
@@ -45,9 +47,8 @@ const EmailVerifiedTag = ({ user, id, ...props }: HTMLProps<HTMLDivElement> & { 
         });
     }
     return <div {...props}>
-        {id && <Tooltip target={"#" + id} content={user.email_verified_at ? 'Verified' : 'Click to send verification email'} />}
-        <button id={id} type="button" onClick={verifyEmail}>
-            {!user.email_verified_at && <Tag className="w-max text-xs" icon="pi pi-exclamation-triangle" severity="warning" value={loading ? 'Sending...' : 'Not Verified'}></Tag>}
+        <button id={id} type="button" className='relative' onClick={verifyEmail}>
+            {!user.email_verified_at && <Tag className="w-max text-xs" icon="pi pi-exclamation-triangle" severity="warning" value={loading ? 'Sending...' : 'Click to verify'}></Tag>}
             {user.email_verified_at && <Tag className="w-max text-xs" icon="pi pi-check" severity="success" value="Verified"></Tag>}
         </button>
     </div>
@@ -55,11 +56,14 @@ const EmailVerifiedTag = ({ user, id, ...props }: HTMLProps<HTMLDivElement> & { 
 
 export default function UpdateProfileInformation() {
     const { user } = useAuth();
+    const kyc = usePage().props.kyc as KycData | undefined;
+    const csrf_token = usePage().props.csrf_token as string;
     const { balance } = useBalance();
 
     const { data, setData, patch, errors, processing, recentlySuccessful } =
         useForm({
             name: user.name,
+            avatar: user.avatar as string | File,
             email: user.email,
             gender: user.gender,
             date_of_birth: user.date_of_birth,
@@ -67,34 +71,71 @@ export default function UpdateProfileInformation() {
             address: user.address,
             phone: user.phone,
         });
-
+    const [preview, setPreview] = useState<string | undefined>(undefined);
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         patch(route('profile.update'));
     };
 
+    const uploadAvatar = async (e: ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        setPreview(URL.createObjectURL(file as Blob));
+        if (!file) {
+            return;
+        }
+        const formData = new FormData();
+        formData.append('avatar', file);
+        formData.append('_token', csrf_token)
+        formData.append('_method', 'patch');
+        const toastId = toast.loading('Updating Avatar...')
+        const res = await fetch(route('profile.update.avatar'), {
+            method: 'post',
+            body: formData,
+        });
+        if (!res.ok) {
+            toast.dismiss(toastId)
+            toast.error('Failed to update avatar')
+            console.log("Error updating avatar", res);
+            return;
+        }
+        const data = await res.json();
+        if (data.success) {
+            toast.dismiss(toastId)
+            toast.success('Avatar Updated Successfully!')
+            return;
+        } else {
+            toast.dismiss(toastId)
+            toast.error('Something went wrong!')
+            console.log("Something went wrong", data);
+            return;
+        }
+    }
+
     return (
         <form onSubmit={submit} className="flex flex-col gap-2 w-full justify-center mx-auto">
             <InputLabel className='!text-gray-800 text-md !font-bold' value="Personal Data:" />
             <div className="flex items-center gap-2">
-                <div className='relative'>
-                    <img src={user.avatar} className="w-20 rounded-full" alt="Avatar" />
+                <label htmlFor='avatar' className='relative'>
+                    <input className='hidden' type="file" name="avatar" id="avatar" onChange={uploadAvatar} />
+                    <img src={preview || image(user.avatar as string)} className="w-20 rounded-full" alt="Avatar" />
                     <div className="absolute top-0 right-0 p-1 rounded-full flex items-center justify-center">
                         <HeroiconsCameraSolid className="w-5 h-5" />
                     </div>
-                </div>
+                </label>
 
                 <div className="flex flex-col leading-5 gap-1 text-gray-800">
                     <div className="font-bold">{user.email}</div>
                     <div className="font-medium">Unique ID: {user.id}</div>
                     <div className="font-medium">Balance: {balance}</div>
-                    <EmailVerifiedTag user={user} id="in-ui" />
+                    <Tag className="w-max text-xs" icon="pi pi-user" severity={kyc?.approved_at ? 'success' : 'danger'} value={kyc?.approved_at ? 'Verified' : 'Not Verified'} />
                 </div>
             </div>
             <div className='flex flex-col gap-3 mt-5'>
                 <Input color="gray-700" label='Name' value={data.name} onChange={e => setData('name', e.target.value)} error={errors.name} />
                 <div className="relative">
-                    <EmailVerifiedTag user={user} className="absolute right-3 top-3" />
+                    <div className="absolute right-3 top-3">
+                        <EmailVerifiedTag user={user} id="email-verified-tag" />
+                    </div>
                     <Input invalid={!user.email_verified_at} error={errors.email} color="gray-700" label='Email' value={data.email} onChange={e => setData('email', e.target.value)} />
                 </div>
                 <Input color="gray-700" label='Date of Birth' value={data.date_of_birth} onChange={e => setData('date_of_birth', e.target.value)} type="date" max={subYears(new Date(), 12).toISOString().split('T')[0]} error={errors.date_of_birth} />

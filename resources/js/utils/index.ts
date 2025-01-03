@@ -68,3 +68,10 @@ export function transform(input: string, targetCase: 'camel' | 'snake' | 'pascal
     }
 }
 export const cn = classNames
+
+export const image = (url?: string) => {
+    if (!url) {
+        return;
+    }
+    return url.startsWith("http") ? url : `/storage/${url}`;
+}
