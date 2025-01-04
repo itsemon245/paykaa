@@ -27,8 +27,8 @@ const menuItems = [
     {
         label: "Ads",
         icon: "/assets/dashboard/ads.png",
-        url: "#",
-        isActive: () => false,
+        url: route('add.index'),
+        isActive: () => route().current('add.index'),
     },
     {
         label: "Referral",

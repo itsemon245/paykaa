@@ -1,6 +1,6 @@
 import { format, isThisWeek, isToday, isYesterday, parseISO } from 'date-fns';
 
-export default function MessageDate({ date, prev }: { date: string, prev?: string }) {
+export default function MessageDate({ date, prev }: { date?: string, prev?: string }) {
     const getVisualDate = (date: Date) => {
         const DATE_FORMAT = 'MMMM dd, yyyy';
         let visualDate = format(date, DATE_FORMAT);
@@ -16,7 +16,7 @@ export default function MessageDate({ date, prev }: { date: string, prev?: strin
         return visualDate;
     }
 
-    const parsedDate = parseISO(date);
+    const parsedDate = parseISO(date as string);
     let visualDate = getVisualDate(parsedDate);
     if (prev) {
         const getPrevVisualDate = getVisualDate(parseISO(prev));

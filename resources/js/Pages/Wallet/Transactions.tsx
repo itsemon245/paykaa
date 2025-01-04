@@ -72,14 +72,14 @@ export default function Transactions() {
                 <Card>
                     <h1 className="text-xl font-bold mb-3">Transactions</h1>
                     <DataTable className="rounded-lg overflow-hidden" emptyMessage={<div className="text-center font-bold">No Transactions Yet</div>} dataKey="uuid" totalRecords={transactions.total} value={transactions.data} rows={perPage} tableStyle={{ minWidth: '50rem' }}>
-                        <Column field="id" header="No." body={slBodyTemplate} style={{ width: 'max-content' }}></Column>
-                        <Column field="created_at" body={(item) => format(parseISO(item.created_at), "PP")} header="Date" className="w-[15%]"></Column>
-                        <Column field="amount" header="Amount" body={amountBodyTemplate} style={{ width: 'max-content' }}></Column>
-                        <Column field="transaction_type" header="Type" className="capitalize" body={transactionTypeBodyTemplate} style={{ width: 'max-content' }}></Column>
-                        <Column field="method" header="Method" className="capitalize" style={{ width: 'max-content' }}></Column>
-                        <Column field="payment_number" header="Payment Number" style={{ width: 'max-content' }}></Column>
-                        <Column field="transaction_id" header="Transaction ID" style={{ width: 'max-content' }}></Column>
-                        <Column field="approved_at" body={statusBodyTemplate} header="Status" style={{ width: 'max-content' }}></Column>
+                        <Column field="id" className="!p-1" header="No." body={slBodyTemplate} style={{ width: 'max-content' }}></Column>
+                        <Column field="created_at" body={(item) => format(parseISO(item.created_at), "PP")} header="Date" className="!p-1 !w-[100px]"></Column>
+                        <Column className="!p-1" field="amount" header="Amount" body={amountBodyTemplate} style={{ width: 'max-content' }}></Column>
+                        <Column className="!p-1 capitalize" field="transaction_type" header="Type" body={transactionTypeBodyTemplate} style={{ width: 'max-content' }}></Column>
+                        <Column className="!p-1 capitalize" field="method" header="Method" style={{ width: 'max-content' }}></Column>
+                        <Column className="!p-1" field="payment_number" header="Payment Number" style={{ width: 'max-content' }}></Column>
+                        <Column className="!p-1" field="transaction_id" header="Transaction ID" style={{ width: 'max-content' }}></Column>
+                        <Column className="!p-1" field="approved_at" body={statusBodyTemplate} header="Status" style={{ width: 'max-content' }}></Column>
                     </DataTable>
                     {/*<Paginator first={first} rows={perPage} totalRecords={transactions.total} rowsPerPageOptions={[15, 30, 50]} onPageChange={onPage} />*/}
 

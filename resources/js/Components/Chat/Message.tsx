@@ -24,7 +24,7 @@ const Message = ({ message, children }: { message: MessageData, children?: React
                             <div>{message.body}</div>
                         </div>
                     </div>
-                    <span>{format(parseISO(message.created_at), 'hh:mm a')}</span>
+                    <span>{format(parseISO(message.created_at as string), 'hh:mm a')}</span>
                 </div>
             </div>
             {/*

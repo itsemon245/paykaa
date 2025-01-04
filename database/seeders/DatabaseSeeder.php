@@ -38,5 +38,8 @@ class DatabaseSeeder extends Seeder
             'transaction_type'=> WalletTransactionType::DEPOSIT->value,
             'type' => WalletType::CREDIT->value,
         ]);
+        $this->call([
+            AddMethodSeeder::class,
+        ]);
     }
 }

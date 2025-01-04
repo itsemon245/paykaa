@@ -10,10 +10,24 @@ export default function Input({
     color,
     ...props
 }: InputTextProps & { label?: string, error?: string | undefined, color?: string }) {
+    const getKyeFilter = (type?: string) => {
+        if (!type) {
+            return undefined
+        }
+        if (props.keyfilter) return props.keyfilter
+        const filters = {
+            number: "num",
+            email: "email",
+        } as {
+            [key: string]: InputTextProps['keyfilter']
+        }
+        return filters[type as keyof typeof filters]
+    }
     return (
         <div>
             <InputLabel htmlFor={id} value={label} className={color && 'text-' + color} />
             <InputText
+                keyfilter={getKyeFilter(props.type)}
                 invalid={invalid || error !== undefined}
                 {...props as InputTextProps}
             />

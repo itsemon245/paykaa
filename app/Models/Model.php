@@ -11,10 +11,10 @@ class Model extends BaseModel
 
     function getCreatedAtHumanAttribute()
     {
-        return $this->created_at->diffForHumans();
+        return $this->created_at?->diffForHumans();
     }
     function getUpdatedAtHumanAttribute()
     {
-        return $this->updated_at->diffForHumans();
+        return $this->updated_at?->diffForHumans();
     }
 }

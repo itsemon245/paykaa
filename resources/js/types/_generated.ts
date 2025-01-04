@@ -1,3 +1,32 @@
+export type AddData = {
+    id: number | null;
+    uuid: string | null;
+    owner?: UserData;
+    addMethod?: AddMethodData;
+    type?: AddType;
+    owner_id: number;
+    add_method_id?: number;
+    contact: string | null;
+    amount: number;
+    rate: number;
+    limit_max?: number;
+    limit_min?: number;
+    created_at?: string;
+    updated_at?: string;
+    created_at_human?: string;
+    updated_at_human?: string;
+};
+export type AddMethodData = {
+    id: number;
+    name: string;
+    logo?: string;
+    color?: string;
+    created_at?: string;
+    updated_at?: string;
+    created_at_human?: string;
+    updated_at_human?: string;
+};
+export type AddType = 'Buy' | 'Sell';
 export type AdditionalFields = {
     name: string;
     value?: string;
@@ -17,8 +46,8 @@ export type ChatData = {
     is_typing?: any;
     sender_id: number;
     receiver_id: number;
-    created_at: string;
-    updated_at: string;
+    created_at?: string;
+    updated_at?: string;
     created_at_human?: string;
     updated_at_human?: string;
 };
@@ -33,8 +62,8 @@ export type DepositMethodData = {
     description?: string;
     secrets?: Array<any>;
     metadata?: Array<any>;
-    created_at: string;
-    updated_at: string;
+    created_at?: string;
+    updated_at?: string;
     created_at_human?: string;
     updated_at_human?: string;
 };
@@ -56,8 +85,8 @@ export type KycData = {
     back_image: string;
     approved_at?: string;
     rejected_at?: string;
-    created_at: string;
-    updated_at: string;
+    created_at?: string;
+    updated_at?: string;
     created_at_human?: string;
     updated_at_human?: string;
 };
@@ -72,8 +101,8 @@ export type MessageData = {
     receiver_id: number;
     type: MessageType;
     body: string;
-    created_at: string;
-    updated_at: string;
+    created_at?: string;
+    updated_at?: string;
     created_at_human?: string;
     updated_at_human?: string;
 };
@@ -101,8 +130,8 @@ export type UserData = {
     country?: string;
     address?: string;
     password?: string;
-    created_at: string;
-    updated_at: string;
+    created_at?: string;
+    updated_at?: string;
     created_at_human?: string;
     updated_at_human?: string;
 };
@@ -126,8 +155,8 @@ export type WalletData = {
     approved_at?: string;
     cancelled_at?: string;
     failed_at?: string;
-    created_at: string;
-    updated_at: string;
+    created_at?: string;
+    updated_at?: string;
     created_at_human?: string;
     updated_at_human?: string;
 };
@@ -147,8 +176,8 @@ export type WithdrawMethodData = {
     category: MethodCategory;
     description?: string;
     fields?: Array<FieldsData>;
-    created_at: string;
-    updated_at: string;
+    created_at?: string;
+    updated_at?: string;
     created_at_human?: string;
     updated_at_human?: string;
 };

@@ -97,5 +97,9 @@
     .p-card-content{
         @apply max-sm:p-2
     }
+
+    .p-dialog{
+        @apply w-[95%] sm:w-[70vw] md:w-[50vw] max-h-[90vh]
+    }
 }
 
