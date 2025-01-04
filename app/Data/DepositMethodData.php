@@ -26,6 +26,16 @@ class DepositMethodData extends Data
         #[Optional]
         public ?string $number,
         #[Optional]
+        public ?string $bank_name,
+        #[Optional]
+        public ?string $account_holder,
+        #[Optional]
+        public ?string $branch_name,
+        #[Optional]
+        public ?string $swift_code,
+        #[Optional]
+        public ?string $routing_number,
+        #[Optional]
         public ?string $description,
         #[Optional]
         public ?array $secrets,

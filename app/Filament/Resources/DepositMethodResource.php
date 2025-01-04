@@ -56,9 +56,10 @@ class DepositMethodResource extends Resource
                     ->columnSpan(fn(Get $get)=> $get('category') === MethodCategory::CRYPTO->value ? 'full' : 1)
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('country')
+                Forms\Components\TextInput::make('account_holder')
                     ->hidden(fn (Get $get) => $get('category') !== MethodCategory::BANK->value)
-                    ->placeholder('Country')
+                    ->placeholder('Account Holder Name')
+                    ->label('Account Holder Name')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('swift_code')

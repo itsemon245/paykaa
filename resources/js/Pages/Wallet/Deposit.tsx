@@ -88,7 +88,7 @@ export default function Deposit() {
                 setDeposits(data.props.deposits as PaginatedCollection<WalletData>)
             },
             onError: (err) => {
-
+                console.error("Error while depositing", err)
                 toast.error('Deposit Failed')
             },
             onFinish: () => {
@@ -149,17 +149,61 @@ export default function Deposit() {
                         deposit(e)
                     }}>
                         <div className="flex flex-col justify-center items-center w-full my-2 gap-3">
+
                             {activeDepositMethod?.category === "Cryptocurrency" ? <img src={`/storage/${activeDepositMethod?.metadata![0]?.qr_code}`} className="w-32 md:w-40 p-3 border rounded-lg" /> : <img src={`/storage/${activeDepositMethod?.logo}`} className="w-32 md:w-40  p-3 border rounded-lg" />}
-                            <div className="text-center md:text-xl font-bold">
-                                <div>
-                                    {activeDepositMethod?.category === 'Cryptocurrency' && 'Address: '}
-                                    {activeDepositMethod?.category === 'Bank' && 'Account Number: '}
-                                    {activeDepositMethod?.category === 'Mobile Banking' && titleCase(activeDepositMethod?.mode || '') + ' Number: '}
-                                    {activeDepositMethod?.number}
+                            {activeDepositMethod?.category === 'Cryptocurrency' && <div className="text-xs md:text-sm font-medium text-center">Scan the QR code to send money to this address and fill the form below</div>}
+                            {activeDepositMethod?.category === 'Mobile Banking' && <div className="text-xs md:text-sm font-medium text-center">Send money to this number and fill the form below</div>}
+                            {activeDepositMethod?.category === 'Bank' && <div className="text-xs md:text-sm font-medium text-center">Send money to this account and fill the form below</div>}
+                            {activeDepositMethod?.category === 'Bank' ? (
+                                <div className="grid md:grid-cols-2 gap-y-3 gap-x-7 items-center justify-center">
+                                    <div className="flex gap-1">
+                                        <div className="flex gap-1 font-semibold">
+                                            <div>Bank Name</div> <div>:</div>
+                                        </div>
+                                        <div className="font-medium">{activeDepositMethod?.label}</div>
+                                    </div>
+                                    <div className="flex gap-1">
+                                        <div className="flex gap-1 font-semibold">
+                                            <div>Branch Name</div> <div>:</div>
+                                        </div>
+                                        <div className="font-medium">{activeDepositMethod?.branch_name}</div>
+                                    </div>
+                                    <div className="flex gap-1">
+                                        <div className="flex gap-1 font-semibold">
+                                            <div>Account Number</div> <div>:</div>
+                                        </div>
+                                        <div className="font-medium">{activeDepositMethod?.number}</div>
+                                    </div>
+                                    <div className="flex gap-1">
+                                        <div className="flex gap-1 font-semibold">
+                                            <div>Account Holder Name</div> <div>:</div>
+                                        </div>
+                                        <div className="font-medium">{activeDepositMethod?.account_holder}</div>
+                                    </div>
+                                    <div className="flex gap-1">
+                                        <div className="flex gap-1 font-semibold">
+                                            <div>Swift Code</div> <div>:</div>
+                                        </div>
+                                        <div className="font-medium">{activeDepositMethod?.swift_code}</div>
+                                    </div>
+                                    <div className="flex gap-1">
+                                        <div className="flex gap-1 font-semibold">
+                                            <div>Routing Number</div> <div>:</div>
+                                        </div>
+                                        <div className="font-medium">{activeDepositMethod?.routing_number}</div>
+                                    </div>
+
                                 </div>
-                                {activeDepositMethod?.category === 'Cryptocurrency' && <div className="text-xs md:text-sm font-medium text-center">Scan the QR code to send money to this address and fill the form below</div>}
-                                {activeDepositMethod?.category !== 'Cryptocurrency' && <div className="text-xs md:text-sm font-medium text-center">Send money to this number and fill the form below</div>}
-                            </div>
+                            ) : (
+                                <div className="text-center md:text-xl font-bold">
+                                    <div>
+                                        {activeDepositMethod?.category === 'Cryptocurrency' && 'Address: '}
+                                        {activeDepositMethod?.category === 'Mobile Banking' && titleCase(activeDepositMethod?.mode || '') + ' Number: '}
+                                        {activeDepositMethod?.number}
+                                    </div>
+
+                                </div>
+                            )}
                         </div>
                         {activeDepositMethod?.mode !== "payment" && (
                             <ManualMobileBanking depositMethod={activeDepositMethod} errors={errors} data={data} setData={setData} />
@@ -200,7 +244,7 @@ export default function Deposit() {
                     </Card>
                     */}
                 </div>
-            </div>
+            </div >
         </>
     );
 }

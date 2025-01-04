@@ -29,7 +29,7 @@ class DepositController extends Controller
     }
     public function store(Request $request)
     {
-        $data = WalletData::from($request->all());
+        $data = WalletData::from($request);
         $wallet = $this->wallet;
         return backWithError(function() use ($data, $wallet) {
             $wallet->deposit($data);

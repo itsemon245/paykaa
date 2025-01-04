@@ -18,11 +18,11 @@ class WalletData extends Data
 {
     use TimestampData;
 
-    public int $id;
-    public string $uuid;
-    public int $owner_id;
-    public UserData $owner;
-    public WalletStatus $status;
+    public ?int $id;
+    public ?string $uuid;
+    public ?int $owner_id;
+    public ?UserData $owner;
+    public ?WalletStatus $status;
     public function __construct(
         public WalletType $type,
         public WalletTransactionType $transaction_type,

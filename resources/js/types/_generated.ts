@@ -59,6 +59,11 @@ export type DepositMethodData = {
     category: MethodCategory;
     mode?: MethodMode;
     number?: string;
+    bank_name?: string;
+    account_holder?: string;
+    branch_name?: string;
+    swift_code?: string;
+    routing_number?: string;
     description?: string;
     secrets?: Array<any>;
     metadata?: Array<any>;
@@ -137,11 +142,11 @@ export type UserData = {
 };
 export type UserType = 'customer' | 'admin';
 export type WalletData = {
-    id: number;
-    uuid: string;
-    owner_id: number;
-    owner: UserData;
-    status: WalletStatus;
+    id: number | null;
+    uuid: string | null;
+    owner_id: number | null;
+    owner: UserData | null;
+    status: WalletStatus | null;
     type: WalletType;
     transaction_type: WalletTransactionType;
     amount: number;
