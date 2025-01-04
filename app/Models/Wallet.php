@@ -24,6 +24,20 @@ class Wallet extends Model
         'failed_at' => 'datetime',
     ];
 
+    /**
+     * @return BelongsTo
+     */
+    public function withdrawMethod():BelongsTo {
+        return $this->belongsTo(WithdrawMethod::class, 'withdraw_method_id');
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function depositMethod():BelongsTo {
+        return $this->belongsTo(DepositMethod::class, 'deposit_method_id');
+    }
+
     public function getStatusAttribute(): string
     {
         if($this->failed_at) {

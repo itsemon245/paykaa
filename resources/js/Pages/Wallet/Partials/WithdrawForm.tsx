@@ -11,43 +11,26 @@ interface FieldProps {
 };
 
 function FieldInput({ field, fieldStates, setFieldStates, ...props }: FieldProps) {
-    const handleChange = async (e: any, field: AdditionalFields) => {
+    const handleChange = (e: any, field: AdditionalFields) => {
         const fieldItem = fieldStates.find(item => item.name === field.name)
         let value = e.target.value
         if (fieldItem) {
             fieldStates.splice(fieldStates.indexOf(fieldItem), 1, {
                 name: field.name,
+                label: field.label,
+                type: field.type,
                 value: value,
             })
             return;
         } else {
             fieldStates.push({
                 name: field.name,
+                label: field.label,
+                type: field.type,
                 value: value,
             })
         }
         return
-        let file = e.target.files?.length ? e.target.files[0] : false
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(event: any) {
-                const dataURL = event.target.result;
-                console.log('Data URL:', dataURL);
-                if (fieldItem) {
-                    fieldStates.splice(fieldStates.indexOf(fieldItem), 1, {
-                        name: field.name,
-                        value: value,
-                    })
-                    return;
-                } else {
-                    fieldStates.push({
-                        name: field.name,
-                        value: value,
-                    })
-                }
-            };
-        } else {
-        }
     }
     switch (field.type) {
         case "text":
@@ -69,10 +52,9 @@ interface WithdrawFormProps {
 export default function WithdrawForm({ data, setData, errors, activeWithdrawalMethod }: WithdrawFormProps) {
     const [fieldStates, setFieldStates] = useState<AdditionalFields[]>([]);
     useEffect(() => {
-        if (fieldStates.length > 0) {
-            console.log(fieldStates)
-        }
+        setData('additional_fields', fieldStates)
     }, [fieldStates])
+
     return (<div className="flex flex-col justify-center items-center w-full my-2 gap-3 *:w-full">
         <div>
             <InputLabel value="Amount" />

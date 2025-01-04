@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enum\MethodCategory;
 use App\Enum\Wallet\WalletStatus;
 use App\Enum\Wallet\WalletTransactionType;
 use App\Filament\Resources\DepositResource\Pages\ManageDeposits;
@@ -28,27 +29,35 @@ class DepositResource extends Resource
     protected static ?string $pluralModelLabel = 'Deposit Requests';
     protected static ?string $navigationIcon = 'heroicon-o-arrow-down-on-square';
 
-
-
-
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('owner_id')
-                    ->label('Requested By')
-                    ->searchable()
-                    ->relationship('owner', 'name')
-                    ->required(),
-                Forms\Components\TextInput::make('transaction_id')
+                Forms\Components\Fieldset::make('User')
+                    ->relationship('owner')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->disabled()
+                            ->required(),
+                        Forms\Components\TextInput::make('email')
+                            ->disabled()
+                            ->required(),
+                    ]),
+                Forms\Components\TextInput::make('method')
+                    ->default(function(Model $record) {
+                        return $record->depositMethod?->label;
+                    })
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('payment_number')
+                    ->label(function(Model $record) {
+                        $category = $record->depositMethod?->category;
+                        if($category === MethodCategory::BANK->value) {
+                            return 'Account Number';
+                        }
+                        return $category === MethodCategory::MOBILE_BANKING->value ? 'Phone Number' : 'Wallet Adress';
+                    })
                     ->maxLength(255)
                     ->default(null),
-                Forms\Components\TextInput::make('transaction_type')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('type')
-                    ->required()
-                    ->maxLength(255),
                 Forms\Components\TextInput::make('amount')
                     ->required()
                     ->numeric()
@@ -57,19 +66,20 @@ class DepositResource extends Resource
                     ->required()
                     ->numeric()
                     ->default(0.00),
-                Forms\Components\TextInput::make('currency')
-                    ->required()
-                    ->maxLength(255)
-                    ->default('bdt'),
-                Forms\Components\TextInput::make('note')
+                Forms\Components\TextInput::make('transaction_id')
                     ->maxLength(255)
                     ->default(null),
-                Forms\Components\TextInput::make('method')
+                Forms\Components\Textarea::make('note')
                     ->maxLength(255)
                     ->default(null),
-                Forms\Components\TextInput::make('payment_number')
-                    ->maxLength(255)
-                    ->default(null),
+                Forms\Components\FileUpload::make('receipt')
+                    ->hidden(function(Model $record){
+                        return $record->depositMethod?->category !== MethodCategory::BANK->value;
+                    })
+                    ->columnSpanFull()
+                    ->downloadable()
+                    ->image()
+                    ->required(),
             ]);
     }
 

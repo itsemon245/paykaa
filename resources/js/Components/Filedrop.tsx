@@ -22,7 +22,7 @@ export default function Filedrop({
     className,
     maxFiles,
     label,
-    labelIdle,
+    labelIdle = 'Drag and drop your file here',
     onProcessFile,
     allowMultiple,
     ...props

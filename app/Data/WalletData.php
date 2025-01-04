@@ -28,6 +28,10 @@ class WalletData extends Data
         public WalletTransactionType $transaction_type,
         public float $amount,
         #[Optional]
+        public ?int $deposit_method_id,
+        #[Optional]
+        public ?int $withdraw_method_id,
+        #[Optional]
         /** @var AdditionalFields[] */
         public ?array $additional_fields,
         public ?string $currency = 'bdt',
@@ -39,6 +43,8 @@ class WalletData extends Data
         public ?string $transaction_id,
         #[Optional]
         public ?string $note,
+        #[Optional]
+        public ?string $receipt,
         #[Optional]
         public ?string $payment_number,
         #[Optional]

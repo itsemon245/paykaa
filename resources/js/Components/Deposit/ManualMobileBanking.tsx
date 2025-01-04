@@ -28,23 +28,24 @@ export default function ManualMobileBanking({
         const amount = e.value
         if (amount) {
             setData('amount', amount)
+            // setData('method', depositMethod?.label)
+            // setData('type', "credit")
+            // setData('transaction_type', "deposit")
+            // setData('deposit_method_id', depositMethod?.id)
         } else {
             setData('amount', 0)
         }
     }
     const getNumberLabel = useMemo(() => {
         if (depositMethod?.category === "Mobile Banking") {
-            return "Enter the number you sent money from"
+            return "Phone Number"
         }
         if (depositMethod?.category === "Bank") {
-            return "Enter the account number"
+            return "Account Number"
         }
-        return "Enter the number you sent money from"
+        return "Wallet Adress"
     }, [depositMethod])
 
-    useEffect(() => {
-        console.log(data)
-    }, [JSON.stringify(data)])
     return (
         <div className="flex flex-col gap-3 w-full">
             {total > 0 && (
@@ -64,6 +65,9 @@ export default function ManualMobileBanking({
                 <Input label="Transaction ID" placeholder="Enter Transaction ID from the message" error={errors.transaction_id} className="w-full" onChange={e => setData('transaction_id', e.target.value)} />
             )}
             <Textarea autoResize label="Note(optional)" placeholder="Enter a note(optional)" className="w-full" onChange={e => setData('note', e.target.value)} error={errors.note} />
+            {depositMethod?.category === 'Bank' && (
+                <Filedrop className="min-h-[120px]" label="Upload receipt" onProcessFile={(path, storageUrl) => setData('receipt', storageUrl)} />
+            )}
         </div>
     )
 }

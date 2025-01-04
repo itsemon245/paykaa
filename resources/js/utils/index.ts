@@ -27,17 +27,24 @@ export const poll = (fn: () => void, timeout: number) => {
     return () => clearInterval(interval);
 };
 
-export const titleCase = (title: string) => {
+export const titleCase = (title?: string) => {
     //convert any case (camelCase, PascaleCase, kebab-case, snake_case) to Title Case
     return transform(title, 'title');
 };
-export function transform(input: string, targetCase: 'camel' | 'snake' | 'pascal' | 'kebab' | 'title'): string {
+export function transform(input?: string, targetCase?: 'camel' | 'snake' | 'pascal' | 'kebab' | 'title'): string {
     // Normalize the input string by splitting it into words
+    if (!input) {
+        return '';
+    }
     const words = input
         .replace(/([a-z])([A-Z])/g, '$1 $2') // Handle camelCase and PascalCase
         .replace(/[_-]/g, ' ')              // Handle snake_case and kebab-case
         .toLowerCase()                      // Convert all to lowercase initially
         .split(/\s+/);                     // Split by spaces
+
+    if (!targetCase) {
+        targetCase = 'title'
+    }
 
     switch (targetCase) {
         case 'camel':
@@ -64,7 +71,7 @@ export function transform(input: string, targetCase: 'camel' | 'snake' | 'pascal
                 .join(' ');
 
         default:
-            throw new Error(`Unsupported case: ${targetCase}`);
+            return input;
     }
 }
 export const cn = classNames

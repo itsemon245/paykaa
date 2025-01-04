@@ -47,8 +47,9 @@ export default function Deposit() {
         method: "",
         note: "",
         transaction_type: "deposit",
+        receipt: undefined,
         currency: "bdt",
-        type: "credit"
+        type: "credit",
     })
     //group deposit methods by category
     const mappedDepositMethods = depositMethods.reduce((acc, method) => {
@@ -81,6 +82,13 @@ export default function Deposit() {
     const deposit = async (e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>) => {
         const toastId = toast.loading('Depositing...')
         const url = route('wallet.deposit.store')
+        console.log(activeDepositMethod)
+        setData('method', activeDepositMethod?.label)
+        setData('type', "credit")
+        setData('transaction_type', "deposit")
+        setData('deposit_method_id', activeDepositMethod?.id)
+        console.log(data)
+        return;
         post(url, {
             onSuccess: (data) => {
                 toast.success('Deposit successful')
@@ -96,17 +104,6 @@ export default function Deposit() {
             }
         })
     }
-    useEffect(() => {
-        if (activeDepositMethod) {
-            setData('method', activeDepositMethod?.label)
-            setData('type', "credit")
-            setData('transaction_type', "deposit")
-        }
-    }, [JSON.stringify(activeDepositMethod)])
-
-    useEffect(() => {
-        console.log(deposits)
-    }, [deposits])
 
     const slBodyTemplate = (item: WalletData, options: ColumnBodyOptions) => {
         return <div className="font-bold">{options.rowIndex + 1}</div>
@@ -125,15 +122,9 @@ export default function Deposit() {
                 return "info";
         }
     }
-    const StatusBodyTemplate = (item: WalletData) => {
-        return <Tag value={item.status[0].toUpperCase() + item.status.slice(1)} severity={getSeverity(item.status)}></Tag>;
-    };
-    const amountBodyTemplate = (item: WalletData) => {
-        return <div className="font-bold">{item.amount.toLocaleString('en-IN', { style: 'currency', currency: 'BDT' })}</div>
-    }
     const DepositFooter = () => {
         return (
-            <div className="flex justify-end md:flex-row-reverse gap-2">
+            <div className="flex justify-end md:flex-row-reverse gap-2 mt-3">
                 <Button outlined label="Cancel" onClick={() => setActiveDepositMethod(undefined)} />
                 <Button label="Deposit" onClick={deposit} loading={processing} />
             </div>
@@ -143,14 +134,13 @@ export default function Deposit() {
         <>
             <Head title="Deposit" />
             <div className="container">
-                <Dialog header={`Deposit using ${activeDepositMethod?.label}`} footer={<DepositFooter />} visible={dialogOpened} className="w-[95%] sm:w-[70vw] md:w-[50vw]" onHide={() => setActiveDepositMethod(undefined)}>
+                <Dialog header={`Deposit using ${activeDepositMethod?.category}`} footer={<DepositFooter />} visible={dialogOpened} className="w-[95%] sm:w-[70vw] md:w-[50vw]" onHide={() => setActiveDepositMethod(undefined)}>
                     <form onSubmit={e => {
                         e.preventDefault()
                         deposit(e)
                     }}>
                         <div className="flex flex-col justify-center items-center w-full my-2 gap-3">
-
-                            {activeDepositMethod?.category === "Cryptocurrency" ? <img src={`/storage/${activeDepositMethod?.metadata![0]?.qr_code}`} className="w-32 md:w-40 p-3 border rounded-lg" /> : <img src={`/storage/${activeDepositMethod?.logo}`} className="w-32 md:w-40  p-3 border rounded-lg" />}
+                            {activeDepositMethod?.category === "Cryptocurrency" ? <img src={`/storage/${activeDepositMethod?.metadata![0]?.qr_code}`} className="w-32 md:w-40 p-3 border rounded-lg" /> : <img src={`/storage/${activeDepositMethod?.logo}`} className="w-28 md:w-36  p-3 border rounded-lg" />}
                             {activeDepositMethod?.category === 'Cryptocurrency' && <div className="text-xs md:text-sm font-medium text-center">Scan the QR code to send money to this address and fill the form below</div>}
                             {activeDepositMethod?.category === 'Mobile Banking' && <div className="text-xs md:text-sm font-medium text-center">Send money to this number and fill the form below</div>}
                             {activeDepositMethod?.category === 'Bank' && <div className="text-xs md:text-sm font-medium text-center">Send money to this account and fill the form below</div>}

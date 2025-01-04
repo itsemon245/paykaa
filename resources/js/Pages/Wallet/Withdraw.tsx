@@ -46,6 +46,11 @@ export default function Withdraw() {
         }
         const url = route('wallet.withdraw.store')
         const toastId = toast.loading('Withdrawing...')
+        setData('method', activeWithdrawalMethod?.label)
+        setData('type', "debit")
+        setData('transaction_type', 'withdraw')
+        setData('withdraw_method_id', activeWithdrawalMethod?.id)
+
         post(url, {
             onSuccess: (data) => {
                 if (data.props.error) {
@@ -91,11 +96,6 @@ export default function Withdraw() {
             </div>
         )
     }
-    useEffect(() => {
-        if (activeWithdrawalMethod) {
-            setData('method', activeWithdrawalMethod?.label)
-        }
-    }, [activeWithdrawalMethod])
     return (
         <>
             <Head title="Withdraw" />

@@ -53,7 +53,13 @@ class DepositMethodResource extends Resource
                     ->label(fn (Get $get) => $get('category') !== MethodCategory::CRYPTO->value ? 'Account Number' : 'Wallet Address')
                     ->hidden(fn (Get $get) => !$get('category') || $get('mode') === MethodMode::PAYMENT->value)
                     ->placeholder(fn (Get $get) => $get('category') !== MethodCategory::CRYPTO->value ? 'Account Number' : '0x...')
-                    ->columnSpan(fn(Get $get)=> $get('category') === MethodCategory::CRYPTO->value ? 'full' : 1)
+                    ->columnSpan(fn(Get $get)=> $get('category') !== MethodCategory::MOBILE_BANKING->value ? 'full' : 1)
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('branch_name')
+                    ->hidden(fn (Get $get) => $get('category') !== MethodCategory::BANK->value)
+                    ->placeholder('Branch Name')
+                    ->label('Branch Name')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('account_holder')

@@ -30,6 +30,8 @@ export type AddType = 'Buy' | 'Sell';
 export type AdditionalFields = {
     name: string;
     value?: string;
+    label?: string;
+    type?: InputType;
 };
 export type ChatData = {
     id: number;
@@ -82,7 +84,7 @@ export type FieldsData = {
     type?: InputType;
     placeholder?: string;
 };
-export type InputType = 'text' | 'file' | 'textarea';
+export type InputType = 'text' | 'textarea';
 export type KycData = {
     user_id: number;
     doc_type?: KycDocType;
@@ -150,12 +152,15 @@ export type WalletData = {
     type: WalletType;
     transaction_type: WalletTransactionType;
     amount: number;
+    deposit_method_id?: number;
+    withdraw_method_id?: number;
     additional_fields?: Array<AdditionalFields>;
     currency: string | null;
     commission?: number;
     method?: string;
     transaction_id?: string;
     note?: string;
+    receipt?: string;
     payment_number?: string;
     approved_at?: string;
     cancelled_at?: string;
