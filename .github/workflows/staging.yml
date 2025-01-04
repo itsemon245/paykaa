@@ -28,7 +28,7 @@ jobs:
             fi
 
             # Step 2: Change to project directory
-            cd public_html/dev.paykaa.com
+            cd public_html
 
             # Step 3: Git setup
             if [ ! -d .git ]; then
