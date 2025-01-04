@@ -18,15 +18,19 @@ class WalletData extends Data
 {
     use TimestampData;
 
-    public int $id;
-    public string $uuid;
-    public int $owner_id;
-    public UserData $owner;
-    public WalletStatus $status;
+    public ?int $id;
+    public ?string $uuid;
+    public ?int $owner_id;
+    public ?UserData $owner;
+    public ?WalletStatus $status;
     public function __construct(
         public WalletType $type,
         public WalletTransactionType $transaction_type,
         public float $amount,
+        #[Optional]
+        public ?int $deposit_method_id,
+        #[Optional]
+        public ?int $withdraw_method_id,
         #[Optional]
         /** @var AdditionalFields[] */
         public ?array $additional_fields,
@@ -39,6 +43,8 @@ class WalletData extends Data
         public ?string $transaction_id,
         #[Optional]
         public ?string $note,
+        #[Optional]
+        public ?string $receipt,
         #[Optional]
         public ?string $payment_number,
         #[Optional]

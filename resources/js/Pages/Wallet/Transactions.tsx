@@ -41,7 +41,7 @@ export default function Transactions() {
         return <Tag value={titleCase(item.transaction_type)} severity={severity}></Tag>;
     }
     const statusBodyTemplate = (item: WalletData) => {
-        return <Tag value={item.status[0].toUpperCase() + item.status.slice(1)} severity={getSeverity(item.status)}></Tag>;
+        return <Tag value={titleCase(item?.status || '')} severity={getSeverity(item.status)}></Tag>;
     };
     const amountBodyTemplate = (item: WalletData) => {
         const color = item.type !== "debit" ? "green-500" : "red-500"

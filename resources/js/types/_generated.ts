@@ -30,6 +30,8 @@ export type AddType = 'Buy' | 'Sell';
 export type AdditionalFields = {
     name: string;
     value?: string;
+    label?: string;
+    type?: InputType;
 };
 export type ChatData = {
     id: number;
@@ -59,6 +61,11 @@ export type DepositMethodData = {
     category: MethodCategory;
     mode?: MethodMode;
     number?: string;
+    bank_name?: string;
+    account_holder?: string;
+    branch_name?: string;
+    swift_code?: string;
+    routing_number?: string;
     description?: string;
     secrets?: Array<any>;
     metadata?: Array<any>;
@@ -77,7 +84,7 @@ export type FieldsData = {
     type?: InputType;
     placeholder?: string;
 };
-export type InputType = 'text' | 'file' | 'textarea';
+export type InputType = 'text' | 'textarea';
 export type KycData = {
     user_id: number;
     doc_type?: KycDocType;
@@ -137,20 +144,23 @@ export type UserData = {
 };
 export type UserType = 'customer' | 'admin';
 export type WalletData = {
-    id: number;
-    uuid: string;
-    owner_id: number;
-    owner: UserData;
-    status: WalletStatus;
+    id: number | null;
+    uuid: string | null;
+    owner_id: number | null;
+    owner: UserData | null;
+    status: WalletStatus | null;
     type: WalletType;
     transaction_type: WalletTransactionType;
     amount: number;
+    deposit_method_id?: number;
+    withdraw_method_id?: number;
     additional_fields?: Array<AdditionalFields>;
     currency: string | null;
     commission?: number;
     method?: string;
     transaction_id?: string;
     note?: string;
+    receipt?: string;
     payment_number?: string;
     approved_at?: string;
     cancelled_at?: string;

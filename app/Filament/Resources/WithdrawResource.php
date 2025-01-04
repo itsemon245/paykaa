@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enum\MethodCategory;
 use App\Enum\Wallet\WalletStatus;
 use App\Enum\Wallet\WalletTransactionType;
 use App\Filament\Resources\WithdrawResource\Pages\ManageWithdraws;
@@ -31,46 +32,62 @@ class WithdrawResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('payment_number')
-                    ->maxLength(255)
-                    ->default(null),
+                Forms\Components\Fieldset::make('User')
+                    ->relationship('owner')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->disabled()
+                            ->required(),
+                        Forms\Components\TextInput::make('email')
+                            ->disabled()
+                            ->required(),
+                    ]),
                 Forms\Components\TextInput::make('method')
+                    ->default(function(Model $record) {
+                        return $record->depositMethod?->label;
+                    })
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('payment_number')
+                    ->label(function(Model $record) {
+                        $category = $record->depositMethod?->category;
+                        if($category === MethodCategory::BANK->value) {
+                            return 'Account Number';
+                        }
+                        return $category === MethodCategory::MOBILE_BANKING->value ? 'Phone Number' : 'Wallet Adress';
+                    })
                     ->maxLength(255)
                     ->default(null),
                 Forms\Components\TextInput::make('amount')
                     ->required()
                     ->numeric()
                     ->default(0.00),
-                Forms\Components\TextInput::make('commission')
-                    ->required()
-                    ->numeric()
-                    ->default(0.00),
-                    Forms\Components\TextInput::make('currency')
-                        ->required()
-                        ->maxLength(255)
-                        ->default('bdt'),
-                    Forms\Components\TextInput::make('transaction_id')
-                        ->maxLength(255)
-                        ->default(null),
-
+                Forms\Components\TextInput::make('transaction_id')
+                    ->maxLength(255)
+                    ->default(null),
+                Forms\Components\Textarea::make('note')
+                    ->maxLength(255)
+                    ->default(null),
                 Forms\Components\Repeater::make('additional_fields')
                     ->hidden(fn(Model $record)=> count($record?->additional_fields) == 0 )
                     ->columnSpanFull()
+                    ->columns(2)
                     ->schema([
-
+                        Forms\Components\TextInput::make('label')
+                            ->label('Field Name')
+                            ->required(),
+                        Forms\Components\TextInput::make('value')
+                            ->label('Value')
+                            ->required(),
                     ]),
-                Forms\Components\Textarea::make('note')
-                    ->maxLength(255)
-                    ->columnSpanFull()
-                    ->default(null),
             ]);
     }
+
 
     public static function table(Table $table): Table
     {
         return $table
             ->modifyQueryUsing(function (Builder $query) {
-                $query->where('transaction_type', WalletTransactionType::WITHDRAW->value);
+                // $query->whereNull('approved_at')->whereNull('cancelled_at')->where('transaction_type', WalletTransactionType::WITHDRAW->value);
             })
             ->columns([
                 Tables\Columns\TextColumn::make('created_at')
