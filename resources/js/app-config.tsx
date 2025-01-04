@@ -17,7 +17,7 @@ const appConfig = {
                 component: (page: any) => <ChatLayout children={page} />,
             },
             {
-                pageDir: ['Dashboard', 'Wallet'],
+                pageDir: ['Dashboard', 'Wallet', 'Add'],
                 component: (page: any) => <DashboardLayout children={page} />,
             },
             {

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Wallet\DepositController;
 use App\Http\Controllers\Wallet\TransactionController;
@@ -41,6 +42,8 @@ Route::middleware('auth')->group(function () {
         Route::post('withdraw', [WithdrawController::class, 'store'])->name('withdraw.store');
     });
     Route::post('kyc', [KycController::class, 'store'])->name('kyc.store');
+
+    Route::resource('add', AddController::class);
 });
 
 require __DIR__.'/auth.php';
