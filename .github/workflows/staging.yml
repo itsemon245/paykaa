@@ -28,11 +28,10 @@ jobs:
             fi
 
             # Step 2: Change to project directory
-            cd public_html
+            cd domains/paykaa.com/public_html
 
             # Step 3: Git setup
             if [ ! -d .git ]; then
-              rm -rf *
               git clone git@github.com:itsemon245/paykaa.git .
             else
               git fetch origin
