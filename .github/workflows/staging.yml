@@ -1,7 +1,7 @@
 name: Staging
 on:
   push:
-    branches: ["staging"]
+    branches: ["main"]
 
 jobs:
   Deploying:
@@ -38,10 +38,9 @@ jobs:
             fi
 
             # Step 4: Handle local changes, switch to the correct branch, and pull updates
-            git reset --hard
-            git clean -fd
-            git checkout staging
-            git pull origin staging
+            git stash -u
+            git checkout main
+            git pull origin main
 
             npm install
 
