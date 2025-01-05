@@ -13,6 +13,7 @@ declare global {
   const Bkash: typeof import('../Components/Deposit/Bkash')['default']
   const ChatLayout: typeof import('../Layouts/ChatLayout')['default']
   const Checkbox: typeof import('../Components/Checkbox')['default']
+  const ClassicNav: typeof import('../Components/ClassicNav')['default']
   const DangerButton: typeof import('../Components/DangerButton')['default']
   const DashboarLayout: typeof import('../Layouts/DashboarLayout')['default']
   const Dropdown: typeof import('../Components/Dropdown')['default']

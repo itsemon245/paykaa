@@ -1,6 +1,9 @@
 import { Config } from 'ziggy-js';
 import { UserData } from './_generated';
+import { RouteParams } from './param';
 
+
+export type RouteName = keyof RouteParams;
 export type ButtonSeverity = "contrast" | "secondary" | "success" | "info" | "warning" | "danger" | "help" | undefined;
 export interface ServerAppConfig {
     name: string;

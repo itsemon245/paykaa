@@ -21,8 +21,8 @@ const menuItems = [
     {
         label: "P2P",
         icon: "/assets/dashboard/p2p.png",
-        url: "#",
-        isActive: () => false,
+        url: route('marketplace.index'),
+        isActive: () => route().current('marketplace.index'),
     },
     {
         label: "Ads",

@@ -1,4 +1,24 @@
 export type RouteParams = {
+    "add.index": {};
+    "add.store": {};
+    "add.create": {};
+    "add.show": {
+        add: string;
+    };
+    "add.update": {
+        add: string;
+    };
+    "add.destroy": {
+        add: string;
+    };
+    "add.edit": {
+        add: string;
+    };
+    "filament.admin.resources.deposit-methods.index": {};
+    "filament.admin.resources.deposits.index": {};
+    "filament.admin.resources.kycs.index": {};
+    "filament.admin.resources.withdraw-methods.index": {};
+    "filament.admin.resources.withdraws.index": {};
     "chat.index": {};
     "chat.check-new-messages": {};
     "chat.receiver-chat": {
@@ -22,8 +42,10 @@ export type RouteParams = {
     "messages.get-new": {
         chat: string;
     };
+    "kyc.store": {};
     "login": {};
     "logout": {};
+    "marketplace.index": {};
     "messages": {};
     "message.store": {
         chat: string;
@@ -32,12 +54,15 @@ export type RouteParams = {
     "profile.edit": {};
     "profile.update": {};
     "profile.destroy": {};
+    "profile.update.avatar": {};
     "register": {};
     "password.store": {};
     "password.reset": {
         token: string;
     };
     "search-users": {};
+    "upload.chunk.start": {};
+    "upload.chunk.update": {};
     "verification.notice": {};
     "verification.verify": {
         id: string;

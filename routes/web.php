@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AddController;
+use App\Http\Controllers\MarketplaceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Wallet\DepositController;
 use App\Http\Controllers\Wallet\TransactionController;
@@ -46,6 +47,7 @@ Route::middleware('auth', 'redirect-if-admin')->group(function () {
     });
     Route::post('kyc', [KycController::class, 'store'])->name('kyc.store');
     Route::resource('add', AddController::class);
+    Route::get('marketplace', [MarketplaceController::class, 'index'])->name('marketplace.index');
 });
 
 require __DIR__.'/auth.php';

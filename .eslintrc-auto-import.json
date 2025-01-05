@@ -98,6 +98,7 @@
     "ProfileLayout": true,
     "useBalance": true,
     "MessageDate": true,
-    "Filedrop": true
+    "Filedrop": true,
+    "ClassicNav": true
   }
 }

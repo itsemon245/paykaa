@@ -1,3 +1,31 @@
+export type Add = {
+    id: any;
+    uuid: string;
+    type: string;
+    owner_id: any;
+    add_method_id: any;
+    amount: any;
+    rate: any;
+    limit_max?: any;
+    limit_min?: any;
+    contact?: string;
+    created_at: string;
+    updated_at?: string;
+    created_at_human: any;
+    updated_at_human: any;
+    add_method?: AddMethod;
+    owner?: User;
+};
+export type AddMethod = {
+    id: any;
+    name: string;
+    logo?: string;
+    color?: string;
+    created_at: string;
+    updated_at?: string;
+    created_at_human: any;
+    updated_at_human: any;
+};
 export type Chat = {
     id: any;
     uuid: string;
@@ -17,6 +45,47 @@ export type Chat = {
     sender?: User;
     receiver?: User;
     messages?: Message[];
+};
+export type DepositMethod = {
+    id: any;
+    uuid: string;
+    label: string;
+    description?: string;
+    logo: string;
+    category: string;
+    account_holder?: string;
+    mode?: string;
+    number?: string;
+    secrets?: string;
+    metadata?: string;
+    created_at: string;
+    updated_at?: string;
+    swift_code?: string;
+    branch?: string;
+    routing_number?: string;
+    branch_name?: string;
+    created_at_human: any;
+    updated_at_human: any;
+};
+export type Kyc = {
+    id: any;
+    uuid: string;
+    user_id: any;
+    doc_type: string;
+    front_image: string;
+    back_image: string;
+    approved_at?: any;
+    rejected_at?: any;
+    created_at: string;
+    updated_at?: string;
+    status: any;
+    created_at_human: any;
+    updated_at_human: any;
+    user?: User;
+};
+export type KycController = {
+    created_at_human: any;
+    updated_at_human: any;
 };
 export type Message = {
     id: any;
@@ -60,7 +129,6 @@ export type User = {
     id: any;
     uuid: string;
     name: string;
-    username: string;
     avatar?: string;
     phone?: string;
     email: string;
@@ -73,6 +141,8 @@ export type User = {
     referral_id?: string;
     created_at?: string;
     updated_at?: string;
+    balance: any;
+    kyc?: Kyc;
 };
 export type Wallet = {
     id: any;
@@ -87,13 +157,32 @@ export type Wallet = {
     note?: string;
     method?: string;
     payment_number?: string;
-    approved_at?: any;
-    cancelled_at?: any;
-    failed_at?: any;
+    approved_at?: string;
+    cancelled_at?: string;
+    failed_at?: string;
     created_at: string;
     updated_at?: string;
+    additional_fields?: string;
+    receipt?: string;
+    deposit_method_id?: any;
+    withdraw_method_id?: any;
     status: any;
     created_at_human: any;
     updated_at_human: any;
+    withdraw_method?: WithdrawMethod;
+    deposit_method?: DepositMethod;
     owner?: User;
+};
+export type WithdrawMethod = {
+    id: any;
+    uuid: string;
+    label: string;
+    description?: string;
+    logo: string;
+    category: string;
+    fields?: string;
+    created_at: string;
+    updated_at?: string;
+    created_at_human: any;
+    updated_at_human: any;
 };
