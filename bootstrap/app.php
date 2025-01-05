@@ -17,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ])
             ->alias([
                 'has-chat' => \App\Http\Middleware\VerifyChatOwnership::class,
+                'redirect-if-admin' => \App\Http\Middleware\RedirectIfAdmin::class,
             ])
             ->validateCsrfTokens(except: [
                 'upload/chunk'

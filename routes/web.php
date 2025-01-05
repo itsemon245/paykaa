@@ -24,14 +24,17 @@ Route::patch('/upload/chunk', [UploadController::class, 'update'])->name('upload
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard/Index');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'redirect-if-admin'])->name('dashboard');
 
+//Profile Routes
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::patch('/profile-avatar', [ProfileController::class, 'updateAvatar'])->name('profile.update.avatar');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
+Route::middleware('auth', 'redirect-if-admin')->group(function () {
     //Wallet Routes
     Route::prefix('wallet')->name('wallet.')->group(function () {
         Route::get('deposit', [DepositController::class, 'index'])->name('deposit.index');
@@ -42,7 +45,6 @@ Route::middleware('auth')->group(function () {
         Route::post('withdraw', [WithdrawController::class, 'store'])->name('withdraw.store');
     });
     Route::post('kyc', [KycController::class, 'store'])->name('kyc.store');
-
     Route::resource('add', AddController::class);
 });
 
