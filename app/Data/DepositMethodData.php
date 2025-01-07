@@ -17,6 +17,12 @@ class DepositMethodData extends Data
 
     public int $id;
     public string $uuid;
+
+    public float $charge;
+    public bool $is_fixed_amount;
+
+    #[Optional]
+    public ?array $additional_fields;
     public function __construct(
         public string $label,
         public string $logo,

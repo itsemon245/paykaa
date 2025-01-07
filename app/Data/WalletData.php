@@ -48,6 +48,8 @@ class WalletData extends Data
         #[Optional]
         public ?string $payment_number,
         #[Optional]
+        public ?string $account_holder,
+        #[Optional]
         public ?Carbon $approved_at,
         #[Optional]
         public ?Carbon $cancelled_at,

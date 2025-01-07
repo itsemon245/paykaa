@@ -43,10 +43,8 @@ class DepositResource extends Resource
                             ->disabled()
                             ->required(),
                     ]),
-                Forms\Components\TextInput::make('method')
-                    ->default(function(Model $record) {
-                        return $record->depositMethod?->label;
-                    })
+                Forms\Components\TextInput::make('depositMethod.label')
+                    ->label('Method')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('payment_number')
                     ->label(function(Model $record) {
@@ -87,7 +85,7 @@ class DepositResource extends Resource
     {
         return $table
             ->modifyQueryUsing(function (Builder $query) {
-                $query->where('transaction_type', WalletTransactionType::DEPOSIT->value);
+                $query->where('transaction_type', WalletTransactionType::DEPOSIT->value)->latest();
             })
             ->columns([
                 Tables\Columns\TextColumn::make('created_at')
@@ -123,7 +121,7 @@ class DepositResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: false)
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('method')
+                Tables\Columns\TextColumn::make('depositMethod.label')
                     ->toggleable(isToggledHiddenByDefault: false)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('payment_number')

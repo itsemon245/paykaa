@@ -46,11 +46,6 @@ export default function Login({
 
             <Card className="min-w-[90vw] sm:min-w-[465px]">
                 <img src="/assets/logo-short.png" className="mx-auto h-28 w-auto mb-3" alt="Paykaa Logo" />
-                {config.app.env !== 'production' && (
-                    <div className="flex justify-center mb-2">
-                        <Button label="Auto Fill" onClick={autoFill} />
-                    </div>
-                )}
                 <form onSubmit={submit}>
                     <div>
                         <Input

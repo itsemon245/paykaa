@@ -41,6 +41,7 @@ class WithdrawController extends Controller
         $wallet = $this->wallet;
         return backWithError(function() use ($data, $wallet) {
             $wallet->withdraw($data);
+            return back();
         });
     }
 }

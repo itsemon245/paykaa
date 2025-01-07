@@ -28,10 +28,6 @@ export default function ManualMobileBanking({
         const amount = e.value
         if (amount) {
             setData('amount', amount)
-            // setData('method', depositMethod?.label)
-            // setData('type', "credit")
-            // setData('transaction_type', "deposit")
-            // setData('deposit_method_id', depositMethod?.id)
         } else {
             setData('amount', 0)
         }
@@ -43,7 +39,7 @@ export default function ManualMobileBanking({
         if (depositMethod?.category === "Bank") {
             return "Account Number"
         }
-        return "Wallet Adress"
+        return "Wallet Address"
     }, [depositMethod])
 
     return (
@@ -51,8 +47,8 @@ export default function ManualMobileBanking({
             {total > 0 && (
                 <div className="mb-2">
                     <InputLabel value="Amount to pay" />
-                    <div className="flex items-center justify-center border p-1.5 rounded-lg text-lg font-bold opacity-75 cursor-not-allowed">{total + ".00"} BDT</div>
-                    <div className="text-sm text-gray-500 text-start">We charge a <span className="font-bold">{app.payment.charge}{app.payment.is_fixed_amount ? 'BDT' : "%"}</span> service charge on top of each deposits.</div>
+                    <div className="flex items-center justify-center border p-1.5 rounded-lg text-lg font-bold opacity-75 cursor-not-allowed">{total + ".00"} {depositMethod?.category !== 'Cryptocurrency' && 'BDT'}</div>
+                    <div className="text-sm text-gray-500 text-start">We charge a <span className="font-bold">{depositMethod?.charge}{depositMethod?.is_fixed_amount ? 'BDT' : "%"}</span> service charge on top of each deposits.</div>
                 </div>
             )}
             <div>
@@ -60,6 +56,9 @@ export default function ManualMobileBanking({
                 <InputNumber value={data.amount} onChange={onAmountChange} autoFocus placeholder="Enter Amount" className="w-full *:text-center text-center" />
                 {errors.amount && <InputError message={errors.amount} />}
             </div>
+            {depositMethod?.category === "Bank" && (
+                <Input onChange={e => setData('account_holder', e.target.value)} error={errors.account_holder} label="Account Holder Name" placeholder="Account Holder Name" className="w-full" />
+            )}
             <Input onChange={e => setData('payment_number', e.target.value)} error={errors.payment_number} label={getNumberLabel} placeholder={getNumberLabel} className="w-full" />
             {depositMethod?.category === "Mobile Banking" && (
                 <Input label="Transaction ID" placeholder="Enter Transaction ID from the message" error={errors.transaction_id} className="w-full" onChange={e => setData('transaction_id', e.target.value)} />

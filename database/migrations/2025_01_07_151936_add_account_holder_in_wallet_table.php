@@ -11,7 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        DB::statement('ALTER TABLE users DROP COLUMN username');
+        Schema::table('wallet', function (Blueprint $table) {
+            $table->string('account_holder')->nullable();
+        });
     }
 
     /**
@@ -19,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('username')->nullable()->after('email');
+        Schema::table('wallet', function (Blueprint $table) {
+            $table->dropColumn('account_holder');
         });
     }
 };

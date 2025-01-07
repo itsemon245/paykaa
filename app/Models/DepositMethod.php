@@ -14,5 +14,6 @@ class DepositMethod extends Model
     protected $casts = [
         'secrets' => 'array',
         'metadata' => 'array',
+        'additional_fields' => 'array',
     ];
 }

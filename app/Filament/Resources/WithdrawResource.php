@@ -42,10 +42,7 @@ class WithdrawResource extends Resource
                             ->disabled()
                             ->required(),
                     ]),
-                Forms\Components\TextInput::make('method')
-                    ->default(function(Model $record) {
-                        return $record->depositMethod?->label;
-                    })
+                Forms\Components\TextInput::make('withdrawMethod.label')
                     ->maxLength(255),
                 Forms\Components\TextInput::make('payment_number')
                     ->label(function(Model $record) {
@@ -123,7 +120,7 @@ class WithdrawResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: false)
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('method')
+                Tables\Columns\TextColumn::make('withdrawMethod.label')
                     ->toggleable(isToggledHiddenByDefault: false)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('payment_number')

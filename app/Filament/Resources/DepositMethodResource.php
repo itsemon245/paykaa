@@ -51,11 +51,34 @@ class DepositMethodResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('number')
                     ->label(fn (Get $get) => $get('category') !== MethodCategory::CRYPTO->value ? 'Account Number' : 'Wallet Address')
-                    ->hidden(fn (Get $get) => !$get('category') || $get('mode') === MethodMode::PAYMENT->value)
+                    ->hidden(fn (Get $get) => !$get('category') || $get('mode') === MethodMode::PAYMENT->value || $get('category') === MethodCategory::CRYPTO->value)
                     ->placeholder(fn (Get $get) => $get('category') !== MethodCategory::CRYPTO->value ? 'Account Number' : '0x...')
                     ->columnSpan(fn(Get $get)=> $get('category') !== MethodCategory::MOBILE_BANKING->value ? 'full' : 1)
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('charge')
+                    ->label('Service Charge')
+                    ->placeholder('0')
+                    ->numeric()
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\Select::make('is_fixed_amount')
+                    ->label('Charge Type')
+                    ->options([
+                        true => 'Fixed Amount',
+                        false => 'Percentage',
+                    ])
+                    ->required(),
+                Forms\Components\KeyValue::make('additional_fields')
+                    ->label('Wallet Details')
+                    ->required()
+                    ->hidden(fn (Get $get) => $get('category') !== MethodCategory::CRYPTO->value)
+                    ->keyLabel('Name')
+                    ->keyPlaceholder('Name')
+                    ->valuePlaceholder('Value')
+                    ->reorderable()
+                    ->addActionLabel('Add New')
+                    ->columnSpanFull(),
                 Forms\Components\TextInput::make('branch_name')
                     ->hidden(fn (Get $get) => $get('category') !== MethodCategory::BANK->value)
                     ->placeholder('Branch Name')
@@ -107,6 +130,7 @@ class DepositMethodResource extends Resource
                     ->collapsible(false)
                     ->columnSpanFull(),
                 Forms\Components\FileUpload::make('logo')
+                    ->image()
                     ->extraAttributes(['accept' => 'image/*' ])
                     ->columnSpanFull()
                     ->required(),
@@ -120,6 +144,9 @@ class DepositMethodResource extends Resource
                     ->columnSpanFull()
                     ->schema([
                         Forms\Components\FileUpload::make('qr_code')
+                            ->maxWidth('300px')
+                            ->maxSize(1024)
+                            ->image()
                             ->label('')
                             ->extraAttributes(['accept' => 'image/*' ])
                             ->required(),

@@ -14,6 +14,8 @@ class Wallet {
             ...$data->except(
                 'owner',
                 'status',
+                'created_at',
+                'updated_at',
                 'created_at_human',
                 'updated_at_human',
             )->toArray(),
@@ -27,6 +29,8 @@ class Wallet {
             ...$data->except(
                 'owner',
                 'status',
+                'created_at',
+                'updated_at',
                 'created_at_human',
                 'updated_at_human',
             )->toArray(),

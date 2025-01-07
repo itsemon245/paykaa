@@ -32,7 +32,8 @@ class DepositController extends Controller
         $data = WalletData::from($request);
         $wallet = $this->wallet;
         return backWithError(function() use ($data, $wallet) {
-            $wallet->deposit($data);
+            $newWallet = $wallet->deposit($data);
+            return back();
         });
     }
 

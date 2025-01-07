@@ -13,6 +13,9 @@ class OwnerScope implements Scope
      */
     public function apply(Builder $builder, Model $model): void
     {
+        if(auth()->user()->isAdmin()) {
+            return;
+        }
         $builder->where('owner_id', $model->owner_id ?? auth()->user()->id);
     }
 }

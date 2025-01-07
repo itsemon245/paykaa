@@ -1,7 +1,7 @@
 import useBreakpoint from "@/Hooks/useBrakpoints";
 import { PaginatedCollection } from "@/types";
 import { DepositMethodData, WalletData, WalletType } from "@/types/_generated";
-import { cn, titleCase } from "@/utils";
+import { cn, image, titleCase } from "@/utils";
 import { router, useForm, usePage } from "@inertiajs/react";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
@@ -12,17 +12,6 @@ import { Tag, TagProps } from "primereact/tag";
 import { ReactNode } from "react";
 import toast from "react-hot-toast";
 
-interface DepositMethod {
-    name: string,
-    logo: string,
-    label: string,
-    component?: ReactNode,
-    qr_code?: string,
-    account_type?: "Personal" | "Merchant",
-    number?: string,
-    type: "manual" | "auto",
-    category: string
-}
 interface Page {
     first: number,
     rows: number,
@@ -32,6 +21,86 @@ interface Page {
     filters?: Array<any> | null,
     page: number,
     totalPages: number
+}
+function DepositInfo({ depositMethod }: { depositMethod?: DepositMethodData }) {
+
+    return <div className="flex flex-col justify-center items-center w-full my-2 gap-3">
+        {
+            depositMethod?.category === "Cryptocurrency" ?
+                <img src={image(depositMethod?.metadata![0]?.qr_code)} className="w-32 md:w-40 p-3 border rounded-lg" />
+                :
+                <img src={image(depositMethod?.logo)} className="w-28 md:w-36  p-3 border rounded-lg" />
+        }
+        {depositMethod?.category === 'Cryptocurrency' &&
+            <div>
+                <h3 className="text-center font-bold text-xl mb-1 -mt-3">{depositMethod?.label}</h3>
+                <div className="text-xs md:text-sm font-medium text-center mb-2">Scan the QR code to send crypto to this address and fill the form below</div>
+                {Object.entries(depositMethod.additional_fields || {}).map(([key, value]) => (
+                    <div className="flex items-center justify-center gap-2">
+                        <b>{key} :</b>
+                        <span>{value}</span>
+                    </div>
+                ))}
+            </div>
+        }
+        {depositMethod?.category === 'Mobile Banking' &&
+            <div>
+                <div className="text-xs md:text-sm font-medium text-center mb-2">Send money to this number and fill the form below</div>
+                <div className="text-center md:text-xl font-bold">
+                    {titleCase(depositMethod?.mode || '') + ' Number: '}
+                    {depositMethod?.number}
+                </div>
+            </div>
+        }
+
+        {depositMethod?.category === 'Bank' && <div>
+            <div className="text-xs md:text-sm font-medium text-center mb-2">Send money to this account and fill the form below</div>
+            <div className="grid gap-y-1 items-center justify-center">
+                <div className="flex gap-1">
+                    <div className="flex gap-1 font-semibold">
+                        <div>Bank Name</div> <div>:</div>
+                    </div>
+                    <div className="font-medium">{depositMethod?.label}</div>
+                </div>
+                <div className="flex gap-1">
+                    <div className="flex gap-1 font-semibold">
+                        <div>Branch Name</div> <div>:</div>
+                    </div>
+                    <div className="font-medium">{depositMethod?.branch_name}</div>
+                </div>
+                <div className="flex gap-1">
+                    <div className="flex gap-1 font-semibold">
+                        <div>Account Number</div> <div>:</div>
+                    </div>
+                    <div className="font-medium">{depositMethod?.number}</div>
+                </div>
+                <div className="flex gap-1">
+                    <div className="flex gap-1 font-semibold">
+                        <div>Account Holder Name</div> <div>:</div>
+                    </div>
+                    <div className="font-medium">{depositMethod?.account_holder}</div>
+                </div>
+                <div className="flex gap-1">
+                    <div className="flex gap-1 font-semibold">
+                        <div>Swift Code</div> <div>:</div>
+                    </div>
+                    <div className="font-medium">{depositMethod?.swift_code}</div>
+                </div>
+                <div className="flex gap-1">
+                    <div className="flex gap-1 font-semibold">
+                        <div>Routing Number</div> <div>:</div>
+                    </div>
+                    <div className="font-medium">{depositMethod?.routing_number}</div>
+                </div>
+
+            </div>
+
+        </div>
+        }
+        {
+        }
+    </div >
+
 }
 export default function Deposit() {
     const pageProps = usePage().props
@@ -82,13 +151,10 @@ export default function Deposit() {
     const deposit = async (e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>) => {
         const toastId = toast.loading('Depositing...')
         const url = route('wallet.deposit.store')
-        console.log(activeDepositMethod)
         setData('method', activeDepositMethod?.label)
         setData('type', "credit")
         setData('transaction_type', "deposit")
         setData('deposit_method_id', activeDepositMethod?.id)
-        console.log(data)
-        return;
         post(url, {
             onSuccess: (data) => {
                 toast.success('Deposit successful')
@@ -139,62 +205,7 @@ export default function Deposit() {
                         e.preventDefault()
                         deposit(e)
                     }}>
-                        <div className="flex flex-col justify-center items-center w-full my-2 gap-3">
-                            {activeDepositMethod?.category === "Cryptocurrency" ? <img src={`/storage/${activeDepositMethod?.metadata![0]?.qr_code}`} className="w-32 md:w-40 p-3 border rounded-lg" /> : <img src={`/storage/${activeDepositMethod?.logo}`} className="w-28 md:w-36  p-3 border rounded-lg" />}
-                            {activeDepositMethod?.category === 'Cryptocurrency' && <div className="text-xs md:text-sm font-medium text-center">Scan the QR code to send money to this address and fill the form below</div>}
-                            {activeDepositMethod?.category === 'Mobile Banking' && <div className="text-xs md:text-sm font-medium text-center">Send money to this number and fill the form below</div>}
-                            {activeDepositMethod?.category === 'Bank' && <div className="text-xs md:text-sm font-medium text-center">Send money to this account and fill the form below</div>}
-                            {activeDepositMethod?.category === 'Bank' ? (
-                                <div className="grid md:grid-cols-2 gap-y-3 gap-x-7 items-center justify-center">
-                                    <div className="flex gap-1">
-                                        <div className="flex gap-1 font-semibold">
-                                            <div>Bank Name</div> <div>:</div>
-                                        </div>
-                                        <div className="font-medium">{activeDepositMethod?.label}</div>
-                                    </div>
-                                    <div className="flex gap-1">
-                                        <div className="flex gap-1 font-semibold">
-                                            <div>Branch Name</div> <div>:</div>
-                                        </div>
-                                        <div className="font-medium">{activeDepositMethod?.branch_name}</div>
-                                    </div>
-                                    <div className="flex gap-1">
-                                        <div className="flex gap-1 font-semibold">
-                                            <div>Account Number</div> <div>:</div>
-                                        </div>
-                                        <div className="font-medium">{activeDepositMethod?.number}</div>
-                                    </div>
-                                    <div className="flex gap-1">
-                                        <div className="flex gap-1 font-semibold">
-                                            <div>Account Holder Name</div> <div>:</div>
-                                        </div>
-                                        <div className="font-medium">{activeDepositMethod?.account_holder}</div>
-                                    </div>
-                                    <div className="flex gap-1">
-                                        <div className="flex gap-1 font-semibold">
-                                            <div>Swift Code</div> <div>:</div>
-                                        </div>
-                                        <div className="font-medium">{activeDepositMethod?.swift_code}</div>
-                                    </div>
-                                    <div className="flex gap-1">
-                                        <div className="flex gap-1 font-semibold">
-                                            <div>Routing Number</div> <div>:</div>
-                                        </div>
-                                        <div className="font-medium">{activeDepositMethod?.routing_number}</div>
-                                    </div>
-
-                                </div>
-                            ) : (
-                                <div className="text-center md:text-xl font-bold">
-                                    <div>
-                                        {activeDepositMethod?.category === 'Cryptocurrency' && 'Address: '}
-                                        {activeDepositMethod?.category === 'Mobile Banking' && titleCase(activeDepositMethod?.mode || '') + ' Number: '}
-                                        {activeDepositMethod?.number}
-                                    </div>
-
-                                </div>
-                            )}
-                        </div>
+                        <DepositInfo depositMethod={activeDepositMethod} />
                         {activeDepositMethod?.mode !== "payment" && (
                             <ManualMobileBanking depositMethod={activeDepositMethod} errors={errors} data={data} setData={setData} />
                         )}
@@ -209,7 +220,7 @@ export default function Deposit() {
                                     return (
                                         <Card className={cn("border transition-all cursor-pointer max-sm:w-full", min("md") && 'hover:scale-105')} key={index} onClick={e => setActiveDepositMethod(method)} role="button">
                                             <div className="flex w-full gap-5 items-center justify-start">
-                                                <img src={`/storage/${method.logo}`} className="h-12 w-auto sm:w-32" alt={method.label} />
+                                                <img src={`/storage/${method.logo}`} className="w-[100px] h-[56px] object-contain" alt={method.label} />
                                                 <div className="text-center text-sm sm:text-base font-bold sm:hidden">
                                                     {method.label}
                                                 </div>

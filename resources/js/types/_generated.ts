@@ -56,6 +56,9 @@ export type ChatData = {
 export type DepositMethodData = {
     id: number;
     uuid: string;
+    charge: number;
+    is_fixed_amount: boolean;
+    additional_fields?: Array<any>;
     label: string;
     logo: string;
     category: MethodCategory;
@@ -162,6 +165,7 @@ export type WalletData = {
     note?: string;
     receipt?: string;
     payment_number?: string;
+    account_holder?: string;
     approved_at?: string;
     cancelled_at?: string;
     failed_at?: string;
