@@ -19,6 +19,9 @@ class AddResource extends Resource
 {
     protected static ?string $model = Add::class;
 
+    protected static ?string $navigationLabel = 'Ads';
+    protected static ?string $modelLabel = 'Ad';
+    protected static ?string $pluralModelLabel = 'Ads';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
@@ -54,6 +57,11 @@ class AddResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('type')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'Buy' => 'success',
+                        'Sell' => 'danger',
+                    })
                     ->searchable(),
                 Tables\Columns\TextColumn::make('owner.name')
                     ->numeric()
