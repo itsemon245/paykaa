@@ -7,6 +7,9 @@ use App\Http\Controllers\Wallet\DepositController;
 use App\Http\Controllers\Wallet\TransactionController;
 use App\Http\Controllers\Wallet\WithdrawController;
 use App\Models\KycController;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UploadController;
 use Inertia\Inertia;
@@ -50,5 +53,22 @@ Route::middleware('auth', 'redirect-if-admin')->group(function () {
     Route::get('marketplace', [MarketplaceController::class, 'index'])->name('marketplace.index');
 });
 
+Route::middleware('auth')
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function(){
+        Route::get('login-as/{user}', function (Request $request, User $user) {
+            session()->set('impersonating', [
+                'current'=> $user->uuid,
+                'old' => auth()->user()->uuid
+            ]);
+            Auth::guard('web')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            Auth::loginUsingId($user->id, false);
+            return redirect(route('dashboard'));
+        })->name('login-as');
+    });
 require __DIR__.'/auth.php';
 require __DIR__.'/chat.php';
+
