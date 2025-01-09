@@ -82,3 +82,8 @@ export const image = (url?: string) => {
     }
     return url.startsWith("http") ? url : `/storage/${url}`;
 }
+
+export const getQuery = (param?: string) => {
+    if (!param) return '';
+    return new URL(window.location.href).searchParams.get(param);
+}

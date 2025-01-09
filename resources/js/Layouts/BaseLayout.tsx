@@ -11,7 +11,7 @@ export default function BaseLayout({ children }: { children?: any }) {
         }
     }, [error, success])
     return (
-        <div className="min-h-screen w-full grid relative">
+        <div className="min-h-screen w-full grid relative overflow-y-hidden overflow-x-hidden">
             <div className="absolute inset-0 bg-base-gradient -z-10"></div>
             <main className="h-full">
                 {children}
