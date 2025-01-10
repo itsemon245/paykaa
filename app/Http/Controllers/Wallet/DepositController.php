@@ -6,6 +6,7 @@ use App\Data\DepositMethodData;
 use App\Data\WalletData;
 use App\Http\Controllers\Controller;
 use App\Models\DepositMethod;
+use App\Models\User;
 use App\Models\Wallet;
 use App\Services\Wallet as WalletService;
 use Illuminate\Http\Request;
@@ -37,9 +38,9 @@ class DepositController extends Controller
         });
     }
 
-    public function checkBalance(){
+    public function checkBalance(User $user = null){
         return response()->json([
-            'balance' => Wallet::getBalance()
+            'balance' => Wallet::getBalance($user)
         ]);
     }
 }

@@ -10,7 +10,7 @@ export default function ChatLayout({ children }: { children: any }) {
             setTimeout(() => {
                 preloader.current?.remove();
                 setLoading(false);
-            }, 1000);
+            }, 500);
         }
     }, [main.current])
 

@@ -23,7 +23,6 @@ class UserController extends Controller
                 }else{
                     $query->where('name', 'like', '%' . $search . '%')
                         ->orWhere('email', 'like', '%' . $search . '%')
-                        ->orWhere('username', 'like', '%' . $search . '%')
                         ->orWhere('phone', 'like', '%' . $search . '%')
                         ->orWhere('id', 'like', '%' . $search . '%');
                 }

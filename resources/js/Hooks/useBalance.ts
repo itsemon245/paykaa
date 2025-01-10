@@ -1,6 +1,7 @@
+import { UserData } from "@/types/_generated";
 import toast from "react-hot-toast";
 
-export default function useBalance() {
+export default function useBalance(user?: UserData) {
     const [balance, setBalance] = useState(0);
     const [isBalanceVisible, setIsBalanceVisible] = useState(false);
     const [loadingBalance, setLoadingBalance] = useState(false);
@@ -10,7 +11,7 @@ export default function useBalance() {
         }
         setIsBalanceVisible(true);
         setLoadingBalance(true);
-        const res = await fetch(route('wallet.check-balance'));
+        const res = await fetch(route('wallet.check-balance', { user: user?.uuid }));
         if (!res.ok) {
             toast.error('Failed to refresh balance');
             console.log("Error refreshing balance", res);

@@ -17,7 +17,7 @@ class VerifyChatOwnership
     {
         $chat = $request->route('chat');
         $user = $request->user();
-        if ($user->id !== $chat->sender_id || $user->id !== $chat->receiver_id) {
+        if (!in_array($user->id, [$chat->sender_id, $chat->receiver_id])) {
             if($request->expectsJson()) {
                 return response()->json([
                     'success' => false,

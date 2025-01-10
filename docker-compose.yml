@@ -25,7 +25,7 @@ services:
             - mysql
             - mailpit
     mysql:
-        image: 'mariadb:11.7'
+        image: 'mariadb'
         ports:
             - '${FORWARD_DB_PORT:-3306}:3306'
         environment:

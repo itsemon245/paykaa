@@ -69,10 +69,10 @@ export default function Sidebar() {
 
     useEffect(() => {
         fetchChats();
-        poll(checkForNewMessagesInChats, 1000);
+        return poll(checkForNewMessagesInChats, 1000);
     }, []);
     return (
-        <div className="sidebar" id="sidebar">
+        <div className="sidebar !z-0" id="sidebar">
             <div className="container h-full">
                 <div className="col-md-12 h-full px-0">
                     <div className="tab-content h-full">

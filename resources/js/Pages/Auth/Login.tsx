@@ -4,6 +4,7 @@ import { Card } from "primereact/card";
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
 import { FormEventHandler } from "react";
+import './login.css';
 
 export default function Login({
     status,
@@ -13,11 +14,14 @@ export default function Login({
     canResetPassword: boolean;
 }) {
     const { data, setData, post, processing, errors, reset } = useForm({
-        email: 'admin@mail.com',
+        email: '',
         password: '',
         remember: false,
     });
     const config = useConfig();
+    const container = useRef<HTMLDivElement>(null);
+    const registerBtn = useRef<HTMLButtonElement>(null);
+    const loginBtn = useRef<HTMLButtonElement>(null);
 
     const autoFill = () => {
         if (config.app.env !== 'production') {
@@ -33,75 +37,74 @@ export default function Login({
             onFinish: () => reset('password'),
         });
     };
+    useEffect(() => {
+        registerBtn.current?.addEventListener('click', () => {
+            container.current?.classList?.add('active');
+        });
+
+        loginBtn.current?.addEventListener('click', () => {
+            container.current?.classList.remove('active');
+        });
+    }, [loginBtn, registerBtn, container]);
+
+    useEffect(() => {
+        if (errors.length > 0) {
+            errors.forEach(error => {
+                toast.error(error.message)
+            })
+        }
+    }, [errors])
+
 
     return (
-        <GuestLayout>
-            <Head title="Log in" />
+        <BaseLayout>
+            <Head title="Login">
+                <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet' />
+            </Head >
+            <main>
+                <div className="container" ref={container}>
+                    <div className="form-box login">
+                        <form onSubmit={submit}>
+                            <h1>Login</h1>
+                            <div className="input-box">
+                                <input onChange={(e) => setData('email', e.target.value)} type="email" placeholder="Email" required />
+                                <i className='bx bxs-user'></i>
+                            </div>
+                            <div className="input-box">
+                                <input type="password" placeholder="Password" required onChange={(e) => setData('password', e.target.value)} />
+                                <i className='bx bxs-lock-alt' ></i>
+                            </div>
+                            <div className="forgot-link">
+                                <Link href={route('password.request')}>Forgot Password?</Link>
+                            </div>
+                            <button type="submit" className="btn">Login</button>
+                            {/*<p>or login with social platforms</p>
+                            <div className="social-icons">
+                                <a href="#"><i className='bx bxl-google'></i></a>
+                                <a href="#"><i className='bx bxl-facebook'></i></a>
+                                <a href="#"><i className='bx bxl-github'></i></a>
+                                <a href="#"><i className='bx bxl-linkedin'></i></a>
+                            </div>*/}
+                        </form>
+                    </div>
 
-            {status && (
-                <div className="mb-4 text-sm font-medium text-green-600">
-                    {status}
+                    <RegisterForm />
+
+                    <div className="toggle-box">
+                        <div className="toggle-panel toggle-left">
+                            <h1>Welcome Back!</h1>
+                            <p>Don't have an account?</p>
+                            <button className="btn register-btn" ref={registerBtn}>Register</button>
+                        </div>
+                        <div className="toggle-panel toggle-right">
+                            <h1>Hello, Welcome!</h1>
+                            <p>Already have an account?</p>
+                            <button className="btn login-btn" ref={loginBtn}>Login</button>
+                        </div>
+                    </div>
                 </div>
-            )}
 
-            <Card className="min-w-[90vw] sm:min-w-[465px]">
-                <img src="/assets/logo-short.png" className="mx-auto h-28 w-auto mb-3" alt="Paykaa Logo" />
-                <form onSubmit={submit}>
-                    <div>
-                        <Input
-                            id="email"
-                            type="email"
-                            name="email"
-                            label="Email"
-                            value={data.email}
-                            placeholder="Email"
-                            autoComplete="email"
-                            error={errors.email}
-                            autoFocus={true}
-                            onChange={(e) => setData('email', e.target.value)}
-                            required
-                        />
-                    </div>
-
-                    <div className="mt-4">
-                        <InputLabel htmlFor="password" value="Password" />
-                        <Password placeholder="Password" required feedback={false} invalid={errors.password !== undefined} value={data.password} onChange={(e) => setData('password', e.target.value)} toggleMask />
-                        <InputError message={errors.password} className="mt-2" />
-                    </div>
-
-                    <div className="flex mt-2 items-center justify-between">
-                        <label className="inline-flex items-center mb-0">
-                            <Checkbox
-                                name="remember"
-                                checked={data.remember}
-                                onChange={(e) =>
-                                    setData('remember', e.target.checked)
-                                }
-                            />
-                            <span className="ms-2 text-sm text-gray-600 dark:text-gray-400">
-                                Remember
-                            </span>
-                        </label>
-                        <Link
-                            href={route('password.request')}
-                            className="font-medium rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
-                        >
-                            Forgot your password?
-                        </Link>
-                    </div>
-                    <div className="mt-4 flex items-center justify-between sm:justify-end gap-3">
-                        <Link
-                            href={route('register')}
-                            className="font-medium rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
-                        >
-                            Create an account
-                        </Link>
-                        <Button label="Login" loading={processing}>
-                        </Button>
-                    </div>
-                </form>
-
-            </Card>
-        </GuestLayout>
+            </main>
+        </BaseLayout>
     );
 }

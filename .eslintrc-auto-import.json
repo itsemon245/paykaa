@@ -99,6 +99,7 @@
     "useBalance": true,
     "MessageDate": true,
     "Filedrop": true,
-    "ClassicNav": true
+    "ClassicNav": true,
+    "RegisterForm": true
   }
 }

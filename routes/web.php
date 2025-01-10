@@ -43,7 +43,7 @@ Route::middleware('auth', 'redirect-if-admin')->group(function () {
     Route::prefix('wallet')->name('wallet.')->group(function () {
         Route::get('deposit', [DepositController::class, 'index'])->name('deposit.index');
         Route::post('deposit', [DepositController::class, 'store'])->name('deposit.store');
-        Route::get('check-balance', [DepositController::class, 'checkBalance'])->name('check-balance');
+        Route::get('check-balance/{user?}', [DepositController::class, 'checkBalance'])->name('check-balance');
         Route::get('transactions', [TransactionController::class, 'index'])->name('transactions.index');
         Route::get('withdraw', [WithdrawController::class, 'index'])->name('withdraw.index');
         Route::post('withdraw', [WithdrawController::class, 'store'])->name('withdraw.store');

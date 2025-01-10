@@ -51,10 +51,10 @@ class Wallet extends Model
         }
         return WalletStatus::PENDING->value;
     }
-    public static function getBalance():float
+    public static function getBalance(User $user = null):float
     {
         $balance = \DB::table('wallet')
-            ->where('owner_id', auth()->id())
+            ->where('owner_id', $user?->id ?? auth()->id())
             ->whereNotNull('approved_at')
             ->selectRaw('SUM(CASE WHEN type = "credit" THEN amount ELSE 0 END) - SUM(CASE WHEN type = "debit" THEN amount ELSE 0 END) AS balance')
             ->value('balance');
