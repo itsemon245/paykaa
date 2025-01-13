@@ -100,6 +100,8 @@
     "MessageDate": true,
     "Filedrop": true,
     "ClassicNav": true,
-    "RegisterForm": true
+    "RegisterForm": true,
+    "Preloader": true,
+    "usePreloader": true
   }
 }

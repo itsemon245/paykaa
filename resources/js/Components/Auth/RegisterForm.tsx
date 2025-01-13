@@ -1,4 +1,6 @@
+import { PasswordInput } from "@/Pages/Auth/Login";
 import { useForm } from "@inertiajs/react";
+import { FormEventHandler } from "react";
 import toast from "react-hot-toast";
 
 export default function RegisterForm() {
@@ -54,14 +56,6 @@ export default function RegisterForm() {
             onFinish: () => reset('password', 'password_confirmation'),
         });
     };
-    useEffect(() => {
-        if (errors.length > 0) {
-            errors.forEach(error => {
-                toast.error(error.message)
-            })
-        }
-    }, [errors])
-
     return (
         <div className="form-box register">
             <form onSubmit={submit}>
@@ -70,18 +64,16 @@ export default function RegisterForm() {
                     <input type="text" placeholder="Full Name" required onChange={(e) => setData('name', e.target.value)} />
                     <i className='bx bxs-user'></i>
                 </div>
+                {errors.name && <InputError message={errors.name} className="mt-2" />}
                 <div className="input-box">
                     <input type="email" placeholder="Email" required onChange={(e) => setData('email', e.target.value)} />
                     <i className='bx bxs-envelope'></i>
                 </div>
-                <div className="input-box">
-                    <input type="text" placeholder="Password" required onChange={(e) => setData('password', e.target.value)} />
-                    <i className='bx bxs-lock-alt' ></i>
-                </div>
-                <div className="input-box">
-                    <input type="text" placeholder="Confirm Password" required onChange={(e) => setData('password_confirmation', e.target.value)} />
-                    <i className='bx bxs-lock-alt' ></i>
-                </div>
+                {errors.email && <InputError message={errors.email} className="mt-2" />}
+                <PasswordInput placeholder="Password" required onChange={(e) => setData('password', e.target.value)} />
+                {errors.password && <InputError message={errors.password} className="mt-2" />}
+                <PasswordInput placeholder="Confirm Password" required onChange={e => setData('password_confirmation', e.target.value)} />
+                {errors.password_confirmation && <InputError message={errors.password_confirmation} className="mt-2" />}
                 <button type="submit" className="btn">Register</button>
                 {/*<p>or register with social platforms</p>
                             <div className="social-icons">

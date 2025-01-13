@@ -13,7 +13,7 @@ main {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: var(--background-gradient);
+    /* background: var(--background-gradient); */
 }
 
 .container {
