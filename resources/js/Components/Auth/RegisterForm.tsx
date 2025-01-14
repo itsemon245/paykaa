@@ -3,7 +3,7 @@ import { useForm } from "@inertiajs/react";
 import { FormEventHandler } from "react";
 import toast from "react-hot-toast";
 
-export default function RegisterForm({ children }: { children: ReactNode }) {
+export default function RegisterForm({ children }: { children: any }) {
     const { data, setData, hasErrors, post, processing, errors, setError, clearErrors, reset } = useForm({
         name: '',
         email: '',
