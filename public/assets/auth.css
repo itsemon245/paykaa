@@ -8,7 +8,7 @@
     --input-bg: #eee;
 }
 
-main {
+.main-div {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,21 +16,20 @@ main {
     /* background: var(--background-gradient); */
 }
 
-.container {
+.auth-container {
     position: relative;
-    width: 850px;
     height: 550px;
     background: var(--secondary-color);
     border-radius: 30px;
     box-shadow: 0 0 30px var(--box-shadow-color);
     margin: 20px;
     overflow: hidden;
+    @apply w-[90vw] md:w-[760px];
 }
 
 .form-box {
     position: absolute;
     right: 0;
-    width: 50%;
     height: 100%;
     background: var(--secondary-color);
     display: flex;
@@ -40,25 +39,26 @@ main {
     padding: 40px;
     z-index: 1;
     transition: .6s ease-in-out 1.2s, visibility 0s 1s;
+    @apply md:w-[50%] w-full;
 }
 
-.container.active .form-box {
-    right: 50%;
+.auth-container.active .form-box {
+    @apply md:right-[50%] right-0;
 }
 
 .form-box.register {
     visibility: hidden;
 }
 
-.container.active .form-box.register {
+.auth-container.active .form-box.register {
     visibility: visible;
 }
 
-form {
+.form {
     width: 100%;
 }
 
-.container h1 {
+.auth-container h1 {
     font-size: 36px;
     margin: -10px 0px;
 }
@@ -104,7 +104,7 @@ form {
     text-decoration: none;
 }
 
-.btn {
+.auth-btn {
     width: 100%;
     height: 48px;
     background: var(--primary-color);
@@ -117,7 +117,7 @@ form {
     font-weight: 600;
 }
 
-.container p {
+.auth-container p {
     font-size: 14.5px;
     margin: 15px 0px;
 }
@@ -153,10 +153,10 @@ form {
     background: var(--primary-color);
     border-radius: 150px;
     z-index: 2;
-    transition: 1.8s ease-in-out;
+    transition: 1s ease-in-out;
 }
 
-.container.active .toggle-box::before {
+.auth-container.active .toggle-box::before {
     left: 50%;
 }
 
@@ -178,7 +178,7 @@ form {
     transition-delay: 1.2s;
 }
 
-.container.active .toggle-panel.toggle-left {
+.auth-container.active .toggle-panel.toggle-left {
     left: -50%;
     transition-delay: .6s;
 }
@@ -188,9 +188,9 @@ form {
     transition-delay: .6s;
 }
 
-.container.active .toggle-panel.toggle-right {
+.auth-container.active .toggle-panel.toggle-right {
     right: 0;
-    transition-delay: 1.2s;
+    transition-delay: .6s;
 }
 
 .toggle-panel p {
@@ -206,7 +206,7 @@ form {
 }
 
 @media (max-width: 650px) {
-    .container {
+    .auth-container {
         height: calc(100vh - 40px);
     }
 }

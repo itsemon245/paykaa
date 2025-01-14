@@ -72,6 +72,7 @@ export default function Writer({
             <form onSubmit={sendMessage} className="text-area">
                 <InputTextarea
                     className="form-control"
+                    cols={3}
                     placeholder="Start typing for reply..."
                     value={data.body}
                     autoResize

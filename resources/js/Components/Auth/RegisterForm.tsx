@@ -3,7 +3,7 @@ import { useForm } from "@inertiajs/react";
 import { FormEventHandler } from "react";
 import toast from "react-hot-toast";
 
-export default function RegisterForm() {
+export default function RegisterForm({ children }: { children: ReactNode }) {
     const { data, setData, hasErrors, post, processing, errors, setError, clearErrors, reset } = useForm({
         name: '',
         email: '',
@@ -58,7 +58,7 @@ export default function RegisterForm() {
     };
     return (
         <div className="form-box register">
-            <form onSubmit={submit}>
+            <form onSubmit={submit} className="form">
                 <h1>Register</h1>
                 <div className="input-box">
                     <input type="text" placeholder="Full Name" required onChange={(e) => setData('name', e.target.value)} />
@@ -74,7 +74,8 @@ export default function RegisterForm() {
                 {errors.password && <InputError message={errors.password} className="mt-2" />}
                 <PasswordInput placeholder="Confirm Password" required onChange={e => setData('password_confirmation', e.target.value)} />
                 {errors.password_confirmation && <InputError message={errors.password_confirmation} className="mt-2" />}
-                <button type="submit" className="btn">Register</button>
+                <button type="submit" className="auth-btn">Register</button>
+                {children}
                 {/*<p>or register with social platforms</p>
                             <div className="social-icons">
                                 <a href="#"><i className='bx bxl-google'></i></a>

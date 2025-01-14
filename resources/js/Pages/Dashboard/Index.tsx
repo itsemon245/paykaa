@@ -5,24 +5,24 @@ import { chunk } from "lodash";
 import { Card } from "primereact/card";
 import { ScrollPanel } from "primereact/scrollpanel";
 
+export const UserItemTemplate = ({ user }: { user: UserData }) => {
+    return (
+        <Link href={route('chat.receiver-chat', { receiver: user.uuid })} className="flex items-center p-3 h-max cursor-pointer">
+            <img
+                alt={user.name}
+                src={user.avatar}
+                className="rounded-full w-10 me-2"
+            />
+            <div className="flex flex-col items-start select-none *:cursor-pointer">
+                <label className="font-bold mb-0 leading-none">{user.name}</label>
+                <label className="text-sm text-gray-500 mb-0">{user.email}</label>
+            </div>
+        </Link>
+    );
+};
 export default function Dashboard() {
     const { users, loading, searchString, search } = useUsers();
     const menus = chunk(menuItems, 4);
-    const itemTemplate = (user: UserData) => {
-        return (
-            <Link href={route('chat.receiver-chat', { receiver: user.uuid })} className="flex items-center p-3 h-max cursor-pointer">
-                <img
-                    alt={user.name}
-                    src={user.avatar}
-                    className="rounded-full w-10 me-2"
-                />
-                <div className="flex flex-col items-start select-none *:cursor-pointer">
-                    <label className="font-bold mb-0 leading-none">{user.name}</label>
-                    <label className="text-sm text-gray-500 mb-0">{user.email}</label>
-                </div>
-            </Link>
-        );
-    };
     return (
         <>
             <Head title="Dashboard" />
@@ -53,7 +53,7 @@ export default function Dashboard() {
                                             <ul>
                                                 {users.map((user) => (
                                                     <li key={"user-" + user.id}>
-                                                        {itemTemplate(user)}
+                                                        <UserItemTemplate user={user} />
                                                     </li>
                                                 ))}
                                                 {users.length === 0 &&

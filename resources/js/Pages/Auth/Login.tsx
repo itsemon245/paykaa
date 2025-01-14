@@ -1,3 +1,4 @@
+import useBreakpoint from "@/Hooks/useBrakpoints";
 import { cn } from "@/utils";
 import { Link, useForm } from "@inertiajs/react";
 import { FormEventHandler, HTMLAttributes, HTMLProps, useEffect, useRef } from "react";
@@ -26,6 +27,7 @@ export const PasswordInput = ({ onChange, placeholder, required, ...props }: { o
 
 export default function Login() {
     const preloader = useRef<HTMLDivElement>(null);
+    const { min, max } = useBreakpoint()
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
@@ -65,10 +67,10 @@ export default function Login() {
             <Head title="Login">
                 <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
             </Head>
-            <main>
-                <div className="container" ref={container}>
+            <main className="main-div">
+                <div className="auth-container" ref={container}>
                     <div className="form-box login">
-                        <form onSubmit={submit}>
+                        <form onSubmit={submit} className="form">
                             <h1>Login</h1>
                             <div className="input-box">
                                 <input
@@ -84,33 +86,51 @@ export default function Login() {
                                 onChange={(e: any) => setData('password', e.target.value)}
                                 placeholder="Password" required />
                             {errors.password && <InputError message={errors.password} className="mt-2" />}
-                            <div className="forgot-link">
-                                <Link href={route('password.request')}>Forgot Password?</Link>
+                            <div className="flex items-center justify-between -mt-5 mb-2">
+                                <div className="text-gray-600 flex items-center gap-1">
+                                    <Checkbox id="remember" name="remember" checked={data.remember} onChange={(e) => setData('remember', e.target.checked)} />
+                                    <label htmlFor="remember" className="text-gray-600 mb-0">Remember Me</label>
+                                </div>
+                                <div className="text-gray-600">
+                                    <Link href={route('password.request')}>Forgot Password?</Link>
+                                </div>
                             </div>
-                            <button type="submit" className="btn">
+                            <button type="submit" className="auth-btn">
                                 Login
                             </button>
+                            {max('md') && <button onClick={() => {
+                                container.current?.classList.add('active');
+                            }}
+                                type="button" className="mt-2">Don't have an account? Register</button>
+                            }
                         </form>
                     </div>
 
-                    <RegisterForm />
+                    <RegisterForm>
+                        {max('md') && <button onClick={() => {
+                            container.current?.classList.remove('active');
+                        }}
+                            type="button" className="mt-2">Already have an account? Login</button>
+                        }
+                    </RegisterForm>
 
-                    <div className="toggle-box">
+                    {min('md') && <div className="toggle-box">
                         <div className="toggle-panel toggle-left">
                             <h1>Welcome Back!</h1>
                             <p>Don't have an account?</p>
-                            <button className="btn register-btn" ref={registerBtn}>
+                            <button className="p-button bg-transparent rounded-lg text-white border-white border-2 px-3" ref={registerBtn}>
                                 Register
                             </button>
                         </div>
                         <div className="toggle-panel toggle-right">
                             <h1>Hello, Welcome!</h1>
                             <p>Already have an account?</p>
-                            <button className="btn login-btn" ref={loginBtn}>
+                            <button className="p-button bg-transparent rounded-lg text-white border-white border-2 px-3" ref={loginBtn}>
                                 Login
                             </button>
                         </div>
                     </div>
+                    }
                 </div>
             </main>
         </>

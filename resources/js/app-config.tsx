@@ -17,11 +17,11 @@ const appConfig = {
                 component: (page: any) => <ChatLayout children={page} />,
             },
             {
-                pageDir: ['Dashboard', 'Wallet', 'Add'],
+                pageDir: ['Dashboard', 'Add'],
                 component: (page: any) => <DashboardLayout children={page} />,
             },
             {
-                pageDir: ['Profile'],
+                pageDir: ['Profile', 'Wallet'],
                 component: (page: any) => <ProfileLayout children={page} />,
             }
         ]
