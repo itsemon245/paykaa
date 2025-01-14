@@ -24,6 +24,7 @@ class WithdrawResource extends Resource
     protected static ?string $model = Wallet::class;
 
     protected static ?string $navigationLabel = 'Withdraw Requests';
+    protected static ?int $navigationSort = 3;
     protected static ?string $modelLabel = 'Withdraw Request';
     protected static ?string $pluralModelLabel = 'Withdraw Requests';
     protected static ?string $navigationIcon = 'heroicon-o-arrow-up-on-square';

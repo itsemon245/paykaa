@@ -20,6 +20,7 @@ class AddMethodResource extends Resource
     protected static ?string $model = AddMethod::class;
 
     protected static ?string $navigationLabel = 'Ad Wallets';
+    protected static ?int $navigationSort = 8;
     protected static ?string $modelLabel = 'Ad Wallet';
     protected static ?string $pluralModelLabel = 'Ad Wallets';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';

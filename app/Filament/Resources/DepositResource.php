@@ -25,6 +25,7 @@ class DepositResource extends Resource
     protected static ?string $model = Wallet::class;
 
     protected static ?string $navigationLabel = 'Deposit Requests';
+    protected static ?int $navigationSort = 2;
     protected static ?string $modelLabel = 'Deposit Request';
     protected static ?string $pluralModelLabel = 'Deposit Requests';
     protected static ?string $navigationIcon = 'heroicon-o-arrow-down-on-square';

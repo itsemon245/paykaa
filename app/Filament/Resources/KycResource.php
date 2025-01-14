@@ -22,6 +22,7 @@ class KycResource extends Resource
     protected static ?string $model = Kyc::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?int $navigationSort = 4;
     protected static ?string $navigationLabel = 'Verification Requests';
     protected static ?string $modelLabel =  'Verification Request';
     protected static ?string $pluralModelLabel ='Verification Requests';

@@ -20,6 +20,7 @@ class AddResource extends Resource
     protected static ?string $model = Add::class;
 
     protected static ?string $navigationLabel = 'Ads';
+    protected static ?int $navigationSort = 5;
     protected static ?string $modelLabel = 'Ad';
     protected static ?string $pluralModelLabel = 'Ads';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
