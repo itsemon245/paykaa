@@ -8,15 +8,10 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    //
-    /**
-     * Undocumented function
-
-     * @return UserData[]
-     */
     public function index(Request $request){
         $users = User::where(function ($query) use ($request) {
             $search = $request->search;
+            $query->whereNot('id', auth()->id());
             if ($request->has('search')) {
                 if (empty($search)) {
                     $query->whereNull('id');

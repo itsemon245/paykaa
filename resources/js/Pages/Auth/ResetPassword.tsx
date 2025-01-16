@@ -3,8 +3,10 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, Link, router, useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
+import { PasswordInput } from './Login';
+import useBreakpoint from '@/Hooks/useBrakpoints';
 
 export default function ResetPassword({
     token,
@@ -13,12 +15,17 @@ export default function ResetPassword({
     token: string;
     email: string;
 }) {
+    const { min, max } = useBreakpoint()
     const { data, setData, post, processing, errors, reset } = useForm({
         token: token,
         email: email,
         password: '',
         password_confirmation: '',
     });
+    const container = useRef<HTMLDivElement>(null);
+    const registerBtn = useRef<HTMLButtonElement>(null);
+    const loginBtn = useRef<HTMLButtonElement>(null);
+
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
@@ -28,73 +35,66 @@ export default function ResetPassword({
         });
     };
 
+    useEffect(() => {
+        registerBtn.current?.addEventListener('click', () => {
+            container.current?.classList.add('active');
+        });
+
+        loginBtn.current?.addEventListener('click', () => {
+            container.current?.classList.remove('active');
+        });
+    }, [loginBtn, registerBtn, container]);
+
     return (
         <GuestLayout>
-            <Head title="Reset Password" />
+            <Head title="Reset Password">
+                <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+            </Head>
 
-            <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="email" value="Email" />
+            <main className='main-div'>
+                <div className='auth-container' ref={container}>
+                    <div className="p-5 flex flex-col items-center justify-center w-full h-full form-box">
+                        <form onSubmit={submit} className='form'>
+                            <h1>Reset Password</h1>
+                            <div className="input-box opacity-65 cursor-not-allowed">
+                                <input type="email" value={data.email} disabled placeholder="Email" required onChange={(e) => setData('email', e.target.value)} />
+                                <i className='bx bxs-envelope'></i>
+                            </div>
+                            {errors.email && <InputError message={errors.email} className="mt-2" />}
+                            <PasswordInput placeholder="New Password" required onChange={(e) => setData('password', e.target.value)} />
+                            {errors.password && <InputError message={errors.password} className="mt-2" />}
+                            <PasswordInput placeholder="Confirm New Password" required onChange={e => setData('password_confirmation', e.target.value)} />
+                            {errors.password_confirmation && <InputError message={errors.password_confirmation} className="mt-2" />}
+                            <button disabled={processing} type="submit" className="auth-btn">
+                                {processing ? 'Resetting...' : 'Reset Password'}
+                            </button>
+                        </form>
+                    </div>
+                    {min('md') && <div className="toggle-box">
+                        <div className="toggle-panel toggle-left">
+                            <h1>Reset Password</h1>
+                            <p>Don't have an account?</p>
+                            <button onClick={() => {
+                                container.current?.classList.add('active');
+                                setTimeout(() => {
+                                    router.visit(route('login', { register: true }))
+                                }, 1000);
+                            }} className="p-button bg-transparent rounded-lg text-white border-white border-2 px-3" >
+                                Register
+                            </button>
+                        </div>
+                        <div className="toggle-panel toggle-right">
+                            <h1>Hello, Welcome!</h1>
+                            <p>Already have an account?</p>
+                            <button className="p-button bg-transparent rounded-lg text-white border-white border-2 px-3" ref={loginBtn}>
+                                Login
+                            </button>
+                        </div>
+                    </div>
+                    }
 
-                    <TextInput
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={data.email}
-                        className="mt-1 block w-full"
-                        autoComplete="username"
-                        onChange={(e) => setData('email', e.target.value)}
-                    />
-
-                    <InputError message={errors.email} className="mt-2" />
                 </div>
-
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
-
-                    <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
-                        isFocused={true}
-                        onChange={(e) => setData('password', e.target.value)}
-                    />
-
-                    <InputError message={errors.password} className="mt-2" />
-                </div>
-
-                <div className="mt-4">
-                    <InputLabel
-                        htmlFor="password_confirmation"
-                        value="Confirm Password"
-                    />
-
-                    <TextInput
-                        type="password"
-                        name="password_confirmation"
-                        value={data.password_confirmation}
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
-                        onChange={(e) =>
-                            setData('password_confirmation', e.target.value)
-                        }
-                    />
-
-                    <InputError
-                        message={errors.password_confirmation}
-                        className="mt-2"
-                    />
-                </div>
-
-                <div className="mt-4 flex items-center justify-end">
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Reset Password
-                    </PrimaryButton>
-                </div>
-            </form>
+            </main>
         </GuestLayout>
     );
 }

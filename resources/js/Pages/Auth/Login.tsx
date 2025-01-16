@@ -1,5 +1,5 @@
 import useBreakpoint from "@/Hooks/useBrakpoints";
-import { cn } from "@/utils";
+import { cn, getQuery } from "@/utils";
 import { Link, useForm } from "@inertiajs/react";
 import { FormEventHandler, HTMLAttributes, HTMLProps, useEffect, useRef } from "react";
 import { toast } from 'react-hot-toast'
@@ -33,17 +33,9 @@ export default function Login() {
         password: '',
         remember: false,
     });
-    const config = useConfig();
     const container = useRef<HTMLDivElement>(null);
     const registerBtn = useRef<HTMLButtonElement>(null);
     const loginBtn = useRef<HTMLButtonElement>(null);
-
-    const autoFill = () => {
-        if (config.app.env !== 'production') {
-            setData('email', 'admin@mail.com');
-            setData('password', '12345678');
-        }
-    };
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
@@ -62,13 +54,16 @@ export default function Login() {
             container.current?.classList.remove('active');
         });
     }, [loginBtn, registerBtn, container]);
+    useEffect(() => {
+        console.log(getQuery('email'))
+    }, [])
     return (
         <>
             <Head title="Login">
                 <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
             </Head>
             <main className="main-div">
-                <div className="auth-container" ref={container}>
+                <div className={cn("auth-container", getQuery('register') && 'active')} ref={container}>
                     <div className="form-box login">
                         <form onSubmit={submit} className="form">
                             <h1>Login</h1>
@@ -101,7 +96,7 @@ export default function Login() {
                             {max('md') && <button onClick={() => {
                                 container.current?.classList.add('active');
                             }}
-                                type="button" className="mt-2">Don't have an account? Register</button>
+                                type="button" className="mt-2">Don't have an account? <span className="text-primary font-semibold">Register</span></button>
                             }
                         </form>
                     </div>
@@ -110,7 +105,7 @@ export default function Login() {
                         {max('md') && <button onClick={() => {
                             container.current?.classList.remove('active');
                         }}
-                            type="button" className="mt-2">Already have an account? Login</button>
+                            type="button" className="mt-2">Already have an account? <span className="text-primary font-semibold">Login</span> </button>
                         }
                     </RegisterForm>
 

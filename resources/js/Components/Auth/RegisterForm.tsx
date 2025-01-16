@@ -1,4 +1,5 @@
 import { PasswordInput } from "@/Pages/Auth/Login";
+import { getQuery } from "@/utils";
 import { useForm } from "@inertiajs/react";
 import { FormEventHandler } from "react";
 import toast from "react-hot-toast";
@@ -6,7 +7,7 @@ import toast from "react-hot-toast";
 export default function RegisterForm({ children }: { children: any }) {
     const { data, setData, hasErrors, post, processing, errors, setError, clearErrors, reset } = useForm({
         name: '',
-        email: '',
+        email: getQuery('email') || '',
         password: '',
         password_confirmation: '',
     });
@@ -66,7 +67,7 @@ export default function RegisterForm({ children }: { children: any }) {
                 </div>
                 {errors.name && <InputError message={errors.name} className="mt-2" />}
                 <div className="input-box">
-                    <input type="email" placeholder="Email" required onChange={(e) => setData('email', e.target.value)} />
+                    <input type="email" value={data.email} placeholder="Email" required onChange={(e) => setData('email', e.target.value)} />
                     <i className='bx bxs-envelope'></i>
                 </div>
                 {errors.email && <InputError message={errors.email} className="mt-2" />}

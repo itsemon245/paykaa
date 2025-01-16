@@ -97,10 +97,7 @@ function DepositInfo({ depositMethod }: { depositMethod?: DepositMethodData }) {
 
         </div>
         }
-        {
-        }
     </div >
-
 }
 export default function Deposit() {
     const pageProps = usePage().props

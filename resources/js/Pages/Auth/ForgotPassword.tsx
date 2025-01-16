@@ -63,7 +63,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
                                     <Button label='Cancel' outlined text className='border' />
                                 </Link>
                                 <PrimaryButton className="ms-4" disabled={processing}>
-                                    Email Password Reset Link
+                                    {processing ? 'Sending email...' : 'Reset Password'}
                                 </PrimaryButton>
                             </div>
                         </form>
