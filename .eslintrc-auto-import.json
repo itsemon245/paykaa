@@ -102,6 +102,7 @@
     "ClassicNav": true,
     "RegisterForm": true,
     "Preloader": true,
-    "usePreloader": true
+    "usePreloader": true,
+    "LandingLayout": true
   }
 }

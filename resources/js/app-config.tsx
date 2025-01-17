@@ -23,7 +23,7 @@ const appConfig = {
             {
                 pageDir: ['Profile', 'Wallet'],
                 component: (page: any) => <ProfileLayout children={page} />,
-            }
+            },
         ]
         page.then((mod: any) => {
             const layout = layoutMap.find(item => item.pageDir.indexOf(name.split('/')[0]) !== -1);

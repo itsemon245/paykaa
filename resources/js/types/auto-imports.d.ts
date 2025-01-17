@@ -48,6 +48,7 @@ declare global {
   const Input: typeof import('../Components/Input')['default']
   const InputError: typeof import('../Components/InputError')['default']
   const InputLabel: typeof import('../Components/InputLabel')['default']
+  const LandingLayout: typeof import('../Layouts/LandingLayout')['default']
   const Logo: typeof import('../Components/Logo')['default']
   const LucideLabCoinsExchange: typeof import('~icons/lucide-lab/coins-exchange.tsx')['default']
   const ManualMobileBanking: typeof import('../Components/Deposit/ManualMobileBanking')['default']
