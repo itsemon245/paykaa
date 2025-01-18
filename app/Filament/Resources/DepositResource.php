@@ -10,6 +10,7 @@ use App\Models\Model;
 use App\Models\Wallet;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Components\Tab;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\ActionSize;
@@ -39,14 +40,47 @@ class DepositResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->disabled()
-                            ->required(),
-                        Forms\Components\TextInput::make('email')
-                            ->disabled()
-                            ->required(),
+                            ->readOnly(),
+                        Forms\Components\TextInput::make('id')
+                            ->label('UID')
+                            ->readOnly()
+                            ->suffixAction(
+                                \Filament\Forms\Components\Actions\Action::make('copy')
+                                    ->color('secondary')
+                                    ->icon('heroicon-o-clipboard')
+                                    ->action(function ($livewire, $state) {
+                                        $livewire->dispatch('copy-to-clipboard', text: $state);
+                                    })
+                            )
+                            ->extraAttributes([
+                                'x-data' => '{
+                                copyToClipboard(text) {
+                                if (navigator.clipboard && navigator.clipboard.writeText) {
+                                navigator.clipboard.writeText(text).then(() => {
+                                $tooltip("Copied to clipboard", { timeout: 1500 });
+                                }).catch(() => {
+                                $tooltip("Failed to copy", { timeout: 1500 });
+                                });
+                                } else {
+                                const textArea = document.createElement("textarea");
+                                textArea.value = text;
+                                textArea.style.position = "fixed";
+                                textArea.style.opacity = "0";
+                                document.body.appendChild(textArea);
+                                textArea.select();
+                                try {
+                                document.execCommand("copy");
+                                $tooltip("Copied to clipboard", { timeout: 1500 });
+                                } catch (err) {
+                                $tooltip("Failed to copy", { timeout: 1500 });
+                                }
+                                document.body.removeChild(textArea);
+                                }
+                                }
+                                }',
+                                'x-on:copy-to-clipboard.window' => 'copyToClipboard($event.detail.text)',
+                            ]),
                     ]),
-                Forms\Components\TextInput::make('depositMethod.label')
-                    ->label('Method')
-                    ->maxLength(255),
                 Forms\Components\TextInput::make('payment_number')
                     ->label(function(Model $record) {
                         $category = $record->depositMethod?->category;
@@ -66,6 +100,7 @@ class DepositResource extends Resource
                     ->numeric()
                     ->default(0.00),
                 Forms\Components\TextInput::make('transaction_id')
+                    ->hidden(fn(Get $get)=> $get('method') !== MethodCategory::MOBILE_BANKING->value)
                     ->maxLength(255)
                     ->default(null),
                 Forms\Components\Textarea::make('note')
@@ -112,7 +147,7 @@ class DepositResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('transaction_id')
-                    ->toggleable(isToggledHiddenByDefault: false)
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('amount')
                     ->toggleable(isToggledHiddenByDefault: false)

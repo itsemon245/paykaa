@@ -35,7 +35,7 @@ export default function Filedrop({
     }, [])
     return (
         <>
-            <InputLabel value={label} />
+            <InputLabel className="-mb-2" value={label} />
             <FilePond
                 className={cn('border-dashed border-2 border-gray-300 rounded-lg overflow-hidden flex items-center justify-center', className)}
                 chunkUploads={true}

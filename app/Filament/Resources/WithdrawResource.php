@@ -43,15 +43,13 @@ class WithdrawResource extends Resource
                             ->disabled()
                             ->required(),
                     ]),
-                Forms\Components\TextInput::make('withdrawMethod.label')
-                    ->maxLength(255),
                 Forms\Components\TextInput::make('payment_number')
                     ->label(function(Model $record) {
                         $category = $record->depositMethod?->category;
                         if($category === MethodCategory::BANK->value) {
-                            return 'Account Number';
+                            return 'A/C. Number';
                         }
-                        return $category === MethodCategory::MOBILE_BANKING->value ? 'Phone Number' : 'Wallet Adress';
+                        return $category === MethodCategory::MOBILE_BANKING->value ? 'Personal Number' : 'Wallet Adress';
                     })
                     ->maxLength(255)
                     ->default(null),
@@ -60,6 +58,7 @@ class WithdrawResource extends Resource
                     ->numeric()
                     ->default(0.00),
                 Forms\Components\TextInput::make('transaction_id')
+                    ->hidden(fn(Model $record)=> $record->depositMethod?->category !== MethodCategory::MOBILE_BANKING->value)
                     ->maxLength(255)
                     ->default(null),
                 Forms\Components\Textarea::make('note')
@@ -111,7 +110,7 @@ class WithdrawResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('transaction_id')
-                    ->toggleable(isToggledHiddenByDefault: false)
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('amount')
                     ->toggleable(isToggledHiddenByDefault: false)

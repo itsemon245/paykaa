@@ -58,12 +58,16 @@ export default function WithdrawForm({ data, setData, errors, activeWithdrawalMe
     return (<div className="flex flex-col justify-center items-center w-full my-2 gap-3 *:w-full">
         <div>
             <InputLabel value="Amount" />
-            <InputNumber value={data.amount ? data.amount : null} onChange={e => setData('amount', e.value as number)} autoFocus={true} placeholder="Enter Your withdraw amount" className="w-full" invalid={errors.amount !== undefined} />
+            <InputNumber value={data.amount ? data.amount : null} onChange={e => setData('amount', e.value as number)} autoFocus={true} placeholder="Amount" className="w-full" invalid={errors.amount !== undefined} />
             <InputError message={errors.amount} />
         </div>
         <Input onChange={e => setData('payment_number', e.target.value)} error={errors.payment_number}
-            label={activeWithdrawalMethod?.category === 'Cryptocurrency' ? 'Address' : 'Account Number'}
-            placeholder={activeWithdrawalMethod?.category === 'Cryptocurrency' ? '0xxd....' : 'Enter the account number'}
+            label={activeWithdrawalMethod?.category === 'Cryptocurrency' ? 'Address' : (
+                activeWithdrawalMethod?.category === 'Bank' ? 'A/C. No.' : 'Personal Nubmer'
+            )}
+            placeholder={activeWithdrawalMethod?.category === 'Cryptocurrency' ? '0xxd....' : (
+                activeWithdrawalMethod?.category === 'Bank' ? 'A/C. No.' : 'Personal Nubmer'
+            )}
             className="w-full" />
         {activeWithdrawalMethod?.fields?.map(field => (
             <div key={field.label}>
@@ -71,7 +75,7 @@ export default function WithdrawForm({ data, setData, errors, activeWithdrawalMe
                 <FieldInput field={field} fieldStates={fieldStates} setFieldStates={setFieldStates} />
             </div>
         ))}
-        <Textarea autoResize label="Note(optional)" placeholder="Enter a note(optional)" className="w-full" onChange={e => setData('note', e.target.value)} error={errors.note} />
+        <Textarea autoResize label="Note" placeholder="Optional" className="w-full" onChange={e => setData('note', e.target.value)} error={errors.note} />
     </div>
     )
 }

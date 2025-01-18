@@ -65,10 +65,12 @@ class DepositMethodResource extends Resource
                     ->maxLength(255),
                 Forms\Components\Select::make('is_fixed_amount')
                     ->label('Charge Type')
+                    ->visible(false)
                     ->options([
                         true => 'Fixed Amount',
                         false => 'Percentage',
                     ])
+                    ->default(false)
                     ->required(),
                 Forms\Components\KeyValue::make('additional_fields')
                     ->label('Wallet Details')
@@ -150,7 +152,6 @@ class DepositMethodResource extends Resource
                             ->image()
                             ->label('')
                             ->extraAttributes(['accept' => 'image/*' ])
-                            ->required(),
                     ])
             ]);
     }

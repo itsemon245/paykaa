@@ -24,7 +24,7 @@ interface FieldProps {
 export default function Withdraw() {
     const [activeWithdrawalMethod, setActiveWithdrawalMethod] = useState<WithdrawMethodData>();
     const dialogOpened = useMemo(() => activeWithdrawalMethod !== undefined, [activeWithdrawalMethod]);
-    const balance = usePage().props.balance as number
+    const { balance, refreshBalance } = useBalance()
     const { min } = useBreakpoint()
     const withdrawMethods = usePage().props.withdrawMethods as WithdrawMethodData[]
     const { data, setData, setError, post, errors, processing } = useForm<Partial<WalletData>>({
@@ -39,40 +39,45 @@ export default function Withdraw() {
     });
 
     const withdraw = async (e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>) => {
+        refreshBalance()
         if ((data.amount || 0) > balance) {
             toast.error(`Cannot withdraw more than ${balance} BDT`)
-            setError('amount', 'Cannot withdraw more than your balance')
+            setError('amount', `Cannot withdraw more than ${balance} BDT`)
             return
         }
         const url = route('wallet.withdraw.store')
         const toastId = toast.loading('Withdrawing...')
-        setData('method', activeWithdrawalMethod?.label)
+        setData('method', activeWithdrawalMethod?.category)
         setData('type', "debit")
         setData('transaction_type', 'withdraw')
         setData('withdraw_method_id', activeWithdrawalMethod?.id)
 
-        post(url, {
-            onSuccess: (data) => {
-                if (data.props.error) {
-                    toast.error(data.props.error)
-                    return;
+        //Using setTimeout because the data is not being updated immediately
+        setTimeout(() => {
+            post(url, {
+                onSuccess: (data) => {
+                    if (data.props.error) {
+                        toast.error(data.props.error)
+                        return;
+                    }
+                    toast.success('Withdrawal Request Successful!')
+                    setActiveWithdrawalMethod(undefined)
+                    setTimeout(() => {
+                        toast.success(<div className="text-center">You will receive the money shortly after the request is approved</div>, {
+                            duration: 5000
+                        })
+                    }, 1000)
+                },
+                onError: (err) => {
+                    console.error('Error while withdrawing', err)
+                    toast.error('Withdrawal Failed!')
+                },
+                onFinish: () => {
+                    toast.dismiss(toastId)
                 }
-                toast.success('Withdrawal Request Successful!')
-                setActiveWithdrawalMethod(undefined)
-                setTimeout(() => {
-                    toast.success(<div className="text-center">You will receive the money shortly after the request is approved</div>, {
-                        duration: 5000
-                    })
-                }, 1000)
-            },
-            onError: (err) => {
-                console.error('Error while withdrawing', err)
-                toast.error('Withdrawal Failed!')
-            },
-            onFinish: () => {
-                toast.dismiss(toastId)
-            }
-        })
+            })
+        }, 1000);
+
     }
 
     const mappedWithdrawMethods = withdrawMethods.reduce((acc, method) => {

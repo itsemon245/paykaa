@@ -45,7 +45,6 @@ function DepositInfo({ depositMethod }: { depositMethod?: DepositMethodData }) {
         }
         {depositMethod?.category === 'Mobile Banking' &&
             <div>
-                <div className="text-xs md:text-sm font-medium text-center mb-2">Send money to this number and fill the form below</div>
                 <div className="text-center md:text-xl font-bold">
                     {titleCase(depositMethod?.mode || '') + ' Number: '}
                     {depositMethod?.number}
@@ -64,27 +63,21 @@ function DepositInfo({ depositMethod }: { depositMethod?: DepositMethodData }) {
                 </div>
                 <div className="flex gap-1">
                     <div className="flex gap-1 font-semibold">
-                        <div>Branch Name</div> <div>:</div>
-                    </div>
-                    <div className="font-medium">{depositMethod?.branch_name}</div>
-                </div>
-                <div className="flex gap-1">
-                    <div className="flex gap-1 font-semibold">
-                        <div>Account Number</div> <div>:</div>
+                        <div>A/C. No.</div> <div>:</div>
                     </div>
                     <div className="font-medium">{depositMethod?.number}</div>
                 </div>
                 <div className="flex gap-1">
                     <div className="flex gap-1 font-semibold">
-                        <div>Account Holder Name</div> <div>:</div>
+                        <div>A/C. Name</div> <div>:</div>
                     </div>
                     <div className="font-medium">{depositMethod?.account_holder}</div>
                 </div>
                 <div className="flex gap-1">
                     <div className="flex gap-1 font-semibold">
-                        <div>Swift Code</div> <div>:</div>
+                        <div>Branch</div> <div>:</div>
                     </div>
-                    <div className="font-medium">{depositMethod?.swift_code}</div>
+                    <div className="font-medium">{depositMethod?.branch_name}</div>
                 </div>
                 <div className="flex gap-1">
                     <div className="flex gap-1 font-semibold">
@@ -92,7 +85,12 @@ function DepositInfo({ depositMethod }: { depositMethod?: DepositMethodData }) {
                     </div>
                     <div className="font-medium">{depositMethod?.routing_number}</div>
                 </div>
-
+                <div className="flex gap-1">
+                    <div className="flex gap-1 font-semibold">
+                        <div>Swift Code</div> <div>:</div>
+                    </div>
+                    <div className="font-medium">{depositMethod?.swift_code}</div>
+                </div>
             </div>
 
         </div>
@@ -108,7 +106,7 @@ export default function Deposit() {
     const [perPage, setPerPage] = useState(deposits.per_page)
     const { data, setData, setError, post, errors, processing } = useForm<Partial<WalletData>>({
         payment_number: "",
-        amount: 200,
+        amount: 0,
         transaction_id: "",
         method: "",
         note: "",
@@ -148,7 +146,9 @@ export default function Deposit() {
     const deposit = async (e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>) => {
         const toastId = toast.loading('Depositing...')
         const url = route('wallet.deposit.store')
-        setData('method', activeDepositMethod?.label)
+        console.log("category: ", activeDepositMethod?.category)
+        setData('method', activeDepositMethod?.category)
+        console.log("method: ", data.method)
         setData('type', "credit")
         setData('transaction_type', "deposit")
         setData('deposit_method_id', activeDepositMethod?.id)
@@ -168,23 +168,6 @@ export default function Deposit() {
         })
     }
 
-    const slBodyTemplate = (item: WalletData, options: ColumnBodyOptions) => {
-        return <div className="font-bold">{options.rowIndex + 1}</div>
-    }
-    const getSeverity = (status: WalletData['status']): TagProps['severity'] => {
-        switch (status) {
-            case "approved":
-                return "success";
-            case "failed":
-                return "danger";
-            case "cancelled":
-                return "contrast";
-            case "pending":
-                return "warning"
-            default:
-                return "info";
-        }
-    }
     const DepositFooter = () => {
         return (
             <div className="flex justify-end md:flex-row-reverse gap-2 mt-3">

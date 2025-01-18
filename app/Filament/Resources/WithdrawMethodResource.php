@@ -38,7 +38,6 @@ class WithdrawMethodResource extends Resource
                     ->required()
                     ->label(fn(Get $get)=> $get('catgeory') ? $get('catgeory'). ' Name' : 'Name')
                     ->placeholder(fn(Get $get)=> $get('catgeory') ? $get('catgeory'). ' Name' : 'Name')
-                    ->helperText('This is a visual name for the withdraw method')
                     ->maxLength(255),
                 Forms\Components\Select::make('category')
                     ->options($methodCateogries)
@@ -50,7 +49,7 @@ class WithdrawMethodResource extends Resource
                     ->columnSpanFull()
                     ->required(),
                 Forms\Components\Repeater::make('fields')
-                    ->hidden(fn (Get $get) => !$get('category'))
+                    ->hidden(fn (Get $get) => $get('category') !== MethodCategory::BANK->value)
                     ->label('Additional Fields')
                     ->columnSpanFull()
                     ->schema([
@@ -61,22 +60,40 @@ class WithdrawMethodResource extends Resource
                             ->afterStateUpdated(fn (Set $set, ?string $state) => $set('name', Str::snake($state)))
                             ->required()
                             ->maxLength(255)
-                            ->columnSpan(2),
+                            ->columnSpan(3),
+                        // Forms\Components\Checkbox::make('required'),
+                        Forms\Components\Select::make('required')
+                            ->options([1 => 'Yes', 0 => 'No'])
+                            ->required(),
                         Forms\Components\TextInput::make('name')
                             ->visible(false)
                             ->maxLength(255),
                         Forms\Components\Select::make('type')
+                            ->visible(false)
                             ->options(collect(InputType::cases())->mapWithKeys(fn($item)=>[$item->value => $item->name])->toArray())
                             ->required()
                             ->default('text'),
-                        Forms\Components\Select::make('required')
-                            ->options([true => 'Yes', false => 'No'])
-                            ->required()
-                            ->default(false),
                         Forms\Components\TextInput::make('placeholder')
+                            ->hidden(true)
                             ->columnSpanFull()
                             ->placeholder('Field Placeholder (optional)')
                             ->maxLength(255),
+                    ])
+                    ->default([
+                        [
+                            'label' => 'A/C. Name',
+                            'required' => 1,
+                            'name' => 'account_holder',
+                            'type' => 'text',
+                            'placeholder' => 'A/C. Name',
+                        ],
+                        [
+                            'label' => 'Branch',
+                            'required' => 0,
+                            'name' => 'branch',
+                            'type' => 'text',
+                            'placeholder' => 'Branch',
+                        ],
                     ])
                     ->columns(4)
             ]);
