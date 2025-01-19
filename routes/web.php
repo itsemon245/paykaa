@@ -15,13 +15,8 @@ use App\Http\Controllers\UploadController;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return redirect()->route('login');
-    // return Inertia::render('Welcome', [
-    //     'canLogin' => Route::has('login'),
-    //     'canRegister' => Route::has('register'),
-    //     'laravelVersion' => Application::VERSION,
-    //     'phpVersion' => PHP_VERSION,
-    // ]);
+    return view('landing');
+    // return Inertia::render('Landing/Index');
 });
 Route::post('/upload/chunk', [UploadController::class, 'store'])->name('upload.chunk.start');
 Route::patch('/upload/chunk', [UploadController::class, 'update'])->name('upload.chunk.update');
