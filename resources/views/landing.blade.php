@@ -1,10 +1,10 @@
 @php 
-$tagline = "Protecting your money is our responsibility";
+$tagline = "Protecting \r\n your money \r\n is our \r\n responsibility";
 $fontFamily = "Roboto";
 @endphp
 <!DOCTYPE html>
 <!-- saved from url=(0019)https://stripe.com/ -->
-<html class="MktRoot" lang="en-US" data-js-controller="Page" data-page-id="Home" data-page-title="Stripe | {{$tagline}}" style="--scrollbarWidth: 15px;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html class="MktRoot" lang="en-US" data-js-controller="Page" data-page-id="Home" data-page-title="Stripe | {!!$tagline!!}" style="--scrollbarWidth: 15px;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <script>window.__capturedErrors = [];
 window.onerror = function (message, url, line, column, error) { __capturedErrors.push(error); };
 window.onunhandledrejection = function(evt) { __capturedErrors.push(evt.reason); }
@@ -41,7 +41,7 @@ window.onunhandledrejection = function(evt) { __capturedErrors.push(evt.reason);
     <meta name="format-detection" content="telephone=no">
 
       <meta name="facebook-domain-verification" content="zvsnguqc5l0xz3at5o9beubpl46dv8">
-      <meta property="og:title" content="Stripe | {{$tagline}}">
+      <meta property="og:title" content="Stripe | {!!$tagline!!}">
       <meta property="og:description" content="Stripe powers online and in-person payment processing and financial solutions for businesses of all sizes. Accept payments, send payouts, and automate financial processes with a suite of APIs and no-code tools.">
       <meta property="og:image" name="og:image" content="https://images.stripeassets.com/fzn2n1nzq965/3AGidihOJl4nH9D1vDjM84/9540155d584be52fc54c443b6efa4ae6/homepage.png?q=80">
 
@@ -52,7 +52,7 @@ window.onunhandledrejection = function(evt) { __capturedErrors.push(evt.reason);
       <meta name="twitter:site" content="@paykaa">
       <meta name="twitter:image" content="https://images.stripeassets.com/fzn2n1nzq965/3AGidihOJl4nH9D1vDjM84/9540155d584be52fc54c443b6efa4ae6/homepage.png?q=80">
       <meta name="twitter:card" content="summary_large_image">
-      <meta name="twitter:title" content="Paykaa | {{$tagline}}">
+      <meta name="twitter:title" content="Paykaa | {!!$tagline!!}">
       <meta name="twitter:description" content="Paykaa powers online and in-person payment processing and financial solutions for businesses of all sizes. Accept payments, send payouts, and automate financial processes with a suite of APIs and no-code tools.">
 
     
@@ -93,7 +93,7 @@ window.onunhandledrejection = function(evt) { __capturedErrors.push(evt.reason);
       <div class="SiteHeader__navContainer">
         <h1 class="SiteHeader__logo">
           <a href="/" class="SiteHeader__logoLink" data-js-controller="AnalyticsButton" data-analytics-category="Navigation" data-analytics-action="Clicked" data-analytics-label="Stripe Logo" data-testid="header-stripe-logo">
-            <img src="/assets/favicon.png" style="width:100px;height:auto;object-fit:cover;"/>
+            <img src="/assets/logo-long.png" style="width:150px;height:auto;object-fit:cover;"/>
         </a>
         </h1>
 
@@ -192,7 +192,7 @@ window.onunhandledrejection = function(evt) { __capturedErrors.push(evt.reason);
     variant--Button
     CtaButton--arrow
     
-  " href=/login?register=1" data-js-controller="AnalyticsButton" data-js-target="SiteHeader.rightCtaEl" data-analytics-category="Buttons" data-analytics-action="Clicked" data-analytics-label="Contact Sales CTA Header"><span class="NavCta__label" style="background: linear-gradient(90deg, rgb(215, 121, 71) 0%, rgb(224, 45, 43) 100%);">Contact sales</span>&nbsp;<svg class="
+  " href="/login?register=1" data-js-controller="AnalyticsButton" data-js-target="SiteHeader.rightCtaEl" data-analytics-category="Buttons" data-analytics-action="Clicked" data-analytics-label="Contact Sales CTA Header"><span class="NavCta__label" style="background: linear-gradient(90deg, rgb(215, 121, 71) 0%, rgb(224, 45, 43) 100%);">Sign up</span>&nbsp;<svg class="
     HoverArrow
     
     
@@ -5765,10 +5765,37 @@ window.onunhandledrejection = function(evt) { __capturedErrors.push(evt.reason);
 
     
   " data-js-controller="HomepageHeroHeader" data-experiment-id="acquisition_text_scaling_with_viewport_sizing" "="">
+  <div class="HeroCaption HomepageHeroHeader__caption">
+  <div class="HeroCaption__container HeroCaption--onDark ">
+    <div class="HeroCaption__content">
+      <span class="HeroCaption__title">
+        {{now()->format('F Y')}}
+        
+          <span class="HeroCaption__separator HeroCaption__separator--desktopOnly">•</span>
+          <a class="
+    Link
+    HeroCaption__link
+  " href="{{route('login', ['register'=>true])}}" target="_blank" data-js-controller="AnalyticsButton" data-analytics-category="Links" data-analytics-action="Clicked" data-analytics-label="hero_pill_sessions_2025_early_bird_registration">We want to protect your money starting today&nbsp;<svg class="
+    HoverArrow
+    
+    
+  " width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
+  <g fill-rule="evenodd">
+    
+      <path class="HoverArrow__linePath" d="M0 5h7"></path>
+      <path class="HoverArrow__tipPath" d="M1 1l4 4-4 4"></path>
+    
+  </g>
+</svg></a>
+        
+      </span>
+    </div>
+  </div>
+</div>
   <h2 class="
       HomepageHeroHeader__title
       HomepageHeroHeader__title--scaled
-    " data-js-target-list="HomepageHeroHeader.title">{{$tagline}}</h2>
+    " data-js-target-list="HomepageHeroHeader.title">{!!$tagline!!}</h2>
 
   <div class="HomepageHeroGradient Gradient isLoaded">
   <canvas class="Gradient__canvas isLoaded" data-js-controller="Gradient" data-js-darken-top="" data-transition-in="" width="1030" height="600"></canvas>
@@ -5779,13 +5806,13 @@ window.onunhandledrejection = function(evt) { __capturedErrors.push(evt.reason);
       HomepageHeroHeader__title--overlay
       HomepageHeroHeader__title--burn
       HomepageHeroHeader__title--scaled
-    " data-js-target-list="HomepageHeroHeader.title" aria-hidden="true">{{$tagline}}</div>
+    " data-js-target-list="HomepageHeroHeader.title" aria-hidden="true">{!!$tagline!!}</div>
 
   <div class="
       HomepageHeroHeader__title
       HomepageHeroHeader__title--overlay
       HomepageHeroHeader__title--scaled
-    " data-js-target-list="HomepageHeroHeader.title" aria-hidden="true">{{$tagline}}</div>
+    " data-js-target-list="HomepageHeroHeader.title" aria-hidden="true">{!!$tagline!!}</div>
 </header>
   
 
@@ -5807,7 +5834,7 @@ window.onunhandledrejection = function(evt) { __capturedErrors.push(evt.reason);
     variant--Button
     CtaButton--arrow
     HomepageHero__cta
-  " href="/dashboardregister" data-js-controller="AnalyticsButton" data-analytics-category="Buttons" data-analytics-action="Clicked" data-analytics-label="Start Now CTA Hero">Start now&nbsp;<svg class="
+  " href="/login?register=1" data-js-controller="AnalyticsButton" data-analytics-category="Buttons" data-analytics-action="Clicked" data-analytics-label="Start Now CTA Hero">Start now&nbsp;<svg class="
     HoverArrow
     
     
@@ -5840,21 +5867,22 @@ window.onunhandledrejection = function(evt) { __capturedErrors.push(evt.reason);
 
 <div class="HomepageHero__emailInput">
   <div class="HeroEmailInput" data-js-controller="HeroEmailInput" data-register-href="">
-  <form class="HeroEmailInput__form">
+  <form class="HeroEmailInput__form" action="{{route('login')}}">
     <div class="EmailInput">
-    <input data-js-controller="EmailInput" class="EmailInput__input" name="Email address" type="text" placeholder="Email address" data-js-target="HeroEmailInput.emailInput">
+    <input type="hidden" value="1" name="register"/>
+    <input data-js-controller="EmailInput" class="EmailInput__input" name="email" type="text" placeholder="Email address" data-js-target="HeroEmailInput.emailInput">
   <div class="EmailInput__error" aria-label="Invalid field" hidden="">
     <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
       <g fill="var(--inputErrorAccentColor)" fill-rule="evenodd"><circle cx="8" cy="8" r="8" fill-opacity=".2"></circle><path d="M8 11a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm0-8a1 1 0 0 1 1 1v5a1 1 0 1 1-2 0V4a1 1 0 0 1 1-1z"></path></g>
     </svg>
   </div>
 </div>
-    <a class="
+    <button class="
     CtaButton
     variant--Button
     CtaButton--arrow
     HeroEmailInput__button
-  " href="/dashboardregister" data-js-controller="AnalyticsButton" data-js-target="HeroEmailInput.startNowButton" data-analytics-category="Buttons" data-analytics-action="Clicked" data-analytics-label="HomePageEmailInputCta">Start now&nbsp;<svg class="
+  " data-js-controller="AnalyticsButton" data-js-target="HeroEmailInput.startNowButton" data-analytics-category="Buttons" data-analytics-action="Clicked" data-analytics-label="HomePageEmailInputCta">Start now&nbsp;<svg class="
     HoverArrow
     
     
@@ -5865,7 +5893,7 @@ window.onunhandledrejection = function(evt) { __capturedErrors.push(evt.reason);
       <path class="HoverArrow__tipPath" d="M1 1l4 4-4 4"></path>
     
   </g>
-</svg></a>
+</svg></button>
   </form>
   <a class="
     CtaButton
@@ -17055,7 +17083,7 @@ United States
     variant--Button
     CtaButton--arrow
     
-  " href="/dashboardregister" data-js-controller="AnalyticsButton" data-analytics-category="Buttons" data-analytics-action="Clicked" data-analytics-label="Start Now CTA Footer">Start now&nbsp;<svg class="
+  " href="/login?register=1" data-js-controller="AnalyticsButton" data-analytics-category="Buttons" data-analytics-action="Clicked" data-analytics-label="Start Now CTA Footer">Start now&nbsp;<svg class="
     HoverArrow
     
     

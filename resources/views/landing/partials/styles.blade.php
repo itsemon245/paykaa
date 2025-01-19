@@ -3026,8 +3026,8 @@
 
     @media (min-width:1112px) {
         .HomepageHeroHeader__title--scaled {
-            /*font-size: clamp(4.75rem, 9.9vh, 5.875rem)*/
-            font-size: 5rem;
+            font-size: clamp(5rem, 11vh, 7rem)
+            /* font-size: 5rem; */
         }
 
         @media (max-height:937px) {

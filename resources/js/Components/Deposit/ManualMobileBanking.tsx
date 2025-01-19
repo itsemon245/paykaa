@@ -38,7 +38,7 @@ export default function ManualMobileBanking({
             return transform(depositMethod?.mode + " Number", 'title')
         }
         if (depositMethod?.category === "Bank") {
-            return "A/C. No."
+            return "A/c Number"
         }
         return "Wallet Address"
     }, [depositMethod])
@@ -54,6 +54,7 @@ export default function ManualMobileBanking({
                             <>
                                 <InputLabel value="Full Amount" />
                                 <div className="flex items-center justify-center border p-1.5 rounded-lg text-lg font-bold opacity-75 cursor-not-allowed">{total + ".00"} {depositMethod?.category !== 'Cryptocurrency' && 'BDT'}</div>
+                                <div className="text-sm text-gray-500 text-start">Service Charge: <span className="font-bold">{depositMethod?.charge}%</span></div>
                             </>
                     }
                 </div>
@@ -68,7 +69,7 @@ export default function ManualMobileBanking({
                 <Input label="Transaction ID" placeholder="Transaction ID" error={errors.transaction_id} className="w-full" onChange={e => setData('transaction_id', e.target.value)} />
             )}
             {depositMethod?.category === "Bank" && (
-                <Input onChange={e => setData('account_holder', e.target.value)} error={errors.account_holder} label="A/C. Name" placeholder="A/C. Name" className="w-full" />
+                <Input onChange={e => setData('account_holder', e.target.value)} error={errors.account_holder} label="A/c Name" placeholder="A/c Name" className="w-full" />
             )}
 
             <Textarea autoResize label="Note" placeholder="Optional" className="w-full" onChange={e => setData('note', e.target.value)} error={errors.note} />
