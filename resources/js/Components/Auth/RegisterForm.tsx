@@ -12,19 +12,19 @@ export default function RegisterForm({ children }: { children: any }) {
         password_confirmation: '',
     });
 
-    useEffect(() => {
-        console.log(data.password, data.password_confirmation)
-        if (data.password !== '' || data.password_confirmation !== '') {
-            if (data.password !== data.password_confirmation) {
-                setError('password', 'Passwords must match');
-                setError('password_confirmation', 'Passwords must match');
-            } else {
-                clearErrors('password', 'password_confirmation');
-            }
-        } else {
-            clearErrors('password', 'password_confirmation');
-        }
-    }, [data.password_confirmation, data.password])
+    // useEffect(() => {
+    //     console.log(data.password, data.password_confirmation)
+    //     if (data.password !== '' || data.password_confirmation !== '') {
+    //         if (data.password !== data.password_confirmation) {
+    //             setError('password', 'Passwords must match');
+    //             setError('password_confirmation', 'Passwords must match');
+    //         } else {
+    //             clearErrors('password', 'password_confirmation');
+    //         }
+    //     } else {
+    //         clearErrors('password', 'password_confirmation');
+    //     }
+    // }, [data.password_confirmation, data.password])
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
@@ -50,7 +50,7 @@ export default function RegisterForm({ children }: { children: any }) {
             setError('password_confirmation', 'Passwords must match');
         }
 
-        if (hasErrors) {
+        if (errors.name || errors.email || errors.password || errors.password_confirmation) {
             return;
         }
         post(route('register'), {
