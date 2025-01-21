@@ -1,4 +1,3 @@
-import '../css/app.css';
 import './bootstrap';
 //Theme
 import 'primereact/resources/themes/lara-light-indigo/theme.css'
