@@ -1,4 +1,5 @@
 <style>
+    
     .HomepageLogoGrid .Section__layout {
         --sectionPaddingTop: 0
     }
@@ -724,7 +725,8 @@
         margin-left: var(--arrowSpacing);
         stroke-width: 2px;
         fill: none;
-        stroke: currentColor
+        stroke: currentColor;
+        display:inline-block;
     }
 
     .HoverArrow--sizeSmall {
@@ -776,7 +778,7 @@
     }
 
     .NavCtaGradient .CtaButton.variant--Button .NavCta__label {
-        background: var(--initialGradientColor);
+        background: var(--primary-500);
         will-change: color;
         background-clip: text !important;
         -webkit-background-clip: text !important;
@@ -3143,10 +3145,10 @@
 </style>
 <style>
     .HomepageHeroGradient {
-        --gradientColorZero: #a960ee;
+        --gradientColorZero: var(--primary-300);
         --gradientColorOne: #ff333d;
         --gradientColorTwo: #90e0ff;
-        --gradientColorThree: #ffcb57;
+        --gradientColorThree: var(--primary-500);
         --gradientColorZeroTransparent: rgba(169, 96, 238, 0);
         --gradientColorOneTransparent: rgba(255, 51, 61, 0);
         --gradientColorTwoTransparent: rgba(144, 224, 255, 0);
@@ -3202,7 +3204,7 @@
         content: "";
         z-index: -1;
         position: absolute;
-        top: 0;
+        top: -1px;
         left: 50%;
         transform: translateX(-50%);
         min-width: 1000px;
