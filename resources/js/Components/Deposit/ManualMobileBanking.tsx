@@ -20,7 +20,7 @@ export default function ManualMobileBanking({
 
     const total = useMemo(() => {
         if (!data.amount) return 0;
-        let commission = Math.round(app.payment.is_fixed_amount ? app.payment.charge : data.amount * (app.payment.charge / 100))
+        let commission = Math.round(data.amount * ((depositMethod?.charge ?? 0) / 100))
         setData('commission', commission)
         return data.amount + commission
     }, [data.amount])
@@ -35,7 +35,7 @@ export default function ManualMobileBanking({
     }
     const getNumberLabel = useMemo(() => {
         if (depositMethod?.category === "Mobile Banking") {
-            return transform(depositMethod?.mode + " Number", 'title')
+            return "Number";
         }
         if (depositMethod?.category === "Bank") {
             return "A/c Number"
@@ -61,15 +61,15 @@ export default function ManualMobileBanking({
             )}
             <div>
                 <InputLabel value="Deposit Amount" />
-                <InputNumber value={data.amount} onChange={onAmountChange} autoFocus placeholder="Amount" className="w-full *:text-center text-center" />
+                <InputNumber required invalid={errors.amount !== undefined} value={data.amount} onChange={onAmountChange} autoFocus placeholder="Amount" className="w-full *:text-center text-center" />
                 {errors.amount && <InputError message={errors.amount} />}
             </div>
             <Input onChange={e => setData('payment_number', e.target.value)} error={errors.payment_number} label={getNumberLabel} placeholder={getNumberLabel} className="w-full" />
             {depositMethod?.category === "Mobile Banking" && (
-                <Input label="Transaction ID" placeholder="Transaction ID" error={errors.transaction_id} className="w-full" onChange={e => setData('transaction_id', e.target.value)} />
+                <Input required label="Transaction ID" placeholder="Transaction ID" error={errors.transaction_id} className="w-full" onChange={e => setData('transaction_id', e.target.value)} />
             )}
             {depositMethod?.category === "Bank" && (
-                <Input onChange={e => setData('account_holder', e.target.value)} error={errors.account_holder} label="A/c Name" placeholder="A/c Name" className="w-full" />
+                <Input required onChange={e => setData('account_holder', e.target.value)} error={errors.account_holder} label="A/c Name" placeholder="A/c Name" className="w-full" />
             )}
 
             <Textarea autoResize label="Note" placeholder="Optional" className="w-full" onChange={e => setData('note', e.target.value)} error={errors.note} />

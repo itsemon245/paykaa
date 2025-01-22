@@ -51,10 +51,10 @@ Route::middleware('auth', 'redirect-if-admin')->group(function () {
 Route::middleware('auth')
     ->prefix('admin')
     ->name('admin.')
-    ->group(function(){
+    ->group(function () {
         Route::get('login-as/{user}', function (Request $request, User $user) {
             session()->set('impersonating', [
-                'current'=> $user->uuid,
+                'current' => $user->uuid,
                 'old' => auth()->user()->uuid
             ]);
             Auth::guard('web')->logout();
@@ -64,6 +64,5 @@ Route::middleware('auth')
             return redirect(route('dashboard'));
         })->name('login-as');
     });
-require __DIR__.'/auth.php';
-require __DIR__.'/chat.php';
-
+require __DIR__ . '/auth.php';
+require __DIR__ . '/chat.php';

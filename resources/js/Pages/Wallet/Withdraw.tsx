@@ -27,7 +27,7 @@ export default function Withdraw() {
     const { balance, refreshBalance } = useBalance()
     const { min } = useBreakpoint()
     const withdrawMethods = usePage().props.withdrawMethods as WithdrawMethodData[]
-    const { data, setData, setError, post, errors, processing } = useForm<Partial<WalletData>>({
+    const { data, setData, setError, post, errors, processing, clearErrors } = useForm<Partial<WalletData>>({
         amount: 0,
         payment_number: "",
         note: "",
@@ -47,10 +47,6 @@ export default function Withdraw() {
         }
         const url = route('wallet.withdraw.store')
         const toastId = toast.loading('Withdrawing...')
-        setData('method', activeWithdrawalMethod?.category)
-        setData('type', "debit")
-        setData('transaction_type', 'withdraw')
-        setData('withdraw_method_id', activeWithdrawalMethod?.id)
 
         //Using setTimeout because the data is not being updated immediately
         setTimeout(() => {
@@ -93,11 +89,23 @@ export default function Withdraw() {
         return acc;
     }, [] as { category: string, methods: WithdrawMethodData[] }[])
 
+    useEffect(() => {
+        if (activeWithdrawalMethod) {
+            setData('method', activeWithdrawalMethod?.category)
+            setData('type', "debit")
+            setData('transaction_type', "withdraw")
+            setData('withdraw_method_id', activeWithdrawalMethod?.id)
+        } else {
+            clearErrors()
+        }
+    }, [activeWithdrawalMethod])
+
+    const withdrawForm = useRef<HTMLFormElement>(null)
     const Footer = () => {
         return (
             <div className="flex justify-end md:flex-row-reverse gap-2">
                 <Button outlined label="Cancel" onClick={() => setActiveWithdrawalMethod(undefined)} />
-                <Button label="Withdraw" onClick={withdraw} loading={processing} />
+                <Button label="Withdraw" onClick={(e) => withdrawForm.current?.requestSubmit()} loading={processing} />
             </div>
         )
     }
@@ -105,11 +113,11 @@ export default function Withdraw() {
         <>
             <Head title="Withdraw" />
             <div className="container">
-                <Dialog header={`Withdraw using ${activeWithdrawalMethod?.label}`} footer={<Footer />} visible={dialogOpened} className="w-[95%] sm:w-[70vw] md:w-[50vw] !max-h-[80vh]" onHide={() => setActiveWithdrawalMethod(undefined)}>
+                <Dialog header={`Withdraw using ${activeWithdrawalMethod?.category === 'Bank' ? 'Bank' : activeWithdrawalMethod?.label}`} footer={<Footer />} visible={dialogOpened} className="w-[95%] sm:w-[70vw] md:w-[50vw] !max-h-[80vh]" onHide={() => setActiveWithdrawalMethod(undefined)}>
                     <form onSubmit={e => {
                         e.preventDefault()
                         withdraw(e)
-                    }}>
+                    }} ref={withdrawForm}>
                         <WithdrawForm errors={errors} data={data} setData={setData} activeWithdrawalMethod={activeWithdrawalMethod} />
                     </form>
                 </Dialog>

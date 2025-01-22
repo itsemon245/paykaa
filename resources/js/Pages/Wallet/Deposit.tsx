@@ -63,13 +63,13 @@ function DepositInfo({ depositMethod }: { depositMethod?: DepositMethodData }) {
                 </div>
                 <div className="flex gap-1">
                     <div className="flex gap-1 font-semibold">
-                        <div>A/C. No.</div> <div>:</div>
+                        <div>A/c Number</div> <div>:</div>
                     </div>
                     <div className="font-medium">{depositMethod?.number}</div>
                 </div>
                 <div className="flex gap-1">
                     <div className="flex gap-1 font-semibold">
-                        <div>A/C. Name</div> <div>:</div>
+                        <div>A/c Name</div> <div>:</div>
                     </div>
                     <div className="font-medium">{depositMethod?.account_holder}</div>
                 </div>
@@ -104,7 +104,7 @@ export default function Deposit() {
     const depositMethods = pageProps.depositMethods as DepositMethodData[]
     const [deposits, setDeposits] = useState(initialDeposits)
     const [perPage, setPerPage] = useState(deposits.per_page)
-    const { data, setData, setError, post, errors, processing } = useForm<Partial<WalletData>>({
+    const { data, setData, setError, post, errors, processing, reset, clearErrors } = useForm<Partial<WalletData>>({
         payment_number: "",
         amount: 0,
         transaction_id: "",
@@ -143,15 +143,30 @@ export default function Deposit() {
         router.visit(url, { replace: true, preserveScroll: true })
     }
 
+    useEffect(() => {
+        if (activeDepositMethod) {
+            setData('method', activeDepositMethod?.category)
+            setData('type', "credit")
+            setData('transaction_type', "deposit")
+            setData('deposit_method_id', activeDepositMethod?.id)
+        } else {
+            clearErrors()
+        }
+    }, [activeDepositMethod])
     const deposit = async (e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>) => {
+        clearErrors()
+        if (activeDepositMethod?.category === "Bank") {
+            if (!data.account_holder) {
+                setError('account_holder', 'A/c Name is required')
+                return
+            }
+            if (!data.payment_number) {
+                setError('payment_number', 'A/c Number is required')
+                return
+            }
+        }
         const toastId = toast.loading('Depositing...')
         const url = route('wallet.deposit.store')
-        console.log("category: ", activeDepositMethod?.category)
-        setData('method', activeDepositMethod?.category)
-        console.log("method: ", data.method)
-        setData('type', "credit")
-        setData('transaction_type', "deposit")
-        setData('deposit_method_id', activeDepositMethod?.id)
         post(url, {
             onSuccess: (data) => {
                 toast.success('Deposit successful')
@@ -168,11 +183,12 @@ export default function Deposit() {
         })
     }
 
+    const depositForm = useRef<HTMLFormElement>(null)
     const DepositFooter = () => {
         return (
             <div className="flex justify-end md:flex-row-reverse gap-2 mt-3">
                 <Button outlined label="Cancel" onClick={() => setActiveDepositMethod(undefined)} />
-                <Button label="Deposit" onClick={deposit} loading={processing} />
+                <Button label="Deposit" onClick={(e) => depositForm.current?.requestSubmit()} loading={processing} />
             </div>
         )
     }
@@ -180,11 +196,11 @@ export default function Deposit() {
         <>
             <Head title="Deposit" />
             <div className="container">
-                <Dialog header={`Deposit using ${activeDepositMethod?.category}`} footer={<DepositFooter />} visible={dialogOpened} className="w-[95%] sm:w-[70vw] md:w-[50vw]" onHide={() => setActiveDepositMethod(undefined)}>
+                <Dialog header={`Deposit using ${activeDepositMethod?.category === 'Bank' ? 'Bank' : activeDepositMethod?.label}`} footer={<DepositFooter />} visible={dialogOpened} className="w-[95%] sm:w-[70vw] md:w-[50vw]" onHide={() => setActiveDepositMethod(undefined)}>
                     <form onSubmit={e => {
                         e.preventDefault()
                         deposit(e)
-                    }}>
+                    }} ref={depositForm}>
                         <DepositInfo depositMethod={activeDepositMethod} />
                         {activeDepositMethod?.mode !== "payment" && (
                             <ManualMobileBanking depositMethod={activeDepositMethod} errors={errors} data={data} setData={setData} />

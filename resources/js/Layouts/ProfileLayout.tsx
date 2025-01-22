@@ -1,12 +1,11 @@
 import Sidebar from "@/Components/Sidebar";
 import useBreakpoint from "@/Hooks/useBrakpoints";
+import { RouteName } from "@/types";
 import { cn } from "@/utils";
 import { Link, usePage } from "@inertiajs/react";
-import { motion } from "motion/react"
-import { Button } from "primereact/button";
 interface MenuItem {
     label: string;
-    route: string;
+    route: RouteName;
 }
 export default function ProfileLayout({ children, animate }: { children?: JSX.Element | JSX.Element[], animate?: boolean }) {
     const { min, max, between } = useBreakpoint();
@@ -14,8 +13,8 @@ export default function ProfileLayout({ children, animate }: { children?: JSX.El
 
     const [menuItems, setMenuItems] = useState<MenuItem[]>([
         {
-            label: "Account",
-            route: 'profile.edit',
+            label: "Home",
+            route: 'dashboard',
         },
         {
             label: "Deposit",
