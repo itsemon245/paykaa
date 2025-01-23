@@ -33,6 +33,10 @@ export type PageProps<
         public: string,
         storage: string,
         base: string,
+    },
+    impersonating?: {
+        current: string,
+        old: string,
     }
 };
 export type PaginatedCollection<T extends object> = {

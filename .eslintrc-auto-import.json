@@ -103,6 +103,8 @@
     "RegisterForm": true,
     "Preloader": true,
     "usePreloader": true,
-    "LandingLayout": true
+    "LandingLayout": true,
+    "MdiCurrencyBdt": true,
+    "MdiArrowRightDropCircleOutline": true
   }
 }

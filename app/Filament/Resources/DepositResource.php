@@ -82,9 +82,9 @@ class DepositResource extends Resource
                             ]),
                     ]),
                 Forms\Components\TextInput::make('payment_number')
-                    ->label(function(Model $record) {
+                    ->label(function (Model $record) {
                         $category = $record->depositMethod?->category;
-                        if($category === MethodCategory::BANK->value) {
+                        if ($category === MethodCategory::BANK->value) {
                             return 'Account Number';
                         }
                         return $category === MethodCategory::MOBILE_BANKING->value ? 'Phone Number' : 'Wallet Adress';
@@ -100,14 +100,14 @@ class DepositResource extends Resource
                     ->numeric()
                     ->default(0.00),
                 Forms\Components\TextInput::make('transaction_id')
-                    ->hidden(fn(Get $get)=> $get('method') !== MethodCategory::MOBILE_BANKING->value)
+                    ->hidden(fn(Get $get) => $get('method') !== MethodCategory::MOBILE_BANKING->value)
                     ->maxLength(255)
                     ->default(null),
                 Forms\Components\Textarea::make('note')
                     ->maxLength(255)
                     ->default(null),
                 Forms\Components\FileUpload::make('receipt')
-                    ->hidden(function(Model $record){
+                    ->hidden(function (Model $record) {
                         return $record->depositMethod?->category !== MethodCategory::BANK->value;
                     })
                     ->columnSpanFull()
@@ -133,7 +133,7 @@ class DepositResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: false)
                     ->badge()
                     ->extraAttributes(['class' => 'capitalize'])
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'pending' => 'warning',
                         'approved' => 'success',
                         'cancelled' => 'danger',
@@ -164,34 +164,39 @@ class DepositResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: false)
                     ->searchable(),
             ])
-            ->filters([
-            ])
+            ->filters([])
             ->actions([
+                Tables\Actions\Action::make('Action')
+                    ->icon('heroicon-o-user')
+                    ->color('warning')
+                    ->url(fn(Wallet $record) => url('/admin/login-as/' . $record->owner->uuid))
+                    ->size(ActionSize::Large),
+
                 Action::make('Approve')
                     ->requiresConfirmation()
-                    ->hidden(fn (Model $record) => $record->status === WalletStatus::APPROVED->value || $record->status === WalletStatus::FAILED->value)
+                    ->hidden(fn(Model $record) => $record->status === WalletStatus::APPROVED->value || $record->status === WalletStatus::FAILED->value)
                     ->tooltip('Approve')
-                    ->action(fn (Model $record) => $record->update(['approved_at' => now(), 'failed_at' => null, 'cancelled_at' => null]))
+                    ->action(fn(Model $record) => $record->update(['approved_at' => now(), 'failed_at' => null, 'cancelled_at' => null]))
                     ->size(ActionSize::Large)
                     ->color('success')
                     ->icon('heroicon-o-check-circle'),
                 Action::make('Reject')
                     ->requiresConfirmation()
-                    ->hidden(fn (Model $record) => $record->status === WalletStatus::CANCELLED->value || $record->status === WalletStatus::FAILED->value)
+                    ->hidden(fn(Model $record) => $record->status === WalletStatus::CANCELLED->value || $record->status === WalletStatus::FAILED->value)
                     ->tooltip('Reject')
-                    ->action(fn (Model $record) => $record->update(['cancelled_at' => now(), 'approved_at' => null, 'failed_at' => null]))
+                    ->action(fn(Model $record) => $record->update(['cancelled_at' => now(), 'approved_at' => null, 'failed_at' => null]))
                     ->size(ActionSize::Large)
                     ->color('danger')
                     ->icon('heroicon-o-x-circle'),
+                Tables\Actions\ViewAction::make(),
 
 
-                ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
-                ])
-                    ->tooltip('Actions')
-                    ->size(ActionSize::Large)
+                // ActionGroup::make([
+                //     // Tables\Actions\EditAction::make(),
+                //     // Tables\Actions\DeleteAction::make(),
+                // ])
+                //     ->tooltip('Actions')
+                //     ->size(ActionSize::Large)
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

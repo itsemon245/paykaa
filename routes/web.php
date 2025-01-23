@@ -9,9 +9,9 @@ use App\Http\Controllers\Wallet\WithdrawController;
 use App\Models\KycController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UploadController;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 Route::get('/', function () {
@@ -53,15 +53,24 @@ Route::middleware('auth')
     ->name('admin.')
     ->group(function () {
         Route::get('login-as/{user}', function (Request $request, User $user) {
-            session()->set('impersonating', [
-                'current' => $user->uuid,
-                'old' => auth()->user()->uuid
-            ]);
+            if (!auth()->user()->isAdmin()) {
+                $oldUser = User::where('uuid', session('impersonating.old'))->first();
+                if (!$oldUser?->isAdmin()) {
+                    abort(403);
+                }
+            } else {
+                session(['impersonating' => [
+                    'current' => $user->uuid,
+                    'old' => auth()->user()->uuid
+                ]]);
+            }
             Auth::guard('web')->logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
             Auth::loginUsingId($user->id, false);
-            return redirect(route('dashboard'));
+            if ($user->isAdmin()) {
+                session()->forget('impersonating');
+                return redirect('/admin/users');
+            }
+            return redirect(route('dashboard'))->with('success', 'Logged in as user');
         })->name('login-as');
     });
 require __DIR__ . '/auth.php';

@@ -7,6 +7,7 @@ import IconsResolver from 'unplugin-icons/resolver'
 
 
 const iconCollection = [
+    'mdi',
     'hugeicons',
     'heroicons',
     'game-icons',

@@ -61,9 +61,12 @@ class UserResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn(Builder $query) => $query->with('kyc')->whereNot('id', auth()->user()->id))
             ->columns([
-                Tables\Columns\ImageColumn::make('avatar')
-                    ->searchable(),
+                Tables\Columns\ImageColumn::make('avatar'),
+                Tables\Columns\TextColumn::make('id')
+                    ->label('UID')
+                    ->copyable(true),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
@@ -81,10 +84,16 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('country')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('email_verified_at')
+                Tables\Columns\TextColumn::make('kyc.approved_at')
                     ->label('Verifed')
-                    ->formatStateUsing(fn($state)=> $state ? 'Verfied' : 'Not Verfied')
+                    ->formatStateUsing(fn($state) => $state ? 'Yes' : 'No')
+                    ->icon(fn($state) => $state === 'Yes' ? 'heroicon-o-check-circle' : 'heroicon-o-x-circle')
                     ->badge()
+                    ->placeholder('Not submitted Yet')
+                    ->color(fn($state) => match ($state) {
+                        'Verfied' => 'success',
+                        'Not Verfied' => 'danger',
+                    })
                     ->sortable(),
                 Tables\Columns\TextColumn::make('referral_id')
                     ->toggleable(isToggledHiddenByDefault: true)
@@ -102,17 +111,18 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\Action::make('Login')
+                Tables\Actions\Action::make('Action')
                     ->icon('heroicon-o-user')
                     ->color('warning')
-                    ->url(fn (User $record) => url('/admin/login-as/'.$record->uuid))
+                    ->url(fn(User $record) => url('/admin/login-as/' . $record->uuid))
                     ->size(ActionSize::Large),
-                ActionGroup::make([
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
-                ])
-                    ->tooltip('Actions')
-                    ->size(ActionSize::Large)
+                Tables\Actions\ViewAction::make(),
+                // ActionGroup::make([
+                //     // Tables\Actions\EditAction::make(),
+                //     Tables\Actions\DeleteAction::make(),
+                // ])
+                //     ->tooltip('Actions')
+                //     ->size(ActionSize::Large)
 
             ])
             ->bulkActions([

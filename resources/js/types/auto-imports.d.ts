@@ -52,6 +52,8 @@ declare global {
   const Logo: typeof import('../Components/Logo')['default']
   const LucideLabCoinsExchange: typeof import('~icons/lucide-lab/coins-exchange.tsx')['default']
   const ManualMobileBanking: typeof import('../Components/Deposit/ManualMobileBanking')['default']
+  const MdiArrowRightDropCircleOutline: typeof import('~icons/mdi/arrow-right-drop-circle-outline.tsx')['default']
+  const MdiCurrencyBdt: typeof import('~icons/mdi/currency-bdt.tsx')['default']
   const Message: typeof import('../Components/Chat/Message')['default']
   const MessageDate: typeof import('../Components/Chat/MessageDate')['default']
   const MessageType: typeof import('./_generated')['MessageType']
