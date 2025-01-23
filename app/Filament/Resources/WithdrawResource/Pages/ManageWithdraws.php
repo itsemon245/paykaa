@@ -18,11 +18,15 @@ class ManageWithdraws extends ManageRecords
     {
         return [
             'pending' => Tab::make('Pending')
-                ->modifyQueryUsing(fn (Builder $query) => $query->whereNull('approved_at')->where('transaction_type', WalletTransactionType::WITHDRAW->value)),
+                ->modifyQueryUsing(fn(Builder $query) => $query->where(function (Builder $builder) {
+                    $builder->whereNull('approved_at')->where('transaction_type', WalletTransactionType::WITHDRAW->value);
+                })->where(function (Builder $builder) {
+                    $builder->whereNull('cancelled_at')->orWhereNull('failed_at');
+                })),
             'approved' => Tab::make('Approved')
-                ->modifyQueryUsing(fn (Builder $query) => $query->whereNotNull('approved_at')->where('transaction_type', WalletTransactionType::WITHDRAW->value)),
-            'all' => Tab::make('All')
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('transaction_type', WalletTransactionType::WITHDRAW->value)),
+                ->modifyQueryUsing(fn(Builder $query) => $query->whereNotNull('approved_at')->where('transaction_type', WalletTransactionType::WITHDRAW->value)),
+            'rejected' => Tab::make('Rejected')
+                ->modifyQueryUsing(fn(Builder $query) => $query->whereNotNull('cancelled_at')->where('transaction_type', WalletTransactionType::WITHDRAW->value))
         ];
     }
     public function getDefaultActiveTab(): string | int | null

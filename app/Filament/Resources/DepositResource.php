@@ -85,12 +85,13 @@ class DepositResource extends Resource
                     ->label(function (Model $record) {
                         $category = $record->depositMethod?->category;
                         if ($category === MethodCategory::BANK->value) {
-                            return 'Account Number';
+                            return 'A/c Number';
                         }
                         return $category === MethodCategory::MOBILE_BANKING->value ? 'Phone Number' : 'Wallet Adress';
                     })
                     ->maxLength(255)
                     ->default(null),
+                Forms\Components\TextInput::make('account_holder')->label('A/c Name')->hidden(fn(Model $record) => $record->depositMethod?->category !== MethodCategory::BANK->value),
                 Forms\Components\TextInput::make('amount')
                     ->required()
                     ->numeric()
@@ -103,11 +104,15 @@ class DepositResource extends Resource
                     ->hidden(fn(Get $get) => $get('method') !== MethodCategory::MOBILE_BANKING->value)
                     ->maxLength(255)
                     ->default(null),
+                Forms\Components\TextInput::make('branch_name')->label('Branch')->hidden(fn(Model $record) => $record->depositMethod?->category !== MethodCategory::BANK->value),
                 Forms\Components\Textarea::make('note')
                     ->maxLength(255)
                     ->default(null),
                 Forms\Components\FileUpload::make('receipt')
                     ->hidden(function (Model $record) {
+                        if (!$record->receipt) {
+                            return true;
+                        }
                         return $record->depositMethod?->category !== MethodCategory::BANK->value;
                     })
                     ->columnSpanFull()
@@ -188,8 +193,7 @@ class DepositResource extends Resource
                     ->size(ActionSize::Large)
                     ->color('danger')
                     ->icon('heroicon-o-x-circle'),
-                Tables\Actions\ViewAction::make(),
-
+                Tables\Actions\ViewAction::make()->modalHeading(fn(Wallet $record) => "Deposit Reqeust for " . ($record->depositMetho?->category === 'Bank' ? 'Bank' : $record->depositMethod?->label)),
 
                 // ActionGroup::make([
                 //     // Tables\Actions\EditAction::make(),

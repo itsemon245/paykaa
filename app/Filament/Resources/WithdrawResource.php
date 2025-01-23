@@ -38,44 +38,86 @@ class WithdrawResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->disabled()
-                            ->required(),
-                        Forms\Components\TextInput::make('email')
-                            ->disabled()
-                            ->required(),
+                            ->readOnly(),
+                        Forms\Components\TextInput::make('id')
+                            ->label('UID')
+                            ->readOnly()
+                            ->suffixAction(
+                                \Filament\Forms\Components\Actions\Action::make('copy')
+                                    ->color('secondary')
+                                    ->icon('heroicon-o-clipboard')
+                                    ->action(function ($livewire, $state) {
+                                        $livewire->dispatch('copy-to-clipboard', text: $state);
+                                    })
+                            )
+                            ->extraAttributes([
+                                'x-data' => '{
+                                copyToClipboard(text) {
+                                if (navigator.clipboard && navigator.clipboard.writeText) {
+                                navigator.clipboard.writeText(text).then(() => {
+                                $tooltip("Copied to clipboard", { timeout: 1500 });
+                                }).catch(() => {
+                                $tooltip("Failed to copy", { timeout: 1500 });
+                                });
+                                } else {
+                                const textArea = document.createElement("textarea");
+                                textArea.value = text;
+                                textArea.style.position = "fixed";
+                                textArea.style.opacity = "0";
+                                document.body.appendChild(textArea);
+                                textArea.select();
+                                try {
+                                document.execCommand("copy");
+                                $tooltip("Copied to clipboard", { timeout: 1500 });
+                                } catch (err) {
+                                $tooltip("Failed to copy", { timeout: 1500 });
+                                }
+                                document.body.removeChild(textArea);
+                                }
+                                }
+                                }',
+                                'x-on:copy-to-clipboard.window' => 'copyToClipboard($event.detail.text)',
+                            ]),
                     ]),
+                Forms\Components\TextInput::make('amount')
+                    ->required()
+                    ->numeric()
+                    ->default(0.00),
                 Forms\Components\TextInput::make('payment_number')
-                    ->label(function(Model $record) {
-                        $category = $record->depositMethod?->category;
-                        if($category === MethodCategory::BANK->value) {
+                    ->label(function (Model $record) {
+                        $category = $record->withdrawMethod?->category;
+                        if ($category === MethodCategory::BANK->value) {
                             return 'A/C. Number';
                         }
                         return $category === MethodCategory::MOBILE_BANKING->value ? 'Personal Number' : 'Wallet Adress';
                     })
                     ->maxLength(255)
                     ->default(null),
-                Forms\Components\TextInput::make('amount')
-                    ->required()
-                    ->numeric()
-                    ->default(0.00),
                 Forms\Components\TextInput::make('transaction_id')
-                    ->hidden(fn(Model $record)=> $record->depositMethod?->category !== MethodCategory::MOBILE_BANKING->value)
+                    ->hidden(fn(Model $record) => $record->depositMethod?->category !== MethodCategory::MOBILE_BANKING->value)
                     ->maxLength(255)
                     ->default(null),
+                Forms\Components\ViewField::make('additional_fields')
+                    ->filled()
+                    ->hidden(fn(Model $record) => count($record?->additional_fields) == 0)
+                    ->view('filament.forms.components.additional-fields')
+                    ->columnSpanFull(),
                 Forms\Components\Textarea::make('note')
                     ->maxLength(255)
                     ->default(null),
-                Forms\Components\Repeater::make('additional_fields')
-                    ->hidden(fn(Model $record)=> count($record?->additional_fields) == 0 )
-                    ->columnSpanFull()
-                    ->columns(2)
-                    ->schema([
-                        Forms\Components\TextInput::make('label')
-                            ->label('Field Name')
-                            ->required(),
-                        Forms\Components\TextInput::make('value')
-                            ->label('Value')
-                            ->required(),
-                    ]),
+                // Forms\Components\TextInput::make('additional_fields.*.label')
+                // Forms\Components\Repeater::make('additional_fields')
+                //     ->hidden(fn(Model $record) => count($record?->additional_fields) == 0)
+                //     ->columnSpanFull()
+                //     ->columns(2)
+                //     ->schema([
+                //         Forms\Components\TextInput::make('label')
+                //             ->label('Field Name')
+                //             ->required(),
+                //         Forms\Components\TextInput::make('value')
+                //             ->label('Value')
+                //             ->required(),
+                //     ]),
             ]);
     }
 
@@ -96,7 +138,7 @@ class WithdrawResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: false)
                     ->badge()
                     ->extraAttributes(['class' => 'capitalize'])
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'pending' => 'warning',
                         'approved' => 'success',
                         'cancelled' => 'danger',
@@ -131,31 +173,29 @@ class WithdrawResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\Action::make('Action')
+                    ->icon('heroicon-o-user')
+                    ->color('warning')
+                    ->url(fn(Wallet $record) => url('/admin/login-as/' . $record->owner->uuid))
+                    ->size(ActionSize::Large),
+
                 Action::make('Approve')
                     ->requiresConfirmation()
-                    ->hidden(fn (Model $record) => $record->status === WalletStatus::APPROVED->value || $record->status === WalletStatus::FAILED->value)
+                    ->hidden(fn(Model $record) => $record->status === WalletStatus::APPROVED->value || $record->status === WalletStatus::FAILED->value)
                     ->tooltip('Approve')
-                    ->action(fn (Model $record) => $record->update(['approved_at' => now(), 'failed_at' => null, 'cancelled_at' => null]))
+                    ->action(fn(Model $record) => $record->update(['approved_at' => now(), 'failed_at' => null, 'cancelled_at' => null]))
                     ->size(ActionSize::Large)
                     ->color('success')
                     ->icon('heroicon-o-check-circle'),
                 Action::make('Reject')
                     ->requiresConfirmation()
-                    ->hidden(fn (Model $record) => $record->status === WalletStatus::CANCELLED->value || $record->status === WalletStatus::FAILED->value)
+                    ->hidden(fn(Model $record) => $record->status === WalletStatus::CANCELLED->value || $record->status === WalletStatus::FAILED->value)
                     ->tooltip('Reject')
-                    ->action(fn (Model $record) => $record->update(['cancelled_at' => now(), 'approved_at' => null, 'failed_at' => null]))
+                    ->action(fn(Model $record) => $record->update(['cancelled_at' => now(), 'approved_at' => null, 'failed_at' => null]))
                     ->size(ActionSize::Large)
                     ->color('danger')
                     ->icon('heroicon-o-x-circle'),
-
-
-                ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
-                ])
-                    ->tooltip('Actions')
-                    ->size(ActionSize::Large)
+                Tables\Actions\ViewAction::make()->modalHeading(fn(Wallet $record) => "Withdraw Reqeust for " . ($record->withdrawMethod?->category === 'Bank' ? 'Bank' : $record->withdrawMethod?->label)),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
