@@ -64,7 +64,7 @@ export default function ManualMobileBanking({
                 <InputNumber required invalid={errors.amount !== undefined} value={data.amount} onChange={onAmountChange} autoFocus placeholder="Amount" className="w-full *:text-center text-center" />
                 {errors.amount && <InputError message={errors.amount} />}
             </div>
-            <Input onChange={e => setData('payment_number', e.target.value)} error={errors.payment_number} label={getNumberLabel} placeholder={getNumberLabel} className="w-full" />
+            <Input onChange={e => setData('payment_number', e.target.value)} error={errors.payment_number} label={getNumberLabel} placeholder={getNumberLabel} className="w-full" required />
             {depositMethod?.category === "Mobile Banking" && (
                 <Input required label="Transaction ID" placeholder="Transaction ID" error={errors.transaction_id} className="w-full" onChange={e => setData('transaction_id', e.target.value)} />
             )}

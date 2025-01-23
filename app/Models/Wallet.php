@@ -27,31 +27,33 @@ class Wallet extends Model
     /**
      * @return BelongsTo
      */
-    public function withdrawMethod():BelongsTo {
+    public function withdrawMethod(): BelongsTo
+    {
         return $this->belongsTo(WithdrawMethod::class, 'withdraw_method_id');
     }
 
     /**
      * @return BelongsTo
      */
-    public function depositMethod():BelongsTo {
+    public function depositMethod(): BelongsTo
+    {
         return $this->belongsTo(DepositMethod::class, 'deposit_method_id');
     }
 
     public function getStatusAttribute(): string
     {
-        if($this->failed_at) {
+        if ($this->failed_at) {
             return WalletStatus::FAILED->value;
         }
-        if($this->cancelled_at) {
+        if ($this->cancelled_at) {
             return WalletStatus::CANCELLED->value;
         }
-        if($this->approved_at) {
+        if ($this->approved_at) {
             return WalletStatus::APPROVED->value;
         }
         return WalletStatus::PENDING->value;
     }
-    public static function getBalance(User $user = null):float
+    public static function getBalance(User $user = null): float
     {
         $balance = \DB::table('wallet')
             ->where('owner_id', $user?->id ?? auth()->id())

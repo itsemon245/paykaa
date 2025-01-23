@@ -210,7 +210,7 @@ export default function Deposit() {
                 <div className="flex flex-col gap-6 w-full my-6 px-2">
                     {mappedDepositMethods.map((item) => (
                         <div className="" key={item.category}>
-                            <h1 className="md:text-xl font-bold mb-3 text-gray-800">{item.category}</h1>
+                            <h1 className="md:text-xl font-bold mb-3 text-gray-800">{item.category === 'Mobile Banking' ? 'E-Payments' : item.category}</h1>
                             <div className="flex max-sm:flex-col items-center flex-wrap gap-2 sm:gap-3 w-full">
                                 {item.methods.map((method, index) => {
                                     return (

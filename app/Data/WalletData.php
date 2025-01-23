@@ -29,6 +29,8 @@ class WalletData extends Data
     public ?int $owner_id;
     public ?UserData $owner;
     public ?WalletStatus $status;
+    public ?DepositMethodData $depositMethod;
+    public ?WithdrawMethodData $withdrawMethod;
     public function __construct(
         public WalletType $type,
         public WalletTransactionType $transaction_type,

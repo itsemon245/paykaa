@@ -31,13 +31,13 @@ class WithdrawMethodResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $methodCateogries = collect(MethodCategory::cases())->mapWithKeys(fn ($item) => [$item->value => $item->name])->toArray();
+        $methodCateogries = collect(MethodCategory::cases())->mapWithKeys(fn($item) => [$item->value => $item->name])->toArray();
         return $form
             ->schema([
                 Forms\Components\TextInput::make('label')
                     ->required()
-                    ->label(fn(Get $get)=> $get('catgeory') ? $get('catgeory'). ' Name' : 'Name')
-                    ->placeholder(fn(Get $get)=> $get('catgeory') ? $get('catgeory'). ' Name' : 'Name')
+                    ->label(fn(Get $get) => $get('catgeory') ? $get('catgeory') . ' Name' : 'Name')
+                    ->placeholder(fn(Get $get) => $get('catgeory') ? $get('catgeory') . ' Name' : 'Name')
                     ->maxLength(255),
                 Forms\Components\Select::make('category')
                     ->options($methodCateogries)
@@ -45,11 +45,11 @@ class WithdrawMethodResource extends Resource
                     ->reactive()
                     ->required(),
                 Forms\Components\FileUpload::make('logo')
-                    ->extraAttributes(['accept' => 'image/*' ])
+                    ->extraAttributes(['accept' => 'image/*'])
                     ->columnSpanFull()
                     ->required(),
                 Forms\Components\Repeater::make('fields')
-                    ->hidden(fn (Get $get) => $get('category') !== MethodCategory::BANK->value)
+                    ->hidden(fn(Get $get) => $get('category') !== MethodCategory::BANK->value)
                     ->label('Additional Fields')
                     ->columnSpanFull()
                     ->schema([
@@ -57,7 +57,7 @@ class WithdrawMethodResource extends Resource
                             ->label('Name')
                             ->placeholder('Field Name')
                             ->live(onBlur: true)
-                            ->afterStateUpdated(fn (Set $set, ?string $state) => $set('name', Str::snake($state)))
+                            ->afterStateUpdated(fn(Set $set, ?string $state) => $set('name', Str::snake($state)))
                             ->required()
                             ->maxLength(255)
                             ->columnSpan(3),
@@ -70,7 +70,7 @@ class WithdrawMethodResource extends Resource
                             ->maxLength(255),
                         Forms\Components\Select::make('type')
                             ->visible(false)
-                            ->options(collect(InputType::cases())->mapWithKeys(fn($item)=>[$item->value => $item->name])->toArray())
+                            ->options(collect(InputType::cases())->mapWithKeys(fn($item) => [$item->value => $item->name])->toArray())
                             ->required()
                             ->default('text'),
                         Forms\Components\TextInput::make('placeholder')
@@ -81,11 +81,11 @@ class WithdrawMethodResource extends Resource
                     ])
                     ->default([
                         [
-                            'label' => 'A/C. Name',
+                            'label' => 'A/c Name',
                             'required' => 1,
                             'name' => 'account_holder',
                             'type' => 'text',
-                            'placeholder' => 'A/C. Name',
+                            'placeholder' => 'A/c Name',
                         ],
                         [
                             'label' => 'Branch',
@@ -113,14 +113,14 @@ class WithdrawMethodResource extends Resource
                         'crypto' => 'warning',
                         'mobile_banking' => 'info',
                     ])
-                    ->extraAttributes(['class'=> 'capitalize'])
+                    ->extraAttributes(['class' => 'capitalize'])
                     ->searchable(),
                 Tables\Columns\TextColumn::make('fields')
-                    ->formatStateUsing(function(string $state): string {
-                        $fields = json_decode("[".$state."]");
+                    ->formatStateUsing(function (string $state): string {
+                        $fields = json_decode("[" . $state . "]");
                         $count = count($fields);
-                        if($count > 0) {
-                            return $count. " Additional Field".($count > 1 ? 's' : '');
+                        if ($count > 0) {
+                            return $count . " Additional Field" . ($count > 1 ? 's' : '');
                         }
                         return 'No Additional Fields';
                     }),

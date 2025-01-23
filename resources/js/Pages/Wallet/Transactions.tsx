@@ -16,6 +16,38 @@ export default function Transactions() {
     const [perPage, setPerPage] = useState(transactions.per_page)
     const [first, setFirst] = useState(0);
 
+    const getSenderNumber = (item: WalletData) => {
+        if (item.transaction_type === "deposit") {
+            return item.payment_number
+        }
+        if (item.transaction_type === "withdraw") {
+            return item.depositMethod?.number
+        }
+        if (item.transaction_type === "transfer_in") {
+            return "uid"
+        }
+        if (item.transaction_type === "transfer_out") {
+            return "uid"
+        }
+        return item.payment_number
+    }
+    const getReceiverNumber = (item: WalletData) => {
+        if (item.transaction_type === "deposit") {
+            return "Admin"
+        }
+        if (item.transaction_type === "withdraw") {
+            return item.payment_number
+        }
+        if (item.transaction_type === "transfer_in") {
+            return "uid"
+        }
+        if (item.transaction_type === "transfer_out") {
+            return "uid"
+        }
+        return ""
+    }
+
+
     const getSeverity = (status: WalletData['status']): TagProps['severity'] => {
         switch (status) {
             case "approved":
@@ -23,7 +55,7 @@ export default function Transactions() {
             case "failed":
                 return "danger";
             case "cancelled":
-                return "contrast";
+                return "danger";
             case "pending":
                 return "warning"
             default:
@@ -41,7 +73,7 @@ export default function Transactions() {
         return <Tag value={titleCase(item.transaction_type)} severity={severity}></Tag>;
     }
     const statusBodyTemplate = (item: WalletData) => {
-        return <Tag value={titleCase(item?.status || '')} severity={getSeverity(item.status)}></Tag>;
+        return <Tag value={item.status === 'cancelled' ? 'Rejected' : titleCase(item?.status || '')} severity={getSeverity(item.status)}></Tag>;
     };
     const amountBodyTemplate = (item: WalletData) => {
         const color = item.type !== "debit" ? "green-500" : "red-500"
@@ -73,22 +105,24 @@ export default function Transactions() {
                     <h1 className="text-xl font-bold mb-3">Transactions</h1>
                     <DataTable className="rounded-lg overflow-hidden" emptyMessage={<div className="text-center font-bold">No Transactions Yet</div>} dataKey="uuid" totalRecords={transactions.total} value={transactions.data} rows={perPage} tableStyle={{ minWidth: '50rem' }}>
                         <Column field="id" className="!p-1" header="No." body={slBodyTemplate} style={{ width: 'max-content' }}></Column>
-                        <Column field="created_at" body={(item) => format(parseISO(item.created_at), "PP")} header="Date" className="!p-1 !w-[100px]"></Column>
+                        <Column field="created_at" body={(item) => format(parseISO(item.created_at), "PPp")} header="Date" className="!p-1 !w-[200px]"></Column>
                         <Column className="!p-1" field="amount" header="Amount" body={amountBodyTemplate} style={{ width: 'max-content' }}></Column>
-                        <Column className="!p-1 capitalize" field="transaction_type" header="Type" body={transactionTypeBodyTemplate} style={{ width: 'max-content' }}></Column>
+                        <Column className="!p-1 capitalize" field="transaction_type" header="Type" body={item => item.transaction_type} style={{ width: 'max-content' }}></Column>
                         <Column className="!p-1" field="payment_number" header="Payment Details" style={{ width: 'max-content' }} body={(item: WalletData) => (
                             <div className="flex flex-col gap-2">
                                 <div className="flex items-center gap-2">
-                                    <div className="text-sm font-bold">Sender Number:</div>
-                                    <div className="text-sm font-bold">0164225222</div>
+                                    <div className="text-sm font-bold">Sender:</div>
+                                    <div className="text-sm font-bold">{
+                                        getSenderNumber(item)
+                                    }</div>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                    <div className="text-sm font-bold">Received Number:</div>
-                                    <div className="text-sm font-bold">0164225222</div>
+                                    <div className="text-sm font-bold">Receiver:</div>
+                                    <div className="text-sm font-bold">{getReceiverNumber(item)}</div>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <div className="text-sm font-bold">Method:</div>
-                                    <div className="text-sm font-bold">Upay</div>
+                                    <div className="text-sm font-bold">{item.transaction_type === "deposit" ? item.depositMethod?.label : item.withdrawMethod?.label}</div>
                                 </div>
                             </div>
                         )}></Column>

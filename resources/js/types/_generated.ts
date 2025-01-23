@@ -152,6 +152,8 @@ export type WalletData = {
     owner_id: number | null;
     owner: UserData | null;
     status: WalletStatus | null;
+    depositMethod: DepositMethodData | null;
+    withdrawMethod: WithdrawMethodData | null;
     type: WalletType;
     transaction_type: WalletTransactionType;
     amount: number;
@@ -175,12 +177,7 @@ export type WalletData = {
     updated_at_human?: string;
 };
 export type WalletStatus = 'pending' | 'approved' | 'failed' | 'cancelled';
-export type WalletTransactionType =
-    | 'deposit'
-    | 'withdraw'
-    | 'transfer_in'
-    | 'transfer_out'
-    | 'earn';
+export type WalletTransactionType = 'deposit' | 'withdraw' | 'transfer_in' | 'transfer_out' | 'earn';
 export type WalletType = 'debit' | 'credit';
 export type WithdrawMethodData = {
     id: number;

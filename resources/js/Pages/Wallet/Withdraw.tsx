@@ -1,6 +1,7 @@
 import useBreakpoint from "@/Hooks/useBrakpoints";
+import { Message } from 'primereact/message';
 import { AdditionalFields, FieldsData, WalletData, WithdrawMethodData } from "@/types/_generated";
-import { cn } from "@/utils";
+import { cn, image } from "@/utils";
 import { useForm, usePage } from "@inertiajs/react";
 import { Button } from "primereact/button";
 import { Calendar } from "primereact/calendar";
@@ -21,7 +22,7 @@ interface FieldProps {
 };
 
 
-export default function Withdraw() {
+export default function Withdraw({ canWithdraw }: { canWithdraw: boolean }) {
     const [activeWithdrawalMethod, setActiveWithdrawalMethod] = useState<WithdrawMethodData>();
     const dialogOpened = useMemo(() => activeWithdrawalMethod !== undefined, [activeWithdrawalMethod]);
     const { balance, refreshBalance } = useBalance()
@@ -105,7 +106,7 @@ export default function Withdraw() {
         return (
             <div className="flex justify-end md:flex-row-reverse gap-2">
                 <Button outlined label="Cancel" onClick={() => setActiveWithdrawalMethod(undefined)} />
-                <Button label="Withdraw" onClick={(e) => withdrawForm.current?.requestSubmit()} loading={processing} />
+                <Button label="Withdraw" className="disabled:cursor-not-allowed" onClick={(e) => withdrawForm.current?.requestSubmit()} disabled={!canWithdraw || processing} loading={processing} />
             </div>
         )
     }
@@ -118,13 +119,24 @@ export default function Withdraw() {
                         e.preventDefault()
                         withdraw(e)
                     }} ref={withdrawForm}>
+                        <div className="flex flex-col justify-center items-center w-full my-2 gap-3">
+                            {canWithdraw ? <>
+
+                                <img src={image(activeWithdrawalMethod?.logo)} className="w-28 md:w-36  p-3 border rounded-lg" />
+                                <h3 className="text-center font-bold text-xl mb-1 -mt-3">{activeWithdrawalMethod?.label}</h3>
+                                <div className="text-xs md:text-sm font-medium text-center mb-2">Fill the form below with correct details to receive your money</div>
+                            </> :
+                                <Message severity="warn" className="max-w-[600px] text-center" text="You already have a withdrawal pending. Please wait for it to be approved to request another withdrawal." />
+                            }
+
+                        </div>
                         <WithdrawForm errors={errors} data={data} setData={setData} activeWithdrawalMethod={activeWithdrawalMethod} />
                     </form>
                 </Dialog>
                 <div className="flex flex-col gap-6 w-full my-6 px-2">
                     {mappedWithdrawMethods.map((item) => (
                         <div className="" key={`method-${item.category}`}>
-                            <h1 className="md:text-xl font-bold mb-3 text-gray-800">{item.category}</h1>
+                            <h1 className="md:text-xl font-bold mb-3 text-gray-800">{item.category === 'Mobile Banking' ? 'E-Payments' : item.category}</h1>
                             <div className="flex max-sm:flex-col items-center flex-wrap gap-2 sm:gap-3 w-full">
                                 {item.methods.map((method, index) => {
                                     return (

@@ -12,9 +12,9 @@ class TransactionController extends Controller
     public function index()
     {
         $perPage = request()->query('per_page', 15);
-        $transactions = Wallet::paginate($perPage);
+        $transactions = Wallet::with(['depositMethod', 'withdrawMethod'])->paginate($perPage);
         return Inertia::render('Wallet/Transactions', [
-            'transactions'=> WalletData::collect($transactions)
+            'transactions' => WalletData::collect($transactions)
         ]);
     }
 }
