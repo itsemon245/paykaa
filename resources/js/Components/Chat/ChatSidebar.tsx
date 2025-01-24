@@ -1,13 +1,9 @@
 import { PaginatedCollection } from "@/types";
-import { ChatData, UserData } from "@/types/_generated";
-import { poll } from "@/utils";
-import { Link, useForm, usePage } from "@inertiajs/react";
-import { Button } from "primereact/button";
-import { Dialog } from "primereact/dialog";
-import { ScrollPanel } from "primereact/scrollpanel";
-import toast from "react-hot-toast";
+import { ChatData } from "@/types/_generated";
+import { image, poll } from "@/utils";
+import { Link, usePage } from "@inertiajs/react";
 
-export default function Sidebar() {
+export default function ChatSidebar() {
     const [chats, setChats] = useState<PaginatedCollection<ChatData>>();
     const chat = usePage().props.chat as ChatData | undefined;
     const { playSound } = useNotification();
@@ -32,7 +28,7 @@ export default function Sidebar() {
         >
             <img
                 className="avatar-md"
-                src={item.from?.avatar}
+                src={image(item.from?.avatar)}
                 data-toggle="tooltip"
                 data-placement="top"
                 title={item.from?.name}
@@ -69,7 +65,7 @@ export default function Sidebar() {
 
     useEffect(() => {
         fetchChats();
-        return poll(checkForNewMessagesInChats, 1000);
+        return poll(checkForNewMessagesInChats, 2000);
     }, []);
     return (
         <div className="sidebar !z-0" id="sidebar">
@@ -80,7 +76,7 @@ export default function Sidebar() {
                             <Link href={route('dashboard')} className="flex items-center justify-center gap-5">
                                 <img
                                     className="avatar-xl"
-                                    src={useAuth().user?.avatar}
+                                    src={image(useAuth().user?.avatar)}
                                     alt="avatar"
                                 />
                                 <Logo className="!h-10 w-auto" />

@@ -105,6 +105,9 @@
     "usePreloader": true,
     "LandingLayout": true,
     "MdiCurrencyBdt": true,
-    "MdiArrowRightDropCircleOutline": true
+    "MdiArrowRightDropCircleOutline": true,
+    "ChatSidebar": true,
+    "useActiveStatus": true,
+    "Avatar": true
   }
 }

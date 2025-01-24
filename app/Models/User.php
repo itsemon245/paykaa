@@ -23,7 +23,8 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->type === UserType::Admin->value || $this->id == 1;
     }
-    public function kyc(){
+    public function kyc()
+    {
         return $this->hasOne(Kyc::class);
     }
     public function canAccessPanel(Panel $panel): bool
@@ -31,10 +32,18 @@ class User extends Authenticatable implements FilamentUser
         return $this->type === UserType::Admin->value || $this->id == 1;
     }
 
+    public function setActiveNow()
+    {
+        $this->update([
+            'last_seen_at' => now()
+        ]);
+    }
+
     /**
      * @return float
      */
-    public function getBalanceAttribute():float {
+    public function getBalanceAttribute(): float
+    {
         return Wallet::getBalance();
     }
 

@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UploadController;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -31,6 +32,20 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::patch('/profile-avatar', [ProfileController::class, 'updateAvatar'])->name('profile.update.avatar');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::post('update-active-status/', function () {
+        $user = User::find(auth()->id());
+        $user->setActiveNow();
+        return response()->json(['success' => true]);
+    })->name('active-status.update');
+
+    Route::post('check-active-status/{user?}', function (User $user) {
+        $date = Carbon::parse($user->last_seen_at);
+        $activeStatus = $date->greaterThanOrEqualTo(now()->subMinutes(2)) ? true : $date->diffForHumans();
+        if ($user->last_seen_at === null) {
+            $activeStatus = false;
+        }
+        return response()->json(['active_status' => $activeStatus]);
+    })->name('active-status.check');
 });
 
 Route::middleware('auth', 'redirect-if-admin')->group(function () {

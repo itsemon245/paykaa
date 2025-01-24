@@ -1,4 +1,5 @@
 import { UserData } from "@/types/_generated";
+import { usePage } from "@inertiajs/react";
 import { throttle } from "lodash";
 import toast from "react-hot-toast";
 
@@ -6,7 +7,6 @@ export default function useUsers() {
     const [users, setUsers] = useState<UserData[]>([]);
     const [loading, setLoading] = useState(false);
     const [searchString, setSearchString] = useState("");
-
     const search = useCallback(throttle(async (e: any) => {
         setLoading(true);
         setSearchString(e.target.value);
@@ -31,6 +31,6 @@ export default function useUsers() {
         users,
         loading,
         searchString,
-        search
+        search,
     }
 }

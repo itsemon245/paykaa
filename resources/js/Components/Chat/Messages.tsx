@@ -28,9 +28,6 @@ export default function Messages({
         }
         const data = await res.json() as { success: boolean, count: number, chat: ChatData }
         setIsTyping(data.chat.is_typing);
-        console.log("is_typing: ", data.chat.is_typing)
-        console.log("data: ", data)
-
         if (data.success) {
             if (data.count > 0) {
                 setNewMessageCount(data.count)
@@ -58,7 +55,7 @@ export default function Messages({
     }, [isTyping]);
 
     useEffect(() => {
-        poll(checkForNewMessages, 1000)
+        return poll(checkForNewMessages, 2500)
     }, [])
     return (
         <>

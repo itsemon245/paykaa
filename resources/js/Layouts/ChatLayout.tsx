@@ -37,7 +37,7 @@ export default function ChatLayout({ children }: { children: any }) {
                 <script src="/assets/chat/js/script.js" defer></script>
             </Head>
             <div className={cn("overflow-hidden lg:flex h-full", loading && 'hidden')}>
-                {(route().current('chat.index') || !isMobile) && <Sidebar />}
+                {(route().current('chat.index') || !isMobile) && <ChatSidebar />}
                 <div ref={main} className={`main h-full ${route().current('chat.show') ? '!right-0' : ''}`}>
                     {children}
                 </div>

@@ -36,22 +36,22 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
             ],
             'config' => [
-                'app'=> config('app'),
+                'app' => config('app'),
             ],
-            'ziggy' => fn () => [
+            'ziggy' => fn() => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],
             'error' => session()->get('error'),
             'success' => session()->get('success'),
-            'csrf_token' => csrf_token(),
-            'paths'=> [
+            'csrfToken' => csrf_token(),
+            'paths' => [
                 'resources' => resource_path(),
                 'public' => public_path(),
                 'storage' => storage_path(),
                 'base' => base_path(),
             ],
-            'impersonating'=> session('impersonating')
+            'impersonating' => session('impersonating')
         ];
     }
 }

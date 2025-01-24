@@ -1,8 +1,18 @@
-import { Link, usePage } from '@inertiajs/react';
-import { Tag } from 'primereact/tag';
+import { poll } from '@/utils';
+import { usePage } from '@inertiajs/react';
 import toast, { Toaster } from 'react-hot-toast';
 export default function BaseLayout({ children }: { children?: any }) {
     const { error, success, impersonating } = usePage().props;
+    const { updateActiveStatus } = useActiveStatus();
+    const auth = useAuth();
+
+    //poll to toggle auth users active status every 2 minutes
+    useEffect(() => {
+        if (auth.user) {
+            return poll(() => updateActiveStatus(), 19000);
+        }
+    }, [])
+
     useEffect(() => {
         if (error) {
             toast.error(error)

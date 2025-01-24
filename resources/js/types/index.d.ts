@@ -37,7 +37,8 @@ export type PageProps<
     impersonating?: {
         current: string,
         old: string,
-    }
+    },
+    csrfToken: string,
 };
 export type PaginatedCollection<T extends object> = {
     data: Array<T>;
