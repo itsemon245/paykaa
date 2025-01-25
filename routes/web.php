@@ -76,14 +76,16 @@ Route::middleware('auth')
             } else {
                 session(['impersonating' => [
                     'current' => $user->uuid,
-                    'old' => auth()->user()->uuid
+                    'old' => auth()->user()->uuid,
+                    'backUrl' => url()->previous()
                 ]]);
             }
             Auth::guard('web')->logout();
             Auth::loginUsingId($user->id, false);
             if ($user->isAdmin()) {
+                $url = session('impersonating.backUrl');
                 session()->forget('impersonating');
-                return redirect('/admin/users');
+                return redirect($url);
             }
             return redirect(route('dashboard'))->with('success', 'Logged in as user');
         })->name('login-as');

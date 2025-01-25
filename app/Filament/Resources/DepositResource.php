@@ -131,8 +131,8 @@ class DepositResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Date')
-                    ->date()
-                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->datetime("d M, Y H:i a")
+                    ->toggleable(isToggledHiddenByDefault: false)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->toggleable(isToggledHiddenByDefault: false)
@@ -179,7 +179,7 @@ class DepositResource extends Resource
 
                 Action::make('Approve')
                     ->requiresConfirmation()
-                    ->hidden(fn(Model $record) => $record->status === WalletStatus::APPROVED->value || $record->status === WalletStatus::FAILED->value)
+                    ->hidden(fn(Model $record) => $record->status === WalletStatus::APPROVED->value || $record->status === WalletStatus::FAILED->value || $record->status === WalletStatus::CANCELLED->value)
                     ->tooltip('Approve')
                     ->action(fn(Model $record) => $record->update(['approved_at' => now(), 'failed_at' => null, 'cancelled_at' => null]))
                     ->size(ActionSize::Large)
@@ -187,7 +187,7 @@ class DepositResource extends Resource
                     ->icon('heroicon-o-check-circle'),
                 Action::make('Reject')
                     ->requiresConfirmation()
-                    ->hidden(fn(Model $record) => $record->status === WalletStatus::CANCELLED->value || $record->status === WalletStatus::FAILED->value)
+                    ->hidden(fn(Model $record) => $record->status === WalletStatus::CANCELLED->value || $record->status === WalletStatus::FAILED->value || $record->status === WalletStatus::APPROVED->value)
                     ->tooltip('Reject')
                     ->action(fn(Model $record) => $record->update(['cancelled_at' => now(), 'approved_at' => null, 'failed_at' => null]))
                     ->size(ActionSize::Large)
@@ -203,7 +203,7 @@ class DepositResource extends Resource
                 //     ->size(ActionSize::Large)
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                // Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 

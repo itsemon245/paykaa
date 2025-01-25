@@ -21,7 +21,7 @@ class ManageWithdraws extends ManageRecords
                 ->modifyQueryUsing(fn(Builder $query) => $query->where(function (Builder $builder) {
                     $builder->whereNull('approved_at')->where('transaction_type', WalletTransactionType::WITHDRAW->value);
                 })->where(function (Builder $builder) {
-                    $builder->whereNull('cancelled_at')->orWhereNull('failed_at');
+                    $builder->whereNull('cancelled_at');
                 })),
             'approved' => Tab::make('Approved')
                 ->modifyQueryUsing(fn(Builder $query) => $query->whereNotNull('approved_at')->where('transaction_type', WalletTransactionType::WITHDRAW->value)),

@@ -37,6 +37,7 @@ export type PageProps<
     impersonating?: {
         current: string,
         old: string,
+        backUrl: string
     },
     csrfToken: string,
 };

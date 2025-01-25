@@ -105,19 +105,6 @@ class WithdrawResource extends Resource
                 Forms\Components\Textarea::make('note')
                     ->maxLength(255)
                     ->default(null),
-                // Forms\Components\TextInput::make('additional_fields.*.label')
-                // Forms\Components\Repeater::make('additional_fields')
-                //     ->hidden(fn(Model $record) => count($record?->additional_fields) == 0)
-                //     ->columnSpanFull()
-                //     ->columns(2)
-                //     ->schema([
-                //         Forms\Components\TextInput::make('label')
-                //             ->label('Field Name')
-                //             ->required(),
-                //         Forms\Components\TextInput::make('value')
-                //             ->label('Value')
-                //             ->required(),
-                //     ]),
             ]);
     }
 
@@ -125,14 +112,12 @@ class WithdrawResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(function (Builder $query) {
-                // $query->whereNull('approved_at')->whereNull('cancelled_at')->where('transaction_type', WalletTransactionType::WITHDRAW->value);
-            })
+            ->modifyQueryUsing(function (Builder $query) {})
             ->columns([
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Date')
-                    ->date()
-                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->datetime("d M, Y H:i a")
+                    ->toggleable(isToggledHiddenByDefault: false)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->toggleable(isToggledHiddenByDefault: false)
@@ -181,7 +166,7 @@ class WithdrawResource extends Resource
 
                 Action::make('Approve')
                     ->requiresConfirmation()
-                    ->hidden(fn(Model $record) => $record->status === WalletStatus::APPROVED->value || $record->status === WalletStatus::FAILED->value)
+                    ->hidden(fn(Model $record) => $record->status === WalletStatus::APPROVED->value || $record->status === WalletStatus::FAILED->value || $record->status === WalletStatus::CANCELLED->value)
                     ->tooltip('Approve')
                     ->action(fn(Model $record) => $record->update(['approved_at' => now(), 'failed_at' => null, 'cancelled_at' => null]))
                     ->size(ActionSize::Large)
@@ -189,7 +174,7 @@ class WithdrawResource extends Resource
                     ->icon('heroicon-o-check-circle'),
                 Action::make('Reject')
                     ->requiresConfirmation()
-                    ->hidden(fn(Model $record) => $record->status === WalletStatus::CANCELLED->value || $record->status === WalletStatus::FAILED->value)
+                    ->hidden(fn(Model $record) => $record->status === WalletStatus::CANCELLED->value || $record->status === WalletStatus::FAILED->value || $record->status === WalletStatus::APPROVED->value)
                     ->tooltip('Reject')
                     ->action(fn(Model $record) => $record->update(['cancelled_at' => now(), 'approved_at' => null, 'failed_at' => null]))
                     ->size(ActionSize::Large)
@@ -198,7 +183,7 @@ class WithdrawResource extends Resource
                 Tables\Actions\ViewAction::make()->modalHeading(fn(Wallet $record) => "Withdraw Reqeust for " . ($record->withdrawMethod?->category === 'Bank' ? 'Bank' : $record->withdrawMethod?->label)),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                // Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 

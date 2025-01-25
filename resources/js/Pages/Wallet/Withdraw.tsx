@@ -90,6 +90,32 @@ export default function Withdraw({ canWithdraw }: { canWithdraw: boolean }) {
         return acc;
     }, [] as { category: string, methods: WithdrawMethodData[] }[])
 
+    const Methods = ({ item }: { item?: { category: string, methods: WithdrawMethodData[] } }) => {
+        if (!item) {
+            return null
+        }
+        return (
+            <div className="" key={item.category}>
+                <h1 className="md:text-xl font-bold mb-3 text-gray-800">{item.category === 'Mobile Banking' ? 'E-Payments' : item.category}</h1>
+                <div className="flex justify-start items-center flex-wrap gap-2 sm:gap-3 w-full">
+                    {item.methods.map((method, index) => {
+                        return (
+                            <Card className={cn("border transition-all cursor-pointer max-sm:w-full", min("md") && 'hover:scale-105')} key={index} onClick={e => setActiveWithdrawalMethod(method)} role="button">
+                                <div className="flex w-full gap-5 items-center justify-start">
+                                    <img src={`/storage/${method.logo}`} className="w-[100px] h-[56px] object-contain" alt={method.label} />
+                                    <div className="text-center text-sm sm:text-base font-bold sm:hidden">
+                                        {method.label}
+                                    </div>
+                                </div>
+                            </Card>
+                        )
+                    })}
+                </div>
+            </div>
+        )
+    }
+
+
     useEffect(() => {
         if (activeWithdrawalMethod) {
             setData('method', activeWithdrawalMethod?.category)
@@ -133,26 +159,10 @@ export default function Withdraw({ canWithdraw }: { canWithdraw: boolean }) {
                         <WithdrawForm errors={errors} data={data} setData={setData} activeWithdrawalMethod={activeWithdrawalMethod} />
                     </form>
                 </Dialog>
-                <div className="flex flex-col gap-6 w-full my-6 px-2">
-                    {mappedWithdrawMethods.map((item) => (
-                        <div className="" key={`method-${item.category}`}>
-                            <h1 className="md:text-xl font-bold mb-3 text-gray-800">{item.category === 'Mobile Banking' ? 'E-Payments' : item.category}</h1>
-                            <div className="flex max-sm:flex-col items-center flex-wrap gap-2 sm:gap-3 w-full">
-                                {item.methods.map((method, index) => {
-                                    return (
-                                        <Card className={cn("border transition-all cursor-pointer max-sm:w-full", min("md") && 'hover:scale-105')} key={index} onClick={e => setActiveWithdrawalMethod(method)} role="button">
-                                            <div className="flex w-full gap-5 items-center justify-start">
-                                                <img src={`/storage/${method.logo}`} className="h-12 w-auto sm:w-32" alt={method.label} />
-                                                <div className="text-center text-sm sm:text-base font-bold sm:hidden">
-                                                    {method.label}
-                                                </div>
-                                            </div>
-                                        </Card>
-                                    )
-                                })}
-                            </div>
-                        </div>
-                    ))}
+                <div className="grid md:grid-cols-3 md:gap-10 w-full my-6 px-2">
+                    <Methods item={mappedWithdrawMethods.find(item => item.category === 'Mobile Banking')} />
+                    <Methods item={mappedWithdrawMethods.find(item => item.category === 'Bank')} />
+                    <Methods item={mappedWithdrawMethods.find(item => item.category === 'Cryptocurrency')} />
                 </div>
             </div>
         </>

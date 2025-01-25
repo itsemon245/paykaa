@@ -1,6 +1,8 @@
 import { FilePond, registerPlugin } from 'react-filepond'
 import 'filepond/dist/filepond.min.css'
 import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation'
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
+import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css'
 import { FilePondFile } from 'filepond'
@@ -8,7 +10,7 @@ import { cn } from '@/utils'
 import { usePage } from '@inertiajs/react'
 
 // Register the plugins
-registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview)
+registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview, FilePondPluginFileValidateSize, FilePondPluginFileValidateType)
 
 export interface FiledropProps {
     className?: string
@@ -17,6 +19,7 @@ export interface FiledropProps {
     labelIdle?: string
     onProcessFile?: (path: string, storageUrl: string) => void
     allowMultiple?: boolean
+    accept?: string
 }
 export default function Filedrop({
     className,
@@ -39,6 +42,10 @@ export default function Filedrop({
             <FilePond
                 className={cn('border-dashed border-2 border-gray-300 rounded-lg overflow-hidden flex items-center justify-center', className)}
                 chunkUploads={true}
+                allowFileSizeValidation={true}
+                acceptedFileTypes={['image/*']}
+                labelFileTypeNotAllowed="Only images are allowed"
+                maxFileSize="2MB"
                 chunkSize={1024 * 1024 * 2}
                 chunkForce={true}
                 server={{

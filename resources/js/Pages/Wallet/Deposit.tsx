@@ -1,6 +1,6 @@
 import useBreakpoint from "@/Hooks/useBrakpoints";
 import { PaginatedCollection } from "@/types";
-import { DepositMethodData, WalletData, WalletType } from "@/types/_generated";
+import { DepositMethodData, MethodCategory, WalletData, WalletType } from "@/types/_generated";
 import { cn, image, titleCase } from "@/utils";
 import { router, useForm, usePage } from "@inertiajs/react";
 import { Button } from "primereact/button";
@@ -127,7 +127,7 @@ export default function Deposit() {
             })
         }
         return acc;
-    }, [] as { category: string, methods: DepositMethodData[] }[])
+    }, [] as { category: MethodCategory, methods: DepositMethodData[] }[])
     const [activeDepositMethod, setActiveDepositMethod] = useState<DepositMethodData | undefined>();
     const dialogOpened = useMemo(() => activeDepositMethod !== undefined, [activeDepositMethod]);
 
@@ -192,6 +192,30 @@ export default function Deposit() {
             </div>
         )
     }
+    const Methods = ({ item }: { item?: { category: string, methods: DepositMethodData[] } }) => {
+        if (!item) {
+            return null
+        }
+        return (
+            <div className="" key={item.category}>
+                <h1 className="md:text-xl font-bold mb-3 text-gray-800">{item.category === 'Mobile Banking' ? 'E-Payments' : item.category}</h1>
+                <div className="flex justify-start items-center flex-wrap gap-2 sm:gap-3 w-full">
+                    {item.methods.map((method, index) => {
+                        return (
+                            <Card className={cn("border transition-all cursor-pointer max-sm:w-full", min("md") && 'hover:scale-105')} key={index} onClick={e => setActiveDepositMethod(method)} role="button">
+                                <div className="flex w-full gap-5 items-center justify-start">
+                                    <img src={`/storage/${method.logo}`} className="w-[100px] h-[56px] object-contain" alt={method.label} />
+                                    <div className="text-center text-sm sm:text-base font-bold sm:hidden">
+                                        {method.label}
+                                    </div>
+                                </div>
+                            </Card>
+                        )
+                    })}
+                </div>
+            </div>
+        )
+    }
     return (
         <>
             <Head title="Deposit" />
@@ -207,39 +231,10 @@ export default function Deposit() {
                         )}
                     </form>
                 </Dialog>
-                <div className="flex flex-col gap-6 w-full my-6 px-2">
-                    {mappedDepositMethods.map((item) => (
-                        <div className="" key={item.category}>
-                            <h1 className="md:text-xl font-bold mb-3 text-gray-800">{item.category === 'Mobile Banking' ? 'E-Payments' : item.category}</h1>
-                            <div className="flex max-sm:flex-col items-center flex-wrap gap-2 sm:gap-3 w-full">
-                                {item.methods.map((method, index) => {
-                                    return (
-                                        <Card className={cn("border transition-all cursor-pointer max-sm:w-full", min("md") && 'hover:scale-105')} key={index} onClick={e => setActiveDepositMethod(method)} role="button">
-                                            <div className="flex w-full gap-5 items-center justify-start">
-                                                <img src={`/storage/${method.logo}`} className="w-[100px] h-[56px] object-contain" alt={method.label} />
-                                                <div className="text-center text-sm sm:text-base font-bold sm:hidden">
-                                                    {method.label}
-                                                </div>
-                                            </div>
-                                        </Card>
-                                    )
-                                })}
-                            </div>
-                        </div>
-                    ))}
-                    {/*
-                      <Card>
-                        <h1 className="text-xl font-bold mb-3">Recent Deposits</h1>
-                        <DataTable onPage={onPage} emptyMessage="No Deposits Yet. Approved deposits will be listed in transaction history." dataKey="uuid" pageLinkSize={5} totalRecords={deposits.total} value={deposits.data} rows={perPage} rowsPerPageOptions={[15, 30, 50, 100]} tableStyle={{ minWidth: '50rem' }}>
-                            <Column field="id" header="No." body={slBodyTemplate} style={{ width: 'max-content' }}></Column>
-                            <Column field="created_at_human" header="Date" style={{ width: '25%' }}></Column>
-                            <Column field="amount" header="Amount" body={amountBodyTemplate} style={{ width: '25%' }}></Column>
-                            <Column field="transaction_id" header="Transaction ID" style={{ width: '25%' }}></Column>
-                            <Column field="payment_number" header="Payment Number" style={{ width: '25%' }}></Column>
-                            <Column field="approved_at" body={StatusBodyTemplate} header="Status" style={{ width: '25%' }}></Column>
-                        </DataTable>
-                    </Card>
-                    */}
+                <div className="grid md:grid-cols-3 md:gap-10 w-full my-6 px-2">
+                    <Methods item={mappedDepositMethods.find(item => item.category === 'Mobile Banking')} />
+                    <Methods item={mappedDepositMethods.find(item => item.category === 'Bank')} />
+                    <Methods item={mappedDepositMethods.find(item => item.category === 'Cryptocurrency')} />
                 </div>
             </div >
         </>
