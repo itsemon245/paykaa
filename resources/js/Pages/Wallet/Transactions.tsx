@@ -142,7 +142,7 @@ export default function Transactions() {
                             {transactions.data.map((item, index) => (
                                 <div key={"transaction-" + item.uuid} className={cn("flex p-3 justify-between gap-2 border-l border-r", index == 0 && 'border-t border-b', index + 1 <= transactions.data.length && 'border-b')}>
                                     <div className="flex items-center gap-2">
-                                        <Avatar label={(index + 1).toString()} size="large" style={{ backgroundColor: 'var(--primary-500)', color: '#ffffff' }} shape="circle" />
+                                    {/*<Avatar label={(index + 1).toString()} size="large" style={{ backgroundColor: 'var(--primary-500)', color: '#ffffff' }} shape="circle" />*/}
                                         <div>
                                             <div className="capitalize text-lg font-semibold">{item.transaction_type}</div>
                                             {

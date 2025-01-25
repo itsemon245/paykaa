@@ -203,8 +203,10 @@ class DepositResource extends Resource
                 //     ->size(ActionSize::Large)
             ])
             ->bulkActions([
-                // Tables\Actions\DeleteBulkAction::make(),
-            ]);
+                Tables\Actions\DeleteBulkAction::make(),
+            ])->checkIfRecordIsSelectableUsing(
+                fn(Model $record): bool => $record->status !== WalletStatus::APPROVED->value,
+            );
     }
 
     public static function getPages(): array

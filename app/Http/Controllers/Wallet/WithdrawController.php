@@ -22,11 +22,10 @@ class WithdrawController extends Controller
         $withdrawMethods = WithdrawMethod::all();
         $canWithdraw = !Wallet::where(function (Builder $q) {
             $q->whereNull('approved_at');
+            $q->whereNull('cancelled_at');
+            $q->whereNull('failed_at');
             $q->where('transaction_type', WalletTransactionType::WITHDRAW->value);
         })
-            ->where(function (Builder $q) {
-                $q->whereNotNull('cancelled_at')->orWhereNotNull('failed_at');
-            })
             ->exists();
         return Inertia::render('Wallet/Withdraw', [
             'balance' => Wallet::getBalance(),

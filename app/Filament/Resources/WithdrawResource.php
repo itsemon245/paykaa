@@ -183,8 +183,10 @@ class WithdrawResource extends Resource
                 Tables\Actions\ViewAction::make()->modalHeading(fn(Wallet $record) => "Withdraw Reqeust for " . ($record->withdrawMethod?->category === 'Bank' ? 'Bank' : $record->withdrawMethod?->label)),
             ])
             ->bulkActions([
-                // Tables\Actions\DeleteBulkAction::make(),
-            ]);
+                Tables\Actions\DeleteBulkAction::make(),
+            ])->checkIfRecordIsSelectableUsing(
+                fn(Model $record): bool => $record->status !== WalletStatus::APPROVED->value,
+            );
     }
 
     public static function getPages(): array
