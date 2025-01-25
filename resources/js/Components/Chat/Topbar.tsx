@@ -1,6 +1,7 @@
 import { ChatData } from "@/types/_generated";
 import { image, poll } from "@/utils";
 import { Link, usePage } from "@inertiajs/react";
+import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { InputNumber } from "primereact/inputnumber";
 
@@ -35,10 +36,15 @@ export default function Topbar() {
                             {activeStatus && <span>{activeStatus === true ? "Active now" : activeStatus}</span>}
                         </div>
                     </div>
-                    <button onClick={() => setVisible(true)} className="p-2">
-                        <i className="pi pi-ellipsis-v" />
-                    </button>
-                    <Dialog header="Money Request" visible={visible} onHide={() => setVisible(false)}>
+                    <Button rounded className="!rounded-lg" title="Request Money" onClick={() => setVisible(true)}>
+                        <HugeiconsMoneyReceiveCircle className="h-6 w-6" />
+                    </Button>
+                    <Dialog header="Request Money" footer={() => {
+                        return <div className="*:!rounded-md flex md:flex-row-reverse mt-3 justify-end gap-3">
+                            <Button outlined label="Cancel" onClick={() => setVisible(false)} />
+                            <Button label="Request" onClick={() => setVisible(false)} />
+                        </div>
+                    }} visible={visible} onHide={() => setVisible(false)}>
                         <div>
                             <p>Balance: {balance}</p>
 

@@ -108,6 +108,7 @@
     "MdiArrowRightDropCircleOutline": true,
     "ChatSidebar": true,
     "useActiveStatus": true,
-    "Avatar": true
+    "Avatar": true,
+    "HugeiconsMoneyReceiveCircle": true
   }
 }
