@@ -31,6 +31,34 @@ class DepositResource extends Resource
     protected static ?string $pluralModelLabel = 'Deposit Requests';
     protected static ?string $navigationIcon = 'heroicon-o-arrow-down-on-square';
 
+    public static function getWalletActions(): array
+    {
+        return [
+            Tables\Actions\Action::make('Action')
+                ->icon('heroicon-o-user')
+                ->color('warning')
+                ->url(fn(Wallet $record) => url('/admin/login-as/' . $record->owner->uuid))
+                ->size(ActionSize::Large),
+
+            Action::make('Approve')
+                ->requiresConfirmation()
+                ->hidden(fn(Model $record) => $record->status === WalletStatus::APPROVED->value || $record->status === WalletStatus::FAILED->value || $record->status === WalletStatus::CANCELLED->value)
+                ->tooltip('Approve')
+                ->action(fn(Model $record) => $record->update(['approved_at' => now(), 'failed_at' => null, 'cancelled_at' => null]))
+                ->size(ActionSize::Large)
+                ->color('success')
+                ->icon('heroicon-o-check-circle'),
+            Action::make('Reject')
+                ->requiresConfirmation()
+                ->hidden(fn(Model $record) => $record->status === WalletStatus::CANCELLED->value || $record->status === WalletStatus::FAILED->value || $record->status === WalletStatus::APPROVED->value)
+                ->tooltip('Reject')
+                ->action(fn(Model $record) => $record->update(['cancelled_at' => now(), 'approved_at' => null, 'failed_at' => null]))
+                ->size(ActionSize::Large)
+                ->color('danger')
+                ->icon('heroicon-o-x-circle'),
+        ];
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -171,29 +199,10 @@ class DepositResource extends Resource
             ])
             ->filters([])
             ->actions([
-                Tables\Actions\Action::make('Action')
-                    ->icon('heroicon-o-user')
-                    ->color('warning')
-                    ->url(fn(Wallet $record) => url('/admin/login-as/' . $record->owner->uuid))
-                    ->size(ActionSize::Large),
-
-                Action::make('Approve')
-                    ->requiresConfirmation()
-                    ->hidden(fn(Model $record) => $record->status === WalletStatus::APPROVED->value || $record->status === WalletStatus::FAILED->value || $record->status === WalletStatus::CANCELLED->value)
-                    ->tooltip('Approve')
-                    ->action(fn(Model $record) => $record->update(['approved_at' => now(), 'failed_at' => null, 'cancelled_at' => null]))
-                    ->size(ActionSize::Large)
-                    ->color('success')
-                    ->icon('heroicon-o-check-circle'),
-                Action::make('Reject')
-                    ->requiresConfirmation()
-                    ->hidden(fn(Model $record) => $record->status === WalletStatus::CANCELLED->value || $record->status === WalletStatus::FAILED->value || $record->status === WalletStatus::APPROVED->value)
-                    ->tooltip('Reject')
-                    ->action(fn(Model $record) => $record->update(['cancelled_at' => now(), 'approved_at' => null, 'failed_at' => null]))
-                    ->size(ActionSize::Large)
-                    ->color('danger')
-                    ->icon('heroicon-o-x-circle'),
-                Tables\Actions\ViewAction::make()->modalHeading(fn(Wallet $record) => "Deposit Reqeust for " . ($record->depositMetho?->category === 'Bank' ? 'Bank' : $record->depositMethod?->label)),
+                ...self::getWalletActions(),
+                Tables\Actions\ViewAction::make()
+                    ->modalHeading(fn(Wallet $record) => "Deposit Reqeust for " . ($record->depositMetho?->category === 'Bank' ? 'Bank' : $record->depositMethod?->label))
+                    ->extraModalFooterActions(self::getWalletActions()),
 
                 // ActionGroup::make([
                 //     // Tables\Actions\EditAction::make(),

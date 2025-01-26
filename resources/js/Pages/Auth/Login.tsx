@@ -4,7 +4,7 @@ import { Link, useForm } from "@inertiajs/react";
 import { FormEventHandler, HTMLAttributes, HTMLProps, useEffect, useRef } from "react";
 import { toast } from 'react-hot-toast'
 
-export const PasswordInput = ({ onChange, placeholder, required, ...props }: { onChange: (...args: any) => any, placeholder?: string, props?: any, required?: boolean }) => {
+export const PasswordInput = ({ onChange, placeholder, required, value, ...props }: { onChange: (...args: any) => any, value?: string, placeholder?: string, props?: any, required?: boolean }) => {
     const [passwordVisible, setPasswordVisible] = useState(false);
     return (
         <div className="input-box">
@@ -13,6 +13,7 @@ export const PasswordInput = ({ onChange, placeholder, required, ...props }: { o
                 placeholder={placeholder}
                 onChange={onChange}
                 required={required}
+                value={value}
                 {...props}
             />
             <div className="cursor-pointer">
@@ -41,7 +42,7 @@ export default function Login() {
         e.preventDefault();
 
         post(route('login'), {
-            onFinish: () => reset('password'),
+            onFinish: () => reset('password')
         });
     };
 
@@ -71,6 +72,7 @@ export default function Login() {
                                 <input
                                     onChange={(e) => setData('email', e.target.value)}
                                     type="email"
+                                    value={data.email}
                                     placeholder="Email"
                                     required
                                 />
@@ -79,6 +81,7 @@ export default function Login() {
                             {errors.email && <InputError message={errors.email} className="mt-2" />}
                             <PasswordInput
                                 onChange={(e: any) => setData('password', e.target.value)}
+                                value={data.password}
                                 placeholder="Password" required />
                             {errors.password && <InputError message={errors.password} className="mt-2" />}
                             <div className="flex items-center justify-between -mt-5 mb-2">
