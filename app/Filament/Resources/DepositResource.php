@@ -101,7 +101,7 @@ class DepositResource extends Resource
                     ->numeric()
                     ->default(0.00),
                 Forms\Components\TextInput::make('transaction_id')
-                    ->hidden(fn(Get $get) => $get('method') !== MethodCategory::MOBILE_BANKING->value)
+                    ->hidden(fn(Model $record) => $record->depositMethod?->category !== MethodCategory::MOBILE_BANKING->value)
                     ->maxLength(255)
                     ->default(null),
                 Forms\Components\TextInput::make('branch_name')->label('Branch')->hidden(fn(Model $record) => $record->depositMethod?->category !== MethodCategory::BANK->value),
