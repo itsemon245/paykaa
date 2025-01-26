@@ -109,6 +109,7 @@
     "ChatSidebar": true,
     "useActiveStatus": true,
     "Avatar": true,
-    "HugeiconsMoneyReceiveCircle": true
+    "HugeiconsMoneyReceiveCircle": true,
+    "RequestMoney": true
   }
 }

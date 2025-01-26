@@ -69,6 +69,7 @@ declare global {
   const PrimaryButton: typeof import('../Components/PrimaryButton')['default']
   const ProfileLayout: typeof import('../Layouts/ProfileLayout')['default']
   const RegisterForm: typeof import('../Components/Auth/RegisterForm')['default']
+  const RequestMoney: typeof import('../Components/Chat/RequestMoney')['default']
   const ResponsiveNavLink: typeof import('../Components/ResponsiveNavLink')['default']
   const SecondaryButton: typeof import('../Components/SecondaryButton')['default']
   const Sidebar: typeof import('../Components/Sidebar')['default']

@@ -36,24 +36,7 @@ export default function Topbar() {
                             {activeStatus && <span>{activeStatus === true ? "Active now" : activeStatus}</span>}
                         </div>
                     </div>
-                    <Button rounded className="!rounded-lg" title="Request Money" onClick={() => setVisible(true)}>
-                        <HugeiconsMoneyReceiveCircle className="h-6 w-6" />
-                    </Button>
-                    <Dialog header="Request Money" footer={() => {
-                        return <div className="*:!rounded-md flex md:flex-row-reverse mt-3 justify-end gap-3">
-                            <Button outlined label="Cancel" onClick={() => setVisible(false)} />
-                            <Button label="Request" onClick={() => setVisible(false)} />
-                        </div>
-                    }} visible={visible} onHide={() => setVisible(false)}>
-                        <div>
-                            <p>Balance: {balance}</p>
-
-                            <div className="flex items-center gap-3">
-                                <InputLabel htmlFor="amount">Request Amount</InputLabel>
-                                <InputNumber id="amount" max={balance} min={0} placeholder="Amount" />
-                            </div>
-                        </div>
-                    </Dialog>
+                    <RequestMoney chat={chat} />
                 </div>
             </div>
         </div>

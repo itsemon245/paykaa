@@ -61,7 +61,7 @@ export default function ManualMobileBanking({
             )}
             <div>
                 <InputLabel value="Deposit Amount" />
-                <InputNumber required invalid={errors.amount !== undefined} value={data.amount} onChange={onAmountChange} autoFocus placeholder="Amount" className="w-full *:text-center text-center" />
+                <InputNumber required invalid={errors.amount !== undefined} value={data.amount ? data.amount : undefined} onChange={onAmountChange} autoFocus placeholder="Amount" className="w-full *:text-center text-center" />
                 {errors.amount && <InputError message={errors.amount} />}
             </div>
             <Input onChange={e => setData('payment_number', e.target.value)} error={errors.payment_number} label={getNumberLabel} placeholder={getNumberLabel} className="w-full" required />
