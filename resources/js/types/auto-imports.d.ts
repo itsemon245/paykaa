@@ -63,6 +63,7 @@ declare global {
   const Messages: typeof import('../Components/Chat/Messages')['default']
   const MingcuteAnnouncementLine: typeof import('~icons/mingcute/announcement-line.tsx')['default']
   const Modal: typeof import('../Components/Modal')['default']
+  const MoneyRequestMessage: typeof import('../Components/Chat/MoneyRequestMessage')['default']
   const NavLink: typeof import('../Components/NavLink')['default']
   const Navbar: typeof import('../Components/Navbar')['default']
   const Preloader: typeof import('../Components/Preloader')['default']

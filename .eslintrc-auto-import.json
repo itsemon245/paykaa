@@ -110,6 +110,7 @@
     "useActiveStatus": true,
     "Avatar": true,
     "HugeiconsMoneyReceiveCircle": true,
-    "RequestMoney": true
+    "RequestMoney": true,
+    "MoneyRequestMessage": true
   }
 }

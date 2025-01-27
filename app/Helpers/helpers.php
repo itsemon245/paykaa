@@ -29,6 +29,7 @@ function backWithError(callable $callback)
         DB::beginTransaction();
         $response = $callback();
         DB::commit();
+        return $response;
     } catch (\Exception $th) {
         DB::rollBack();
         if (config('app.env') == 'local') {
@@ -36,5 +37,4 @@ function backWithError(callable $callback)
         }
         return back()->with('error', $th->getMessage());
     }
-    return $response;
 }

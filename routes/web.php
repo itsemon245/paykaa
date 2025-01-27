@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AddController;
 use App\Http\Controllers\MarketplaceController;
+use App\Http\Controllers\MoneyRequestController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Wallet\DepositController;
 use App\Http\Controllers\Wallet\TransactionController;
@@ -61,6 +62,10 @@ Route::middleware('auth', 'redirect-if-admin')->group(function () {
     Route::post('kyc', [KycController::class, 'store'])->name('kyc.store');
     Route::resource('add', AddController::class);
     Route::get('marketplace', [MarketplaceController::class, 'index'])->name('marketplace.index');
+    Route::post('money-request', [MoneyRequestController::class, 'request'])->name('money.request');
+    Route::post('money-request/{moneyRequest}/accept', [MoneyRequestController::class, 'accept'])->name('money.accept');
+    Route::post('money-request/{moneyRequest}/reject', [MoneyRequestController::class, 'reject'])->name('money.reject');
+    Route::post('money-request/{moneyRequest}/release', [MoneyRequestController::class, 'release'])->name('money.release');
 });
 
 Route::middleware('auth')

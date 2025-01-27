@@ -105,6 +105,7 @@ export type MessageData = {
     id: number;
     uuid: string;
     chat?: ChatData;
+    moneyRequest?: any;
     by_me: boolean;
     chat_id: number;
     sender_id: number;
@@ -124,6 +125,23 @@ export type MessageType =
     | 'release_request_accepted';
 export type MethodCategory = 'Bank' | 'Cryptocurrency' | 'Mobile Banking';
 export type MethodMode = 'personal' | 'agent' | 'payment';
+export type MoneyRequestData = {
+    message?: MessageData;
+    from?: UserData;
+    sender_id: number;
+    receiver_id: number;
+    message_id: number;
+    amount: number;
+    currency?: string;
+    note?: string;
+    accepted_at?: string;
+    released_at?: string;
+    rejected_at?: string;
+    created_at?: string;
+    updated_at?: string;
+    created_at_human?: string;
+    updated_at_human?: string;
+};
 export type UserData = {
     id: number;
     uuid: string;
@@ -177,7 +195,7 @@ export type WalletData = {
     updated_at_human?: string;
 };
 export type WalletStatus = 'pending' | 'approved' | 'failed' | 'cancelled';
-export type WalletTransactionType = 'deposit' | 'withdraw' | 'transfer_in' | 'transfer_out' | 'earn';
+export type WalletTransactionType = 'deposit' | 'withdraw' | 'transfer' | 'earn';
 export type WalletType = 'debit' | 'credit';
 export type WithdrawMethodData = {
     id: number;

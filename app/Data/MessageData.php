@@ -1,15 +1,17 @@
 <?php
 
 namespace App\Data;
+
 use App\Data\Partials\TimestampData;
 use App\Enum\MessageType;
+use App\Models\MoneyRequest;
 use Spatie\LaravelData\Attributes\Computed;
 use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
 use Spatie\LaravelData\Data;
 
 /**
-* @typescript
-*/
+ * @typescript
+ */
 class MessageData extends Data
 {
     use TimestampData;
@@ -18,6 +20,8 @@ class MessageData extends Data
     public string $uuid;
     #[TypeScriptOptional]
     public ChatData $chat;
+    #[TypeScriptOptional]
+    public MoneyRequest $moneyRequest;
     #[Computed]
     public bool $by_me;
     public function __construct(

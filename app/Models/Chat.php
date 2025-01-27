@@ -20,13 +20,15 @@ class Chat extends Model
     {
         return $this->belongsTo(User::class, 'receiver_id');
     }
-    public function getIsTypingAttribute(){
+    public function getIsTypingAttribute()
+    {
         $isTyping = collect($this->typing ?? [])->contains($this->from?->uuid);
         // dd($isTyping, $this->typing, $this->from?->uuid);
         return $isTyping;
     }
-    public function getFromAttribute(){
-        if($this->sender_id == auth()->id()) {
+    public function getFromAttribute()
+    {
+        if ($this->sender_id == auth()->id()) {
             return $this->receiver;
         } else {
             return $this->sender;
@@ -40,5 +42,9 @@ class Chat extends Model
     public function lastMessage()
     {
         return $this->messages()->latest()->one();
+    }
+    public function moneyRequest()
+    {
+        return $this->hasOne(MoneyRequest::class);
     }
 }
