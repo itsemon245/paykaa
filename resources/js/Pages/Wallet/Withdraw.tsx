@@ -100,9 +100,18 @@ export default function Withdraw({ canWithdraw }: { canWithdraw: boolean }) {
                 <div className="flex justify-start items-center flex-col w-full gap-2 sm:gap-3 w-full">
                     {item.methods.map((method, index) => {
                         return (
-                            <Card className={cn("border transition-all cursor-pointer w-full", min("md") && 'hover:scale-105')} key={index} onClick={e => setActiveWithdrawalMethod(method)} role="button">
+                            <Card
+                                pt={{
+                                    content: {
+                                        className: cn("p-0")
+                                    },
+                                    body: {
+                                        className: cn("p-0")
+                                    }
+                                }}
+                                className={cn("border transition-all cursor-pointer w-full px-3 py-2", min("md") && 'hover:scale-105')} key={index} onClick={e => setActiveWithdrawalMethod(method)} role="button">
                                 <div className="flex w-full gap-5 items-center justify-start">
-                                    <img src={`/storage/${method.logo}`} className="w-[100px] h-[56px] object-contain" alt={method.label} />
+                                    <img src={`/storage/${method.logo}`} className="w-[120px] h-[70px] object-contain rounded-lg" alt={method.label} />
                                     <div className="text-center text-sm sm:text-base font-bold ">
                                         {method.label}
                                     </div>
