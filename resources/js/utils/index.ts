@@ -19,6 +19,7 @@ export const storage = {
     removeItem: (key: string) => localStorage.removeItem(key),
 }
 export const poll = (fn: () => void, timeout: number) => {
+    return;
     console.log("polling function", fn, "dealy", timeout + "ms");
     const interval = setInterval(fn, timeout);
     return () => clearInterval(interval);

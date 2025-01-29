@@ -1,9 +1,12 @@
 import { ChatData, MessageData } from "@/types/_generated"
 import { usePage } from "@inertiajs/react";
-import { format, isThisWeek, isToday, isTomorrow, isYesterday, parseISO } from "date-fns"
+import { format, parseISO } from "date-fns"
 
 const Message = ({ message, children }: { message: MessageData, children?: React.ReactNode }) => {
     const chat = usePage().props.chat as ChatData;
+    if (message.moneyRequest) {
+        return <MoneyRequestMessage message={message} chat={chat} />
+    }
     return (
         <div key={"message-" + message.uuid}>
             {children}
@@ -27,24 +30,6 @@ const Message = ({ message, children }: { message: MessageData, children?: React
                     <span>{format(parseISO(message.created_at as string), 'hh:mm a')}</span>
                 </div>
             </div>
-            {/*
-            <div className="message me">
-                <div className="text-main">
-                    <div className="text-group me">
-
-                        <div className="text me">
-                            <p>
-                                But if you are not available to talk, then
-                                would't they miss you more?
-                            </p>
-                        </div>
-                    </div>
-                    <span>11:32 AM</span>
-                </div>
-            </div>
-
-            */}
-
         </div>
     )
 }

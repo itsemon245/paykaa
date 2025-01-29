@@ -9,6 +9,7 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Enum\Wallet\WalletTransactionType;
+use App\Enum\Wallet\WalletType;
 
 class Wallet extends Model
 {
@@ -30,6 +31,11 @@ class Wallet extends Model
     public function withdrawMethod(): BelongsTo
     {
         return $this->belongsTo(WithdrawMethod::class, 'withdraw_method_id');
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -57,7 +63,11 @@ class Wallet extends Model
     {
         $balance = \DB::table('wallet')
             ->where('owner_id', $user?->id ?? auth()->id())
-            ->whereNotNull('approved_at')
+            ->where(function ($query) {
+                $query->whereNotNull('approved_at')->orWhere(function ($q) {
+                    $q->whereNull('approved_at')->where('type', WalletType::DEBIT->value);
+                });
+            })
             ->selectRaw('SUM(CASE WHEN type = "credit" THEN amount ELSE 0 END) - SUM(CASE WHEN type = "debit" THEN amount ELSE 0 END) AS balance')
             ->value('balance');
         return $balance ?? 0;

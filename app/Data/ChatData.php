@@ -1,13 +1,16 @@
 <?php
 
 namespace App\Data;
+
 use App\Data\Partials\TimestampData;
+use App\Models\Message;
+use App\Models\MoneyRequest;
 use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
 use Spatie\LaravelData\Data;
 
 /**
-* @typescript
-*/
+ * @typescript
+ */
 class ChatData extends Data
 {
     use TimestampData;
@@ -34,6 +37,5 @@ class ChatData extends Data
     public function __construct(
         public int $sender_id,
         public int $receiver_id
-    ){
-    }
+    ) {}
 }

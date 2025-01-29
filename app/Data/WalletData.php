@@ -9,11 +9,7 @@ use App\Enum\Wallet\WalletTransactionType;
 use App\Enum\Wallet\WalletType;
 use Carbon\Carbon;
 use Illuminate\Validation\Validator;
-use Spatie\LaravelData\Attributes\Computed;
 use Spatie\LaravelData\Attributes\Validation\Min;
-use Spatie\LaravelData\Attributes\Validation\Nullable;
-use Spatie\LaravelData\Attributes\Validation\RequiredIf;
-use Spatie\LaravelData\Attributes\Validation\RequiredWith;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\Optional;
 
@@ -28,6 +24,7 @@ class WalletData extends Data
     public ?string $uuid;
     public ?int $owner_id;
     public ?UserData $owner;
+    public ?UserData $user;
     public ?WalletStatus $status;
     public ?DepositMethodData $depositMethod;
     public ?WithdrawMethodData $withdrawMethod;

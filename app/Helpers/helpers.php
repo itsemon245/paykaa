@@ -29,12 +29,18 @@ function backWithError(callable $callback)
         DB::beginTransaction();
         $response = $callback();
         DB::commit();
+        return $response;
     } catch (\Exception $th) {
         DB::rollBack();
         if (config('app.env') == 'local') {
             dd($th);
         }
+        if (request()->expectsJson()) {
+            return response()->json([
+                'success' => false,
+                'error' => $th->getMessage(),
+            ]);
+        }
         return back()->with('error', $th->getMessage());
     }
-    return $response;
 }

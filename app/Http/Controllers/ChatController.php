@@ -19,7 +19,8 @@ class ChatController extends Controller
     {
         return Inertia::render('Chat/Index');
     }
-    public function getUserChats() {
+    public function getUserChats()
+    {
         $chats = Chat::with('lastMessage', 'sender', 'receiver')->where('sender_id', auth()->user()->id)->orWhere('receiver_id', auth()->id())->paginate();
         return response()->json(ChatData::collect($chats));
     }
@@ -29,7 +30,7 @@ class ChatController extends Controller
         $chat = Chat::where('uuid', $request->chat)->with('lastMessage', 'sender', 'receiver')->first();
         $updateCount = Chat::where('receiver_id', auth()->id())
             ->where('is_notified', false)
-            ->update(['is_notified'=> true]);
+            ->update(['is_notified' => true]);
         return response()->json([
             'success' => $updateCount > 0,
             'chat' => $chat ? ChatData::from($chat) : null,
@@ -42,13 +43,16 @@ class ChatController extends Controller
         $chat->loadMissing('sender', 'receiver', 'lastMessage');
         return Inertia::render('Chat/Show', [
             'chat' => ChatData::from($chat),
-            'messages' => MessageData::collect($chat->messages()->paginate()),
+            'messages' => MessageData::collect($chat
+                ->messages()
+                ->with('moneyRequest', 'sender', 'receiver', 'moneyRequest', 'moneyRequest.from')
+                ->paginate()),
         ]);
     }
     public function typing(Request $request, Chat $chat)
     {
-        if(auth()->id() !== $chat->sender_id ) {
-            if(auth()->id() !== $chat->receiver_id) {
+        if (auth()->id() !== $chat->sender_id) {
+            if (auth()->id() !== $chat->receiver_id) {
                 return response()->json([
                     'message' => 'You are not allowed to do this action in this chat',
                 ], 403);
@@ -56,14 +60,14 @@ class ChatController extends Controller
         }
         $oldIndex = collect($chat->typing ?? [])->search(auth()->user()->uuid);
         $newTyping = collect($chat->typing ?? []);
-        if($request->is_typing === '1' && $oldIndex === false) {
+        if ($request->is_typing === '1' && $oldIndex === false) {
             $newTyping->push(auth()->user()->uuid);
         }
-        if($request->is_typing === '0' && $oldIndex !== false) {
+        if ($request->is_typing === '0' && $oldIndex !== false) {
             $newTyping->splice($oldIndex, 1);
         }
         $chat->update([
-            'typing'=> $newTyping->toArray(),
+            'typing' => $newTyping->toArray(),
         ]);
         return response()->json([
             'success' => true,

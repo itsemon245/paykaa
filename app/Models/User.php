@@ -44,7 +44,7 @@ class User extends Authenticatable implements FilamentUser
      */
     public function getBalanceAttribute(): float
     {
-        return Wallet::getBalance();
+        return Wallet::getBalance($this);
     }
 
     /**

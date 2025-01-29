@@ -14,10 +14,15 @@ export type RouteParams = {
     "add.edit": {
         add: string;
     };
+    "filament.admin.resources.add-methods.index": {};
     "filament.admin.resources.adds.index": {};
     "filament.admin.resources.deposit-methods.index": {};
     "filament.admin.resources.deposits.index": {};
     "filament.admin.resources.kycs.index": {};
+    "admin.login-as": {
+        user: string;
+    };
+    "filament.admin.resources.users.index": {};
     "filament.admin.resources.withdraw-methods.index": {};
     "filament.admin.resources.withdraws.index": {};
     "chat.index": {};
@@ -31,6 +36,9 @@ export type RouteParams = {
     };
     "chat.typing": {
         chat: string;
+    };
+    "active-status.check": {
+        user?: string;
     };
     "messages.check-new": {
         chat: string;
@@ -51,6 +59,16 @@ export type RouteParams = {
     "message.store": {
         chat: string;
     };
+    "money.request": {};
+    "money.accept": {
+        moneyRequest: string;
+    };
+    "money.reject": {
+        moneyRequest: string;
+    };
+    "money.release": {
+        moneyRequest: string;
+    };
     "password.update": {};
     "profile.edit": {};
     "profile.update": {};
@@ -62,6 +80,7 @@ export type RouteParams = {
         token: string;
     };
     "search-users": {};
+    "active-status.update": {};
     "upload.chunk.start": {};
     "upload.chunk.update": {};
     "verification.notice": {};
@@ -69,7 +88,9 @@ export type RouteParams = {
         id: string;
         hash: string;
     };
-    "wallet.check-balance": {};
+    "wallet.check-balance": {
+        user?: string;
+    };
     "wallet.deposit.index": {};
     "wallet.deposit.store": {};
     "wallet.transactions.index": {};

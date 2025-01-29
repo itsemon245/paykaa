@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\HasUuid;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Message extends Model
 {
@@ -41,5 +42,10 @@ class Message extends Model
     public function chat()
     {
         return $this->belongsTo(Chat::class);
+    }
+
+    public function moneyRequest(): HasOne
+    {
+        return $this->hasOne(MoneyRequest::class);
     }
 }
