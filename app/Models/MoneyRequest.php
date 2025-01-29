@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enum\Status;
 use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -15,6 +16,24 @@ class MoneyRequest extends Model
         'released_at' => 'datetime',
         'rejected_at' => 'datetime',
     ];
+
+    public function getStatusAttribute(): string
+    {
+        if ($this->released_at) {
+            return Status::RELEASED->value;
+        }
+        if ($this->release_requested_at) {
+            return Status::WAITING_FOR_RELEASE->value;
+        }
+        if ($this->rejected_at) {
+            return Status::REJECTED->value;
+        }
+        if ($this->accepted_at) {
+            return Status::APPROVED->value;
+        }
+        return Status::PENDING->value;
+    }
+
     public function sender(): BelongsTo
     {
         return $this->belongsTo(User::class, 'sender_id');

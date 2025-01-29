@@ -57,7 +57,7 @@ class MoneyRequestController extends Controller
                 'transaction_type' => WalletTransactionType::TRANSFER->value,
                 'type' => WalletType::DEBIT->value,
                 'amount' => $moneyRequest->amount,
-                'currency' => $moneyRequest->currency,
+                'currency' => 'BDT',
                 'note' => $moneyRequest->note,
                 'payment_number' => $moneyRequest->sender_id,
             ]);

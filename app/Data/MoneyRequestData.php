@@ -23,7 +23,6 @@ class MoneyRequestData extends Data
     public MessageData $message;
     #[Optional]
     public ?UserData $from;
-    #[Computed]
     public Status $status;
     public function __construct(
         public int $sender_id,
@@ -43,20 +42,20 @@ class MoneyRequestData extends Data
         #[Optional]
         public ?Carbon $rejected_at,
     ) {
-        if ($this->released_at) {
-            $this->status = Status::RELEASED;
-            return;
-        }
-        if ($this->release_requested_at) {
-            $this->status = Status::WAITING_FOR_RELEASE;
-        } else {
-            if ($this->accepted_at) {
-                $this->status = Status::APPROVED;
-            } elseif ($this->rejected_at) {
-                $this->status = Status::REJECTED;
-            } else {
-                $this->status = Status::PENDING;
-            }
-        }
+        // if ($this->released_at) {
+        //     $this->status = Status::RELEASED;
+        //     return;
+        // }
+        // if ($this->release_requested_at) {
+        //     $this->status = Status::WAITING_FOR_RELEASE;
+        // } else {
+        //     if ($this->accepted_at) {
+        //         $this->status = Status::APPROVED;
+        //     } elseif ($this->rejected_at) {
+        //         $this->status = Status::REJECTED;
+        //     } else {
+        //         $this->status = Status::PENDING;
+        //     }
+        // }
     }
 }
