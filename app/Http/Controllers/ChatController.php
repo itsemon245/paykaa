@@ -43,7 +43,10 @@ class ChatController extends Controller
         $chat->loadMissing('sender', 'receiver', 'lastMessage');
         return Inertia::render('Chat/Show', [
             'chat' => ChatData::from($chat),
-            'messages' => MessageData::collect($chat->messages()->with('moneyRequest', 'sender', 'receiver')->paginate()),
+            'messages' => MessageData::collect($chat
+                ->messages()
+                ->with('moneyRequest', 'sender', 'receiver', 'moneyRequest', 'moneyRequest.from')
+                ->paginate()),
         ]);
     }
     public function typing(Request $request, Chat $chat)

@@ -15,6 +15,7 @@ import { Tag, TagProps } from "primereact/tag";
 
 export default function Transactions() {
     const pageProps = usePage().props
+    const { user } = useAuth()
     const initialTransactions = pageProps.transactions as PaginatedCollection<WalletData>
     const [transactions, setTransactions] = useState(initialTransactions)
     const [perPage, setPerPage] = useState(transactions.per_page)
@@ -30,11 +31,8 @@ export default function Transactions() {
         if (item.transaction_type === "withdraw") {
             return item.depositMethod?.number
         }
-        if (item.transaction_type === "transfer_in") {
-            return "uid"
-        }
-        if (item.transaction_type === "transfer_out") {
-            return "uid"
+        if (item.transaction_type === "transfer") {
+            return item.type === 'credit' ? item.owner?.id : item.user?.id
         }
         return item.payment_number
     }
@@ -42,11 +40,8 @@ export default function Transactions() {
         if (item.transaction_type === "deposit") {
             return item.depositMethod?.number
         }
-        if (item.transaction_type === "transfer_in") {
-            return "uid"
-        }
-        if (item.transaction_type === "transfer_out") {
-            return "uid"
+        if (item.transaction_type === "transfer") {
+            return item.type === 'debit' ? item.owner?.id : item.user?.id
         }
         return item.payment_number
     }
@@ -70,8 +65,7 @@ export default function Transactions() {
         const colors = {
             "deposit": "success",
             "withdraw": "warning",
-            "transfer_in": "info",
-            "transfer_out": "danger",
+            "transfer": "info",
         }
         const severity = colors[item.transaction_type as keyof typeof colors] as "success" | "info" | "warning" | "danger" | "secondary" | "contrast"
         return <Tag value={titleCase(item.transaction_type)} severity={severity}></Tag>;
@@ -119,16 +113,18 @@ export default function Transactions() {
                                     <div className="text-sm font-bold">{
                                         getSenderNumber(item)
                                     }</div>
-                                </div>
-                                }
+                                </div>}
+
                                 <div className="flex items-center gap-2">
                                     <div className="text-sm font-bold">Receiver:</div>
                                     <div className="text-sm font-bold">{getReceiverNumber(item)}</div>
                                 </div>
-                                <div className="flex items-center gap-2">
+
+                                {item.transaction_type !== 'transfer' && <div className="flex items-center gap-2">
                                     <div className="text-sm font-bold">Method:</div>
                                     <div className="text-sm font-bold">{item.transaction_type === "deposit" ? item.depositMethod?.label : item.withdrawMethod?.label}</div>
                                 </div>
+                                }
                             </div>
                         )}></Column>
                         {/*
@@ -142,7 +138,7 @@ export default function Transactions() {
                             {transactions.data.map((item, index) => (
                                 <div key={"transaction-" + item.uuid} className={cn("flex p-3 justify-between gap-2 border-l border-r", index == 0 && 'border-t border-b', index + 1 <= transactions.data.length && 'border-b')}>
                                     <div className="flex items-center gap-2">
-                                    {/*<Avatar label={(index + 1).toString()} size="large" style={{ backgroundColor: 'var(--primary-500)', color: '#ffffff' }} shape="circle" />*/}
+                                        {/*<Avatar label={(index + 1).toString()} size="large" style={{ backgroundColor: 'var(--primary-500)', color: '#ffffff' }} shape="circle" />*/}
                                         <div>
                                             <div className="capitalize text-lg font-semibold">{item.transaction_type}</div>
                                             {

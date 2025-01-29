@@ -21,7 +21,7 @@ class MessageData extends Data
     #[TypeScriptOptional]
     public ChatData $chat;
     #[TypeScriptOptional]
-    public MoneyRequest $moneyRequest;
+    public MoneyRequestData $moneyRequest;
     #[Computed]
     public bool $by_me;
     public function __construct(

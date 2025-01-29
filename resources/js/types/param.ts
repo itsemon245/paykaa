@@ -1,5 +1,4 @@
 export type RouteParams = {
-    "money.request": {};
     "add.index": {};
     "add.store": {};
     "add.create": {};
@@ -59,6 +58,16 @@ export type RouteParams = {
     "messages": {};
     "message.store": {
         chat: string;
+    };
+    "money.request": {};
+    "money.accept": {
+        moneyRequest: string;
+    };
+    "money.reject": {
+        moneyRequest: string;
+    };
+    "money.release": {
+        moneyRequest: string;
     };
     "password.update": {};
     "profile.edit": {};

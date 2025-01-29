@@ -35,6 +35,12 @@ function backWithError(callable $callback)
         if (config('app.env') == 'local') {
             dd($th);
         }
+        if (request()->expectsJson()) {
+            return response()->json([
+                'success' => false,
+                'error' => $th->getMessage(),
+            ]);
+        }
         return back()->with('error', $th->getMessage());
     }
 }

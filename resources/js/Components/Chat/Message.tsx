@@ -5,7 +5,7 @@ import { format, parseISO } from "date-fns"
 const Message = ({ message, children }: { message: MessageData, children?: React.ReactNode }) => {
     const chat = usePage().props.chat as ChatData;
     if (message.moneyRequest) {
-        return <MoneyRequestMessage message={message} />
+        return <MoneyRequestMessage message={message} chat={chat} />
     }
     return (
         <div key={"message-" + message.uuid}>

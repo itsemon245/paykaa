@@ -65,6 +65,7 @@ Route::middleware('auth', 'redirect-if-admin')->group(function () {
     Route::post('money-request', [MoneyRequestController::class, 'request'])->name('money.request');
     Route::post('money-request/{moneyRequest}/accept', [MoneyRequestController::class, 'accept'])->name('money.accept');
     Route::post('money-request/{moneyRequest}/reject', [MoneyRequestController::class, 'reject'])->name('money.reject');
+    Route::post('money-request/{moneyRequest}/request-to-release', [MoneyRequestController::class, 'requestToRelease'])->name('money.request-release');
     Route::post('money-request/{moneyRequest}/release', [MoneyRequestController::class, 'release'])->name('money.release');
 });
 

@@ -67,6 +67,9 @@
     .p-button.p-button-icon-only{
         width: auto;
     }
+    .p-button-label {
+        flex: inherit;
+    }
     .p-component.p-password{
         @apply flex
     }

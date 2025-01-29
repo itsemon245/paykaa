@@ -52,7 +52,7 @@ export default function ChatSidebar() {
                         (
                             <div className="text-ellipsis text-nowrap overflow-hidden flex items-center gap-2">
                                 {item.last_message.by_me && <div className="font-medium">You:</div>}
-                                <div>{item.last_message.body}</div>
+                                <div className="!max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">{item.last_message.body}</div>
                             </div>
                         ) :
                         <p>No messages yet</p>
