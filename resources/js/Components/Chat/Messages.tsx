@@ -3,16 +3,18 @@ import { motion } from "motion/react"
 import { ChatData, MessageData } from '@/types/_generated';
 import { usePage } from '@inertiajs/react';
 import Message from './Message';
-import { poll } from '@/utils';
+import { cn, poll } from '@/utils';
 import { throttle } from 'lodash';
 import MessageDate from './MessageDate';
 
 export default function Messages({
     messages,
     setMessages,
+    inSidebar
 }: {
     messages: PaginatedCollection<MessageData>
     setMessages: (messages: PaginatedCollection<MessageData>) => void
+    inSidebar?: boolean
 }) {
     const chat = usePage().props.chat as ChatData;
     const { isTyping, setIsTyping } = useTyping(chat);
@@ -73,7 +75,7 @@ export default function Messages({
                     </motion.div>
                 </div>
             )}
-            <div className="content !h-[calc(100dvh - 240px)]" ref={messageContainerRef}>
+            <div className={cn("content", inSidebar ? "!h-full" : "!h-[calc(100dvh - 240px)]")} ref={messageContainerRef}>
                 <div className="flex flex-col-reverse w-full px-4 relative" >
                     {!messages?.data ? (
                         <div className="flex flex-col items-center justify-center w-full h-full gap-2">

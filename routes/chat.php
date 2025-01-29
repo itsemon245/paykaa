@@ -16,6 +16,7 @@ Route::middleware('auth', 'redirect-if-admin')->group(function () {
     });
     Route::get('search-users', [UserController::class, 'index'])->name('search-users');
     Route::get('/messages', [MessageController::class, 'index'])->name('messages');
+    Route::get('/messages/{chat}/money-requests', [MessageController::class, 'moneyRequestMessages'])->name('messages.money-requests');
     Route::middleware('has-chat')->group(function () {
         Route::get('/check-new-messages/{chat}', [MessageController::class, 'checkNewMessages'])->name('messages.check-new');
         Route::get('/get-new-messages/{chat}', [MessageController::class, 'getNewMessages'])->name('messages.get-new');

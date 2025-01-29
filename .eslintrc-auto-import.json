@@ -111,6 +111,9 @@
     "Avatar": true,
     "HugeiconsMoneyReceiveCircle": true,
     "RequestMoney": true,
-    "MoneyRequestMessage": true
+    "MoneyRequestMessage": true,
+    "RequestMoneyChats": true,
+    "RequestMoneyChatList": true,
+    "HugeiconsRightToLeftListDash": true
   }
 }
