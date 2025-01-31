@@ -55,9 +55,6 @@ export default function Login() {
             container.current?.classList.remove('active');
         });
     }, [loginBtn, registerBtn, container]);
-    useEffect(() => {
-        console.log(getQuery('email'))
-    }, [])
     return (
         <>
             <Head title="Login">

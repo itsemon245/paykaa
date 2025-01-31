@@ -25,7 +25,7 @@ Route::patch('/upload/chunk', [UploadController::class, 'update'])->name('upload
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard/Index');
-})->middleware(['auth', 'redirect-if-admin'])->name('dashboard');
+})->middleware(['auth', 'redirect-if-admin', 'verified'])->name('dashboard');
 
 //Profile Routes
 Route::middleware('auth')->group(function () {

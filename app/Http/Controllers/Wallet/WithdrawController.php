@@ -17,15 +17,18 @@ use Inertia\Inertia;
 class WithdrawController extends Controller
 {
     public function __construct(public WalletService $wallet) {}
-    public function index()
+    public function canWithdraw()
     {
-        $withdrawMethods = WithdrawMethod::all();
-        $canWithdraw = !Wallet::where(function (Builder $q) {
+        return !Wallet::where(function (Builder $q) {
             $q->whereNull('approved_at');
             $q->whereNull('cancelled_at');
             $q->where('transaction_type', WalletTransactionType::WITHDRAW->value);
-        })
-            ->exists();
+        })->exists();
+    }
+    public function index()
+    {
+        $withdrawMethods = WithdrawMethod::all();
+        $canWithdraw = $this->canWithdraw();
         return Inertia::render('Wallet/Withdraw', [
             'balance' => Wallet::getBalance(),
             'withdrawMethods' => WithdrawMethodData::collect($withdrawMethods),
@@ -35,8 +38,7 @@ class WithdrawController extends Controller
 
     public function store(Request $request)
     {
-        $pendingWithdrawExists = Wallet::withdrawals()->pending()->exists();
-        if ($pendingWithdrawExists) {
+        if (!$this->canWithdraw()) {
             return back()->with('error', "You already have a withdraw pending!");
         }
         $balance = Wallet::getBalance();
