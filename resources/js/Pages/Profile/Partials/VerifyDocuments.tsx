@@ -13,14 +13,16 @@ export default function VerifyDocuments() {
     const [showUploadDocDialog, setShowUploadDocDialog] = useState(false);
     const docTypes = ["Passport", "Driving License", "National ID"] as KycDocType[];
     const { data, setData, post, errors, processing, recentlySuccessful } = useForm({
-        user_id: user.id,
         doc_type: undefined,
         front_image: '',
         back_image: '',
     })
     const submit = async (e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
-        console.log(data)
+        if (!data.doc_type) {
+            toast.error('Please select a document type')
+            return;
+        }
         const toastId = toast.loading('Submitting Documents...')
         post(route('kyc.store'), {
             onSuccess: (data) => {
@@ -73,7 +75,7 @@ export default function VerifyDocuments() {
                     <li>Driving license</li>
                     <li>National ID card</li>
                 </ul>
-                <Button className='w-full' label='Upload Documents' onClick={() => setShowUploadDocDialog(true)} />
+                <Button className='w-full flex justify-center' label='Upload Documents' onClick={() => setShowUploadDocDialog(true)} />
             </>
             }
         </div>
@@ -88,7 +90,9 @@ export default function VerifyDocuments() {
                 ))}
                 {data.doc_type && <div className="flex flex-col gap-3 w-full">
                     <Filedrop label="Upload Front Image" className="min-h-[180px]" labelIdle={"Drop your front image of your " + data.doc_type} onProcessFile={(path, storageUrl) => setData('front_image', storageUrl)} />
+                    <InputError message={errors.front_image} className="-mt-4" />
                     <Filedrop label="Upload Back Image" className="min-h-[180px]" labelIdle={"Drop your back image of your " + data.doc_type} onProcessFile={(path, storageUrl) => setData('back_image', storageUrl)} />
+                    <InputError message={errors.back_image} className="-mt-4" />
                 </div>}
 
 

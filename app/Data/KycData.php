@@ -14,8 +14,6 @@ class KycData extends Data
 {
     use TimestampData;
     public function __construct(
-        #[Exists('users', 'id')]
-        public int $user_id,
         #[Optional]
         public ?KycDocType $doc_type,
         public string $front_image,

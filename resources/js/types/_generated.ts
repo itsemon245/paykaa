@@ -89,7 +89,6 @@ export type FieldsData = {
 };
 export type InputType = 'text' | 'textarea';
 export type KycData = {
-    user_id: number;
     doc_type?: KycDocType;
     front_image: string;
     back_image: string;
