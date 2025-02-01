@@ -1,4 +1,5 @@
 import { classNames } from "primereact/utils";
+import toast from "react-hot-toast";
 
 export const storage = {
     getItem: (key: string) => {
@@ -83,4 +84,10 @@ export const image = (url?: string) => {
 export const getQuery = (param?: string) => {
     if (!param) return '';
     return new URL(window.location.href).searchParams.get(param);
+}
+
+export const copyToClipboard = (text?: any) => {
+    if (!text) return;
+    navigator.clipboard.writeText(text);
+    toast.success('Copied to clipboard');
 }

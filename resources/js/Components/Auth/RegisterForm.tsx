@@ -71,9 +71,9 @@ export default function RegisterForm({ children }: { children: any }) {
                     <i className='bx bxs-envelope'></i>
                 </div>
                 {errors.email && <InputError message={errors.email} className="mt-2" />}
-                <PasswordInput placeholder="Password" required onChange={(e) => setData('password', e.target.value)} />
+                <PasswordInput placeholder="Password" required onChange={(e) => setData('password', e.target.value)} value={data.password} />
                 {errors.password && <InputError message={errors.password} className="mt-2" />}
-                <PasswordInput placeholder="Confirm Password" required onChange={e => setData('password_confirmation', e.target.value)} />
+                <PasswordInput placeholder="Confirm Password" required onChange={e => setData('password_confirmation', e.target.value)} value={data.password_confirmation} />
                 {errors.password_confirmation && <InputError message={errors.password_confirmation} className="mt-2" />}
                 <button type="submit" className="auth-btn">Register</button>
                 {children}

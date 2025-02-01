@@ -6,14 +6,16 @@ import { Transition } from '@headlessui/react';
 import { Link, router, useForm, usePage } from '@inertiajs/react';
 import { ChangeEvent, FormEventHandler, HTMLProps } from 'react';
 import { Tag } from 'primereact/tag';
-import { Dropdown } from 'primereact/dropdown';
+import { Dropdown, DropdownProps } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
 import { subYears } from 'date-fns';
 import { KycData, UserData } from '@/types/_generated';
 import toast from 'react-hot-toast';
 import { PageProps } from '@/types';
 import { Tooltip } from 'primereact/tooltip';
-import { image } from '@/utils';
+import { copyToClipboard, image } from '@/utils';
+import countries from '@/data/countries';
+import { SelectItemOptionsType } from 'primereact/selectitem';
 
 const EmailVerifiedTag = ({ user, id, ...props }: HTMLProps<HTMLDivElement> & { user: UserData, id?: string }) => {
     const [loading, setLoading] = useState(false);
@@ -60,6 +62,28 @@ export default function UpdateProfileInformation() {
     const csrf_token = usePage().props.csrf_token as string;
     const { balance } = useBalance();
 
+    const selectedCountryTemplate = (option?: typeof countries[number], props?: DropdownProps) => {
+        if (option) {
+            return (
+                <div className="flex align-items-center">
+                    <img alt={option.name} src={`https://api.iconify.design/flag:${option.code.toLowerCase()}-4x3.svg`} className={`mr-2`} style={{ width: '18px' }} />
+                    <div>{option.name}</div>
+                </div>
+            );
+        }
+
+        return <span>{props?.placeholder}</span>;
+    };
+
+    const countryOptionTemplate = (option: typeof countries[number]) => {
+        return (
+            <div className="flex align-items-center">
+                <img alt={option.name} src={`https://api.iconify.design/flag:${option.code.toLowerCase()}-4x3.svg`} className="mr-2" style={{ width: '18px' }} />
+                <div>{option.name}</div>
+            </div>
+        );
+    };
+
     const { data, setData, patch, errors, processing, recentlySuccessful } =
         useForm({
             name: user.name,
@@ -67,7 +91,7 @@ export default function UpdateProfileInformation() {
             email: user.email,
             gender: user.gender,
             date_of_birth: user.date_of_birth,
-            country: user.country,
+            country: user.country || 'Bangladesh',
             address: user.address,
             phone: user.phone,
         });
@@ -125,7 +149,12 @@ export default function UpdateProfileInformation() {
 
                 <div className="flex flex-col leading-5 gap-1 text-gray-800">
                     <div className="font-bold">{user.email}</div>
-                    <div className="font-medium">Unique ID: {user.id}</div>
+                    <div className="font-medium">UID: <br />
+                        <div className="flex gap-2 items-center ">
+                            <label className="text-sm font-bold mb-0 !text-gray-800">{user.id}</label>
+                            <HugeiconsCopy01 className="w-4 h-4 !text-gray-800 cursor-pointer" onClick={() => copyToClipboard(user.id)} />
+                        </div>
+                    </div>
                     <div className="font-medium">Balance: {balance}</div>
                     <Tag className="w-max text-xs" icon="pi pi-user" severity={kyc?.approved_at ? 'success' : 'danger'} value={kyc?.approved_at ? 'Verified' : 'Not Verified'} />
                 </div>
@@ -136,11 +165,18 @@ export default function UpdateProfileInformation() {
                     <div className="absolute right-3 top-3">
                         <EmailVerifiedTag user={user} id="email-verified-tag" />
                     </div>
-                    <Input invalid={!user.email_verified_at} error={errors.email} color="gray-700" label='Email' value={data.email} onChange={e => setData('email', e.target.value)} />
+                    <Input invalid={!user.email_verified_at} error={errors.email} color="gray-700" label='Email' value={data.email} onChange={e => setData('email', e.target.value)} disabled={kyc?.approved_at != null} />
                 </div>
-                <Input color="gray-700" label='Date of Birth' value={data.date_of_birth} onChange={e => setData('date_of_birth', e.target.value)} type="date" max={subYears(new Date(), 12).toISOString().split('T')[0]} error={errors.date_of_birth} />
-                <Input color="gray-700" label='Country' value={data.country} onChange={e => setData('country', e.target.value)} error={errors.country} />
-                <Input color="gray-700" label='Address' value={data.address} onChange={e => setData('address', e.target.value)} error={errors.address} />
+                <Input color="gray-700" label='Date of Birth' value={data.date_of_birth} onChange={e => setData('date_of_birth', e.target.value)} type="date" max={subYears(new Date(), 12).toISOString().split('T')[0]} error={errors.date_of_birth} disabled={kyc?.approved_at != null} />
+                <div>
+                    <InputLabel value="Country" />
+                    {/*@ts-ignore */}
+                    <Dropdown value={data.country} onChange={(e) => setData('country', e.value)} options={countries} optionLabel="name" optionValue='name' placeholder="Select a Country"
+                        valueTemplate={selectedCountryTemplate} itemTemplate={countryOptionTemplate} className="w-full"
+                    />
+                    {errors.country && <div className="text-red-500">{errors.country}</div>}
+                </div>
+                <Input color="gray-700" label='Address' value={data.address} onChange={e => setData('address', e.target.value)} error={errors.address} disabled={kyc?.approved_at != null} />
                 <Input color="gray-700" label='Phone' value={data.phone} onChange={e => setData('phone', e.target.value)} error={errors.phone} />
                 <div className="relative">
                     <div>
@@ -152,7 +188,7 @@ export default function UpdateProfileInformation() {
                             name: 'Female',
                             value: 'female',
                         }]}
-                            optionLabel="name" className='w-full' checkmark={true} highlightOnSelect={true} />
+                            optionLabel="name" className='w-full' checkmark={true} highlightOnSelect={true} disabled={kyc?.approved_at != null} />
                     </div>
                 </div>
                 <div className="flex items-center gap-4">

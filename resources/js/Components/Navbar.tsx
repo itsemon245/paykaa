@@ -8,7 +8,7 @@ import autoAnimate from '@formkit/auto-animate'
 import { useRef } from "react";
 import { motion } from "motion/react"
 import useBreakpoint from "@/Hooks/useBrakpoints";
-import { cn, image } from "@/utils";
+import { cn, copyToClipboard, image } from "@/utils";
 
 export default function Navbar({
     className,
@@ -35,6 +35,7 @@ export default function Navbar({
         return balance.toLocaleString('en-IN', { style: 'currency', currency: 'BDT' })
     }, [loadingBalance, isBalanceVisible])
     useEffect(() => {
+        console.log(user)
         if (animationParentRef.current) {
             autoAnimate(animationParentRef.current);
         }
@@ -48,6 +49,10 @@ export default function Navbar({
                     <img src={image(user.avatar)} className="w-14 h-14 md:w-[72px] md:h-[72px] rounded-full border-white border-2 object-cover" />
                     <div ref={animationParentRef} className="flex flex-col items-start">
                         <label className="text-white text-base md:text-lg font-bold mb-0">{user.name}</label>
+                        <div className="flex gap-2 items-center mb-0.5 -mt-1.5">
+                            <label className="text-white text-sm font-bold mb-0"> UID: {user.id}</label>
+                            <HugeiconsCopy01 className="text-white w-4 h-4 cursor-pointer" onClick={() => copyToClipboard(user.id)} />
+                        </div>
                         <button onClick={refreshBalance} className="bg-white min-w-36 md:min-w-48 text-center py-1 md:py-1.5 rounded-xl text-primary text-sm md:text-base font-medium">{label}</button>
                     </div>
                 </div>

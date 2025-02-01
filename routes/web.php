@@ -28,7 +28,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'redirect-if-admin', 'verified'])->name('dashboard');
 
 //Profile Routes
-Route::middleware('auth')->group(function () {
+Route::middleware('auth', 'verified')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::patch('/profile-avatar', [ProfileController::class, 'updateAvatar'])->name('profile.update.avatar');
@@ -49,7 +49,7 @@ Route::middleware('auth')->group(function () {
     })->name('active-status.check');
 });
 
-Route::middleware('auth', 'redirect-if-admin')->group(function () {
+Route::middleware('auth', 'redirect-if-admin', 'verified')->group(function () {
     //Wallet Routes
     Route::prefix('wallet')->name('wallet.')->group(function () {
         Route::get('deposit', [DepositController::class, 'index'])->name('deposit.index');
