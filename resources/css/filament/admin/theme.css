@@ -4,3 +4,15 @@
 .fi-sidebar-nav{
     @apply shadow bg-white dark:bg-gray-900
 }
+.filepond--file-info-main{
+    @apply flex items-center gap-1
+}
+.filepond--open-icon{
+    @apply w-5 h-5
+}
+.filepond--download-icon{
+    @apply w-5 h-5
+}
+.filepond--progress-indicator{
+    @apply w-6 h-6
+}

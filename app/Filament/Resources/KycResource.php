@@ -25,7 +25,7 @@ class KycResource extends Resource
     protected static ?int $navigationSort = 4;
     protected static ?string $navigationLabel = 'Verification Requests';
     protected static ?string $modelLabel =  'Verification Request';
-    protected static ?string $pluralModelLabel ='Verification Requests';
+    protected static ?string $pluralModelLabel = 'Verification Requests';
 
     public static function form(Form $form): Form
     {
@@ -41,9 +41,9 @@ class KycResource extends Resource
                             ->disabled()
                             ->required(),
                         Forms\Components\TextInput::make('phone')
-                        ->disabled(),
+                            ->disabled(),
                         Forms\Components\TextInput::make('country')
-                        ->disabled(),
+                            ->disabled(),
                     ]),
                 Forms\Components\TextInput::make('doc_type')
                     ->label('Document Type')
@@ -52,13 +52,15 @@ class KycResource extends Resource
                     ->maxLength(255),
                 Forms\Components\FileUpload::make('front_image')
                     ->downloadable()
+                    ->openable(true)
                     ->image()
                     ->required(),
                 Forms\Components\FileUpload::make('back_image')
                     ->downloadable()
+                    ->openable(true)
                     ->image()
                     ->required(),
-            ])->columns(2);
+            ])->columns(1);
     }
 
     public static function table(Table $table): Table
@@ -105,17 +107,17 @@ class KycResource extends Resource
             ->actions([
                 Action::make('Approve')
                     ->requiresConfirmation()
-                    ->hidden(fn (Model $record) => $record->approved_at)
+                    ->hidden(fn(Model $record) => $record->approved_at)
                     ->tooltip('Approve')
-                    ->action(fn (Model $record) => $record->update(['approved_at' => now(), 'rejected_at' => null]))
+                    ->action(fn(Model $record) => $record->update(['approved_at' => now(), 'rejected_at' => null]))
                     ->size(ActionSize::Large)
                     ->color('success')
                     ->icon('heroicon-o-check-circle'),
                 Action::make('Reject')
                     ->requiresConfirmation()
-                    ->hidden(fn (Model $record) => $record->rejected_at)
+                    ->hidden(fn(Model $record) => $record->rejected_at)
                     ->tooltip('Reject')
-                    ->action(fn (Model $record) => $record->update(['rejected_at' => now(), 'approved_at' => null]))
+                    ->action(fn(Model $record) => $record->update(['rejected_at' => now(), 'approved_at' => null]))
                     ->size(ActionSize::Large)
                     ->color('danger')
                     ->icon('heroicon-o-x-circle'),
@@ -130,7 +132,7 @@ class KycResource extends Resource
 
             ])
             ->bulkActions([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 

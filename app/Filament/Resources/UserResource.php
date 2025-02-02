@@ -32,7 +32,9 @@ class UserResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\FileUpload::make('avatar')
-                    ->avatar(),
+                    ->downloadable()
+                    ->openable()
+                    ->image(),
                 Forms\Components\TextInput::make('phone')
                     ->tel()
                     ->maxLength(255)

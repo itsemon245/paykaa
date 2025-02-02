@@ -143,7 +143,8 @@ class DepositResource extends Resource
                         }
                         return $record->depositMethod?->category !== MethodCategory::BANK->value;
                     })
-                    ->previewable(true)
+                    ->deletable(false)
+                    ->openable(true)
                     ->columnSpanFull()
                     ->downloadable()
                     ->image()
