@@ -67,15 +67,20 @@ export default function VerifyDocuments() {
                     kyc.approved_at ? 'Your documents have been verified.' : 'Hold up we are processing your documents...'
                 }</p>
             </>}
-            {kyc?.rejected_at && <p className='text-red-500 font-bold'>Your documents have been rejected.</p>}
+            {kyc?.rejected_at &&
+                <>
+                <p className='text-red-500 font-bold'>Your documents have been rejected.</p>
+                <p className=''>Please re-upload your documents to try again.</p>
+                    </>
+            }
             {!kyc && <p>Please upload any of the following documents to verify your identity:</p>}
-            {kyc?.rejected_at || !kyc && <>
+            {!kyc?.approved_at && <>
                 <ul className='list-disc ps-6'>
                     <li>Passport</li>
                     <li>Driving license</li>
                     <li>National ID card</li>
                 </ul>
-                <Button className='w-full flex justify-center' label='Upload Documents' onClick={() => setShowUploadDocDialog(true)} />
+                <Button className='w-full flex justify-center' label={kyc?.rejected_at ? 'Re-Upload Documents' : 'Upload Documents'} onClick={() => setShowUploadDocDialog(true)} />
             </>
             }
         </div>

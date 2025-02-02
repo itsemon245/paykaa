@@ -110,8 +110,8 @@ class DepositResource extends Resource
                             ]),
                     ]),
                 Forms\Components\TextInput::make('payment_number')
-                    ->label(function (Model $record) {
-                        $category = $record->depositMethod?->category;
+                    ->label(function (?Model $record) {
+                        $category = $record?->depositMethod?->category;
                         if ($category === MethodCategory::BANK->value) {
                             return 'A/c Number';
                         }
@@ -119,7 +119,7 @@ class DepositResource extends Resource
                     })
                     ->maxLength(255)
                     ->default(null),
-                Forms\Components\TextInput::make('account_holder')->label('A/c Name')->hidden(fn(Model $record) => $record->depositMethod?->category !== MethodCategory::BANK->value),
+                Forms\Components\TextInput::make('account_holder')->label('A/c Name')->hidden(fn(?Model $record) => $record?->depositMethod?->category !== MethodCategory::BANK->value),
                 Forms\Components\TextInput::make('amount')
                     ->required()
                     ->numeric()
@@ -129,19 +129,19 @@ class DepositResource extends Resource
                     ->numeric()
                     ->default(0.00),
                 Forms\Components\TextInput::make('transaction_id')
-                    ->hidden(fn(Model $record) => $record->depositMethod?->category !== MethodCategory::MOBILE_BANKING->value)
+                    ->hidden(fn(?Model $record) => $record?->depositMethod?->category !== MethodCategory::MOBILE_BANKING->value)
                     ->maxLength(255)
                     ->default(null),
-                Forms\Components\TextInput::make('branch_name')->label('Branch')->hidden(fn(Model $record) => $record->depositMethod?->category !== MethodCategory::BANK->value),
+                Forms\Components\TextInput::make('branch_name')->label('Branch')->hidden(fn(?Model $record) => $record?->depositMethod?->category !== MethodCategory::BANK->value),
                 Forms\Components\Textarea::make('note')
                     ->maxLength(255)
                     ->default(null),
                 Forms\Components\FileUpload::make('receipt')
-                    ->hidden(function (Model $record) {
-                        if (!$record->receipt) {
+                    ->hidden(function (?Model $record) {
+                        if (!$record?->receipt) {
                             return true;
                         }
-                        return $record->depositMethod?->category !== MethodCategory::BANK->value;
+                        return $record?->depositMethod?->category !== MethodCategory::BANK->value;
                     })
                     ->deletable(false)
                     ->openable(true)

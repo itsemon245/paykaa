@@ -84,8 +84,8 @@ class WithdrawResource extends Resource
                     ->numeric()
                     ->default(0.00),
                 Forms\Components\TextInput::make('payment_number')
-                    ->label(function (Model $record) {
-                        $category = $record->withdrawMethod?->category;
+                    ->label(function (?Model $record) {
+                        $category = $record?->withdrawMethod?->category;
                         if ($category === MethodCategory::BANK->value) {
                             return 'A/C. Number';
                         }
@@ -94,12 +94,12 @@ class WithdrawResource extends Resource
                     ->maxLength(255)
                     ->default(null),
                 Forms\Components\TextInput::make('transaction_id')
-                    ->hidden(fn(Model $record) => $record->depositMethod?->category !== MethodCategory::MOBILE_BANKING->value)
+                    ->hidden(fn(?Model $record) => $record?->depositMethod?->category !== MethodCategory::MOBILE_BANKING->value)
                     ->maxLength(255)
                     ->default(null),
                 Forms\Components\ViewField::make('additional_fields')
                     ->filled()
-                    ->hidden(fn(Model $record) => count($record?->additional_fields) == 0)
+                    ->hidden(fn(?Model $record) => count($record?->additional_fields) == 0)
                     ->view('filament.forms.components.additional-fields')
                     ->columnSpanFull(),
                 Forms\Components\Textarea::make('note')
