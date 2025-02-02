@@ -49,7 +49,7 @@ const EmailVerifiedTag = ({ user, id, ...props }: HTMLProps<HTMLDivElement> & { 
         });
     }
     return <div {...props}>
-        <button id={id} type="button" className='relative' onClick={verifyEmail}>
+        <button id={id} type="button" className='relative z-10' onClick={verifyEmail}>
             {!user.email_verified_at && <Tag className="w-max text-xs" icon="pi pi-exclamation-triangle" severity="warning" value={loading ? 'Sending...' : 'Click to verify'}></Tag>}
             {user.email_verified_at && <Tag className="w-max text-xs" icon="pi pi-check" severity="success" value="Verified"></Tag>}
         </button>
@@ -172,13 +172,13 @@ export default function UpdateProfileInformation() {
                     <div className="absolute right-3 top-3">
                         <EmailVerifiedTag user={user} id="email-verified-tag" />
                     </div>
-                    <Input className={cn(user.email_verified_at && 'border-green-500')} invalid={!user.email_verified_at} error={errors.email} color="gray-700" label='Email' value={data.email} onChange={e => setData('email', e.target.value)} disabled={kyc?.approved_at != null} />
+                    <Input className={cn(user.email_verified_at && 'border-green-500')} invalid={!user.email_verified_at} error={errors.email} color="gray-700" label='Email' value={data.email} onChange={e => setData('email', e.target.value)} disabled={true} />
                 </div>
                 <Input color="gray-700" label='Date of Birth' value={data.date_of_birth} onChange={e => setData('date_of_birth', e.target.value)} type="date" max={subYears(new Date(), 12).toISOString().split('T')[0]} error={errors.date_of_birth} disabled={kyc?.approved_at != null} />
                 <div>
                     <InputLabel value="Country" />
                     {/*@ts-ignore */}
-                    <Dropdown value={data.country} onChange={(e) => setData('country', e.value)} options={countries} optionLabel="name" optionValue='name' placeholder="Select a Country"
+                    <Dropdown filter={true} filterBy='name,code' value={data.country} onChange={(e) => setData('country', e.value)} options={countries} optionLabel="name" optionValue='name' placeholder="Select a Country"
                         valueTemplate={selectedCountryTemplate} itemTemplate={countryOptionTemplate} className="w-full"
                     />
                     {errors.country && <div className="text-red-500">{errors.country}</div>}
@@ -195,6 +195,9 @@ export default function UpdateProfileInformation() {
                             name: 'Female',
                             value: 'female',
                         }]}
+                            onChange={(e) => setData('gender', e.value)}
+                            value={data.gender}
+                            placeholder="Select Gender"
                             optionLabel="name" className='w-full' checkmark={true} highlightOnSelect={true} disabled={kyc?.approved_at != null} />
                     </div>
                 </div>

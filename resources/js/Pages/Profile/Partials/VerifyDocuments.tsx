@@ -62,19 +62,19 @@ export default function VerifyDocuments() {
                             'Documents Processing...'
                     : 'Verification of documents'
             }</div>
-            {kyc && <>
+            {kyc && !kyc.rejected_at && <>
                 <p className="text-green-500 font-bold">{
                     kyc.approved_at ? 'Your documents have been verified.' : 'Hold up we are processing your documents...'
                 }</p>
             </>}
             {kyc?.rejected_at &&
                 <>
-                <p className='text-red-500 font-bold'>Your documents have been rejected.</p>
-                <p className=''>Please re-upload your documents to try again.</p>
-                    </>
+                    <p className='text-red-500 font-bold'>Your documents have been rejected.</p>
+                    <p className=''>Please re-upload your documents to try again.</p>
+                </>
             }
             {!kyc && <p>Please upload any of the following documents to verify your identity:</p>}
-            {!kyc?.approved_at && <>
+            {(!kyc || kyc.rejected_at) && <>
                 <ul className='list-disc ps-6'>
                     <li>Passport</li>
                     <li>Driving license</li>
