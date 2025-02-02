@@ -7,10 +7,9 @@ export default function useUsers() {
     const [users, setUsers] = useState<UserData[]>([]);
     const [loading, setLoading] = useState(false);
     const [searchString, setSearchString] = useState("");
-    const search = useCallback(throttle(async (e: any) => {
+    const search = useCallback(throttle(async (query) => {
         setLoading(true);
-        setSearchString(e.target.value);
-        const response = await fetch(route("search-users", { search: searchString }), {
+        const response = await fetch(route("search-users", { search: query }), {
             method: "get",
             headers: {
                 "Content-Type": "application/json",
@@ -25,12 +24,17 @@ export default function useUsers() {
         const data = await response.json();
         setUsers(data);
         setLoading(false);
-    }, 500, { leading: true, trailing: true }), [searchString]);
+    }, 500, { leading: false, trailing: true }), []);
+
+    useEffect(() => {
+        search(searchString);
+    }, [searchString]);
 
     return {
         users,
         loading,
         searchString,
+        setSearchString,
         search,
     }
 }

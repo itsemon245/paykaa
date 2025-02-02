@@ -7,7 +7,7 @@ import { ScrollPanel } from "primereact/scrollpanel";
 
 export const UserItemTemplate = ({ user }: { user: UserData }) => {
     return (
-        <Link href={route('chat.receiver-chat', { receiver: user.uuid })} className="flex items-center p-3 h-max cursor-pointer">
+        <Link href={route('chat.receiver-chat', { receiver: user.uuid })} className="flex items-center p-2 h-max cursor-pointer">
             <img
                 alt={user.name}
                 src={user.avatar}
@@ -21,7 +21,7 @@ export const UserItemTemplate = ({ user }: { user: UserData }) => {
     );
 };
 export default function Dashboard() {
-    const { users, loading, searchString, search } = useUsers();
+    const { users, loading, searchString, setSearchString, search } = useUsers();
     const menus = chunk(menuItems, 4);
     return (
         <>
@@ -36,33 +36,31 @@ export default function Dashboard() {
                             </div>
                         </Link>
 
-                        <div className="grow max-w-lg col-span-3">
+                        <div className="grow max-w-lg col-span-3 relative">
                             <div className="flex-1 relative flex items-center">
-                                <input placeholder="Search user" className="py-3 text-sm sm:text-lg sm:py-4 !rounded-2xl border-2 w-full border-primary-300 active:border-primary-500" onKeyUp={search} />
-                                <button type="submit" className="absolute my-auto right-4">
+                                <input placeholder="Search user" className="py-3 text-sm sm:text-lg sm:py-4 !rounded-2xl border-2 w-full border-primary-300 active:border-primary-500" onChange={e => setSearchString(e.target.value)} />
+                                <button type="submit" className="absolute my-auto right-4" onClick={e => search(searchString)}>
                                     <i className="pi pi-search text-primary-500" />
                                 </button>
                             </div>
                             {(users.length > 0 && searchString !== "") &&
-                                <div className="rounded-md border-gray-200 mt-2 shadow">
-                                    {loading ? (<div className="flex justify-center items-center p-3">
+                                <div className="absolute top-[100%] left-2 rounded-md bg-white border-gray-200 mt-2 shadow w-full !z-[2000]">
+                                    {loading ? (<div className="flex justify-center items-center p-3 min-w-[300px]">
                                         <i className="pi pi-spinner pi-spin" />
                                     </div>)
                                         :
-                                        <ScrollPanel className="w-full bg-white min-h-[100px]">
-                                            <ul>
-                                                {users.map((user) => (
-                                                    <li key={"user-" + user.id}>
-                                                        <UserItemTemplate user={user} />
-                                                    </li>
-                                                ))}
-                                                {users.length === 0 &&
-                                                    <li className="text-center">
-                                                        <p>No users found</p>
-                                                    </li>
-                                                }
-                                            </ul>
-                                        </ScrollPanel>
+                                        <ul className=" max-h-[300px] overflow-y-auto">
+                                            {users.map((user) => (
+                                                <li key={"user-" + user.id} >
+                                                    <UserItemTemplate user={user} />
+                                                </li>
+                                            ))}
+                                            {users.length === 0 &&
+                                                <li className="text-center">
+                                                    <p>No users found</p>
+                                                </li>
+                                            }
+                                        </ul>
                                     }
                                 </div>
                             }

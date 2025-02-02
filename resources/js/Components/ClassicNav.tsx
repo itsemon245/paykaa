@@ -15,7 +15,7 @@ interface NavLink {
 }
 
 export default function ClassicNav() {
-    const { users, loading, searchString, search } = useUsers();
+    const { users, loading, searchString, setSearchString, search } = useUsers();
     const navLinks: NavLink[] = [
         {
             label: "Home",
@@ -52,32 +52,30 @@ export default function ClassicNav() {
             <div className="flex gap-3 items-center justify-between lg:grid lg:grid-cols-2 lg:justify-center">
                 <div className="lg:w-[80%] relative">
                     <div className="flex">
-                        <InputText placeholder="Search" className="rounded-r-none" onChange={search} />
-                        <button className="p-button rounded-l-none" onClick={search}>
+                        <InputText placeholder="Search" className="rounded-r-none" onChange={e => setSearchString(e.target.value)} />
+                        <button className="p-button rounded-l-none" onClick={e => search(searchString)}>
                             {!max(500) ? "Search" : <i className="pi pi-search text-xl font-bold" />}
                         </button>
 
                     </div>
                     {(users.length > 0 && searchString !== "") &&
-                        <div className="rounded-md border-gray-200 mt-2 shadow absolute left-0 right-0 top-[100%] z-[1000]">
-                            {loading ? (<div className="flex justify-center items-center p-3">
+                        <div className="absolute top-[100%] left-2 rounded-md bg-white border-gray-200 mt-2 shadow w-full !z-[2000]">
+                            {loading ? (<div className="flex justify-center items-center p-3 min-w-[300px]">
                                 <i className="pi pi-spinner pi-spin" />
                             </div>)
                                 :
-                                <ScrollPanel className="w-full bg-white min-h-[100px]">
-                                    <ul>
-                                        {users.map((user) => (
-                                            <li key={"user-" + user.id}>
-                                                <UserItemTemplate user={user} />
-                                            </li>
-                                        ))}
-                                        {users.length === 0 &&
-                                            <li className="text-center">
-                                                <p>No users found</p>
-                                            </li>
-                                        }
-                                    </ul>
-                                </ScrollPanel>
+                                <ul className=" max-h-[300px] overflow-y-auto">
+                                    {users.map((user) => (
+                                        <li key={"user-" + user.id} >
+                                            <UserItemTemplate user={user} />
+                                        </li>
+                                    ))}
+                                    {users.length === 0 &&
+                                        <li className="text-center">
+                                            <p>No users found</p>
+                                        </li>
+                                    }
+                                </ul>
                             }
                         </div>
                     }

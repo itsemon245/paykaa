@@ -13,7 +13,7 @@ import { KycData, UserData } from '@/types/_generated';
 import toast from 'react-hot-toast';
 import { PageProps } from '@/types';
 import { Tooltip } from 'primereact/tooltip';
-import { copyToClipboard, image } from '@/utils';
+import { cn, copyToClipboard, image } from '@/utils';
 import countries from '@/data/countries';
 import { SelectItemOptionsType } from 'primereact/selectitem';
 
@@ -148,7 +148,7 @@ export default function UpdateProfileInformation() {
                 </label>
 
                 <div className="flex flex-col leading-5 gap-1 text-gray-800">
-                    <div className="font-bold">{user.email}</div>
+                    {/*<div className="font-bold">{user.email}</div>*/}
                     <div className="font-medium">UID: <br />
                         <div className="flex gap-2 items-center ">
                             <label className="text-sm font-bold mb-0 !text-gray-800">{user.id}</label>
@@ -156,7 +156,14 @@ export default function UpdateProfileInformation() {
                         </div>
                     </div>
                     <div className="font-medium">Balance: {balance}</div>
-                    <Tag className="w-max text-xs" icon="pi pi-user" severity={kyc?.approved_at ? 'success' : 'danger'} value={kyc?.approved_at ? 'Verified' : 'Not Verified'} />
+                    <Tag className="w-max text-xs" icon="pi pi-user" severity={
+                        kyc ?
+                            (kyc.approved_at ? 'success' : (kyc.rejected_at ? 'danger' : 'warning'))
+                            : 'danger'}
+                        value={
+                            kyc ?
+                                (kyc.approved_at ? 'Verified' : (kyc.rejected_at ? 'Rejected' : 'Pending'))
+                                : 'Not Verified'} />
                 </div>
             </div>
             <div className='flex flex-col gap-3 mt-5'>
@@ -165,7 +172,7 @@ export default function UpdateProfileInformation() {
                     <div className="absolute right-3 top-3">
                         <EmailVerifiedTag user={user} id="email-verified-tag" />
                     </div>
-                    <Input invalid={!user.email_verified_at} error={errors.email} color="gray-700" label='Email' value={data.email} onChange={e => setData('email', e.target.value)} disabled={kyc?.approved_at != null} />
+                    <Input className={cn(user.email_verified_at && 'border-green-500')} invalid={!user.email_verified_at} error={errors.email} color="gray-700" label='Email' value={data.email} onChange={e => setData('email', e.target.value)} disabled={kyc?.approved_at != null} />
                 </div>
                 <Input color="gray-700" label='Date of Birth' value={data.date_of_birth} onChange={e => setData('date_of_birth', e.target.value)} type="date" max={subYears(new Date(), 12).toISOString().split('T')[0]} error={errors.date_of_birth} disabled={kyc?.approved_at != null} />
                 <div>
