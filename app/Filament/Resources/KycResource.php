@@ -34,15 +34,28 @@ class KycResource extends Resource
                 Forms\Components\Fieldset::make('User')
                     ->relationship('user')
                     ->schema([
-                        Forms\Components\TextInput::make('email')
+                        Forms\Components\FileUpload::make('avatar')
+                            ->alignCenter()
+                            ->avatar()
                             ->disabled()
-                            ->required(),
+                            ->columnSpanFull(),
+                        Forms\Components\TextInput::make('email')
+                            ->disabled(),
+                        \App\Forms\Components\Copyable::make('id')
+                            ->label('UID'),
                         Forms\Components\TextInput::make('name')
                             ->disabled()
                             ->required(),
                         Forms\Components\TextInput::make('phone')
                             ->disabled(),
+                        Forms\Components\TextInput::make('gender')
+                            ->readOnly(),
+                        Forms\Components\DatePicker::make('date_of_birth')
+                            ->format('d M, Y')
+                            ->disabled(),
                         Forms\Components\TextInput::make('country')
+                            ->disabled(),
+                        Forms\Components\TextInput::make('address')
                             ->disabled(),
                     ]),
                 Forms\Components\TextInput::make('doc_type')

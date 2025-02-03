@@ -50,7 +50,7 @@ export default function VerifyEmail({ status }: { status?: string }) {
                                 </div>
 
                                 <h3 className='text-lg font-bold'>Verification link sent</h3>
-                                <p>Please check your spam folder if you don't see it in your email inbox.</p>
+                                <p>Please check your inbox or spam folder</p>
                                 <div className="mt-4 flex items-center gap-2 justify-end">
                                     {user && <Link href={route('logout')} method="post" as="button">
                                         <Button

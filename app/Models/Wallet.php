@@ -38,6 +38,17 @@ class Wallet extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function sender(): BelongsTo
+    {
+        $sender = $this->type === WalletType::CREDIT->value ? 'user_id' : 'owner_id';
+        return $this->belongsTo(User::class, $sender);
+    }
+    public function receiver(): BelongsTo
+    {
+        $receiver = $this->type === WalletType::DEBIT->value ? 'user_id' : 'owner_id';
+        return $this->belongsTo(User::class, $receiver);
+    }
+
     /**
      * @return BelongsTo
      */
