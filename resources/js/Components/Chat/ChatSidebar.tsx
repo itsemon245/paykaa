@@ -2,21 +2,23 @@ import { PaginatedCollection } from "@/types";
 import { ChatData } from "@/types/_generated";
 import { image, poll } from "@/utils";
 import { Link, usePage } from "@inertiajs/react";
+import { throttle } from "lodash";
 
 export default function ChatSidebar() {
     const [chats, setChats] = useState<PaginatedCollection<ChatData>>();
+    const [searchString, setSearchString] = useState("");
     const chat = usePage().props.chat as ChatData | undefined;
     const { playSound } = useNotification();
-    const fetchChats = async () => {
-        const response = await fetch(route('chat.user-chats'));
+    const fetchChats = useCallback(throttle(async (search?: string) => {
+        const response = await fetch(route('chat.user-chats', { search: search }));
         const data: PaginatedCollection<ChatData> = await response.json();
         setChats(data);
-    };
+    }, 500, { leading: false, trailing: true }), [])
     const checkForNewMessagesInChats = async () => {
         const res = await fetch(route('chat.check-new-messages', { chat: chat?.uuid }));
         const data = await res.json() as { success: boolean, chat?: ChatData }
         // if (data.success) {
-        fetchChats();
+            fetchChats();
         // playSound()
         // }
     };
@@ -62,10 +64,17 @@ export default function ChatSidebar() {
         )
     }
 
+    useEffect(() => {
+        fetchChats(searchString);
+    }, [searchString]);
 
     useEffect(() => {
         fetchChats();
-        return poll(checkForNewMessagesInChats, 2000);
+        return poll(()=>{
+            if(!searchString) {
+                checkForNewMessagesInChats();
+            }
+        }, 2000);
     }, []);
     return (
         <div className="sidebar !z-0" id="sidebar">
@@ -73,18 +82,21 @@ export default function ChatSidebar() {
                 <div className="col-md-12 h-full px-0">
                     <div className="tab-content h-full">
                         <div id="discussions" className="tab-pane flex flex-col fade in active show">
-                            <Link href={route('dashboard')} className="flex items-center justify-center gap-5">
-                                <img
-                                    className="avatar-xl"
-                                    src={image(useAuth().user?.avatar)}
-                                    alt="avatar"
-                                />
-                                <Logo className="!h-10 w-auto" />
-                            </Link>
+                            <div className="flex items-center justify-center gap-3">
+                                <Link href={route('dashboard')}>
+                                    <button className="!bg-gray-200 !rounded-full w-9 h-9 flex items-center justify-center" title="Back">
+                                        <i className="ti-angle-left fw-bold !text-gray-800"></i>
+                                    </button>
+                                </Link>
+                                <Link href={route('dashboard')} className="flex items-center justify-center gap-5">
+                                    <Logo className="!h-10 w-auto" />
+                                </Link>
+                            </div>
                             <div className="search relative">
                                 <form className="form-inline position-relative">
                                     <input
                                         type="search"
+                                        onChange={e => setSearchString(e.target.value)}
                                         className="form-control"
                                         id="conversations"
                                         placeholder="Search for conversations..."

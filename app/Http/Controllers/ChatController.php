@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use http\Client\Response;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 
 class ChatController extends Controller
 {
@@ -19,9 +20,19 @@ class ChatController extends Controller
     {
         return Inertia::render('Chat/Index');
     }
-    public function getUserChats()
+    public function getUserChats(Request $request)
     {
-        $chats = Chat::with('lastMessage', 'sender', 'receiver')->where('sender_id', auth()->user()->id)->orWhere('receiver_id', auth()->id())->paginate();
+        $chats = Chat::with('lastMessage', 'sender', 'receiver')
+            ->where(function (Builder $q) use ($request) {
+                $q->where('sender_id', auth()->id());
+                if ($request->search) {
+                    $q->where('receiver_id', $request->search)->orWhere('sender_id', $request->search);
+                }
+            })
+            ->orWhere(function (Builder $q) {
+                $q->where('receiver_id', auth()->id());
+                $q->has('lastMessage');
+            })->paginate();
         return response()->json(ChatData::collect($chats));
     }
 

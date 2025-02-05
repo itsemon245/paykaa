@@ -1,13 +1,27 @@
 import menuItems from "@/data/menuItems";
 import { UserData } from "@/types/_generated";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import { chunk } from "lodash";
 import { Card } from "primereact/card";
 import { ScrollPanel } from "primereact/scrollpanel";
+import toast from "react-hot-toast";
 
-export const UserItemTemplate = ({ user }: { user: UserData }) => {
+export const UserItemTemplate = ({ user, onSelect }: { user: UserData, onSelect?: () => void }) => {
+    const handleClick = () => {
+        router.visit(route('chat.receiver-chat', { receiver: user.uuid }), {
+            onSuccess: () => {
+                if (onSelect) {
+                    onSelect();
+                }
+            },
+            onError: (error) => {
+                console.log("Error while visiting the chat show route", error);
+                toast.error("Something went wrong!")
+            }
+        });
+    };
     return (
-        <Link href={route('chat.receiver-chat', { receiver: user.uuid })} className="flex items-center p-2 h-max cursor-pointer">
+        <button onClick={handleClick} className="flex items-center p-2 h-max cursor-pointer w-full">
             <img
                 alt={user.name}
                 src={user.avatar}
@@ -17,7 +31,7 @@ export const UserItemTemplate = ({ user }: { user: UserData }) => {
                 <label className="font-bold mb-0 leading-none">{user.name}</label>
                 <label className="text-sm text-gray-500 mb-0">{user.email}</label>
             </div>
-        </Link>
+        </button>
     );
 };
 export default function Dashboard() {
