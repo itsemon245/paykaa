@@ -65,6 +65,15 @@ class MoneyRequestController extends Controller
         });
     }
 
+    public function cancel(Request $request, MoneyRequest $moneyRequest)
+    {
+        return backWithError(function () use ($request, $moneyRequest) {
+            $moneyRequest->cancelled_at = now();
+            $moneyRequest->save();
+            return back();
+        });
+    }
+
     public function reject(Request $request, MoneyRequest $moneyRequest)
     {
         return backWithError(function () use ($request, $moneyRequest) {

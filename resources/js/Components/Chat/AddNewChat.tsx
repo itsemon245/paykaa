@@ -21,7 +21,7 @@ export default function AddNewChat() {
                 className: 'overflow-y-hidden',
             }
         }} header="Start a new chat" visible={visible} onHide={() => { if (!visible) return; setVisible(false); }}
-            className="max-w-3xl min-w-[300px] min-h-[400px] max-h-max">
+            className="max-w-3xl min-w-[300px] min-h-[400px] max-h-max z-[100]">
             <div className="relative">
                 <div className="form-group relative">
                     <i className="pi pi-search absolute left-4 top-3 text-xl text-primary flex items-center justify-start"></i>

@@ -64,6 +64,7 @@ Route::middleware('auth', 'redirect-if-admin', 'verified')->group(function () {
     Route::get('marketplace', [MarketplaceController::class, 'index'])->name('marketplace.index');
     Route::post('money-request', [MoneyRequestController::class, 'request'])->name('money.request');
     Route::post('money-request/{moneyRequest}/accept', [MoneyRequestController::class, 'accept'])->name('money.accept');
+    Route::post('money-request/{moneyRequest}/cancel', [MoneyRequestController::class, 'cancel'])->name('money.cancel');
     Route::post('money-request/{moneyRequest}/reject', [MoneyRequestController::class, 'reject'])->name('money.reject');
     Route::post('money-request/{moneyRequest}/request-to-release', [MoneyRequestController::class, 'requestToRelease'])->name('money.request-release');
     Route::post('money-request/{moneyRequest}/release', [MoneyRequestController::class, 'release'])->name('money.release');

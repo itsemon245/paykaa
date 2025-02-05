@@ -136,6 +136,7 @@ export type MoneyRequestData = {
     currency?: string;
     note?: string;
     accepted_at?: string;
+    cancelled_at?: string;
     release_requested_at?: string;
     released_at?: string;
     rejected_at?: string;

@@ -36,11 +36,6 @@ export default function Topbar() {
                             {activeStatus && <span>{activeStatus === true ? "Active now" : activeStatus}</span>}
                         </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                        <RequestMoney chat={chat} />
-                        <RequestMoneyChatList chat={chat} />
-
-                    </div>
                 </div>
             </div>
         </div>

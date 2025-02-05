@@ -18,7 +18,7 @@ export default function ChatSidebar() {
         const res = await fetch(route('chat.check-new-messages', { chat: chat?.uuid }));
         const data = await res.json() as { success: boolean, chat?: ChatData }
         // if (data.success) {
-            fetchChats();
+        fetchChats();
         // playSound()
         // }
     };
@@ -70,8 +70,8 @@ export default function ChatSidebar() {
 
     useEffect(() => {
         fetchChats();
-        return poll(()=>{
-            if(!searchString) {
+        return poll(() => {
+            if (!searchString) {
                 checkForNewMessagesInChats();
             }
         }, 2000);

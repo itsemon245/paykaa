@@ -11,6 +11,9 @@ import toast from "react-hot-toast";
 export default function MoneyRequestMessage({ message, chat }: { message: MessageData, chat: ChatData }) {
 
     const getSeverity = (moneyRequest: MoneyRequestData) => {
+        if (moneyRequest.cancelled_at) {
+            return "danger"
+        }
         if (moneyRequest.status === 'completed') {
             return "success"
         }
@@ -120,6 +123,28 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
 
     const MyButtons = ({ moneyRequest }: { moneyRequest: MoneyRequestData }) => {
         const [processing, setProcessing] = useState(false);
+        const cancel = async () => {
+            setProcessing(true)
+            const toastId = toast.loading("Cancelling money request...")
+            router.post(route('money.cancel' as RouteName, {
+                moneyRequest: message.moneyRequest?.uuid,
+            }), {}, {
+                onSuccess: () => {
+                    setProcessing(false)
+                    toast.success("Cancelled request!")
+                    toast.dismiss(toastId)
+                },
+                onError: () => {
+                    setProcessing(false)
+                    toast.error("Failed to cancel request")
+                    console.error("Error cancel request")
+                    toast.dismiss(toastId)
+                },
+                preserveState: false,
+                preserveScroll: true
+            })
+        }
+
         const requestRelease = async () => {
             setProcessing(true)
             const toastId = toast.loading("Requesting release...")
@@ -141,12 +166,14 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                 preserveScroll: true
             })
         }
-        return (<div>
+        return (<div className=" flex items-center gap-2">
             <Button onClick={e => {
                 if (moneyRequest.status === 'approved') {
                     requestRelease();
                 }
             }} rounded severity={getSeverity(moneyRequest as MoneyRequestData)} className="!rounded-lg w-full justify-center *:!font-bold *:!w-max" label={processing ? 'Proccessing...' : getStatus(moneyRequest as MoneyRequestData)} />
+            {!moneyRequest?.cancelled_at && !moneyRequest.accepted_at && <Button onClick={cancel} rounded severity="danger" className="!rounded-lg w-full justify-center *:!font-bold *:!w-max" label={processing ? 'Proccessing...' : 'Cancel'} />
+            }
         </div>
         )
     }

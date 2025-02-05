@@ -1,7 +1,10 @@
 import useBreakpoint from "@/Hooks/useBrakpoints";
+import { ChatData } from "@/types/_generated";
 import { cn } from "@/utils";
+import { usePage } from "@inertiajs/react";
 
 export default function ChatLayout({ children }: { children: any }) {
+    const chat = usePage().props.chat as ChatData;
     const main = useRef<HTMLDivElement>(null);
     const [loading, setLoading] = useState(true);
     const preloader = useRef<HTMLDivElement>(null);
@@ -36,6 +39,11 @@ export default function ChatLayout({ children }: { children: any }) {
                 <script src="/assets/chat/js/perfect-scrollbar.min.js" defer></script>
                 <script src="/assets/chat/js/script.js" defer></script>
             </Head>
+            {chat && <div className="fixed h-[76px] top-0 right-4 inline-flex items-center gap-2 !z-10">
+                <RequestMoney chat={chat} />
+                <RequestMoneyChatList chat={chat} />
+            </div>
+            }
             <div className={cn("overflow-hidden lg:flex h-full", loading && 'hidden')}>
                 {(route().current('chat.index') || !isMobile) && <ChatSidebar />}
                 <div ref={main} className={`z-[-1] main h-full ${route().current('chat.show') ? '!right-0' : ''}`}>

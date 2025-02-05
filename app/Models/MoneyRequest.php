@@ -12,6 +12,7 @@ class MoneyRequest extends Model
     use HasUuid;
     protected $casts = [
         'accepted_at' => 'datetime',
+        'cancelled_at' => 'datetime',
         'release_requested_at' => 'datetime',
         'released_at' => 'datetime',
         'rejected_at' => 'datetime',
@@ -19,6 +20,9 @@ class MoneyRequest extends Model
 
     public function getStatusAttribute(): string
     {
+        if ($this->cancelled_at) {
+            return Status::CANCELLED->value;
+        }
         if ($this->released_at) {
             return Status::RELEASED->value;
         }

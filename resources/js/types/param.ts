@@ -22,6 +22,8 @@ export type RouteParams = {
     "admin.login-as": {
         user: string;
     };
+    "filament.admin.resources.money-requests.index": {};
+    "filament.admin.resources.transactions.index": {};
     "filament.admin.resources.users.index": {};
     "filament.admin.resources.withdraw-methods.index": {};
     "filament.admin.resources.withdraws.index": {};
@@ -59,14 +61,23 @@ export type RouteParams = {
     "message.store": {
         chat: string;
     };
+    "messages.money-requests": {
+        chat: string;
+    };
     "money.request": {};
     "money.accept": {
+        moneyRequest: string;
+    };
+    "money.cancel": {
         moneyRequest: string;
     };
     "money.reject": {
         moneyRequest: string;
     };
     "money.release": {
+        moneyRequest: string;
+    };
+    "money.request-release": {
         moneyRequest: string;
     };
     "password.update": {};

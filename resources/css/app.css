@@ -64,6 +64,9 @@
     [data-pc-section="hideicon"], [data-pc-section="showicon"]{
         @apply m-0 right-0
     }
+    .p-dialog{
+        z-index: 1000;
+    }
     .p-button.p-button-icon-only{
         width: auto;
     }

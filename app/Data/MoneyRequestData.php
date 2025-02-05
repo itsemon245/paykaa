@@ -36,26 +36,12 @@ class MoneyRequestData extends Data
         #[Optional]
         public ?Carbon $accepted_at,
         #[Optional]
+        public ?Carbon $cancelled_at,
+        #[Optional]
         public ?Carbon $release_requested_at,
         #[Optional]
         public ?Carbon $released_at,
         #[Optional]
         public ?Carbon $rejected_at,
-    ) {
-        // if ($this->released_at) {
-        //     $this->status = Status::RELEASED;
-        //     return;
-        // }
-        // if ($this->release_requested_at) {
-        //     $this->status = Status::WAITING_FOR_RELEASE;
-        // } else {
-        //     if ($this->accepted_at) {
-        //         $this->status = Status::APPROVED;
-        //     } elseif ($this->rejected_at) {
-        //         $this->status = Status::REJECTED;
-        //     } else {
-        //         $this->status = Status::PENDING;
-        //     }
-        // }
-    }
+    ) {}
 }
