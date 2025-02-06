@@ -16,6 +16,7 @@ export default function AddNewChat() {
             icon="pi pi-plus"
         >
         </Button>
+
         <Dialog pt={{
             content: {
                 className: 'overflow-y-hidden',
