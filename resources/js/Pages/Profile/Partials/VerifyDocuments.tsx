@@ -1,15 +1,16 @@
 import { KycData, KycDocType } from "@/types/_generated";
 import { cn } from "@/utils";
-import { useForm, usePage } from "@inertiajs/react";
+import { router, useForm, usePage } from "@inertiajs/react";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { Dialog } from "primereact/dialog";
 import { RadioButton } from "primereact/radiobutton";
 import { FormEventHandler } from "react";
 import toast from "react-hot-toast";
+import { UpdateProfileFormProps } from "../Edit";
 
 export default function VerifyDocuments({ updateProfile }: {
-    updateProfile: FormEventHandler;
+    updateProfile: (url: string, options?: {}) => void;
 }) {
     const kyc = usePage().props.kyc as KycData | undefined;
     const { user } = useAuth();
@@ -27,7 +28,6 @@ export default function VerifyDocuments({ updateProfile }: {
             return;
         }
         const toastId = toast.loading('Submitting Documents...')
-        updateProfile(e)
         post(route('kyc.store'), {
             onSuccess: (data) => {
                 console.log(data);
@@ -35,16 +35,21 @@ export default function VerifyDocuments({ updateProfile }: {
                     toast.error(data.props.error)
                     return;
                 }
-                toast.success('Documents Submitted Successfully!')
-                setShowUploadDocDialog(false)
+                updateProfile(route('profile.update'), {
+                    onSuccess() {
+                        toast.success('Documents Submitted Successfully!', {
+                            id: toastId
+                        })
+                        setShowUploadDocDialog(false)
+                    }
+                })
             },
             onError: (err) => {
                 console.error('Error while submitting KYC', err)
-                toast.error('Failed to submit documents!')
+                toast.error('Failed to submit documents!', {
+                    id: toastId
+                })
             },
-            onFinish: () => {
-                toast.dismiss(toastId)
-            }
         })
     }
     const Footer = () => {

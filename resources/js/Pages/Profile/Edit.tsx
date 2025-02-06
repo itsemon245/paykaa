@@ -39,7 +39,7 @@ export default function Edit() {
             <Head title="Profile" />
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 justify-center px-3">
                 <UpdateProfileInformation data={data} setData={setData} submit={submit} errors={errors} processing={processing} recentlySuccessful={recentlySuccessful} />
-                <VerifyDocuments updateProfile={submit} />
+                <VerifyDocuments updateProfile={patch} />
                 <UpdatePasswordForm />
             </div>
         </>

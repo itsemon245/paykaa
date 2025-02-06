@@ -160,7 +160,7 @@ export default function UpdateProfileInformation({ data, setData, submit, errors
                 </div>
             </div>
             <div className='flex flex-col gap-3 mt-5'>
-                <Input color="gray-700" label='Name' value={data.name} onChange={e => setData('name', e.target.value)} error={errors.name} />
+                <Input color="gray-700" label='Name' value={data.name} onChange={e => setData('name', e.target.value)} error={errors.name} disabled={kyc?.approved_at != undefined} />
                 <div className="relative">
                     <div className="absolute right-3 top-3">
                         <EmailVerifiedTag user={user} id="email-verified-tag" />
@@ -172,6 +172,7 @@ export default function UpdateProfileInformation({ data, setData, submit, errors
                     <InputLabel value="Country" />
                     {/*@ts-ignore */}
                     <Dropdown filter={true} filterBy='name,code' value={data.country} onChange={(e) => setData('country', e.value)} options={countries} optionLabel="name" optionValue='name' placeholder="Select a Country"
+                        disabled={kyc?.approved_at != undefined}
                         valueTemplate={selectedCountryTemplate} itemTemplate={countryOptionTemplate} className="w-full"
                     />
                     {errors.country && <div className="text-red-500">{errors.country}</div>}
