@@ -13,9 +13,11 @@ use Filament\Support\Enums\ActionSize;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use stdClass;
 
 class KycResource extends Resource
 {
@@ -79,7 +81,22 @@ class KycResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $builder) {
+                $builder->with('user');
+            })
             ->columns([
+                Tables\Columns\TextColumn::make('#')->state(
+                    static function (HasTable $livewire, stdClass $rowLoop): string {
+                        return (string) (
+                            $rowLoop->iteration +
+                            ($livewire->getTableRecordsPerPage() * (
+                                $livewire->getTablePage() - 1
+                            ))
+                        );
+                    }
+                ),
+                Tables\Columns\ImageColumn::make('user.avatar')->label('Avatar'),
+                Tables\Columns\TextColumn::make('user.id')->label('UID')->copyable(),
                 Tables\Columns\TextColumn::make('user.name')
                     ->searchable()
                     ->sortable(),
@@ -95,11 +112,11 @@ class KycResource extends Resource
                 Tables\Columns\ImageColumn::make('back_image'),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
-                    ->colors([
-                        'approved' => 'success',
-                        'pending' => 'warning',
-                        'rejected' => 'danger',
-                    ])
+                    ->color(fn(Kyc $kyc) => match ($kyc->status) {
+                        'Approved' => 'success',
+                        'Pending' => 'warning',
+                        'Rejected' => 'danger',
+                    })
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -118,35 +135,31 @@ class KycResource extends Resource
                 //
             ])
             ->actions([
-                Action::make('Approve')
-                    ->requiresConfirmation()
-                    ->hidden(fn(Model $record) => $record->approved_at)
-                    ->tooltip('Approve')
-                    ->action(fn(Model $record) => $record->update(['approved_at' => now(), 'rejected_at' => null]))
-                    ->size(ActionSize::Large)
-                    ->color('success')
-                    ->icon('heroicon-o-check-circle'),
-                Action::make('Reject')
-                    ->requiresConfirmation()
-                    ->hidden(fn(Model $record) => $record->rejected_at)
-                    ->tooltip('Reject')
-                    ->action(fn(Model $record) => $record->update(['rejected_at' => now(), 'approved_at' => null]))
-                    ->size(ActionSize::Large)
-                    ->color('danger')
-                    ->icon('heroicon-o-x-circle'),
-
-                ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
-                ])
-                    ->tooltip('Actions')
-                    ->size(ActionSize::Large)
-
+                // ...self::getActions(),
+                Tables\Actions\ViewAction::make()->modalFooterActions(self::getActions()),
             ])
-            ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
-            ]);
+            ->bulkActions([]);
+    }
+    public static function getActions(): array
+    {
+        return [
+            Action::make('Approve')
+                ->requiresConfirmation()
+                ->hidden(fn(Model $record) => $record->approved_at || $record->rejected_at)
+                ->tooltip('Approve')
+                ->action(fn(Model $record) => $record->update(['approved_at' => now(), 'rejected_at' => null]))
+                ->size(ActionSize::Large)
+                ->color('success')
+                ->icon('heroicon-o-check-circle'),
+            Action::make('Reject')
+                ->requiresConfirmation()
+                ->hidden(fn(Model $record) => $record->rejected_at)
+                ->tooltip('Reject')
+                ->action(fn(Model $record) => $record->update(['rejected_at' => now(), 'approved_at' => null]))
+                ->size(ActionSize::Large)
+                ->color('danger')
+                ->icon('heroicon-o-x-circle'),
+        ];
     }
 
     public static function getPages(): array

@@ -3,7 +3,7 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Transition } from '@headlessui/react';
-import { Link, router, useForm, usePage } from '@inertiajs/react';
+import { Link, router, SetData, useForm, usePage } from '@inertiajs/react';
 import { ChangeEvent, FormEventHandler, HTMLProps } from 'react';
 import { Tag } from 'primereact/tag';
 import { Dropdown, DropdownProps } from 'primereact/dropdown';
@@ -16,6 +16,7 @@ import { Tooltip } from 'primereact/tooltip';
 import { cn, copyToClipboard, image } from '@/utils';
 import countries from '@/data/countries';
 import { SelectItemOptionsType } from 'primereact/selectitem';
+import { UpdateProfileFormProps } from '../Edit';
 
 const EmailVerifiedTag = ({ user, id, ...props }: HTMLProps<HTMLDivElement> & { user: UserData, id?: string }) => {
     const [loading, setLoading] = useState(false);
@@ -56,10 +57,18 @@ const EmailVerifiedTag = ({ user, id, ...props }: HTMLProps<HTMLDivElement> & { 
     </div>
 }
 
-export default function UpdateProfileInformation() {
+interface UpdateProfileInformationProps {
+    data: UpdateProfileFormProps;
+    setData: (...args: any[]) => void;
+    submit: FormEventHandler;
+    errors: Record<string, string>;
+    processing: boolean;
+    recentlySuccessful: boolean;
+}
+export default function UpdateProfileInformation({ data, setData, submit, errors, processing, recentlySuccessful }: UpdateProfileInformationProps) {
     const { user } = useAuth();
     const kyc = usePage().props.kyc as KycData | undefined;
-    const csrf_token = usePage().props.csrf_token as string;
+    const csrf_token = usePage().props.csrfToken
     const { balance } = useBalance();
 
     const selectedCountryTemplate = (option?: typeof countries[number], props?: DropdownProps) => {
@@ -84,23 +93,7 @@ export default function UpdateProfileInformation() {
         );
     };
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } =
-        useForm({
-            name: user.name,
-            avatar: user.avatar as string | File,
-            email: user.email,
-            gender: user.gender,
-            date_of_birth: user.date_of_birth,
-            country: user.country || 'Bangladesh',
-            address: user.address,
-            phone: user.phone,
-        });
     const [preview, setPreview] = useState<string | undefined>(undefined);
-    const submit: FormEventHandler = (e) => {
-        e.preventDefault();
-        patch(route('profile.update'));
-    };
-
     const uploadAvatar = async (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         setPreview(URL.createObjectURL(file as Blob));
@@ -139,7 +132,7 @@ export default function UpdateProfileInformation() {
         <form onSubmit={submit} className="flex flex-col gap-2 w-full justify-center mx-auto">
             <InputLabel className='!text-gray-800 text-md !font-bold' value="Personal Data:" />
             <div className="flex items-center gap-2">
-                <label htmlFor='avatar' className='relative'>
+                <label htmlFor='avatar' className='relative cursor-pointer'>
                     <input className='hidden' type="file" name="avatar" id="avatar" onChange={uploadAvatar} />
                     <img src={preview || image(user.avatar as string)} className="w-20 aspect-square object-cover rounded-full" alt="Avatar" />
                     <div className="absolute top-0 right-0 p-1 rounded-full flex items-center justify-center">
@@ -149,7 +142,7 @@ export default function UpdateProfileInformation() {
 
                 <div className="flex flex-col leading-5 gap-1 text-gray-800">
                     {/*<div className="font-bold">{user.email}</div>*/}
-                    <div className="font-medium">UID: <br />
+                    <div className="font-medium flex items-center gap-1">UID:
                         <div className="flex gap-2 items-center ">
                             <label className="text-sm font-bold mb-0 !text-gray-800">{user.id}</label>
                             <HugeiconsCopy01 className="w-4 h-4 !text-gray-800 cursor-pointer" onClick={() => copyToClipboard(user.id)} />

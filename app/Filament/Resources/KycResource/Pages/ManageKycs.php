@@ -16,10 +16,11 @@ class ManageKycs extends ManageRecords
     {
         return [
             'pending' => Tab::make('Pending')
-                ->modifyQueryUsing(fn (Builder $query) => $query->whereNull('approved_at')),
+                ->modifyQueryUsing(fn(Builder $query) => $query->whereNull('approved_at')->whereNull('rejected_at')->orderBy('id', 'asc')),
             'approved' => Tab::make('Approved')
-                ->modifyQueryUsing(fn (Builder $query) => $query->whereNotNull('approved_at')),
-            'all' => Tab::make('All')
+                ->modifyQueryUsing(fn(Builder $query) => $query->whereNotNull('approved_at')->whereNotNull('rejected_at')),
+            'rejected' => Tab::make('Rejected')
+                ->modifyQueryUsing(fn(Builder $query) => $query->whereNull('approved_at')->whereNotNull('rejected_at')),
         ];
     }
     protected function getHeaderActions(): array

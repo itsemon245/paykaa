@@ -5,9 +5,12 @@ import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { Dialog } from "primereact/dialog";
 import { RadioButton } from "primereact/radiobutton";
+import { FormEventHandler } from "react";
 import toast from "react-hot-toast";
 
-export default function VerifyDocuments() {
+export default function VerifyDocuments({ updateProfile }: {
+    updateProfile: FormEventHandler;
+}) {
     const kyc = usePage().props.kyc as KycData | undefined;
     const { user } = useAuth();
     const [showUploadDocDialog, setShowUploadDocDialog] = useState(false);
@@ -24,6 +27,7 @@ export default function VerifyDocuments() {
             return;
         }
         const toastId = toast.loading('Submitting Documents...')
+        updateProfile(e)
         post(route('kyc.store'), {
             onSuccess: (data) => {
                 console.log(data);

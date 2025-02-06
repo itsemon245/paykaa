@@ -12,9 +12,6 @@ class KycController extends Model
      */
     public function store(Request $request)
     {
-        if (auth()->user()->kyc && !auth()->user()->kyc->failed_at) {
-            return back()->with('error', 'You have already submitted your documents');
-        }
         $data = KycData::from($request)->except(
             'created_at_human',
             'updated_at_human',

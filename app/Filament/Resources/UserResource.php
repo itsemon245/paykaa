@@ -13,9 +13,11 @@ use Filament\Resources\Resource;
 use Filament\Support\Enums\ActionSize;
 use Filament\Tables;
 use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use stdClass;
 
 class UserResource extends Resource
 {
@@ -28,43 +30,50 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
                 Forms\Components\FileUpload::make('avatar')
-                    ->downloadable()
-                    ->openable()
-                    ->image(),
-                Forms\Components\TextInput::make('phone')
-                    ->tel()
-                    ->maxLength(255)
-                    ->default(null),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\DatePicker::make('date_of_birth'),
-                Forms\Components\Select::make('gender')
-                    ->options([
-                        'Male' => 'Male',
-                        'Female' => 'Female',
-                        'Other' => 'Other',
-                    ]),
-                Forms\Components\TextInput::make('country')
-                    ->maxLength(255)
-                    ->default(null),
-                Forms\Components\Textarea::make('address')
+                    ->alignCenter()
+                    ->avatar()
+                    ->disabled()
                     ->columnSpanFull(),
+                Forms\Components\TextInput::make('email')
+                    ->disabled(),
+                \App\Forms\Components\Copyable::make('id')
+                    ->label('UID'),
+                Forms\Components\TextInput::make('name')
+                    ->disabled()
+                    ->required(),
+                Forms\Components\TextInput::make('phone')
+                    ->disabled(),
+                Forms\Components\TextInput::make('gender')
+                    ->readOnly(),
+                Forms\Components\DatePicker::make('date_of_birth')
+                    ->format('d M, Y')
+                    ->disabled(),
+                Forms\Components\TextInput::make('country')
+                    ->disabled(),
+                Forms\Components\TextInput::make('address')
+                    ->disabled(),
                 Forms\Components\TextInput::make('referral_id')
-                    ->maxLength(255)
+                    ->readOnly()
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(fn(Builder $query) => $query->with('kyc')->whereNot('id', auth()->user()->id))
-            ->columns([
+            ->modifyQueryUsing(
+                fn(Builder $query) => $query->with('kyc')->whereNot('id', auth()->user()->id)->orderBy('id', 'asc')
+            )->columns([
+                Tables\Columns\TextColumn::make('#')->state(
+                    static function (HasTable $livewire, stdClass $rowLoop): string {
+                        return (string) (
+                            $rowLoop->iteration +
+                            ($livewire->getTableRecordsPerPage() * (
+                                $livewire->getTablePage() - 1
+                            ))
+                        );
+                    }
+                ),
                 Tables\Columns\ImageColumn::make('avatar'),
                 Tables\Columns\TextColumn::make('id')
                     ->label('UID')
@@ -118,7 +127,14 @@ class UserResource extends Resource
                     ->color('warning')
                     ->url(fn(User $record) => url('/admin/login-as/' . $record->uuid))
                     ->size(ActionSize::Large),
-                Tables\Actions\ViewAction::make(),
+                Tables\Actions\ViewAction::make()->modalFooterActions([
+                    Tables\Actions\Action::make('Action')
+                        ->icon('heroicon-o-user')
+                        ->color('warning')
+                        ->url(fn(User $record) => url('/admin/login-as/' . $record->uuid))
+                        ->size(ActionSize::Large),
+                    Tables\Actions\DeleteAction::make(),
+                ]),
                 // ActionGroup::make([
                 //     // Tables\Actions\EditAction::make(),
                 //     Tables\Actions\DeleteAction::make(),
@@ -128,7 +144,7 @@ class UserResource extends Resource
 
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                // Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 

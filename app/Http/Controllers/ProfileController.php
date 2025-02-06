@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Data\UserData;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -25,7 +26,7 @@ class ProfileController extends Controller
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
-            'kyc'=> $request->user()->kyc,
+            'kyc' => $request->user()->kyc,
         ]);
     }
 
@@ -33,13 +34,13 @@ class ProfileController extends Controller
     {
         $request->validate([
             'avatar' => ['nullable', 'mimes:jpeg,png,jpg,svg', 'max:2048'],
-        ],[
+        ], [
             'avatar.max' => 'The avatar must be less than or equal to 2MB',
         ]);
         $file = $request->file('avatar');
         $name = $request->user()->uuid . '.' . $file->getClientOriginalExtension();
-        if(Storage::disk('public')->exists('uploads/avatars/'.$name)) {
-            Storage::disk('public')->delete('uploads/avatars/'.$name);
+        if (Storage::disk('public')->exists('uploads/avatars/' . $name)) {
+            Storage::disk('public')->delete('uploads/avatars/' . $name);
         }
         $path = $file->storeAs('uploads/avatars', $name, 'public');
         $request->user()->update(['avatar' => $path]);
