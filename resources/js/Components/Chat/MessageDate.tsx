@@ -26,10 +26,10 @@ export default function MessageDate({ date, prev }: { date?: string, prev?: stri
     }
 
     return (
-        <div className="date">
-            <hr />
-            <span className="text-nowrap">{visualDate}</span>
-            <hr />
+        <div className="flex items-center gap-2 justify-center font-normal text-sm my-2">
+            <div className="w-[20%] max-w-[100px] h-px bg-gray-400"></div>
+            <div className="text-nowrap" >{visualDate}</div>
+            <div className="w-[20%] max-w-[100px] h-px bg-gray-400"></div>
         </div>
     )
 }

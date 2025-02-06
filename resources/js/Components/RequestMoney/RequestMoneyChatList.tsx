@@ -28,8 +28,8 @@ export default function RequestMoneyChatList({ chat }: { chat: ChatData }) {
                 }
             }} visible={visible} position="right" header={
                 <div className="font-bold text-lg">Request Money List</div>
-            } className="w-[380px] sm:w-[500px] bg-base-gradient" onHide={() => setVisible(false)}>
-                <div>
+            } className="w-[380px] sm:w-[420px] bg-base-gradient" onHide={() => setVisible(false)}>
+                <div className="my-4">
                     {messages && <Messages inSidebar={true} messages={messages} setMessages={setMessages} />}
                 </div>
             </Sidebar>

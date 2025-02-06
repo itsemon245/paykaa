@@ -67,6 +67,9 @@
     .p-dialog{
         z-index: 1000;
     }
+    .p-inputtextarea{
+        @apply h-[56px]
+    }
     .p-button.p-button-icon-only{
         width: auto;
     }

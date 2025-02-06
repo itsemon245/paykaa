@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
  */
 function avatar(string $seed = null): string
 {
-    return auth()->user()?->avatar ?? asset("assets/images/user.png");
+    return asset("/assets/images/user.png");
 }
 
 /**

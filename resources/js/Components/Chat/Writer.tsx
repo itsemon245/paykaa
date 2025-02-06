@@ -56,11 +56,14 @@ export default function Writer({
     };
     const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        if (!data.body) {
+            toast.error('Please enter a message')
+            return;
+        }
         sendThrottledMessage();
         toggleTyping(false);
     };
     useEffect(() => {
-        console.log("body: ", data.body)
         if (!data.body) {
             toggleTyping(false);
         } else {
