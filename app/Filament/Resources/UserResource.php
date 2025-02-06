@@ -95,16 +95,20 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('country')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('kyc.approved_at')
+                Tables\Columns\TextColumn::make('kyc.status')
                     ->label('Verifed')
-                    ->formatStateUsing(fn($state) => $state ? 'Yes' : 'No')
-                    ->icon(fn($state) => $state === 'Yes' ? 'heroicon-o-check-circle' : 'heroicon-o-x-circle')
-                    ->badge()
-                    ->placeholder('Not submitted Yet')
-                    ->color(fn($state) => match ($state) {
-                        'Verfied' => 'success',
-                        'Not Verfied' => 'danger',
+                    ->icon(fn($state) => match ($state) {
+                        'Approved' => 'heroicon-o-check-circle',
+                        'Rejected' => 'heroicon-o-x-circle',
+                        default => 'heroicon-o-clock',
                     })
+                    ->badge()
+                    ->color(fn($state) => match ($state) {
+                        'Approved' => 'success',
+                        'Rejected' => 'danger',
+                        default => 'warning',
+                    })
+                    ->placeholder('Not submitted Yet')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('referral_id')
                     ->toggleable(isToggledHiddenByDefault: true)
