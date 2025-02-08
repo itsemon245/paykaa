@@ -26,7 +26,7 @@ export default function Index() {
     }
     const Footer = ({ ad }: { ad: AddData }) => {
         return (
-            <div className="flex items-center pb-3 -mt-6">
+            <div className="flex items-center pb-3 -!mt-6">
                 <div className="flex-1">
                     <h2 className="font-bold">Method: {ad.addMethod?.name}</h2>
                 </div>
@@ -115,7 +115,7 @@ export default function Index() {
                             </Card>
                         ))}
                         {ads.data.length === 0 &&
-                            <div className="col-span-full flex justify-center items-center mt-5 p-3 text-gray-700 font-bold">
+                            <div className="col-span-full flex justify-center items-center !mt-5 p-3 text-gray-700 font-bold">
                                 No ads published yet
                             </div>
                         }

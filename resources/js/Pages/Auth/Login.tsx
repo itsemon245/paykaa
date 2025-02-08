@@ -81,7 +81,7 @@ export default function Login() {
                                 value={data.password}
                                 placeholder="Password" required />
                             {errors.password && <InputError message={errors.password} className="mt-2" />}
-                            <div className="flex items-center justify-between -mt-5 mb-2">
+                            <div className="flex items-center justify-between -!mt-5 mb-2">
                                 <div className="text-gray-600 flex items-center gap-1">
                                     <Checkbox id="remember" name="remember" checked={data.remember} onChange={(e) => setData('remember', e.target.checked)} />
                                     <label htmlFor="remember" className="text-gray-600 mb-0">Remember Me</label>

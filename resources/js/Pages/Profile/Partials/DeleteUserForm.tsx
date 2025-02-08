@@ -81,7 +81,7 @@ export default function DeleteUserForm({
                         your account.
                     </p>
 
-                    <div className="mt-6">
+                    <div className="!mt-6">
                         <InputLabel
                             htmlFor="password"
                             value="Password"
@@ -108,7 +108,7 @@ export default function DeleteUserForm({
                         />
                     </div>
 
-                    <div className="mt-6 flex justify-end">
+                    <div className="!mt-6 flex justify-end">
                         <SecondaryButton onClick={closeModal}>
                             Cancel
                         </SecondaryButton>

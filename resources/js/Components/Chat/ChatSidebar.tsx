@@ -77,92 +77,88 @@ export default function ChatSidebar() {
         }, 2000);
     }, []);
     return (
-        <div className="sidebar !z-0" id="sidebar">
-            <div className="container h-full">
-                <div className="col-md-12 h-full px-0">
-                    <div className="tab-content h-full">
-                        <div id="discussions" className="tab-pane flex flex-col fade in active show">
-                            <div className="flex items-center justify-center gap-3">
-                                <Link href={route('dashboard')}>
-                                    <button className="!bg-gray-200 !rounded-full w-9 h-9 flex items-center justify-center" title="Back">
-                                        <i className="ti-angle-left fw-bold !text-gray-800"></i>
-                                    </button>
-                                </Link>
-                                <Link href={route('dashboard')} className="flex items-center justify-center gap-5">
-                                    <Logo className="!h-10 w-auto" />
-                                </Link>
+        <div className="sidebar" id="sidebar">
+            <div className="h-full px-3 md:px-5">
+                <div id="discussions" className="tab-pane flex flex-col fade in active show">
+                    <div className="flex items-center justify-center gap-3">
+                        <Link href={route('dashboard')}>
+                            <button className="!bg-gray-200 !rounded-full w-9 h-9 flex items-center justify-center" title="Back">
+                                <i className="ti-angle-left fw-bold !text-gray-800"></i>
+                            </button>
+                        </Link>
+                        <Link href={route('dashboard')} className="flex items-center justify-center gap-5">
+                            <Logo className="!h-10 w-auto" />
+                        </Link>
+                    </div>
+                    <div className="search relative">
+                        <form className="form-inline position-relative">
+                            <input
+                                type="search"
+                                onChange={e => setSearchString(e.target.value)}
+                                className="form-control"
+                                id="conversations"
+                                placeholder="Search for conversations..."
+                            />
+                            <button type="button" className="btn btn-link loop">
+                                <i className="ti-search"></i>
+                            </button>
+                        </form>
+                        <AddNewChat />
+                    </div>
+                    {/*
+                    <div className="flex items-center gap-3 sort pb-0">
+                        <button
+                            className="btn filterDiscussionsBtn active show"
+                            data-toggle="list"
+                            data-filter="all"
+                        >
+                            All
+                        </button>
+                        <button
+                            className="btn filterDiscussionsBtn"
+                            data-toggle="list"
+                            data-filter="read"
+                        >
+                            Favourit
+                        </button>
+                        <button
+                            className="btn filterDiscussionsBtn"
+                            data-toggle="list"
+                            data-filter="unread"
+                        >
+                            Unread
+                        </button>
+                    </div>*/}
+                    <div className="discussions mt-3">
+                        <h1>Chats</h1>
+                        {/*                                <div className="btn-group add-group mt-3" role="group">
+                            <button
+                                id="btnGroupDrop2"
+                                type="button"
+                                className="btn btn-secondary dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                            >
+                                Add +
+                            </button>
+                            <div
+                                className="dropdown-menu"
+                                aria-labelledby="btnGroupDrop1"
+                            >
+                                <a className="dropdown-item" href="#">New user</a>
+                                <a className="dropdown-item" href="#">New Group +</a>
+                                <a className="dropdown-item" href="#">Private Chat +</a>
                             </div>
-                            <div className="search relative">
-                                <form className="form-inline position-relative">
-                                    <input
-                                        type="search"
-                                        onChange={e => setSearchString(e.target.value)}
-                                        className="form-control"
-                                        id="conversations"
-                                        placeholder="Search for conversations..."
-                                    />
-                                    <button type="button" className="btn btn-link loop">
-                                        <i className="ti-search"></i>
-                                    </button>
-                                </form>
-                                <AddNewChat />
-                            </div>
-                            {/*
-                            <div className="flex items-center gap-3 sort pb-0">
-                                <button
-                                    className="btn filterDiscussionsBtn active show"
-                                    data-toggle="list"
-                                    data-filter="all"
-                                >
-                                    All
-                                </button>
-                                <button
-                                    className="btn filterDiscussionsBtn"
-                                    data-toggle="list"
-                                    data-filter="read"
-                                >
-                                    Favourit
-                                </button>
-                                <button
-                                    className="btn filterDiscussionsBtn"
-                                    data-toggle="list"
-                                    data-filter="unread"
-                                >
-                                    Unread
-                                </button>
-                            </div>*/}
-                            <div className="discussions mt-3">
-                                <h1>Chats</h1>
-                                {/*                                <div className="btn-group add-group mt-3" role="group">
-                                    <button
-                                        id="btnGroupDrop2"
-                                        type="button"
-                                        className="btn btn-secondary dropdown-toggle"
-                                        data-toggle="dropdown"
-                                        aria-haspopup="true"
-                                        aria-expanded="false"
-                                    >
-                                        Add +
-                                    </button>
-                                    <div
-                                        className="dropdown-menu"
-                                        aria-labelledby="btnGroupDrop1"
-                                    >
-                                        <a className="dropdown-item" href="#">New user</a>
-                                        <a className="dropdown-item" href="#">New Group +</a>
-                                        <a className="dropdown-item" href="#">Private Chat +</a>
-                                    </div>
-                                </div>
+                        </div>
 */}
-                            </div>
-                            <div className="discussions h-[700px] hide-scrollbar overflow-y-scroll my-2" id="scroller">
-                                <div className="list-group px-0" id="chats" role="tablist">
-                                    {chats?.data.map(item => itemTemplate(item, "chat-" + item.uuid))}
-                                    {chats?.data.length === 0 && <div className="flex items-center justify-center gap-3 mt-10">
-                                        <div>No chats yet</div>
-                                    </div>}
-                                </div>
-                            </div>
+                    </div>
+                    <div className="discussions h-[700px] hide-scrollbar overflow-y-scroll my-2" id="scroller">
+                        <div className="list-group px-0" id="chats" role="tablist">
+                            {chats?.data.map(item => itemTemplate(item, "chat-" + item.uuid))}
+                            {chats?.data.length === 0 && <div className="flex items-center justify-center gap-3 mt-10">
+                                <div>No chats yet</div>
+                            </div>}
                         </div>
                     </div>
                 </div>

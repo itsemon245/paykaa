@@ -16,8 +16,8 @@ export default function DashboardLayout({ children, animate }: { children?: JSX.
             <SquareBg animate={animate} />
             <div className="flex gap-4 relative justify-center z-10 h-screen px-2 w-screen overflow-x-hidden">
                 {isSidebarOpen && <Sidebar className={cn("sticky", max('sm') ? '!w-[300px] flex-1 grow' : '')} isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />}
-                <div className={cn("grow mt-5 max-w-5xl sm:px-3 overflow-y-scroll hide-scrollbar transition duration-500", max('sm') && isSidebarOpen ? 'translate-x-[1000px]' : '')}>
-                    <Navbar toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} className="mb-6" />
+                <div className={cn("grow !mt-5 max-w-5xl sm:px-3 overflow-y-scroll hide-scrollbar transition duration-500", max('sm') && isSidebarOpen ? 'translate-x-[1000px]' : '')}>
+                    <Navbar toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} className="!mb-6" />
                     {children}
                 </div>
             </div>

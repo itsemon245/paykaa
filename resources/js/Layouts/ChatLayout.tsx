@@ -25,19 +25,6 @@ export default function ChatLayout({ children }: { children: any }) {
     return (
         <BaseLayout>
             <Head title="Chats">
-                <link rel="stylesheet" href="/assets/chat/css/bootstrap.min.css" />
-                <link rel="stylesheet" href="/assets/chat/css/perfect-scrollbar.min.css" />
-                <link rel="stylesheet" href="/assets/chat/css/themify-icons.css" />
-                <link rel="stylesheet" href="/assets/chat/css/emoji.css" />
-                <link rel="stylesheet" href="/assets/chat/css/style.css" />
-                <link rel="stylesheet" href="/assets/chat/css/responsive.css" />
-
-                <script src="/assets/chat/js/jquery3.3.1.js" defer></script>
-                <script src="/assets/chat/js/vendor/jquery-slim.min.js" defer></script>
-                <script src="/assets/chat/js/vendor/popper.min.js" defer></script>
-                <script src="/assets/chat/js/bootstrap.min.js" defer></script>
-                <script src="/assets/chat/js/perfect-scrollbar.min.js" defer></script>
-                <script src="/assets/chat/js/script.js" defer></script>
             </Head>
             {chat && <div className="fixed h-[76px] top-0 right-4 inline-flex items-center gap-2 !z-10">
                 <RequestMoney chat={chat} />
