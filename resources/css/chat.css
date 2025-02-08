@@ -1,0 +1,16 @@
+@import '../../public/assets/chat/css/bootstrap.min.css';
+@import '../../public/assets/chat/css/perfect-scrollbar.min.css';
+@import '../../public/assets/chat/css/themify-icons.css';
+@import '../../public/assets/chat/css/emoji.css';
+@import '../../public/assets/chat/css/style.css';
+@import '../../public/assets/chat/css/responsive.css';
+
+a:hover{
+    color: inherit!important;
+}
+.text-primary{
+    color: var(--primary-500)!important;
+}
+.bg-primary{
+    background-color: var(--primary-500)!important;
+}

@@ -31,7 +31,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
             <main className='main-div'>
                 <div className="auth-container" ref={container}>
                     <div className="p-5 flex flex-col items-center justify-center w-full h-full">
-                        <h2 className="text-3xl font-bold text-center text-gray-600 mb-6">Reset Password</h2>
+                        <h2 className="text-3xl font-bold text-center text-gray-600 !mb-6">Reset Password</h2>
                         <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
                             Forgot your password? No problem. Just let us know your email
                             address and we will email you a password reset link that will
@@ -58,7 +58,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
 
                             <InputError message={errors.email} className="mt-2" />
 
-                            <div className="mt-5 flex items-center justify-end gap-5">
+                            <div className="!mt-5 flex items-center justify-end gap-5">
                                 <Link href={route('login')} className="ms-4">
                                     <Button label='Cancel' outlined text className='border' />
                                 </Link>

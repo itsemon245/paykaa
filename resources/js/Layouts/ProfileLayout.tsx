@@ -34,8 +34,8 @@ export default function ProfileLayout({ children, animate }: { children?: JSX.El
             <SquareBg />
             <ClassicNav />
             <div className="flex gap-4 relative justify-center z-10 h-screen px-2 w-screen overflow-x-hidden">
-                <div className={cn("grow mt-5 sm:px-3 overflow-y-scroll hide-scrollbar transition duration-500", max('sm') && isSidebarOpen ? 'translate-x-[1000px]' : '')}>
-                    <div className="grid lg:grid-cols-3 gap-5 justify-center mb-5 pb-3 border-b">
+                <div className={cn("grow !mt-5 sm:px-3 overflow-y-scroll hide-scrollbar transition duration-500", max('sm') && isSidebarOpen ? 'translate-x-[1000px]' : '')}>
+                    <div className="grid lg:grid-cols-3 gap-5 justify-center !mb-5 pb-3 border-b">
                         <div className="flex lg:col-span-2 2xl:col-span-1 items-center justify-center gap-1 sm:gap-2 px-1 sm:px-3">
                             {menuItems.map((item, i) => (
                                 <Link href={route(item.route)}>

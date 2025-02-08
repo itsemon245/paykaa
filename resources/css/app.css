@@ -1,4 +1,19 @@
 @import "../../public/assets/auth.css";
+@import "./chat.css";
+
+:root {
+    --primary-50: #e9f0f7!important;
+    --primary-100: #d6e4ef!important;
+    --primary-200: #aec9e0!important;
+    --primary-300: #85add0!important;
+    --primary-400: #5d92c1!important;
+    --primary-500: #3f75a4!important;
+    --primary-600: #335f85!important;
+    --primary-700: #264763!important;
+    --primary-800: #192f42!important;
+    --primary-900: #0d1821!important;
+    --primary-950: #060b0f!important;
+}
 @layer tailwind-base, primereact, tailwind-utilities;
 @layer tailwind-base {
   @tailwind base;
@@ -47,19 +62,6 @@
 }
 
 @layer primevue-overrides {
-        :root {
-        --primary-50: #e9f0f7!important;
-        --primary-100: #d6e4ef!important;
-        --primary-200: #aec9e0!important;
-        --primary-300: #85add0!important;
-        --primary-400: #5d92c1!important;
-        --primary-500: #3f75a4!important;
-        --primary-600: #335f85!important;
-        --primary-700: #264763!important;
-        --primary-800: #192f42!important;
-        --primary-900: #0d1821!important;
-        --primary-950: #060b0f!important;
-    }
 
     [data-pc-section="hideicon"], [data-pc-section="showicon"]{
         @apply m-0 right-0
@@ -111,4 +113,3 @@
         @apply w-[95%] sm:w-[70vw] md:w-[50vw] max-h-[90vh]
     }
 }
-

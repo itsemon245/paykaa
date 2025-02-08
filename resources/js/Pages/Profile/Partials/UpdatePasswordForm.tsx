@@ -50,7 +50,7 @@ export default function UpdatePasswordForm({
 
     return (
         <section className={className}>
-            <form onSubmit={updatePassword} className="mt-6 space-y-6">
+            <form onSubmit={updatePassword} className="!mt-6 space-y-6">
                 <div>
                     <InputLabel
                         className='text-gray-700'

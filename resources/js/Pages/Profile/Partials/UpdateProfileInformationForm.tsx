@@ -159,7 +159,7 @@ export default function UpdateProfileInformation({ data, setData, submit, errors
                                 : 'Not Verified'} />
                 </div>
             </div>
-            <div className='flex flex-col gap-3 mt-5'>
+            <div className='flex flex-col gap-3 !mt-5'>
                 <Input color="gray-700" label='Name' value={data.name} onChange={e => setData('name', e.target.value)} error={errors.name} disabled={kyc?.approved_at != undefined} />
                 <div className="relative">
                     <div className="absolute right-3 top-3">
