@@ -4,7 +4,6 @@ export default function Index() {
             <div className="text-3xl font-bold text-gray-500">
                 Choose a conversation to start chatting
             </div>
-
         </div>
     )
 }

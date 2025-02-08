@@ -43,7 +43,7 @@ export default function Dashboard() {
             <div className="flex flex-col gap-3 sm:gap-6">
                 <Card>
                     <div className="grid grid-cols-4 gap-4 sm:gap-6 md:gap-8 items-center justify-center ">
-                        <Link href={route('chat.index')} className="flex items-center justify-center h-max cursor-pointer">
+                        <Link prefetch href={route('chat.index')} className="flex items-center justify-center h-max cursor-pointer">
                             <div className="p-2">
                                 <img src="/assets/dashboard/chat.png" className="object-contain h-8 w-8 sm:h-14 sm:w-14" />
                                 <span className="font-medium text-xs sm:text-lg">Chats</span>

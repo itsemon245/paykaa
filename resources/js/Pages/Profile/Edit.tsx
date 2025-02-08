@@ -19,7 +19,7 @@ export interface UpdateProfileFormProps {
 export default function Edit() {
     const { user } = useAuth();
     const { data, setData, patch, errors, processing, recentlySuccessful } =
-        useForm<UpdateProfileFormProps>({
+        useForm({
             name: user.name,
             avatar: user.avatar as string | File,
             email: user.email,

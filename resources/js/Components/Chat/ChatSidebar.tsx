@@ -9,10 +9,13 @@ export default function ChatSidebar() {
     const [searchString, setSearchString] = useState("");
     const chat = usePage().props.chat as ChatData | undefined;
     const { playSound } = useNotification();
+    const [loading, setLoading] = useState(false);
     const fetchChats = useCallback(throttle(async (search?: string) => {
+        // setLoading(true);
         const response = await fetch(route('chat.user-chats', { search: search }));
         const data: PaginatedCollection<ChatData> = await response.json();
         setChats(data);
+        setLoading(false);
     }, 500, { leading: false, trailing: true }), [])
     const checkForNewMessagesInChats = async () => {
         const res = await fetch(route('chat.check-new-messages', { chat: chat?.uuid }));
@@ -155,10 +158,16 @@ export default function ChatSidebar() {
                     </div>
                     <div className="discussions h-[700px] hide-scrollbar overflow-y-scroll my-2" id="scroller">
                         <div className="list-group px-0" id="chats" role="tablist">
-                            {chats?.data.map(item => itemTemplate(item, "chat-" + item.uuid))}
-                            {chats?.data.length === 0 && <div className="flex items-center justify-center gap-3 mt-10">
-                                <div>No chats yet</div>
-                            </div>}
+                            {loading ? <>
+                                <div className="flex flex-col w-full justify-center items-center">
+                                    <i className="pi pi-spinner pi-spin text-5xl text-primary" />
+                                </div>
+                            </> : <>
+                                {chats?.data.map(item => itemTemplate(item, "chat-" + item.uuid))}
+                                {chats?.data.length === 0 && <div className="flex items-center justify-center gap-3 mt-10">
+                                    <div>No chats yet</div>
+                                </div>}
+                            </>}
                         </div>
                     </div>
                 </div>

@@ -128,6 +128,7 @@ export type MoneyRequest = {
     created_at: string;
     updated_at?: string;
     release_requested_at?: string;
+    cancelled_at?: string;
     status: any;
     created_at_human: any;
     updated_at_human: any;
