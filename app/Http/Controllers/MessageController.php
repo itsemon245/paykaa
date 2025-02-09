@@ -39,6 +39,7 @@ class MessageController extends Controller
         $message = Message::create([
             ...$messageData->only('chat_id', 'sender_id', 'receiver_id', 'type', 'body')->toArray(),
         ]);
+        event(new \App\Events\MessageCreated($message));
         return back();
     }
 

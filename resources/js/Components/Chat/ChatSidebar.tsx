@@ -1,6 +1,8 @@
+import { Echo } from "@/echo";
 import { PaginatedCollection } from "@/types";
-import { ChatData } from "@/types/_generated";
-import { image, poll } from "@/utils";
+import { ChatData, MessageData } from "@/types/_generated";
+import { Message } from "@/types/model";
+import { cn, image, poll } from "@/utils";
 import { Link, usePage } from "@inertiajs/react";
 import { throttle } from "lodash";
 
@@ -17,14 +19,6 @@ export default function ChatSidebar() {
         setChats(data);
         setLoading(false);
     }, 500, { leading: false, trailing: true }), [])
-    const checkForNewMessagesInChats = async () => {
-        const res = await fetch(route('chat.check-new-messages', { chat: chat?.uuid }));
-        const data = await res.json() as { success: boolean, chat?: ChatData }
-        // if (data.success) {
-        fetchChats();
-        // playSound()
-        // }
-    };
     const itemTemplate = (item: ChatData, key?: any) => {
         return (<Link
             href={route('chat.show', { chat: item.uuid })}
@@ -48,7 +42,9 @@ export default function ChatSidebar() {
                     <span>5+</span>
                 </div>
                 */}
-                <span>{item.last_message?.created_at_human}</span>
+                <span className={cn(
+                    item.last_message && !item.last_message?.by_me && !item.last_message?.is_read && "!font-bold !text-black",
+                )}>{item.last_message?.created_at_human}</span>
                 {item.is_typing ? <div className="flex items-center gap-1 text-sm text-green-500 font-bold">
                     <div>Typing</div>
                     <SvgSpinners3DotsBounce className="w-6 h-4" />
@@ -57,7 +53,11 @@ export default function ChatSidebar() {
                         (
                             <div className="text-ellipsis text-nowrap overflow-hidden flex items-center gap-2">
                                 {item.last_message.by_me && <div className="font-medium">You:</div>}
-                                <div className="!max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">{item.last_message.body}</div>
+                                <div className={cn(
+                                    "!max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap",
+                                    !item.last_message.by_me && !item.last_message.is_read && "!font-bold !text-black",
+
+                                )}>{item.last_message.body}</div>
                             </div>
                         ) :
                         <p>No messages yet</p>
@@ -68,17 +68,40 @@ export default function ChatSidebar() {
     }
 
     useEffect(() => {
+        if (!chats) return
+        chats.data.forEach(item => {
+            if (item.id === chat?.id) {
+                console.log("Skipping the opened chat...", chat)
+                return
+            }
+            const chatChannel = 'chat.' + item.id
+            console.log("listening to channel:", chatChannel)
+            Echo.leave(chatChannel)
+            Echo.channel(chatChannel)
+                .listen('MessageCreated', (e: { message: MessageData }) => {
+                    console.log("New message arrived:", e.message)
+                    const newChats = chats.data.map(chat => {
+                        if (chat.id === e.message.chat_id) {
+                            return {
+                                ...chat,
+                                last_message: e.message,
+                            }
+                        }
+                        return chat
+                    })
+                    console.log("new chats", newChats)
+                    setChats({
+                        ...chats,
+                        data: newChats,
+                    })
+                    playSound()
+                })
+        })
+        return () => Echo.leaveAllChannels()
+    }, [chats?.data.length])
+    useEffect(() => {
         fetchChats(searchString);
     }, [searchString]);
-
-    useEffect(() => {
-        fetchChats();
-        return poll(() => {
-            if (!searchString) {
-                checkForNewMessagesInChats();
-            }
-        }, 2000);
-    }, []);
     return (
         <div className="sidebar" id="sidebar">
             <div className="h-full px-3 md:px-5">

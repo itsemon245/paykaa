@@ -56,9 +56,6 @@ export default function Messages({
         }
     }, [isTyping]);
 
-    useEffect(() => {
-        return poll(checkForNewMessages, 2500)
-    }, [])
     return (
         <>
             {newMessageCount > 0 && (
