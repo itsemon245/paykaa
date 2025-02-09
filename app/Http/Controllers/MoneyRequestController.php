@@ -11,6 +11,7 @@ use App\Models\MoneyRequest;
 use App\Models\User;
 use App\Models\Wallet;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Ramsey\Uuid\Uuid;
 
 class MoneyRequestController extends Controller
@@ -19,12 +20,32 @@ class MoneyRequestController extends Controller
     {
         return backWithError(function () use ($request) {
             $receiver = User::find($request->receiver_id);
-            $request->validate([
+            $validator = Validator::make($request->all(), [
                 'amount' => 'required|numeric|min:1|max:' . $receiver->balance,
                 'note' => 'nullable|string',
                 'receiver_id' => 'required|numeric|exists:users,id',
                 'chat_id' => 'required|numeric|exists:chats,id',
             ]);
+
+            $requestPending = MoneyRequest::where(function ($query) use ($request) {
+                $query->where('sender_id', auth()->id())
+                    ->where('receiver_id', $request->receiver_id);
+            })->whereNull('released_at')
+                ->where(function ($query) {
+                    $query->whereNull('accepted_at');
+                    $query->orWhereNotNull('accepted_at');
+                })
+                ->whereNull('cancelled_at')
+                ->whereNull('rejected_at')
+                ->exists();
+            if ($requestPending) {
+                $validator->after(function ($validator) {
+                    $validator->errors()->add('amount', 'A Request already pending');
+                });
+            }
+            if ($validator->fails()) {
+                return back()->withErrors($validator)->withInput();
+            }
             $message = Message::create([
                 'chat_id' => $request->chat_id,
                 'sender_id' => auth()->id(),

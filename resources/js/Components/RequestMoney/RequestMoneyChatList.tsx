@@ -19,16 +19,19 @@ export default function RequestMoneyChatList({ chat }: { chat: ChatData }) {
     }, [])
     return (
         <>
-            <Button outlined text rounded className="!rounded-lg" title="Request Money List" onClick={() => setVisible(true)}>
-                <HugeiconsRightToLeftListDash className="h-6 w-6" />
+            <Button rounded className="!rounded-lg" title="Request Money" onClick={() => setVisible(true)}>
+                <HugeiconsMoneyReceiveCircle className="h-6 w-6" />
             </Button>
             <Sidebar pt={{
                 header: {
                     className: "bg-white"
                 }
             }} visible={visible} position="right" header={
-                <div className="font-bold text-lg">Request Money List</div>
+                <div className="font-bold text-lg">Request Money</div>
             } className="w-[380px] sm:w-[420px] bg-base-gradient" onHide={() => setVisible(false)}>
+                <div className="my-4">
+                    <RequestMoney chat={chat} />
+                </div>
                 <div className="my-4">
                     {messages && <Messages inSidebar={true} messages={messages} setMessages={setMessages} />}
                 </div>
