@@ -134,7 +134,7 @@ export default function UpdateProfileInformation({ data, setData, submit, errors
             <div className="flex items-center gap-2">
                 <label htmlFor='avatar' className='relative cursor-pointer'>
                     <input className='hidden' type="file" name="avatar" id="avatar" onChange={uploadAvatar} />
-                    <img src={preview || image(user.avatar as string)} className="w-20 aspect-square object-cover rounded-full" alt="Avatar" />
+                    <img src={preview || image(user.avatar as string)} onError={(e) => e.target.src = defaultAvatar} className="w-20 aspect-square object-cover rounded-full" alt="Avatar" />
                     <div className="absolute top-0 right-0 p-1 rounded-full flex items-center justify-center">
                         <HeroiconsCameraSolid className="w-5 h-5" />
                     </div>

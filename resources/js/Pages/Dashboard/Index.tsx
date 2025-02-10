@@ -1,5 +1,6 @@
 import menuItems from "@/data/menuItems";
 import { UserData } from "@/types/_generated";
+import { defaultAvatar } from "@/utils";
 import { Link, router } from "@inertiajs/react";
 import { chunk } from "lodash";
 import { Card } from "primereact/card";
@@ -25,6 +26,7 @@ export const UserItemTemplate = ({ user, onSelect }: { user: UserData, onSelect?
             <img
                 alt={user.name}
                 src={user.avatar}
+                onError={(e) => e.target.src = defaultAvatar}
                 className="rounded-full w-10 me-2"
             />
             <div className="flex flex-col items-start select-none *:cursor-pointer">

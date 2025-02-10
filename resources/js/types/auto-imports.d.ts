@@ -100,6 +100,7 @@ declare global {
   const useBalance: typeof import('../Hooks/useBalance')['default']
   const useBrakpoints: typeof import('../Hooks/useBrakpoints')['default']
   const useCallback: typeof import('react')['useCallback']
+  const useChat: typeof import('../Hooks/useChat')['default']
   const useConfig: typeof import('../Hooks/useConfig')['default']
   const useContext: typeof import('react')['useContext']
   const useDebugValue: typeof import('react')['useDebugValue']

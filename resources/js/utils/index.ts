@@ -93,3 +93,5 @@ export const copyToClipboard = (text?: any) => {
     navigator.clipboard.writeText(text);
     toast.success('Copied to clipboard');
 }
+
+export const defaultAvatar = "/assets/images/user.png"

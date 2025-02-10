@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Data\ChatData;
 use App\Data\MessageData;
+use App\Events\ChatCreated;
 use App\Models\Chat;
 use App\Models\Message;
 use Illuminate\Http\Request;
@@ -39,6 +40,10 @@ class MessageController extends Controller
         $message = Message::create([
             ...$messageData->only('chat_id', 'sender_id', 'receiver_id', 'type', 'body')->toArray(),
         ]);
+        $chat->loadMissing('lastMessage');
+        if (!$chat->lastMessage) {
+            event(new ChatCreated($chat, auth()->id()));
+        }
         event(new \App\Events\MessageCreated($message));
         return back();
     }

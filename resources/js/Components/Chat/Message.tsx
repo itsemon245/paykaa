@@ -1,4 +1,5 @@
 import { ChatData, MessageData } from "@/types/_generated"
+import { defaultAvatar } from "@/utils";
 import { usePage } from "@inertiajs/react";
 import { format, parseISO } from "date-fns"
 
@@ -15,6 +16,7 @@ const Message = ({ message, children }: { message: MessageData, children?: React
                     <img
                         className="avatar-md"
                         src={chat.from?.avatar}
+                        onError={(e) => e.target.src = defaultAvatar}
                         data-toggle="tooltip"
                         data-placement="top"
                         title={chat.from?.name}
