@@ -1,30 +1,21 @@
+import { Echo } from "@/echo";
 import { PaginatedCollection } from "@/types";
-import { ChatData } from "@/types/_generated";
-import { image, poll } from "@/utils";
+import { ChatData, MessageData } from "@/types/_generated";
+import { cn, defaultAvatar, image, poll } from "@/utils";
 import { Link, usePage } from "@inertiajs/react";
-import { throttle } from "lodash";
 
-export default function ChatSidebar() {
-    const [chats, setChats] = useState<PaginatedCollection<ChatData>>();
+export default function ChatSidebar({
+    chats,
+    setChats,
+    fetchChats
+}: {
+    chats: PaginatedCollection<ChatData>,
+    setChats: (chats: PaginatedCollection<ChatData>) => void
+    fetchChats: (search?: string) => void
+}) {
     const [searchString, setSearchString] = useState("");
     const chat = usePage().props.chat as ChatData | undefined;
-    const { playSound } = useNotification();
-    const [loading, setLoading] = useState(false);
-    const fetchChats = useCallback(throttle(async (search?: string) => {
-        // setLoading(true);
-        const response = await fetch(route('chat.user-chats', { search: search }));
-        const data: PaginatedCollection<ChatData> = await response.json();
-        setChats(data);
-        setLoading(false);
-    }, 500, { leading: false, trailing: true }), [])
-    const checkForNewMessagesInChats = async () => {
-        const res = await fetch(route('chat.check-new-messages', { chat: chat?.uuid }));
-        const data = await res.json() as { success: boolean, chat?: ChatData }
-        // if (data.success) {
-        fetchChats();
-        // playSound()
-        // }
-    };
+    const { user } = useAuth();
     const itemTemplate = (item: ChatData, key?: any) => {
         return (<Link
             href={route('chat.show', { chat: item.uuid })}
@@ -34,6 +25,7 @@ export default function ChatSidebar() {
             <img
                 className="avatar-md"
                 src={image(item.from?.avatar)}
+                onError={(e) => e.target.src = defaultAvatar}
                 data-toggle="tooltip"
                 data-placement="top"
                 title={item.from?.name}
@@ -48,7 +40,9 @@ export default function ChatSidebar() {
                     <span>5+</span>
                 </div>
                 */}
-                <span>{item.last_message?.created_at_human}</span>
+                <span className={cn(
+                    item.last_message && !item.last_message?.by_me && !item.last_message?.is_read && "!font-bold !text-black",
+                )}>{item.last_message?.created_at_human}</span>
                 {item.is_typing ? <div className="flex items-center gap-1 text-sm text-green-500 font-bold">
                     <div>Typing</div>
                     <SvgSpinners3DotsBounce className="w-6 h-4" />
@@ -57,7 +51,11 @@ export default function ChatSidebar() {
                         (
                             <div className="text-ellipsis text-nowrap overflow-hidden flex items-center gap-2">
                                 {item.last_message.by_me && <div className="font-medium">You:</div>}
-                                <div className="!max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">{item.last_message.body}</div>
+                                <div className={cn(
+                                    "!max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap",
+                                    !item.last_message.by_me && !item.last_message.is_read && "!font-bold !text-black",
+
+                                )}>{item.last_message.body}</div>
                             </div>
                         ) :
                         <p>No messages yet</p>
@@ -68,28 +66,34 @@ export default function ChatSidebar() {
     }
 
     useEffect(() => {
+        if (!chats) return
+        const newChatChannel = 'new-chat.' + user.id
+        Echo.leave(newChatChannel)
+        Echo.channel(newChatChannel)
+            .listen('ChatCreated', (e: { chat: ChatData }) => {
+                console.log("New chat arrived:", e.chat)
+                setChats({
+                    ...chats,
+                    data: [e.chat, ...chats.data],
+                })
+            })
+        return () => Echo.leave(newChatChannel)
+    }, [chats]);
+    useEffect(() => {
         fetchChats(searchString);
     }, [searchString]);
 
-    useEffect(() => {
-        fetchChats();
-        return poll(() => {
-            if (!searchString) {
-                checkForNewMessagesInChats();
-            }
-        }, 2000);
-    }, []);
     return (
         <div className="sidebar" id="sidebar">
             <div className="h-full px-3 md:px-5">
                 <div id="discussions" className="tab-pane flex flex-col fade in active show">
                     <div className="flex items-center justify-center gap-3">
-                        <Link href={route('dashboard')}>
+                        <Link href={route('dashboard')} className="me-auto">
                             <button className="!bg-gray-200 !rounded-full w-9 h-9 flex items-center justify-center" title="Back">
                                 <i className="ti-angle-left fw-bold !text-gray-800"></i>
                             </button>
                         </Link>
-                        <Link href={route('dashboard')} className="flex items-center justify-center gap-5">
+                        <Link href={route('dashboard')} className="flex items-center justify-center gap-5 me-auto">
                             <Logo className="!h-10 w-auto" />
                         </Link>
                     </div>
@@ -158,16 +162,10 @@ export default function ChatSidebar() {
                     </div>
                     <div className="discussions h-[700px] hide-scrollbar overflow-y-scroll my-2" id="scroller">
                         <div className="list-group px-0" id="chats" role="tablist">
-                            {loading ? <>
-                                <div className="flex flex-col w-full justify-center items-center">
-                                    <i className="pi pi-spinner pi-spin text-5xl text-primary" />
-                                </div>
-                            </> : <>
-                                {chats?.data.map(item => itemTemplate(item, "chat-" + item.uuid))}
-                                {chats?.data.length === 0 && <div className="flex items-center justify-center gap-3 mt-10">
-                                    <div>No chats yet</div>
-                                </div>}
-                            </>}
+                            {chats?.data.map(item => itemTemplate(item, "chat-" + item.uuid))}
+                            {chats?.data.length === 0 && <div className="flex items-center justify-center gap-3 mt-10">
+                                <div>No chats yet</div>
+                            </div>}
                         </div>
                     </div>
                 </div>

@@ -53,6 +53,7 @@ class MoneyRequestController extends Controller
                 'type' => MessageType::MoneyRequest->value,
                 'body' => "Money Request to {$receiver->name} from " . auth()->user()->name,
             ]);
+            event(new \App\Events\MessageCreated($message));
             $moneyRequest = MoneyRequest::create([
                 ...$request->only('amount', 'note', 'receiver_id'),
                 'sender_id' => auth()->id(),

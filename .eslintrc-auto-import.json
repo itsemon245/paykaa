@@ -115,6 +115,7 @@
     "RequestMoneyChats": true,
     "RequestMoneyChatList": true,
     "HugeiconsRightToLeftListDash": true,
-    "HugeiconsCopy01": true
+    "HugeiconsCopy01": true,
+    "useChat": true
   }
 }

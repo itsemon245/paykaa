@@ -5,6 +5,7 @@ namespace App\Data;
 use App\Data\Partials\TimestampData;
 use App\Enum\MessageType;
 use App\Models\MoneyRequest;
+use Carbon\Carbon;
 use Spatie\LaravelData\Attributes\Computed;
 use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
 use Spatie\LaravelData\Data;
@@ -24,6 +25,7 @@ class MessageData extends Data
     public MoneyRequestData $moneyRequest;
     #[Computed]
     public bool $by_me;
+    public bool $is_read;
     public function __construct(
         public int $chat_id,
         public int $sender_id,

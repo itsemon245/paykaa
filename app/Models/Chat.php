@@ -43,8 +43,4 @@ class Chat extends Model
     {
         return $this->messages()->latest()->one();
     }
-    public function moneyRequest()
-    {
-        return $this->hasOne(MoneyRequest::class);
-    }
 }

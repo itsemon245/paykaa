@@ -106,6 +106,7 @@ export type MessageData = {
     chat?: ChatData;
     moneyRequest?: MoneyRequestData;
     by_me: boolean;
+    is_read: boolean;
     chat_id: number;
     sender_id: number;
     receiver_id: number;

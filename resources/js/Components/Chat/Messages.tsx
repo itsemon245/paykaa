@@ -18,25 +18,9 @@ export default function Messages({
 }) {
     const chat = usePage().props.chat as ChatData;
     const { isTyping, setIsTyping } = useTyping(chat);
-    const { playSound } = useNotification();
     const messageContainerRef = useRef<HTMLDivElement>(null);
-    const { restore, scrollToBottom } = useScrollRestoration(messageContainerRef, 'message-container-scroll');
+    const { scrollToBottom } = useScrollRestoration(messageContainerRef, 'message-container-scroll');
     const [newMessageCount, setNewMessageCount] = useState(0);
-    const checkForNewMessages = async () => {
-        const res = await fetch(route('messages.check-new', { chat: chat.uuid }))
-        if (!res.ok) {
-            console.error('Error while checking for new messages', res);
-            return;
-        }
-        const data = await res.json() as { success: boolean, count: number, chat: ChatData }
-        setIsTyping(data.chat.is_typing);
-        if (data.success) {
-            if (data.count > 0) {
-                setNewMessageCount(data.count)
-                playSound()
-            }
-        }
-    }
     const updateMessages = throttle(async () => {
         const res = await fetch(route('messages.get-new', { chat: chat.uuid }))
         const data = await res.json()
@@ -56,9 +40,6 @@ export default function Messages({
         }
     }, [isTyping]);
 
-    useEffect(() => {
-        return poll(checkForNewMessages, 2500)
-    }, [])
     return (
         <>
             {newMessageCount > 0 && (

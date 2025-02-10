@@ -20,6 +20,8 @@ export const storage = {
     removeItem: (key: string) => localStorage.removeItem(key),
 }
 export const poll = (fn: () => void, timeout: number) => {
+    console.log("Poll off!");
+    return;
     console.log("polling function", fn, "dealy", timeout + "ms");
     const interval = setInterval(fn, timeout);
     return () => clearInterval(interval);
@@ -91,3 +93,5 @@ export const copyToClipboard = (text?: any) => {
     navigator.clipboard.writeText(text);
     toast.success('Copied to clipboard');
 }
+
+export const defaultAvatar = "/assets/images/user.png"

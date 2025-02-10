@@ -6,12 +6,7 @@ import { useForm, usePage } from "@inertiajs/react";
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Button } from 'primereact/button';
 
-interface WriterProps {
-    setMessages: (messages: PaginatedCollection<MessageData>) => void
-}
-export default function Writer({
-    setMessages
-}: WriterProps) {
+export default function Writer() {
     const chat = usePage().props.chat as ChatData;
     const { toggleTyping } = useTyping(chat);
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
@@ -27,11 +22,9 @@ export default function Writer({
         const messageStoreUrl = route('message.store', { chat: chat.uuid });
         const loadingToast = toast.loading("Sending message...");
         post(messageStoreUrl, {
-            only: ['messages'],
             preserveState: true,
             preserveScroll: true,
             onSuccess(data) {
-                setMessages(data.props.messages as PaginatedCollection<MessageData>);
                 toast.dismiss(loadingToast);
                 toast.success("Message sent successfully");
                 setData('body', "");

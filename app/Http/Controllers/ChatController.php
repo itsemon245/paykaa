@@ -16,24 +16,16 @@ class ChatController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Inertia::render('Chat/Index');
+        return Inertia::render('Chat/Index', [
+            'chats' => $this->getChats($request),
+        ]);
     }
+
     public function getUserChats(Request $request)
     {
-        $chats = Chat::with('lastMessage', 'sender', 'receiver')
-            ->where(function (Builder $q) use ($request) {
-                $q->where('sender_id', auth()->id());
-                if ($request->search) {
-                    $q->where('receiver_id', $request->search)->orWhere('sender_id', $request->search);
-                }
-            })
-            ->orWhere(function (Builder $q) {
-                $q->where('receiver_id', auth()->id());
-                $q->has('lastMessage');
-            })->paginate();
-        return response()->json(ChatData::collect($chats));
+        return response()->json($this->getChats($request));
     }
 
     public function checkNewMessages(Request $request)
@@ -48,12 +40,14 @@ class ChatController extends Controller
         ]);
     }
 
-    public function show(Chat $chat)
+    public function show(Request $request, Chat $chat)
     {
         $chat->messages()->received()->unread()->update(['is_read' => true]);
         $chat->loadMissing('sender', 'receiver', 'lastMessage');
+
         return Inertia::render('Chat/Show', [
             'chat' => ChatData::from($chat),
+            'chats' => $this->getChats($request),
             'messages' => MessageData::collect($chat
                 ->messages()
                 ->with('moneyRequest', 'sender', 'receiver', 'moneyRequest', 'moneyRequest.from')
@@ -87,7 +81,8 @@ class ChatController extends Controller
 
     public function receiverChat(User $receiver)
     {
-        $chat = Chat::where('receiver_id', $receiver->id)->where('sender_id', auth()->user()->id)->first();
+        $people = [auth()->user()->id, $receiver->id];
+        $chat = Chat::whereIn('receiver_id', $people)->whereIn('sender_id', $people)->first();
         if (!$chat) {
             $chat = Chat::create([
                 'sender_id' => auth()->user()->id,
@@ -95,5 +90,21 @@ class ChatController extends Controller
             ]);
         }
         return redirect()->route('chat.show', ['chat' => $chat->uuid]);
+    }
+
+    public function getChats(Request $request)
+    {
+        $chats = Chat::with('lastMessage', 'sender', 'receiver')
+            ->where(function (Builder $q) use ($request) {
+                $q->where('sender_id', auth()->id());
+                if ($request->search) {
+                    $q->where('receiver_id', $request->search)->orWhere('sender_id', $request->search);
+                }
+            })
+            ->orWhere(function (Builder $q) {
+                $q->where('receiver_id', auth()->id());
+                $q->has('lastMessage');
+            })->paginate();
+        return ChatData::collect($chats);
     }
 }
