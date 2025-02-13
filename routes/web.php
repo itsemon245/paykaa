@@ -12,12 +12,14 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UploadController;
+use App\Models\LandingPage;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return view('landing');
+    $landing = LandingPage::first();
+    return view('landing', compact('landing'));
     // return Inertia::render('Landing/Index');
 });
 Route::post('/upload/chunk', [UploadController::class, 'store'])->name('upload.chunk.start');

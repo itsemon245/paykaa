@@ -1,33 +1,36 @@
+@php
+    $hero = $hero ?? null;
+@endphp
   <section
       class="
     Section
     HomepageHero
     theme--White
-    
+
     accent--Slate
-    
+
     Section--bleed1
     Section--bleed2
     Section--paddingNormal
-    
-    
-    
+
+
+
     Section--hasGuides
-    
-    
+
+
   "
   >
       <div class="Section__masked">
           <div class="Section__backgroundMask">
               <div class="
         Section__background
-        
+
       ">
 
                   <div
                       class="
     Guides
-    
+
   "
                       aria-hidden="true"
                   >
@@ -49,9 +52,9 @@
                       <div
                           class="
     ColumnLayout
-    
-    
-    
+
+
+
   "
                           data-columns="2,2"
                       >
@@ -60,19 +63,19 @@
     Copy
     HomepageHero__title
     variant--Superhero
-    
+
   "
                               style="
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
   "
                           >
 
@@ -81,7 +84,7 @@
     HomepageHeroHeader
     HomepageHeroHeader--hasCaption
 
-    
+
   "
                                   data-js-controller="HomepageHeroHeader"
                                   data-experiment-id="acquisition_text_scaling_with_viewport_sizing" "="">
@@ -90,18 +93,18 @@
     <div class="HeroCaption__content">
       <span class="HeroCaption__title">
         {{ now()->format('F Y') }}
-        
+
           <span class="HeroCaption__separator HeroCaption__separator--desktopOnly">•</span>
           <a class="
     Link
     HeroCaption__link
   " href="{{ route('login', ['register' => true]) }}" target="_blank" data-js-controller="AnalyticsButton" data-analytics-category="Links" data-analytics-action="Clicked" data-analytics-label="hero_pill_sessions_2025_early_bird_registration">We want to protect your money starting today&nbsp;<svg class="
     HoverArrow
-    
-    
+
+
   " width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
   <g fill-rule="evenodd">
-    
+
       <path class="HoverArrow__linePath" d="
                                   M0
                                   5h7"
@@ -125,7 +128,7 @@
       HomepageHeroHeader__title--scaled
     "
                   data-js-target-list="HomepageHeroHeader.title"
-              >{!! $tagline !!}</h2>
+              >{!! $hero['title'] !!}</h2>
 
               <div class="HomepageHeroGradient Gradient isLoaded">
                   <canvas
@@ -147,7 +150,7 @@
     "
                   data-js-target-list="HomepageHeroHeader.title"
                   aria-hidden="true"
-              >{!! $tagline !!}</div>
+              >{!! $hero['title'] !!}</div>
 
               <div
                   class="
@@ -157,17 +160,14 @@
     "
                   data-js-target-list="HomepageHeroHeader.title"
                   aria-hidden="true"
-              >{!! $tagline !!}</div>
+              >{!! $hero['title'] !!}</div>
               </header>
 
               <div class="
         Copy__body
-        
-        
-      ">
-                  Join the millions of companies of all sizes that use Stripe to accept payments online and in person,
-                  embed financial services, power custom revenue models, and build a more profitable business.
-              </div>
+
+
+      ">{!!$hero['description']!!}</div>
 
               <footer class="Copy__footer">
                   <div class="Copy__ctaContainer">
@@ -187,8 +187,8 @@
                           >Start now&nbsp;<svg
                                   class="
     HoverArrow
-    
-    
+
+
   "
                                   width="10"
                                   height="10"
@@ -223,8 +223,8 @@
                           >Contact sales&nbsp;<svg
                                   class="
     HoverArrow
-    
-    
+
+
   "
                                   width="10"
                                   height="10"
@@ -313,8 +313,8 @@
                                   >Start now&nbsp;<svg
                                           class="
     HoverArrow
-    
-    
+
+
   "
                                           width="10"
                                           height="10"
@@ -350,8 +350,8 @@
                               >Contact sales&nbsp;<svg
                                       class="
     HoverArrow
-    
-    
+
+
   "
                                       width="10"
                                       height="10"
@@ -1169,19 +1169,19 @@
           class="
     HomepageHeroGraphic__phone
     PhoneGraphic
-    
+
   "
           style="
-    
-    
+
+
   "
           aria-hidden="true"
       >
           <div class="PhoneGraphic__screen">
               <div class="
     CheckoutPhoneGraphic
-    
-    
+
+
   ">
 
                   <div class="CheckoutPhoneGraphic__image">
