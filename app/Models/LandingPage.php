@@ -10,5 +10,6 @@ class LandingPage extends Model
         'payment_methods' => 'array',
         'how_it_works' => 'array',
         'socials' => 'array',
+        'about' => 'array',
     ];
 }
