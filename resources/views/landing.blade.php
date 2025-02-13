@@ -40,7 +40,6 @@
         content="acquisition_top_cta_change.control.ursula.2366e0d8-7df7-49da-aeab-0ce85f705010.a,wpp_homepage_title_copy.control.ursula.977fe5db-7336-44a9-b422-06a57add2f68.a,acquisition_chat_on_dot_com.control.ursula.5ec0ab27-56bc-47eb-896b-45f9127f8a1e.a,acquisition_jp_homepage_holdback.control.ursula.4bca77c7-1c8a-4e2b-a0f6-35fe52869e9c.a,acquisition_text_scaling_with_viewport_sizing.treatment.ursula.92435fc2-230c-44e9-b4dd-c7df6e5e699b.a,acquisition_desktop_nav_with_carets.control.ursula.1cf17dbd-58e1-4320-a106-31b144c31db8.a,wpp_sitewide_cta_swap.control.ursula.1857e0e8-f662-4a5a-acf7-8ebaa9e65d74.a"
     >
 
-    <script type="application/json" id="AnalyticsConfigurationJSON">{"GTM_ID":"GTM-WK8882T","GTM_FRAME_URL":"https://b.stripecdn.com/stripethirdparty-srv/assets/","environment":"production"}</script>
 
     <template id="source-attribution-loader"></template>
 
@@ -148,6 +147,23 @@
     </script>
     @vite('resources/css/app.css')
     @include('landing.partials.styles')
+     <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+
+    @stack('styles')
+     <style>
+        @keyframes glow {
+            0% { box-shadow: 0 0 0px theme('colors.blue.500'); }
+            25% { box-shadow: 5px -5px 10px theme('colors.green.500'); }
+            50% { box-shadow: 10px -10px 20px theme('colors.purple.500'); }
+            75% { box-shadow: 5px 5px 10px theme('colors.green.500'); }
+            100% { box-shadow: 0 0 0px theme('colors.blue.500'); }
+        }
+    </style>
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <script
         type="module"
@@ -192,98 +208,14 @@
             })();
         </script>
 
-        @include('landing.partials.hero', ['tagline' => $tagline])
-        @include('landing.partials.how-it-works')
-        @include('landing.partials.payment-methods')
-        @include('landing.partials.footer')
+    @include('landing.partials.hero', ['hero' => $landing->hero])
+    {{-- @include('landing.partials.how-it-works', ['howItWorks' => $landing->how_it_works]) --}}
+    @include('landing.partials.payment-methods')
+    @include('landing.partials.footer', ['landing' => $landing])
 
-        <div
-            class="
-    MobileStickyNav
-    theme--Light
-    flavor--Chroma
-    accent--Slate
-  "
-            data-js-controller="MobileStickyNav"
-        >
-            <div
-                class="MobileStickyNav__container"
-                data-js-target="MobileStickyNav.container"
-            >
-                <button
-                    class="
-    CtaButton
-    variant--Button
-    CtaButton--arrow
-    
-  "
-                    data-js-controller="AnalyticsButton"
-                    data-analytics-category="Buttons"
-                    data-analytics-action="Clicked"
-                    data-analytics-label="register_mobile_sticky_nav_cta"
-                >Start now&nbsp;<svg
-                        class="
-    HoverArrow
-    
-    
-  "
-                        width="10"
-                        height="10"
-                        viewBox="0 0 10 10"
-                        aria-hidden="true"
-                    >
-                        <g fill-rule="evenodd">
-
-                            <path
-                                class="HoverArrow__linePath"
-                                d="M0 5h7"
-                            ></path>
-                            <path
-                                class="HoverArrow__tipPath"
-                                d="M1 1l4 4-4 4"
-                            ></path>
-
-                        </g>
-                    </svg></button>
-                <a
-                    class="
-    CtaButton
-    variant--Link
-    CtaButton--arrow
-    
-  "
-                    href=/contact/sales"
-                    data-js-controller="AnalyticsButton"
-                    data-analytics-category="Buttons"
-                    data-analytics-action="Clicked"
-                    data-analytics-label="secondary_mobile_sticky_nav_cta"
-                >Contact sales&nbsp;<svg
-                        class="
-    HoverArrow
-    
-    
-  "
-                        width="10"
-                        height="10"
-                        viewBox="0 0 10 10"
-                        aria-hidden="true"
-                    >
-                        <g fill-rule="evenodd">
-
-                            <path
-                                class="HoverArrow__linePath"
-                                d="M0 5h7"
-                            ></path>
-                            <path
-                                class="HoverArrow__tipPath"
-                                d="M1 1l4 4-4 4"
-                            ></path>
-
-                        </g>
-                    </svg></a>
-            </div>
-        </div>
     </div>
+
+    @stack('scripts')
 </body>
 
 </html>

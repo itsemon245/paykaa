@@ -1,3 +1,7 @@
+@@php
+    $socials = $landing->socials ?? [];
+    $about = $landing->about ?? [];
+@endphp
     <footer
             class="Section HomepageGlobalSection theme--Dark flavor--Chroma accent--Cyan Section--angleTop Section--paddingNormal Section--hasGuides">
         <div class="Section__masked">
@@ -33,22 +37,18 @@
 
                                     <header class="Copy__header">
 
-                                        <h2 class="Copy__caption">Global scale</h2>
+                                        <h2 class="Copy__caption">{{$about['title'] ?? 'About us'}}</h2>
 
                                         <h1 class="        Copy__title
-            
+
           ">
-                                            The backbone for global commerce
+                                            {{$about['title'] ?? 'About us'}}
                                         </h1>
 
                                     </header>
 
                                     <div class="    Copy__body
-        ">
-                                        Stripe makes moving money as easy and programmable as moving data.
-                                        Our teams are based in offices around the world and we process hundreds of
-                                        billions of dollars each year for ambitious businesses of all sizes.
-                                    </div>
+        ">{{$about['description'] ?? 'We are a team of developers, designers, and product managers who are passionate about making the world a better place. We believe that everyone deserves access to financial services and we are committed to making that a reality.'}}</div>
 
                                 </section>
                             </div>
@@ -57,21 +57,21 @@
     "
                                  data-columns="1,1,1,1">
                                 <section class="Copy
-    
+
     variant--Stat"
                                          style="
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
     ">
 
                                     <header class="Copy__header">
 
                                         <h1 class="        Copy__title
-            
+
           ">
                                             500M+
                                         </h1>
@@ -89,18 +89,18 @@
     HomepageGlobalSection__uptimeStat
     variant--Stat"
                                          style="
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
     ">
 
                                     <header class="Copy__header">
 
                                         <h1 class="        Copy__title
-            
+
           ">
                                             99.999%
                                         </h1>
@@ -120,21 +120,21 @@
                                 </section>
 
                                 <section class="Copy
-    
+
     variant--Stat"
                                          style="
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
     ">
 
                                     <header class="Copy__header">
 
                                         <h1 class="        Copy__title
-            
+
           ">
                                             90%
                                         </h1>
@@ -149,21 +149,21 @@
                                 </section>
 
                                 <section class="Copy
-    
+
     variant--Stat"
                                          style="
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
     ">
 
                                     <header class="Copy__header">
 
                                         <h1 class="        Copy__title
-            
+
           ">
                                             135+
                                         </h1>

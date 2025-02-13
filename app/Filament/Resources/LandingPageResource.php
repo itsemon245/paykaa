@@ -47,6 +47,19 @@ class LandingPageResource extends Resource
                         FileUpload::make('hero.image')
                             ->required()
                     ])->columns(1),
+                Fieldset::make('about')
+                    ->label('About Us')
+                    ->schema([
+                        TextInput::make('about.title')
+                            ->default('About us')
+                            ->required(),
+                        Textarea::make('about.description')
+                            ->default('We are a team of developers, designers, and product managers who are passionate about making the world a better place. We believe that everyone deserves access to financial services and we are committed to making that a reality.')
+                            ->required(),
+                        // FileUpload::make('image')
+                        //     ->required()
+                    ])->columns(1),
+
                 Fieldset::make('how_it_works')
                     ->label('How it works')
                     ->schema([
@@ -66,7 +79,24 @@ class LandingPageResource extends Resource
                                     ->required(),
                                 FileUpload::make('image')
                             ]),
-                    ])->columns(1)
+                    ])->columns(1),
+                Repeater::make('socials')
+                    ->label('Social Media')
+                    ->itemLabel(fn(array $state): ?string => $state['title'] ?? null)
+                    ->reorderable(false)
+                    ->deletable(false)
+                    ->addable(false)
+                    ->schema([
+                        TextInput::make('title')
+                            ->visible(false)
+                            ->required(),
+                        TextInput::make('url')
+                            ->hiddenLabel(true)
+                            ->url(true)
+                            ->required(),
+                    ])
+                    ->grid(2)
+                    ->columnSpanFull(),
             ]);
     }
 

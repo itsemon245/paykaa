@@ -19,6 +19,29 @@ class LandingPageSeeder extends Seeder
                 'description' => "We are here to help you protect your money. We will help you to make sure that you are making the right choices and that you are not being scammed.",
                 'image' => 'hero.png',
             ],
+            'about' => [
+                'title' => 'About us',
+                'description' => 'We are a team of developers, designers, and product managers who are passionate about making the world a better place. We believe that everyone deserves access to financial services and we are committed to making that a reality.',
+                'image' => 'about.png',
+            ],
+            'socials' => [
+                [
+                    'title' => 'twitter',
+                    'url' => 'https://twitter.com/paykaa',
+                ],
+                [
+                    'title' => 'facebook',
+                    'url' => 'https://www.facebook.com/paykaa',
+                ],
+                [
+                    'title' => 'youtube',
+                    'url' => 'https://www.youtube.com/channel/UC0-w6-8-0o-9-4-1-2-3',
+                ],
+                [
+                    'title' => 'instagram',
+                    'url' => 'https://instagram.com/paykaa',
+                ],
+            ],
             'how_it_works' => [
                 [
                     'name' => 'Easy to use',
