@@ -25,7 +25,10 @@ export default function ChatSidebar({
             <img
                 className="avatar-md"
                 src={image(item.from?.avatar)}
-                onError={(e) => e.target.src = defaultAvatar}
+                onError={(e) => {
+                    //@ts-ignore
+                    e.target.src = defaultAvatar
+                }}
                 data-toggle="tooltip"
                 data-placement="top"
                 title={item.from?.name}

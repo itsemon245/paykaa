@@ -19,7 +19,10 @@ export default function Topbar() {
                             <img
                                 className="avatar-md"
                                 src={image(chat.from?.avatar)}
-                                onError={(e) => e.target.src = defaultAvatar}
+                                onError={(e) => {
+                                    //@ts-ignore
+                                    e.target.src = defaultAvatar
+                                }}
                                 data-toggle="tooltip"
                                 data-placement="top"
                                 title={chat.from?.name}

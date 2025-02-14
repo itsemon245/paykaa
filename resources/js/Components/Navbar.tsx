@@ -23,7 +23,7 @@ export default function Navbar({
     const { user } = useAuth();
     const animationParentRef = useRef<HTMLDivElement>(null);
     const { balance, isBalanceVisible, loadingBalance, refreshBalance } = useBalance();
-    const { min, max } = useBreakpoint();
+    const { max } = useBreakpoint();
     const label = useMemo(() => {
         if (loadingBalance) {
             return <i className="pi pi-spin pi-spinner text-xs" />
@@ -46,7 +46,12 @@ export default function Navbar({
             <div className="flex items-center gap-1 sm:gap-4">
                 <div className="flex gap-2 items-center">
                     {max('md') && toggleSidebar && <SidebarCloseBtn isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />}
-                    <img src={image(user.avatar)} onError={(e) => e.target.src = defaultAvatar} className="w-14 h-14 md:w-[72px] md:h-[72px] rounded-full border-white border-2 object-cover" />
+                    <img src={image(user.avatar)}
+                        onError={(e) => {
+                            //@ts-ignore
+                            e.target.src = defaultAvatar
+                        }}
+                        className="w-14 h-14 md:w-[72px] md:h-[72px] rounded-full border-white border-2 object-cover" />
                     <div ref={animationParentRef} className="flex flex-col items-start">
                         <label className="text-white text-base md:text-lg font-bold mb-0">{user.name}</label>
                         <div className="flex gap-2 items-center mb-0.5 -mt-1.5">

@@ -11,8 +11,7 @@ import toast from "react-hot-toast";
 
 export default function Referall() {
     const { user } = useAuth();
-    const { referrals }: { referrals: UserData[] } = usePage().props;
-    const { app } = useConfig();
+    const referrals = usePage().props.referrals as UserData[];
     const referLink = route('login', {
         register: true,
         r: user.id

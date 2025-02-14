@@ -16,7 +16,11 @@ const Message = ({ message, children }: { message: MessageData, children?: React
                     <img
                         className="avatar-md"
                         src={chat.from?.avatar}
-                        onError={(e) => e.target.src = defaultAvatar}
+                        onError={(e) => {
+                            //@ts-ignore
+                            e.target.src = defaultAvatar
+                        }}
+
                         data-toggle="tooltip"
                         data-placement="top"
                         title={chat.from?.name}
