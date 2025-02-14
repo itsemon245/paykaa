@@ -40,13 +40,18 @@ class LandingPageResource extends Resource
                     ->schema([
                         TextInput::make('hero.title')
                             ->required()
+                            ->columnSpanFull()
                             ->default('Protecting your money is our responsibility'),
                         Textarea::make('hero.description')
                             ->required()
+                            ->columnSpanFull()
                             ->default('We are here to help you protect your money. We will help you to make sure that you are making the right choices and that you are not being scammed.'),
-                        FileUpload::make('hero.image')
+                        FileUpload::make('hero.image_mobile')
+                            ->required(),
+                        FileUpload::make('hero.image_desktop')
                             ->required()
-                    ])->columns(1),
+
+                    ])->columns(2),
                 Fieldset::make('about')
                     ->label('About Us')
                     ->schema([

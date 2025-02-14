@@ -17,7 +17,8 @@ class LandingPageSeeder extends Seeder
             'hero' => [
                 'title' => "Protecting your money is our responsibilty",
                 'description' => "We are here to help you protect your money. We will help you to make sure that you are making the right choices and that you are not being scammed.",
-                'image' => 'hero.png',
+                'image_mobile' => 'https://placehold.co/200x420?text=Mobile',
+                'image_desktop' => 'https://placehold.co/480x400?text=Desktop',
             ],
             'about' => [
                 'title' => 'About us',
