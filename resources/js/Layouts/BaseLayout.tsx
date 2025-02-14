@@ -1,4 +1,4 @@
-import { poll } from '@/utils';
+import { cookie, getQuery, poll } from '@/utils';
 import { usePage } from '@inertiajs/react';
 import toast, { Toaster } from 'react-hot-toast';
 export default function BaseLayout({ children }: { children?: any }) {
@@ -8,6 +8,12 @@ export default function BaseLayout({ children }: { children?: any }) {
 
     //poll to toggle auth users active status every 2 minutes
     useEffect(() => {
+        if (!auth.user) {
+            const referId = getQuery('r');
+            if (referId) {
+                cookie.set('referId', referId);
+            }
+        }
         if (auth.user) {
             return poll(() => updateActiveStatus(), 19000);
         }

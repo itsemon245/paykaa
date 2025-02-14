@@ -19,6 +19,24 @@ export const storage = {
     },
     removeItem: (key: string) => localStorage.removeItem(key),
 }
+export const cookie = {
+    set(key: string, value: string, days?: number): void {
+        //set cookie for 1 month by default
+        days = days ?? 30;
+        const maxAge = days * 24 * 60 * 60;
+        document.cookie = `${encodeURIComponent(key)}=${encodeURIComponent(value)}; path=/; Max-Age=${maxAge}; SameSite=Lax`;
+    },
+    get(key: string): string | null {
+        const cookies = document.cookie.split('; ');
+        for (const cookie of cookies) {
+            const [cookieKey, cookieValue] = cookie.split('=');
+            if (decodeURIComponent(cookieKey) === key) {
+                return decodeURIComponent(cookieValue);
+            }
+        }
+        return null;
+    }
+}
 export const poll = (fn: () => void, timeout: number) => {
     console.log("Poll off!");
     return;

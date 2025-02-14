@@ -1,5 +1,6 @@
 <?php
 
+use App\Data\UserData;
 use App\Http\Controllers\AddController;
 use App\Http\Controllers\MarketplaceController;
 use App\Http\Controllers\MoneyRequestController;
@@ -70,6 +71,13 @@ Route::middleware('auth', 'redirect-if-admin', 'verified')->group(function () {
     Route::post('money-request/{moneyRequest}/reject', [MoneyRequestController::class, 'reject'])->name('money.reject');
     Route::post('money-request/{moneyRequest}/request-to-release', [MoneyRequestController::class, 'requestToRelease'])->name('money.request-release');
     Route::post('money-request/{moneyRequest}/release', [MoneyRequestController::class, 'release'])->name('money.release');
+
+    Route::get('referrals', function () {
+        $referrals = User::find(auth()->id())->referrals;
+        return Inertia::render('Referall/Index', [
+            'referrals' => UserData::collect($referrals)
+        ]);
+    })->name('referrals.index');
 });
 
 Route::middleware('auth')

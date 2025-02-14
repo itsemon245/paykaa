@@ -7,6 +7,7 @@ export type RouteName = keyof RouteParams;
 export type ButtonSeverity = "contrast" | "secondary" | "success" | "info" | "warning" | "danger" | "help" | undefined;
 export interface ServerAppConfig {
     name: string;
+    url: string;
     env: string;
     payment: {
         charge: number;

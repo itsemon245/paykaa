@@ -33,8 +33,8 @@ const menuItems = [
     {
         label: "Referral",
         icon: "/assets/dashboard/referral.png",
-        url: "#",
-        isActive: () => false,
+        url: route('referrals.index'),
+        isActive: () => route().current('referrals.index'),
     },
     {
         label: "Earn",

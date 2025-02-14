@@ -22,12 +22,13 @@ return Application::configure(basePath: dirname(__DIR__))
             ->validateCsrfTokens(except: [
                 'upload/chunk'
             ])
+            ->encryptCookies(except: [
+                'referId'
+            ])
             ->trustHosts([
                 'pakaa.com',
                 'localhost',
-            ]);;
-
-        //
+            ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
