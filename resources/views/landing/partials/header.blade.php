@@ -55,94 +55,26 @@
                 >
                     <nav class="SiteHeaderNav">
                         <ul class="SiteHeaderNav__list">
-                            <li class="SiteHeaderNavItem">
+                            @php
+                                $links = [
+                                'Home' => '/',
+                                'How it works' => '#how-it-works',
+                                'About Us' => '#about',
+                                'Contact Us' => '#contact',
+                                ]
+                            @endphp
+                            @foreach ($links as $link=> $url)
+                                <li class="SiteHeaderNavItem">
+                                    <a
+                                        class="SiteHeaderNavItem__link text-white"
+                                    >
 
-                                <button
-                                    class="
-        SiteHeaderNavItem__link
+                                    {{$link}}
 
-      "
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                    data-js-target-list="SiteHeader.dropdownTriggers"
-                                    data-testid="header-products-nav-item"
-                                >
+                                    </a>
 
-                                    Products
-
-                                </button>
-
-                            </li>
-                            <li class="SiteHeaderNavItem">
-
-                                <button
-                                    class="
-        SiteHeaderNavItem__link
-
-      "
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                    data-js-target-list="SiteHeader.dropdownTriggers"
-                                    data-testid="header-solutions-nav-item"
-                                >
-
-                                    Solutions
-
-                                </button>
-
-                            </li>
-                            <li class="SiteHeaderNavItem">
-
-                                <button
-                                    class="
-        SiteHeaderNavItem__link
-
-      "
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                    data-js-target-list="SiteHeader.dropdownTriggers"
-                                    data-testid="header-developers-nav-item"
-                                >
-
-                                    Developers
-
-                                </button>
-
-                            </li>
-                            <li class="SiteHeaderNavItem">
-
-                                <button
-                                    class="
-        SiteHeaderNavItem__link
-
-      "
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                    data-js-target-list="SiteHeader.dropdownTriggers"
-                                    data-testid="header-resources-nav-item"
-                                >
-
-                                    Resources
-
-                                </button>
-
-                            </li>
-                            <li class="SiteHeaderNavItem">
-
-                                <a
-                                    class="
-    Link
-    SiteHeaderNavItem__link
-  "
-                                    href=/pricing"
-                                    data-js-controller="AnalyticsButton"
-                                    data-analytics-category="Navigation"
-                                    data-analytics-action="Clicked"
-                                    data-analytics-label="Pricing"
-                                    data-testid="header-pricing-nav-item"
-                                >Pricing</a>
-
-                            </li>
+                                </li>
+                            @endforeach
                         </ul>
                     </nav>
                 </div>
@@ -164,18 +96,8 @@
     SiteHeader__leftCta
   "
                                 href="/dashboard"
-                                data-js-controller="AnalyticsButton"
-                                data-js-target="SiteHeader.leftCtaEl"
-                                data-analytics-category="Buttons"
-                                data-analytics-action="Clicked"
-                                data-analytics-label="Login"
-                                data-testid="header-login-cta-button"
-                            >Sign in&nbsp;<svg
-                                    class="
-    HoverArrow
-
-
-  "
+                                >{{auth()->check() ? "Dashboard" :  "Sign in"}}&nbsp;<svg
+                                    class="HoverArrow"
                                     width="10"
                                     height="10"
                                     viewBox="0 0 10 10"
