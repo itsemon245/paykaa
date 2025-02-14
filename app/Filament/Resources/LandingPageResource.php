@@ -58,6 +58,16 @@ class LandingPageResource extends Resource
                         TextInput::make('about.title')
                             ->default('About us')
                             ->required(),
+                        TextInput::make('about.email')
+                            ->email()
+                            ->default('info@paykaa.com')
+                            ->required(),
+                        TextInput::make('about.phone')
+                            ->default('+8801643428395')
+                            ->required(),
+                        TextInput::make('about.address')
+                            ->default('Dhaka, Bangladesh')
+                            ->required(),
                         Textarea::make('about.description')
                             ->default('We are a team of developers, designers, and product managers who are passionate about making the world a better place. We believe that everyone deserves access to financial services and we are committed to making that a reality.')
                             ->required(),

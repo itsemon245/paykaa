@@ -287,7 +287,6 @@
                         </div>
                     </div>
                 </div>
-
             </footer>
 
 </section>

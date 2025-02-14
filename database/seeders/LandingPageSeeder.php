@@ -24,6 +24,9 @@ class LandingPageSeeder extends Seeder
                 'title' => 'About us',
                 'description' => 'We are a team of developers, designers, and product managers who are passionate about making the world a better place. We believe that everyone deserves access to financial services and we are committed to making that a reality.',
                 'image' => 'about.png',
+                'address' => 'Dhaka, Bangladesh',
+                'email' => 'info@paykaa.com',
+                'phone' => '+8801643428395',
             ],
             'socials' => [
                 [
