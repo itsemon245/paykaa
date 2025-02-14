@@ -2,13 +2,12 @@
     $howItWorks = $howItWorks ?? [];
 @endphp
 <style>
-.box{
-    width: 500px;
-    height: 500px;
-    background: red;
+.custom-border {
+    width: var(--image-size);
+    height: var(--image-size);
     position: absolute;
-    top: 0;
-    left: 0;
+    background-color: transparent;
+    padding: 0.5rem; /* Equivalent to p-2 */
 }
 
 </style>
@@ -43,43 +42,37 @@
                              'animate__animated animate__zoomIn': visible && currentIndex >= index,
                              'animate__animated animate__zoomOut': !visible && currentIndex >= index,
                              }"></div>
-                    <div x-show="index == 1 && visible && currentIndex >= index" :class="{
+                    <div x-show="index == 1 && visible && currentIndex >= index"
+                        x-transition.delay.2000ms
+                        x-transition.duration.2000ms
+                        :class="{
                         'rounded-bl-lg border-b-4 border-l-4': index == 1,
-                        'right-[50%] translate-x-[9.9%]': true,
+                        'right-[41.9%]': true,
                         'top-[50%]': index != 1,
                         'bottom-[50%]': index == 1,
                         }"
-                        class=" w-[var(--image-size)] h-[var(--image-size)] absolute bg-transparent p-2"></div>
+                        class="custom-border"></div>
 
-                    <svg x-show="visible && currentIndex >= index" class="HomepageFrontdoorConnection " data-js-controller="HomepageFrontdoorConnection" data-js-id="Standalone-PaymentsTaxConnection" style="left: 218px; top: 77px; width: 4px; height: 104px;">
-                        <defs>
-                        <linearGradient class="RotatingGradient" id="Standalone-PaymentsTaxConnectionGradient" gradientUnits="userSpaceOnUse" data-js-controller="RotatingGradient" data-js-start-rotation="" data-js-speed="" x1="2.5768992398632236" x2="97.4231007601366" y1="65.84454209795646" y2="34.15545790204303">
-
-
-                        <stop offset="0" stop-color="#ff5996"></stop>
-
-
-                        <stop offset="1" stop-color="#9966ff"></stop>
-
-                        </linearGradient>
-                        </defs>
-
-                        <path stroke="url(#Standalone-PaymentsTaxConnectionGradient)" stroke-width="2" fill="none" data-js-target="HomepageFrontdoorConnection.path" d="M1,103 L1,1" style="stroke-dasharray: 102px; stroke-dashoffset: 102px;"></path>
-                    </svg>
-                    <div x-show="visible && currentIndex >= index"
+                    <div x-show="visible && currentIndex > index"
+                        x-transition.duration.2000ms
                         :class="{
-                        'w-0 h-0': !(visible && currentIndex >= index),
-                        'w-[var(--image-size)] h-[var(--image-size)]': (visible && currentIndex >= index),
                         'rounded-br-lg border-b-4 border-r-4': index == 1,
+                        'left-[41.9%]': true,
+                        'top-[50%]': index != 1,
+                        'bottom-[50%]': index == 1,
+                        }"
+                        class="custom-border"></div>
+                    <div x-show="visible && currentIndex >= index"
+                        x-transition.duration.2000ms
+                        :class="{
                         'rounded-tr-lg border-t-4 border-r-4': index == 0,
                         'rounded-tl-lg border-t-4 border-l-4': index == 2,
-                        'left-[50%] translate-x-[-9.90%]': index < 2,
-                        'right-[50%] translate-x-[9.9%]': index == 2,
+                        'left-[39%]': index == 0,
+                        'right-[39%]': index == 2,
                         'top-[50%]': index != 1,
                         'bottom-[50%]': index == 1,
                         }"
-                        class=" absolute bg-transparent p-2 transition-all">
-                        <div class="w-full h-full"></div>
+                        class="custom-border">
                     </div>
                 </div>
             </template>
