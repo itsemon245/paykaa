@@ -64,6 +64,9 @@ export default function Login() {
                 <div className={cn("auth-container", getQuery('register') && 'active')} ref={container}>
                     <div className="form-box login">
                         <form onSubmit={submit} className="form">
+                            <div className="flex items-center justify-center mb-4">
+                                <Logo className="!w-[140px]" />
+                            </div>
                             <h1>Login</h1>
                             <div className="input-box">
                                 <input

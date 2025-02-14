@@ -55,6 +55,9 @@ export default function ResetPassword({
                 <div className='auth-container' ref={container}>
                     <div className="p-5 flex flex-col items-center justify-center w-full h-full form-box">
                         <form onSubmit={submit} className='form'>
+                            <div className="flex items-center justify-center mb-4">
+                                <Logo className="!w-[140px]" />
+                            </div>
                             <h1>Reset Password</h1>
                             <div className="input-box opacity-65 cursor-not-allowed">
                                 <input type="email" value={data.email} disabled placeholder="Email" required onChange={(e) => setData('email', e.target.value)} />

@@ -31,6 +31,9 @@ export default function ForgotPassword({ status }: { status?: string }) {
             <main className='main-div'>
                 <div className="auth-container" ref={container}>
                     <div className="p-5 flex flex-col items-center justify-center w-full h-full">
+                        <div className="flex items-center justify-center mb-4">
+                            <Logo className="!w-[140px]" />
+                        </div>
                         <h2 className="text-3xl font-bold text-center text-gray-600 !mb-6">Reset Password</h2>
                         <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
                             Forgot your password? No problem. Just let us know your email
