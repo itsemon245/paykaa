@@ -149,7 +149,7 @@
             })();
         </script>
         @include('landing.partials.hero', ['hero' => $landing->hero])
-        {{-- @include('landing.partials.how-it-works', ['howItWorks' => $landing->how_it_works]) --}}
+        @include('landing.partials.how-it-works', ['howItWorks' => $landing->how_it_works])
         @include('landing.partials.payment-methods')
         @include('landing.partials.footer', ['landing' => $landing])
     </div>

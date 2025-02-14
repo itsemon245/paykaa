@@ -36,7 +36,6 @@
                             </section>
                         </div>
                         <div class="ColumnLayout"
-                            id="contact"
                             data-columns="1,1,1,1">
                             <section class="Copy HomepageGlobalSection__uptimeStat variant--Stat">
                                 <header class="Copy__header">
@@ -47,7 +46,7 @@
                                 </div>
 
                             </section>
-                            <section class="Copy HomepageGlobalSection__uptimeStat variant--Stat">
+                            <section id="social-media" class="Copy HomepageGlobalSection__uptimeStat variant--Stat">
                                 <header class="Copy__header">
                                     <h1 class="Copy__title">Social Media</h1>
                                 </header>
@@ -68,7 +67,7 @@
                                         @endforeach
                                 </div>
                             </section>
-                            <section class="Copy HomepageGlobalSection__uptimeStat variant--Stat">
+                            <section id="contact" class="Copy HomepageGlobalSection__uptimeStat variant--Stat">
                                 <header class="Copy__header">
                                     <h1 class="Copy__title">Email</h1>
                                 </header>

@@ -97,7 +97,7 @@
           <a class="
     Link
     HeroCaption__link
-  " href="{{ route('login', ['register' => true]) }}" target="_blank" data-js-controller="AnalyticsButton" data-analytics-category="Links" data-analytics-action="Clicked" data-analytics-label="hero_pill_sessions_2025_early_bird_registration">We want to protect your money starting today&nbsp;<svg class="
+  " href="{{ route('login', ['register' => true]) }}" target="_blank" data-js-controller="AnalyticsButton" data-analytics-category="Links" data-analytics-action="Clicked" data-analytics-label="hero_pill_sessions_2025_early_bird_registration">Register now&nbsp;<svg class="
     HoverArrow
 
 

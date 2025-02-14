@@ -59,14 +59,16 @@
                             @php
                                 $links = [
                                 #'How it works' => '#how-it-works',
-                                'Contact Details' => '#contact',
-                                'About Us' => '#about',
                                 'Payment Methods' => '#payment-methods',
+                                'Social Media' => '#social-media',
+                                'Contact' => '#contact',
+                                'About Us' => '#about',
                                 ]
                             @endphp
                             @foreach ($links as $link=> $url)
                                 <li class="SiteHeaderNavItem">
                                     <a
+                                        href="{{$url}}"
                                         class="SiteHeaderNavItem__link text-white"
                                     >
 
@@ -132,7 +134,7 @@
                             ><span
                                     class="NavCta__label"
                                     style="background: linear-gradient(90deg, var(--primary-400) 0%, var(--primary-500));"
-                                >{{auth()->check() ? "Dashboard" :  "Sign in"}}&nbsp;<svg
+                                >Sign in&nbsp;<svg
                                     class="HoverArrow"
                                     width="10"
                                     height="10"
@@ -165,7 +167,7 @@
                                 class="CtaButton variant--Button CtaButton--arrow "
                                 href="/dashboard"
                             ><span
-                                >{{auth()->check() ? "Dashboard" :  "Sign in"}}&nbsp;</a>
+                                >Sign in&nbsp;</a>
                     <button
                         @click="open = !open"
                         class="MenuButton !text-white"
@@ -188,7 +190,7 @@
             "translate-x-[-100%]": !open,
             "translate-x-[0%]": open
             }">
-            <ul class="flex flex-col gap-0.5 mb-0 text-gray-700 w-full">
+            <ul class="flex flex-col gap-5 mb-0 text-gray-700 w-full">
                                     <li class="!w-full block text-center">
                         <a href="/login?register=1"
                             class="text-center block rounded-md p-2 text-gray-700 hover:text-gray-900 hover:bg-gray-200 font-bold !w-full transition-colors duration-200">
