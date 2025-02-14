@@ -2,16 +2,8 @@
     $withdrawMethods = \App\Models\WithdrawMethod::all();
 @endphp
 <section
-         class="
-    Section
-    HomepageLogoGrid
-    theme--White
-    flavor--Chroma
-    accent--Red
-
-    Section--paddingSmall
-    Section--hasGuides
-   ">
+        id="payment-methods"
+         class=" Section HomepageLogoGrid theme--White flavor--Chroma accent--Red Section--paddingSmall Section--hasGuides ">
     <div class="flex items-center gap-3 justify-center bg-white font-bold text-3xl py-16">
         <svg class="ProductIcon ProductIcon--Payments HomepageFrontdoor__copyCaptionIcon"
              width="40"

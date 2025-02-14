@@ -3,7 +3,7 @@
 @endphp
 @push('styles')
 @endpush
-<section class="w-full max-w-5xl p-3 mx-auto"
+<section id="how-it-works" class="w-full max-w-5xl p-3 mx-auto"
          x-data="sectionAnimation">
     <div class="grid grid-cols-2 gap-10 items-center relative">
         <!-- Left Content -->

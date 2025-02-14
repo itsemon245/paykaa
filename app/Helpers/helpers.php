@@ -41,3 +41,8 @@ function backWithError(callable $callback)
         return back()->with('error', $th->getMessage());
     }
 }
+
+function useImage(string $url): string
+{
+    return str($url)->startsWith('http') ? $url : asset("storage/" . $url);
+}

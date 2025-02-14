@@ -45,7 +45,6 @@ export type Chat = {
     sender?: User;
     receiver?: User;
     messages?: Message[];
-    money_request?: MoneyRequest;
 };
 export type DepositMethod = {
     id: any;
@@ -88,6 +87,18 @@ export type Kyc = {
     user?: User;
 };
 export type KycController = {
+    created_at_human: any;
+    updated_at_human: any;
+};
+export type LandingPage = {
+    id: any;
+    hero?: string;
+    payment_methods?: string;
+    how_it_works?: string;
+    socials?: string;
+    about?: string;
+    created_at: string;
+    updated_at?: string;
     created_at_human: any;
     updated_at_human: any;
 };
@@ -139,6 +150,15 @@ export type MoneyRequest = {
     chat?: Chat;
     from?: User;
 };
+export type Setting = {
+    id: any;
+    transactions?: string;
+    general?: string;
+    created_at: string;
+    updated_at?: string;
+    created_at_human: any;
+    updated_at_human: any;
+};
 export type User = {
     id: any;
     uuid: string;
@@ -156,7 +176,9 @@ export type User = {
     created_at?: string;
     updated_at?: string;
     last_seen_at?: any;
+    referred_by?: any;
     balance: any;
+    referrals?: User[];
     kyc?: Kyc;
 };
 export type Wallet = {

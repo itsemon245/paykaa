@@ -2,9 +2,7 @@
     $socials = $landing->socials ?? [];
     $about = $landing->about ?? [];
 @endphp
-<footer
-        class="Section HomepageGlobalSection theme--Dark flavor--Chroma accent--Cyan Section--angleTop Section--paddingNormal Section--hasGuides relative">
-    <div class="Section__masked">
+<footer class="Section HomepageGlobalSection theme--Dark flavor--Chroma accent--Cyan Section--angleTop Section--paddingNormal Section--hasGuides relative"> <div class="Section__masked">
         <div class="Section__backgroundMask !overflow-hidden">
             <div class="Section__background">
                 <div class="Guides"
@@ -25,6 +23,7 @@
                     <div class="RowLayout"
                         style="--rowLayoutGap: var(--rowLayoutGapXLarge)">
                         <div class="ColumnLayout"
+                              id="about"
                             data-columns="2,2">
                             <section class="Copy HomepageGlobalSection__copy variant--Section">
                                 <header class="Copy__header">
@@ -37,6 +36,7 @@
                             </section>
                         </div>
                         <div class="ColumnLayout"
+                            id="contact"
                             data-columns="1,1,1,1">
                             <section class="Copy HomepageGlobalSection__uptimeStat variant--Stat">
                                 <header class="Copy__header">

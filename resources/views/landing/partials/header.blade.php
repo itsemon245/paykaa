@@ -58,10 +58,10 @@
                         <ul class="SiteHeaderNav__list">
                             @php
                                 $links = [
-                                'Home' => '/',
-                                'How it works' => '#how-it-works',
+                                #'How it works' => '#how-it-works',
+                                'Contact Details' => '#contact',
                                 'About Us' => '#about',
-                                'Contact Us' => '#contact',
+                                'Payment Methods' => '#payment-methods',
                                 ]
                             @endphp
                             @foreach ($links as $link=> $url)
@@ -127,12 +127,7 @@
                             data-js-target="Homepage.gradientCtaButton"
                         >
                             <a
-                                class="
-    CtaButton
-    variant--Button
-    CtaButton--arrow
-
-  "
+                                class=" CtaButton variant--Button CtaButton--arrow "
                                 href="/dashboard"
                             ><span
                                     class="NavCta__label"
@@ -164,76 +159,51 @@
                 </nav>
 
                 <nav class="SiteHeader__menuNav">
+                    <div class="flex items-center gap-2 !text-white">
+
+                                                <a
+                                class="CtaButton variant--Button CtaButton--arrow "
+                                href="/dashboard"
+                            ><span
+                                >{{auth()->check() ? "Dashboard" :  "Sign in"}}&nbsp;</a>
                     <button
                         @click="open = !open"
-                        class="MenuButton"
+                        class="MenuButton !text-white"
                         href=/#"
-                        title="Open mobile navigation"
+                        :title="open ? 'Close navigation' : 'Open navigation'"
                         data-js-target="SiteHeader.menuButton"
                         data-testid="header-mobile-open-nav-menu-button"
                     >
-                        <svg
-                            width="16"
-                            height="10"
-                            viewBox="0 0 16 10"
-                        >
-                            <title>Open mobile navigation</title>
-                            <g
-                                fill="var(--knockoutColor)"
-                                fill-rule="evenodd"
-                            >
-                                <rect
-                                    y="8"
-                                    width="16"
-                                    height="2"
-                                    rx="1"
-                                ></rect>
-                                <rect
-                                    y="4"
-                                    width="16"
-                                    height="2"
-                                    rx="1"
-                                ></rect>
-                                <rect
-                                    width="16"
-                                    height="2"
-                                    rx="1"
-                                ></rect>
-                            </g>
-                        </svg>
-                    </a>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" x-show="open">
+                        <path fill="none" stroke="white" stroke-linecap="round" stroke-width="2" d="M20 20L4 4m16 0L4 20"/></svg>
+                    <svg x-show="!open" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 32 32"><path fill="none" stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h22M5 16h22M5 24h22"/></svg>
+                    </button>
+
+                    </div>
                 </nav>
 
             </div>
         </div>
-        <div @click.outside="open = false" x-show="open" class="w-max bg-white p-3 rounded-lg animate__animated fixed right-4 transition-all" :class="{
+        <div @click.outside="open = false" x-show="open" class="h-screen w-full bg-white p-3 rounded-lg animate__animated mt-4 transition-all" :class="{
             "translate-x-[-100%]": !open,
             "translate-x-[0%]": open
             }">
             <ul class="flex flex-col gap-0.5 mb-0 text-gray-700 w-full">
+                                    <li class="!w-full block text-center">
+                        <a href="/login?register=1"
+                            class="text-center block rounded-md p-2 text-gray-700 hover:text-gray-900 hover:bg-gray-200 font-bold !w-full transition-colors duration-200">
+                            Sign Up
+                        </a>
+                    </li>
+
                 @foreach ($links as $link=> $url)
-                    <li class="!w-full block">
-                        <a href="{{ $url }}"
-                           class="block rounded-md p-2 text-gray-700 hover:text-gray-900 hover:bg-gray-200 font-bold !w-full transition-colors duration-200">
+                    <li class="!w-full block text-center">
+                        <a href="{{ $url }}" @click="setTimeout(() => open = false, 500)"
+                           class="text-center block rounded-md p-2 text-gray-700 hover:text-gray-900 hover:bg-gray-200 font-bold !w-full transition-colors duration-200">
                             {{$link}}
                         </a>
                     </li>
                 @endforeach
-                <li class="!w-full flex items-center gap-2">
-                    <a href="/dashboard"
-                       class="bg-primary text-white text-center block rounded-md p-2 font-bold !w-full transition-colors duration-200">
-                        {{auth()->check() ? "Dashboard" :  "Sign in"}}
-                    </a>
-
-                    @if (!auth()->check())
-                        <a href="/login?register=1"
-                           class="!border-primary text-primary hover:!bg-primary hover:!text-white block !text-nowrap rounded-md p-2 font-bold !w-full transition-colors duration-200">
-                            Sign up
-                        </a>
-                    @endif
-
-                </li>
-
             </ul>
 
 

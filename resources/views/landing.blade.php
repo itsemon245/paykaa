@@ -88,8 +88,7 @@
     </script>
     @vite('resources/css/app.css')
     @include('landing.partials.styles')
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     @stack('styles')
     <style>
         @keyframes glow {
@@ -154,6 +153,20 @@
         @include('landing.partials.payment-methods')
         @include('landing.partials.footer', ['landing' => $landing])
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const links = document.querySelectorAll('[href^="#"]');
+            links.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
     @stack('scripts')
 </body>
 

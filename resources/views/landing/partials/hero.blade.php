@@ -8,7 +8,8 @@
 }
 </style>
 <section
-         class="
+    id="home"
+    class="
     Section
     HomepageHero
     theme--White
@@ -90,7 +91,7 @@
   <div class="HeroCaption__container HeroCaption--onDark ">
     <div class="HeroCaption__content">
       <span class="HeroCaption__title">
-        {{ now()->format('F Y') }}
+        {{ now()->format('d F, Y') }}
 
           <span class="HeroCaption__separator HeroCaption__separator--desktopOnly">•</span>
           <a class="
@@ -155,67 +156,39 @@
 
 
       ">{!! $hero['description'] !!}</div>
-
             <footer class="Copy__footer">
                 <div class="Copy__ctaContainer">
                     <div class="HomepageHero__ctas">
-                        <a class="
-    CtaButton
-    variant--Button
-    CtaButton--arrow
-    HomepageHero__cta
-  "
+                        <a class="CtaButton variant--Button CtaButton--arrow HomepageHero__cta"
                            href="/login?register=1"
-                           data-js-controller="AnalyticsButton"
-                           data-analytics-category="Buttons"
-                           data-analytics-action="Clicked"
-                           data-analytics-label="Start Now CTA Hero">Start now&nbsp;<svg class="
-    HoverArrow
-
-
-  "
+                           data-analytics-label="Start Now CTA Hero">Start now&nbsp;<svg class="HoverArrow"
                                  width="10"
                                  height="10"
                                  viewBox="0 0 10 10"
                                  aria-hidden="true">
                                 <g fill-rule="evenodd">
-
                                     <path class="HoverArrow__linePath"
                                           d="M0 5h7"></path>
                                     <path class="HoverArrow__tipPath"
                                           d="M1 1l4 4-4 4"></path>
-
                                 </g>
                             </svg></a>
-                        <a class="
-    CtaButton
-    variant--Link
-    CtaButton--arrow
-    HomepageHero__cta
-  "
-                           href=/contact/sales"
-                           data-js-controller="AnalyticsButton"
-                           data-analytics-category="Buttons"
-                           data-analytics-action="Clicked"
-                           data-analytics-label="Contact Sales CTA Hero">Contact sales&nbsp;<svg
-                                 class="
-    HoverArrow
-
-
-  "
+                        <a class="CtaButton variant--Link CtaButton--arrow HomepageHero__cta"
+                           href="#contact"
+                           >Contact Us&nbsp;<svg
+                                 class="HoverArrow"
                                  width="10"
                                  height="10"
                                  viewBox="0 0 10 10"
                                  aria-hidden="true">
                                 <g fill-rule="evenodd">
-
                                     <path class="HoverArrow__linePath"
                                           d="M0 5h7"></path>
                                     <path class="HoverArrow__tipPath"
                                           d="M1 1l4 4-4 4"></path>
-
                                 </g>
-                            </svg></a>
+                            </svg>
+                        </a>
                     </div>
 
                     <div class="HomepageHero__emailInput">
@@ -254,35 +227,20 @@
                                         </svg>
                                     </div>
                                 </div>
-                                <button class="
-    CtaButton
-    variant--Button
-    CtaButton--arrow
-    HeroEmailInput__button
-  "
-                                        data-js-controller="AnalyticsButton"
-                                        data-js-target="HeroEmailInput.startNowButton"
-                                        data-analytics-category="Buttons"
-                                        data-analytics-action="Clicked"
-                                        data-analytics-label="HomePageEmailInputCta">Start now&nbsp;<svg
-                                         class="
-    HoverArrow
-
-
-  "
+                                <button class="CtaButton variant--Button CtaButton--arrow HeroEmailInput__button ">Start now&nbsp;<svg
+                                         class=" HoverArrow "
                                          width="10"
                                          height="10"
                                          viewBox="0 0 10 10"
                                          aria-hidden="true">
                                         <g fill-rule="evenodd">
-
                                             <path class="HoverArrow__linePath"
                                                   d="M0 5h7"></path>
                                             <path class="HoverArrow__tipPath"
                                                   d="M1 1l4 4-4 4"></path>
-
                                         </g>
-                                    </svg></button>
+                                    </svg>
+                                </button>
                             </form>
                         </div>
                     </div>
@@ -300,12 +258,12 @@
             Paykaa
         </div>
         <div class="w-[600px] h-[500px] rounded-xl overflow-hidden">
-            <img src="{{$hero['image_desktop']}}" class="w-full h-full"/>
+            <img src="{{useImage($hero['image_desktop'])}}" class="w-full h-full"/>
         </div>
     </div>
     <figure class="HomepageHeroGraphic__phone PhoneGraphic overflow-hidden p-2"
             style=""aria-hidden="true">
-        <img src="{{$hero['image_mobile']}}" class="w-full h-full rounded-[30px]"/>
+        <img src="{{useImage($hero['image_mobile'])}}" class="w-full h-full rounded-[30px]"/>
     </figure>
 </div>
 </div>

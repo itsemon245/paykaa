@@ -19,10 +19,19 @@ export type RouteParams = {
     "filament.admin.resources.deposit-methods.index": {};
     "filament.admin.resources.deposits.index": {};
     "filament.admin.resources.kycs.index": {};
+    "filament.admin.resources.landing-pages.index": {};
+    "filament.admin.resources.landing-pages.edit": {
+        record: string;
+    };
     "admin.login-as": {
         user: string;
     };
     "filament.admin.resources.money-requests.index": {};
+    "filament.admin.resources.settings.index": {};
+    "filament.admin.resources.settings.create": {};
+    "filament.admin.resources.settings.edit": {
+        record: string;
+    };
     "filament.admin.resources.transactions.index": {};
     "filament.admin.resources.users.index": {};
     "filament.admin.resources.withdraw-methods.index": {};
@@ -85,6 +94,7 @@ export type RouteParams = {
     "profile.update": {};
     "profile.destroy": {};
     "profile.update.avatar": {};
+    "referrals.index": {};
     "register": {};
     "password.store": {};
     "password.reset": {
