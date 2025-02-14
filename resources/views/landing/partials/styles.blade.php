@@ -1,5 +1,5 @@
 <style>
-    
+[x-cloak] { display: none !important; }
     .HomepageLogoGrid .Section__layout {
         --sectionPaddingTop: 0
     }

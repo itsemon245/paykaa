@@ -184,7 +184,7 @@
 
             </div>
         </div>
-        <div @click.outside="open = false" x-show="open" class="h-screen w-full bg-white p-3 rounded-lg animate__animated mt-4 transition-all" :class="{
+        <div @click.outside="open = false" x-cloak x-show="open" class="h-screen w-full bg-white p-3 rounded-lg animate__animated mt-4 transition-all" :class="{
             "translate-x-[-100%]": !open,
             "translate-x-[0%]": open
             }">
