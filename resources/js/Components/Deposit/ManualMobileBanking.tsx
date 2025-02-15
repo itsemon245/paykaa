@@ -1,6 +1,7 @@
 import { DepositMethodData, WalletData } from "@/types/_generated"
 import { transform } from "@/utils"
-import { SetData } from "@inertiajs/react"
+import { SetData, usePage } from "@inertiajs/react"
+import { parseInt } from "lodash"
 import { InputNumber, InputNumberChangeEvent } from "primereact/inputnumber"
 
 interface ManualMobileBankingProps {
@@ -17,10 +18,16 @@ export default function ManualMobileBanking({
     depositMethod
 }: ManualMobileBankingProps) {
     const { app } = useConfig()
+    const { base_commission } = usePage().props.settings.transactions
+    const charge = useMemo(() => {
+        console.log("charge", base_commission, depositMethod?.charge)
+        return (depositMethod?.charge ?? 0) + parseInt(base_commission)
+    }, [depositMethod])
+
 
     const total = useMemo(() => {
         if (!data.amount) return 0;
-        let commission = Math.round(data.amount * ((depositMethod?.charge ?? 0) / 100))
+        let commission = Math.round(data.amount * (charge / 100))
         setData('commission', commission)
         return data.amount + commission
     }, [data.amount])
@@ -49,12 +56,12 @@ export default function ManualMobileBanking({
                 <div className="mb-2">
                     {
                         data.amount === 0 ?
-                            <div className="text-sm text-gray-500 text-start">We charge a <span className="font-bold">{depositMethod?.charge}{depositMethod?.is_fixed_amount ? 'BDT' : "%"}</span> service charge on top of each deposits.</div>
+                            <div className="text-sm text-gray-500 text-start">We charge a <span className="font-bold">{charge} %</span> service charge on top of each deposits.</div>
                             :
                             <>
                                 <InputLabel value="Full Amount" />
                                 <div className="flex items-center justify-center border p-1.5 rounded-lg text-lg font-bold opacity-75 cursor-not-allowed">{total + ".00"} {depositMethod?.category !== 'Cryptocurrency' && 'BDT'}</div>
-                                <div className="text-sm text-gray-500 text-start">Service Charge: <span className="font-bold">{depositMethod?.charge}%</span></div>
+                                <div className="text-sm text-gray-500 text-start">Service Charge: <span className="font-bold">{charge}%</span></div>
                             </>
                     }
                 </div>

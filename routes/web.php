@@ -1,6 +1,9 @@
 <?php
 
+use App\Data\EarningData;
 use App\Data\UserData;
+use App\Enum\Wallet\WalletTransactionType;
+use App\Enum\Wallet\WalletType;
 use App\Http\Controllers\AddController;
 use App\Http\Controllers\MarketplaceController;
 use App\Http\Controllers\MoneyRequestController;
@@ -13,7 +16,10 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UploadController;
+use App\Models\Earning;
 use App\Models\LandingPage;
+use App\Models\Setting;
+use App\Models\Wallet;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -78,6 +84,42 @@ Route::middleware('auth', 'redirect-if-admin', 'verified')->group(function () {
             'referrals' => UserData::collect($referrals)
         ]);
     })->name('referrals.index');
+
+    Route::get('earnings', function () {
+        $earnings = Earning::where('user_id', auth()->id())
+            ->where('status', 'approved')
+            ->with('user', 'from')
+            ->get();
+        return Inertia::render('Referall/Earnings', [
+            'earnings' => EarningData::collect($earnings),
+        ]);
+    })->name('earnings.index');
+    Route::post('earnings/{from_id}', function (int $from_id) {
+        $minEarnableAmount = (int)Setting::first()->transactions['min_earnable_amount'];
+        $earnings = Earning::where('user_id', auth()->id())
+            ->where('status', 'approved')
+            ->where('from_id', $from_id)
+            ->sum('amount');
+        if ($earnings < $minEarnableAmount) {
+            return back()->with('error', 'Not enough earnings');
+        }
+        Wallet::create([
+            'owner_id' => auth()->id(),
+            'user_id' => $from_id,
+            'transaction_type' => WalletTransactionType::EARN->value,
+            'type' => WalletType::CREDIT->value,
+            'amount' => $earnings,
+            'currency' => 'bdt',
+            'approved_at' => now(),
+            'note' => "Earnings from user {$from_id}",
+        ]);
+        Earning::where('user_id', auth()->id())
+            ->where('status', 'approved')
+            ->where('from_id', $from_id)
+            ->update(['status' => 'converted']);
+
+        return back();
+    })->name('earnings.convert');
 });
 
 Route::middleware('auth')

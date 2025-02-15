@@ -6,20 +6,20 @@ use App\Enum\MethodCategory;
 use App\Enum\Wallet\WalletStatus;
 use App\Enum\Wallet\WalletTransactionType;
 use App\Filament\Resources\DepositResource\Pages\ManageDeposits;
+use App\Models\Earning;
 use App\Models\Model;
+use App\Models\Setting;
 use App\Models\Wallet;
+use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Forms\Get;
-use Filament\Resources\Components\Tab;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\ActionSize;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
-use Filament\Tables\Actions\ActionGroup;
-use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Livewire\Livewire;
 
 class DepositResource extends Resource
 {
@@ -42,9 +42,45 @@ class DepositResource extends Resource
 
             Action::make('Approve')
                 ->requiresConfirmation()
-                ->hidden(fn(Model $record) => $record->status === WalletStatus::APPROVED->value || $record->status === WalletStatus::FAILED->value || $record->status === WalletStatus::CANCELLED->value)
+                ->after(function (Model $record) {
+                    if ($record->transaction_type === WalletTransactionType::DEPOSIT->value) {
+                        $maxAmount = (int)Setting::first()->transactions['referral_commission'] ?? 0;
+                        $referall = $record->owner;
+                        $referer = $referall->referer;
+                        if ($referer) {
+                            $earnings = Earning::where([
+                                'user_id' => $referer->id,
+                                'from_id' => $referall->id,
+                                'status' => 'approved',
+                            ])->sum('amount');
+
+                            if ($earnings < $maxAmount) {
+                                //subtract earnings from max amount
+                                $maxEligibleAmount = $maxAmount - $earnings;
+                                $amount = (int) $record->commission;
+                                if ($amount >= $maxEligibleAmount && $record->commission > $maxEligibleAmount * 2) {
+                                    $amount = $maxEligibleAmount;
+                                } else {
+                                    $amount = $amount * 1 / 2;
+                                }
+                                $amount = round($amount, 2);
+                                if ($amount > 0) {
+                                    Earning::create([
+                                        'user_id' => $referer->id,
+                                        'from_id' => $referall->id,
+                                        'amount' => $amount,
+                                        'currency' => $record->currency,
+                                        'status' => 'approved',
+                                    ]);
+                                }
+                            }
+                        }
+                    }
+                })
                 ->tooltip('Approve')
-                ->action(fn(Model $record) => $record->update(['approved_at' => now(), 'failed_at' => null, 'cancelled_at' => null]))
+                ->action(function (Model $record) {
+                    $record->update(['approved_at' => now(), 'failed_at' => null, 'cancelled_at' => null]);
+                })
                 ->size(ActionSize::Large)
                 ->color('success')
                 ->icon('heroicon-o-check-circle'),

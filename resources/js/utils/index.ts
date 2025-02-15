@@ -35,11 +35,12 @@ export const cookie = {
             }
         }
         return null;
+    },
+    remove(key: string): void {
+        document.cookie = `${encodeURIComponent(key)}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
     }
 }
 export const poll = (fn: () => void, timeout: number) => {
-    console.log("Poll off!");
-    return;
     console.log("polling function", fn, "dealy", timeout + "ms");
     const interval = setInterval(fn, timeout);
     return () => clearInterval(interval);

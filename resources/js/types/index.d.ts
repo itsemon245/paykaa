@@ -5,6 +5,16 @@ import { RouteParams } from './param';
 
 export type RouteName = keyof RouteParams;
 export type ButtonSeverity = "contrast" | "secondary" | "success" | "info" | "warning" | "danger" | "help" | undefined;
+export interface Settings {
+    transactions: {
+        base_commission: string;
+        min_withdraw_amount: string;
+        min_deposit_amount: string;
+        referral_commission: string;
+        min_earnable_amount: string;
+    };
+    general: object;
+}
 export interface ServerAppConfig {
     name: string;
     url: string;
@@ -17,6 +27,7 @@ export interface ServerAppConfig {
 export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>,
 > = T & {
+    settings: Settings;
     auth: {
         user: UserData;
     };

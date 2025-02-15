@@ -9,8 +9,6 @@ import { Card } from "primereact/card";
 import { Dialog } from "primereact/dialog";
 import { InputNumber, InputNumberProps } from "primereact/inputnumber";
 import { InputText, InputTextProps } from "primereact/inputtext";
-import { InputTextarea } from "primereact/inputtextarea";
-import { ChangeEvent, HTMLAttributes } from "react";
 import toast from "react-hot-toast";
 import WithdrawForm from "./Partials/WithdrawForm";
 
@@ -42,8 +40,8 @@ export default function Withdraw({ canWithdraw }: { canWithdraw: boolean }) {
     const withdraw = async (e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>) => {
         refreshBalance()
         if ((data.amount || 0) > balance) {
-            toast.error(`Cannot withdraw more than ${balance} BDT`)
-            setError('amount', `Cannot withdraw more than ${balance} BDT`)
+            toast.error(`Cannot withdraw more than your balance: ${balance} BDT`)
+            setError('amount', `Cannot withdraw more than your balance: ${balance} BDT`)
             return
         }
         const url = route('wallet.withdraw.store')

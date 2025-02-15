@@ -39,18 +39,32 @@ class SettingResource extends Resource
                     ->schema([
                         TextInput::make('min_deposit_amount')
                             ->label('Min Deposit Amount')
+                            ->step(0.01)
+                            ->type('number')
                             ->suffixIcon('heroicon-o-currency-bangladeshi')
                             ->numeric(),
                         TextInput::make('min_withdraw_amount')
                             ->label('Min Withdraw Amount')
+                            ->step(0.01)
+                            ->type('number')
                             ->suffixIcon('heroicon-o-currency-bangladeshi')
                             ->numeric(),
                         TextInput::make('base_commission')
+                            ->type('number')
+                            ->step(0.01)
                             ->label('Base Commission')
                             ->suffixIcon('phosphor-percent')
                             ->numeric(),
                         TextInput::make('referral_commission')
+                            ->type('number')
+                            ->step(0.01)
                             ->label('Referral Commission')
+                            ->suffixIcon('heroicon-o-currency-bangladeshi')
+                            ->numeric(),
+                        TextInput::make('min_earnable_amount')
+                            ->type('number')
+                            ->step(0.01)
+                            ->label('Max Earnable Amount')
                             ->suffixIcon('heroicon-o-currency-bangladeshi')
                             ->numeric(),
                     ]),

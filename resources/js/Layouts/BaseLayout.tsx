@@ -15,6 +15,7 @@ export default function BaseLayout({ children }: { children?: any }) {
             }
         }
         if (auth.user) {
+            cookie.remove('referId');
             return poll(() => updateActiveStatus(), 19000);
         }
     }, [])

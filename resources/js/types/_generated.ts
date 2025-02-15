@@ -80,6 +80,20 @@ export type DepositMethodData = {
 export type DepositMethodMetaData = {
     qr_code: string;
 };
+export type EarningData = {
+    id: number | null;
+    user_id: number;
+    user?: UserData;
+    from_id: number;
+    from?: UserData;
+    amount: number;
+    status: EarningStatus;
+    created_at?: string;
+    updated_at?: string;
+    created_at_human?: string;
+    updated_at_human?: string;
+};
+export type EarningStatus = 'pending' | 'approved' | 'converted';
 export type FieldsData = {
     name: string;
     label: string;

@@ -39,8 +39,8 @@ const menuItems = [
     {
         label: "Earn",
         icon: "/assets/dashboard/earn.png",
-        url: "#",
-        isActive: () => false,
+        url: route('earnings.index'),
+        isActive: () => route().current('earnings.index'),
     },
     {
         label: "Transaction",

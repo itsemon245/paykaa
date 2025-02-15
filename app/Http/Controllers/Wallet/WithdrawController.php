@@ -6,6 +6,7 @@ use App\Data\WalletData;
 use App\Data\WithdrawMethodData;
 use App\Enum\Wallet\WalletTransactionType;
 use App\Http\Controllers\Controller;
+use App\Models\Setting;
 use App\Models\Wallet;
 use App\Models\WithdrawMethod;
 use App\Services\Wallet as WalletService;
@@ -41,9 +42,11 @@ class WithdrawController extends Controller
         if (!$this->canWithdraw()) {
             return back()->with('error', "You already have a withdraw pending!");
         }
+        $minWithdrawAmount = Setting::first()->transactions['min_withdraw_amount'] ?? 1;
+
         $balance = Wallet::getBalance();
         $request->validate([
-            'amount' => ['required', 'numeric', 'min:1', 'max:' . $balance],
+            'amount' => ['required', 'numeric', "min:$minWithdrawAmount", "max:$balance"],
         ], [
             'amount.max' => 'The amount must be less than or equal to your balance: ' . $balance . " BDT",
         ]);

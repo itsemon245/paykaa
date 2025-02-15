@@ -14,10 +14,11 @@ class SettingSeeder extends Seeder
     {
         \App\Models\Setting::updateOrCreate(['id' => 1], [
             'transactions' => [
-                'base_comission' => 0,
+                'base_commission' => 0,
                 'min_withdraw_amount' => 100,
                 'min_deposit_amount' => 100,
                 'referral_commission' => 500,
+                'min_earnable_amount' => 500,
             ],
         ]);
     }
