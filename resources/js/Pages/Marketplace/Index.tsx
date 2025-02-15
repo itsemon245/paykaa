@@ -16,7 +16,7 @@ export default function Index() {
             <div className="flex py-4 px-3 items-center border-b">
                 <div className="flex-1 flex items-center gap-2">
                     <img src={image(ad.owner?.avatar)} className="w-10 h-10 rounded-full" />
-                    <h2 className="font-bold">{ad.owner?.name}</h2>
+                    <div className="font-bold text-lg">{ad.owner?.name}</div>
                 </div>
                 <div className="text-nowrap text-sm text-gray-400">
                     {ad.updated_at_human}
@@ -26,11 +26,11 @@ export default function Index() {
     }
     const Footer = ({ ad }: { ad: AddData }) => {
         return (
-            <div className="flex items-center pb-3 -!mt-6">
+            <div className="flex items-center pb-3">
                 <div className="flex-1">
-                    <h2 className="font-bold">Method: {ad.addMethod?.name}</h2>
+                    <div className="font-bold">Method: {ad.addMethod?.name}</div>
                 </div>
-                <Button label="Sell" severity="success" size="small" onClick={() => setSelectedAd(ad)} />
+                <Button className="uppercase" label={ad.type} severity={ad.type == 'Buy' ? 'success' : 'danger'} size="small" onClick={() => setSelectedAd(ad)} />
             </div>
         )
     }
@@ -48,24 +48,38 @@ export default function Index() {
             },
         })
     }
+    useEffect(() => {
+        if (type || walletId) {
+            submit()
+        }
+    }, [type, walletId])
     const [selectedAd, setSelectedAd] = useState<AddData>()
     return (
         <>
             <Head title="Marketplace" />
             <SquareBg />
             <ClassicNav />
-            <Dialog header={selectedAd?.type + ' ' + selectedAd?.addMethod?.name} footer={
-                <div className="flex flex-row-reverse sm:flex-row gap-1 items-center">
-                    {selectedAd?.owner?.uuid &&
-                        <Link href={route('chat.receiver-chat', {
-                            receiver: selectedAd?.owner?.uuid,
-                        })}>
-                            <Button label="Chat" />
-                        </Link>
+            <Dialog header={selectedAd?.type + ' ' + selectedAd?.addMethod?.name}
+                pt={{
+                    content: {
+                        className: "!py-0"
+                    },
+                    footer: {
+                        className: "!pb-0"
                     }
-                    <Button label="Cancel" onClick={() => setSelectedAd(undefined)} className="bg-white text-primary border-primary" text />
-                </div>
-            } visible={selectedAd !== undefined} onHide={() => setSelectedAd(undefined)}>
+                }}
+                footer={
+                    <div className="flex flex-row-reverse sm:flex-row gap-1 items-center">
+                        {selectedAd?.owner?.uuid &&
+                            <Link href={route('chat.receiver-chat', {
+                                receiver: selectedAd?.owner?.uuid,
+                            })}>
+                                <Button label="Chat" />
+                            </Link>
+                        }
+                        <Button label="Cancel" onClick={() => setSelectedAd(undefined)} className="bg-white text-primary border-primary" text />
+                    </div>
+                } visible={selectedAd !== undefined} onHide={() => setSelectedAd(undefined)}>
                 <div className="">
                     <h2 className="font-lg font-semibold">Start chatting with {selectedAd?.owner?.name}</h2>
                     <h2 className="font-lg font-semibold">Contact: {selectedAd?.contact}</h2>
@@ -73,37 +87,33 @@ export default function Index() {
             </Dialog>
             <div className="flex flex-col h-full w-full">
                 <div className="w-full max-w-7xl mx-auto mt-3 px-3">
-                    <div className="flex items-center gap-2 my-3">
-                        <button onClick={() => {
-                            setType('buy')
-                            submit()
-                        }} className={cn("font-bold py-2 px-3 rounded-md transition-colors", type == 'buy' ? 'bg-primary text-white' : 'bg-white text-primary')}>
+                    <form onSubmit={submit} className="flex items-center gap-2 my-3">
+                        <label className={cn("cursor-pointer font-bold py-2 px-3 rounded-md transition-colors", type == 'buy' ? 'bg-primary text-white' : 'bg-white text-primary')}>
+                            <input type="radio" name="type" value={type as string} checked={type == 'buy'} className="sr-only peer" onChange={() => setType('buy')} />
                             Buy
-                        </button>
-                        <button onClick={() => {
-                            setType('sell')
-                            submit()
-                        }} className={cn("font-bold py-2 px-3 rounded-md transition-colors", type == 'sell' ? 'bg-primary text-white' : 'bg-white text-primary')}>
+                        </label>
+                        <label className={cn("cursor-pointer font-bold py-2 px-3 rounded-md transition-colors", type == 'sell' ? 'bg-primary text-white' : 'bg-white text-primary')}>
+                            <input type="radio" name="type" value={type as string} checked={type == 'sell'} className="sr-only peer" onChange={() => setType('sell')} />
+
                             Sell
-                        </button>
+                        </label>
                         <select onChange={(e) => {
                             setWalletId(e.target.value)
-                            submit()
-                        }} className="min-w-[140px] flex gap-2 p-2 rounded-md border-none text-primary font-semibold" defaultValue={walletId}>
+                        }} className="mb-2 min-w-[140px] flex gap-2 p-2 rounded-md border-none text-primary font-semibold" defaultValue={walletId}>
                             <option value="" disabled>Select Wallet</option>
                             {wallets.map(item => (
                                 <option value={item.id} key={item.id}>{item.name}</option>
                             ))}
                         </select>
-                    </div>
+                    </form>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 3xl:grid-cols-4 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 3xl:grid-cols-4 gap-3" >
                         {ads.data.map((ad) => (
                             <Card header={<Header ad={ad} />} footer={<Footer ad={ad} />} className="w-full" key={ad.id}>
                                 <div className="">
                                     <div className="flex items-end gap-1 font-semibold">
                                         <span>Tk.</span>
-                                        <h2 className="text-xl font-bold">{ad.rate}</h2>
+                                        <div className="text-lg sm:text-xl font-bold">{ad.rate}</div>
                                     </div>
                                     <div>
                                         Quantity: {ad.amount}
