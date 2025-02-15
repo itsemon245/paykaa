@@ -72,12 +72,12 @@ export default function Index() {
 
     return (
         <>
-            <Head title="Adds" />
+            <Head title="Ads" />
             <Card className="bg-transparent !shadow-none">
                 <div className="flex justify-between items-center mb-3">
-                    <h4 className="text-xl font-bold">Adds</h4>
-                    <Button onClick={toggleDialog} label='Add Post' />
-                    <Dialog onHide={toggleDialog} header="Add Post" footer={<Footer />} visible={visible} className="min-h-[50vh]">
+                    <h4 className="text-xl font-bold">Ads</h4>
+                    <Button onClick={toggleDialog} label='Post Ad' />
+                    <Dialog onHide={toggleDialog} header="Post Ad" footer={<Footer />} visible={visible} className="min-h-[50vh]">
                         <form onSubmit={submit}>
                             <div className="grid md:grid-cols-2 gap-4 items-center justify-center">
                                 <div className="">
@@ -96,14 +96,14 @@ export default function Index() {
                                 {data.type && (
                                     <div>
                                         <InputLabel htmlFor="amount" value="Amount" />
-                                        <InputNumber className="w-full" id='amount' invalid={errors.amount !== undefined} value={data.amount ? data.amount : null} onChange={(e: InputNumberChangeEvent) => setData('amount', e.value as number)} />
+                                        <InputNumber className="w-full" placeholder="USD" id='amount' invalid={errors.amount !== undefined} value={data.amount ? data.amount : null} onChange={(e: InputNumberChangeEvent) => setData('amount', e.value as number)} />
                                         <InputError message={errors.amount} />
                                     </div>
                                 )}
                                 {data.type === 'Sell' && (
                                     <div>
                                         <InputLabel htmlFor="rate" value="Rate" />
-                                        <InputNumber className="w-full" id='rate' invalid={errors.rate !== undefined} value={data.rate ? data.rate : null} onChange={(e: InputNumberChangeEvent) => setData('rate', e.value as number)} />
+                                        <InputNumber className="w-full" id='rate' placeholder='BDT' invalid={errors.rate !== undefined} value={data.rate ? data.rate : null} onChange={(e: InputNumberChangeEvent) => setData('rate', e.value as number)} />
                                         <InputError message={errors.rate} />
                                     </div>
                                 )}

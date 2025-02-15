@@ -15,7 +15,7 @@ class MarketplaceController extends Controller
 {
     public function index(Request $request)
     {
-        $ads = Add::withoutGlobalScope(OwnerScope::class)->where(function(Builder $q)use($request){
+        $ads = Add::withoutGlobalScope(OwnerScope::class)->where(function (Builder $q) use ($request) {
             if ($request->type) {
                 $q->where('type', $request->type);
             }
@@ -23,8 +23,9 @@ class MarketplaceController extends Controller
                 $q->where('add_method_id', $request->wallet_id);
             }
         })
-        ->whereNot('owner_id', auth()->id())
-        ->with(['owner', 'addMethod'])->paginate();
+            ->whereNot('owner_id', auth()->id())
+            ->with(['owner', 'addMethod'])->paginate();
+        dd($ads);
         return Inertia::render('Marketplace/Index', [
             'ads' => AddData::collect($ads),
             'wallets' => AddMethodData::collect(AddMethod::all()),
