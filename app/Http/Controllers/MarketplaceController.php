@@ -25,7 +25,6 @@ class MarketplaceController extends Controller
         })
             ->whereNot('owner_id', auth()->id())
             ->with(['owner', 'addMethod'])->paginate();
-        dd($ads);
         return Inertia::render('Marketplace/Index', [
             'ads' => AddData::collect($ads),
             'wallets' => AddMethodData::collect(AddMethod::all()),
