@@ -69,6 +69,9 @@
     .p-dialog{
         z-index: 1000;
     }
+    .p-dialog-header-icon.p-dialog-header-close{
+        @apply !border-none !outline-transparent !ring-transparent
+    }
     .p-inputtextarea{
         @apply h-[56px]
     }

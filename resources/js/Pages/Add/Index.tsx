@@ -20,11 +20,8 @@ export default function Index() {
     const [adds, setAdds] = useState(initialAdds)
     const [perPage, setPerPage] = useState(adds.per_page)
     const [visible, setVisible] = useState(false)
-    const toggleDialog = () => {
-        setVisible(!visible)
-    }
 
-    const { data, setData, processing, errors, post } = useForm({
+    const { data, setData, processing, errors, post, reset } = useForm({
         type: undefined,
         owner_id: user.id,
         add_method_id: undefined,
@@ -34,6 +31,11 @@ export default function Index() {
         limit_min: undefined,
         contact: user.phone
     } as AddData)
+    const toggleDialog = () => {
+        setVisible(!visible)
+        reset()
+    }
+
 
     useEffect(() => {
         console.log(data)
@@ -73,7 +75,7 @@ export default function Index() {
             <Head title="Adds" />
             <Card className="bg-transparent !shadow-none">
                 <div className="flex justify-between items-center mb-3">
-                    <h1 className="text-xl font-bold">Adds</h1>
+                    <h4 className="text-xl font-bold">Adds</h4>
                     <Button onClick={toggleDialog} label='Add Post' />
                     <Dialog onHide={toggleDialog} header="Add Post" footer={<Footer />} visible={visible} className="min-h-[50vh]">
                         <form onSubmit={submit}>

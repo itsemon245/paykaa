@@ -4,12 +4,15 @@ namespace App\Data;
 
 use App\Data\Partials\TimestampData;
 use App\Enum\AddType;
+use Illuminate\Validation\Validator;
 use Spatie\LaravelData\Attributes\Validation\Exists;
 use Spatie\LaravelData\Attributes\Validation\GreaterThan;
 use Spatie\LaravelData\Attributes\Validation\LessThan;
 use Spatie\LaravelData\Attributes\Validation\Min;
 use Spatie\LaravelData\Attributes\Validation\Nullable;
 use Spatie\LaravelData\Attributes\Validation\Required;
+use Spatie\LaravelData\Attributes\Validation\RequiredIf;
+use Spatie\LaravelData\Attributes\Validation\Sometimes;
 use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\Optional;
 
@@ -36,20 +39,40 @@ class AddData extends Data
         public ?string $contact,
         #[Min(1), Required]
         public float $amount,
-        #[Min(1), Required]
-        public float $rate,
-        #[Optional, GreaterThan(field: 'limit_min'), Required]
-        public int $limit_max,
-        #[Optional, LessThan(field: 'limit_max'), Required]
-        public int $limit_min,
+        public ?float $rate,
+        #[Optional]
+        public ?int $limit_max,
+        #[Optional]
+        public ?int $limit_min,
     ) {}
 
-    public static function messages(){
+    public static function withValidator(Validator $validator): void
+    {
+        $validator->after(function ($validator) {
+            $request = request();
+            if ($request->type === AddType::SELL->value) {
+                if (!$request->rate) {
+                    $validator->errors()->add('rate', 'Rate is required');
+                }
+                if (!$request->limit_min) {
+                    $validator->errors()->add('limit_min', 'Limit min is required');
+                }
+                if (!$request->limit_max) {
+                    $validator->errors()->add('limit_max', 'Limit max is required');
+                }
+                if ($request->limit_min > $request->limit_max) {
+                    $validator->errors()->add('limit_min', 'Limit min must be less than limit max');
+                }
+            }
+        });
+    }
+
+    public static function messages()
+    {
         return [
             'add_method_id.required' => 'Wallet is required',
             'limit_min.greater_than' => 'Limit min must be greater than limit max',
             'limit_max.less_than' => 'Limit max must be less than limit min',
         ];
     }
-
 }
