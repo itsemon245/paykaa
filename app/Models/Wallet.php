@@ -76,7 +76,9 @@ class Wallet extends Model
             ->where('owner_id', $user?->id ?? auth()->id())
             ->where(function ($query) {
                 $query->whereNotNull('approved_at')->orWhere(function ($q) {
-                    $q->whereNull('approved_at')->where('type', WalletType::DEBIT->value);
+                    $q->whereNull('approved_at')
+                        ->whereNull('cancelled_at')
+                        ->where('type', WalletType::DEBIT->value);
                 });
             })
             ->selectRaw('SUM(CASE WHEN type = "credit" THEN amount ELSE 0 END) - SUM(CASE WHEN type = "debit" THEN amount ELSE 0 END) AS balance')
