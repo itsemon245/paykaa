@@ -89,7 +89,7 @@ export default function Index() {
                         <select onChange={(e) => {
                             setWalletId(e.target.value)
                             submit()
-                        }} className="p-2 rounded-md border-none text-primary font-semibold" defaultValue={walletId}>
+                        }} className="min-w-[140px] flex gap-2 p-2 rounded-md border-none text-primary font-semibold" defaultValue={walletId}>
                             <option value="" disabled>Select Wallet</option>
                             {wallets.map(item => (
                                 <option value={item.id} key={item.id}>{item.name}</option>
