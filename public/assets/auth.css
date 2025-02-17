@@ -36,7 +36,7 @@
     align-items: center;
     color: var(--text-color);
     text-align: center;
-    padding: 40px;
+    padding: 20px;
     z-index: 1;
     transition: .6s ease-in-out 1.2s, visibility 0s 1s;
     @apply md:w-[50%] w-full;
@@ -207,6 +207,6 @@
 
 @media (max-width: 650px) {
     .auth-container {
-        height: calc(100vh - 40px);
+        height: calc(100vh - 120px);
     }
 }

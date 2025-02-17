@@ -13,6 +13,10 @@ const appConfig = {
         );
         const layoutMap = [
             {
+                pageDir: ['Auth'],
+                component: (page: any) => <GuestLayout children={page} />,
+            },
+            {
                 pageDir: ['Chat'],
                 component: (page: any) => <ChatLayout children={page} />,
             },

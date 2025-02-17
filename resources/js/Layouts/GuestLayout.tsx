@@ -1,14 +1,22 @@
-import ApplicationLogo from '@/Components/ApplicationLogo';
-import { Link } from '@inertiajs/react';
 import { PropsWithChildren } from 'react';
-import BaseLayout from './BaseLayout';
+import { Gradient } from '@/utils/stripeCanvasGradient';
 
 export default function Guest({ children }: PropsWithChildren) {
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    useEffect(() => {
+        if (!canvasRef.current) return;
+        const gradient = new Gradient();
+        //@ts-ignore
+        gradient.initGradient("#gradient-canvas");
+    }, [canvasRef])
     return (
-        <BaseLayout>
-            <div className="grid min-h-screen w-full items-center justify-center py-12 sm:px-6 lg:px-8">
+        <div className="relative min-h-screen overflow-hidden">
+            <canvas className="absolute" ref={canvasRef} id="gradient-canvas">
+            </canvas>
+            <div className="gradient-clip"></div>
+            <div className="">
                 {children}
             </div>
-        </BaseLayout>
+        </div>
     );
 }
