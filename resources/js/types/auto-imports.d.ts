@@ -111,6 +111,7 @@ declare global {
   const useInsertionEffect: typeof import('react')['useInsertionEffect']
   const useLayoutEffect: typeof import('react')['useLayoutEffect']
   const useMemo: typeof import('react')['useMemo']
+  const useMoneyRequest: typeof import('../Hooks/useMoneyRequest')['default']
   const useNotification: typeof import('../Hooks/useNotification')['default']
   const usePreloader: typeof import('../Hooks/usePreloader')['default']
   const useReducer: typeof import('react')['useReducer']

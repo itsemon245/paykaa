@@ -95,6 +95,7 @@ class ChatController extends Controller
     public function getChats(Request $request)
     {
         $chats = Chat::with('lastMessage', 'sender', 'receiver')
+            ->orderBy('last_message_at', 'desc')
             ->where(function (Builder $q) use ($request) {
                 $q->where('sender_id', auth()->id());
                 if ($request->search) {

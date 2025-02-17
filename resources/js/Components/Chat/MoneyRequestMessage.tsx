@@ -1,3 +1,4 @@
+import useMoneyRequest from "@/Hooks/useMoneyRequest";
 import { RouteName } from "@/types";
 import { ChatData, MessageData, MoneyRequestData } from "@/types/_generated";
 import { cn } from "@/utils";
@@ -39,71 +40,9 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
         return moneyRequest.status
     }
 
+    const { processing, accept, release, reject, cancel, requestRelease } = useMoneyRequest(message)
+
     const UserButtons = ({ moneyRequest }: { moneyRequest: MoneyRequestData }) => {
-        const [processing, setProcessing] = useState(false);
-        const accept = async () => {
-            setProcessing(true)
-            const toastId = toast.loading("Accepting money request...")
-            router.post(route('money.accept' as RouteName, {
-                moneyRequest: message.moneyRequest?.uuid,
-            }), {}, {
-                onSuccess: () => {
-                    setProcessing(false)
-                    toast.success("Requested accept!")
-                    toast.dismiss(toastId)
-                },
-                onError: () => {
-                    setProcessing(false)
-                    toast.error("Failed to accept request")
-                    console.error("Error accept request")
-                    toast.dismiss(toastId)
-                },
-                preserveState: false,
-                preserveScroll: true
-            })
-        }
-        const release = async () => {
-            setProcessing(true)
-            const toastId = toast.loading("Releasing money request...")
-            router.post(route('money.release' as RouteName, {
-                moneyRequest: message.moneyRequest?.uuid,
-            }), {}, {
-                onSuccess: () => {
-                    setProcessing(false)
-                    toast.success("Requested released!")
-                    toast.dismiss(toastId)
-                },
-                onError: () => {
-                    setProcessing(false)
-                    toast.error("Failed to release request")
-                    console.error("Error release request")
-                    toast.dismiss(toastId)
-                },
-                preserveState: false,
-                preserveScroll: true
-            })
-        }
-        const reject = async () => {
-            setProcessing(true)
-            const toastId = toast.loading("Rejecting money request...")
-            router.post(route('money.reject' as RouteName, {
-                moneyRequest: message.moneyRequest?.uuid,
-            }), {}, {
-                onSuccess: () => {
-                    setProcessing(false)
-                    toast.success("Requested rejected!")
-                    toast.dismiss(toastId)
-                },
-                onError: () => {
-                    setProcessing(false)
-                    toast.error("Failed to reject request")
-                    console.error("Error rejecting request")
-                    toast.dismiss(toastId)
-                },
-                preserveState: false,
-                preserveScroll: true
-            })
-        }
         if (moneyRequest.status !== 'pending') {
             return <Button onClick={e => {
                 if (moneyRequest.status === 'waiting for release' && !message.by_me) {
@@ -122,57 +61,13 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
     }
 
     const MyButtons = ({ moneyRequest }: { moneyRequest: MoneyRequestData }) => {
-        const [processing, setProcessing] = useState(false);
-        const cancel = async () => {
-            setProcessing(true)
-            const toastId = toast.loading("Cancelling money request...")
-            router.post(route('money.cancel' as RouteName, {
-                moneyRequest: message.moneyRequest?.uuid,
-            }), {}, {
-                onSuccess: () => {
-                    setProcessing(false)
-                    toast.success("Cancelled request!")
-                    toast.dismiss(toastId)
-                },
-                onError: () => {
-                    setProcessing(false)
-                    toast.error("Failed to cancel request")
-                    console.error("Error cancel request")
-                    toast.dismiss(toastId)
-                },
-                preserveState: false,
-                preserveScroll: true
-            })
-        }
-
-        const requestRelease = async () => {
-            setProcessing(true)
-            const toastId = toast.loading("Requesting release...")
-            router.post(route('money.request-release' as RouteName, {
-                moneyRequest: message.moneyRequest?.uuid,
-            }), {}, {
-                onSuccess: () => {
-                    setProcessing(false)
-                    toast.success("Requested release")
-                    toast.dismiss(toastId)
-                },
-                onError: () => {
-                    setProcessing(false)
-                    toast.error("Failed to request release")
-                    console.error("Error release request")
-                    toast.dismiss(toastId)
-                },
-                preserveState: false,
-                preserveScroll: true
-            })
-        }
         return (<div className=" flex items-center gap-2">
             <Button onClick={e => {
                 if (moneyRequest.status === 'approved') {
                     requestRelease();
                 }
             }} rounded severity={getSeverity(moneyRequest as MoneyRequestData)} className="!rounded-lg w-full justify-center *:!font-bold *:!w-max" label={processing ? 'Proccessing...' : getStatus(moneyRequest as MoneyRequestData)} />
-            {!moneyRequest?.cancelled_at && !moneyRequest.accepted_at && <Button onClick={cancel} rounded severity="danger" className="!rounded-lg w-full justify-center *:!font-bold *:!w-max" label={processing ? 'Proccessing...' : 'Cancel'} />
+            {!moneyRequest?.cancelled_at && !moneyRequest.accepted_at && !moneyRequest.rejected_at && <Button onClick={cancel} rounded severity="danger" className="!rounded-lg w-full justify-center *:!font-bold *:!w-max" label={processing ? 'Proccessing...' : 'Cancel'} />
             }
         </div>
         )

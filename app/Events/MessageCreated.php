@@ -23,6 +23,9 @@ class MessageCreated implements ShouldBroadcast
     public function __construct(Message $message)
     {
         $message->loadMissing('chat', 'sender', 'receiver', 'moneyRequest');
+        $message->chat->update([
+            'last_message_at' => now(),
+        ]);
         $this->message = MessageData::from($message);
         $this->message->by_me = false;
     }
