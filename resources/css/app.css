@@ -2,26 +2,28 @@
 @import "./chat.css";
 
 :root{
-    --canvas-height: 40dvh;
+    --canvas-height: 47dvh;
 }
 #gradient-canvas {
     width:100%;
     height: var(--canvas-height);
-    --gradient-color-1: #ff333d;
-    --gradient-color-2: var(--primary-500);
+    --gradient-color-1: var(--primary-500);
+    --gradient-color-2: #ff333d;
     --gradient-color-3: var(--primary-300);
     --gradient-color-4: #90e0ff;
     z-index:0;
 }
 .gradient-clip{
-    --top-offset: 60px;
-    width: 100%;
+    --top-offset: 0px;
+    /* width: 100%; */
     top: var(--top-offset);
-    left: 0;
+    right: 0;
+    left: -20px;
     height: calc(var(--canvas-height) - var(--top-offset) + 2px);
     /* rotate: 140deg; */
     background: white;
-    clip-path: polygon(100% 0, 0% 100%, 100% 100%);
+    /* clip-path: polygon(100% 0, 0% 100%, 100% 100%); */
+    clip-path: polygon(100% 30%, 0% 100%, 100% 100%);
     position: absolute;
 }
 
