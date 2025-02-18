@@ -11,7 +11,7 @@ export default function Guest({ children }: PropsWithChildren) {
     }, [canvasRef])
     return (
         <div className="relative min-h-screen overflow-hidden">
-            <canvas className="absolute" ref={canvasRef} id="gradient-canvas">
+            <canvas className="!fixed" ref={canvasRef} id="gradient-canvas">
             </canvas>
             <div className="gradient-clip"></div>
             <div className="">

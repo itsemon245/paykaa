@@ -3207,10 +3207,10 @@
         top: -1px;
         left: 50%;
         transform: translateX(-50%);
-        min-width: 1000px;
+        min-width: 500px;
         width: 100%;
-        height: 100%;
-        background: radial-gradient(var(--gradientColorZero) 40%, var(--gradientColorTwoTransparent) 60%) -620px -180px no-repeat, radial-gradient(var(--gradientColorThree) 33%, var(--gradientColorThreeTransparent) 67%) -120px -24px no-repeat, radial-gradient(var(--gradientColorTwo) 40%, var(--gradientColorTwoTransparent) 70%) -470px 150px no-repeat, var(--gradientColorZero)
+        height: 50%;
+        /* background: radial-gradient(var(--gradientColorZero) 40%, var(--gradientColorTwoTransparent) 60%) -620px -180px no-repeat, radial-gradient(var(--gradientColorThree) 33%, var(--gradientColorThreeTransparent) 67%) -120px -24px no-repeat, radial-gradient(var(--gradientColorTwo) 40%, var(--gradientColorTwoTransparent) 70%) -470px 150px no-repeat, var(--gradientColorZero) */
     }
 
     @media (min-width:600px) {

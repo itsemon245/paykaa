@@ -2,7 +2,7 @@
 @import "./chat.css";
 
 :root{
-    --canvas-height: 47dvh;
+    --canvas-height: 68dvh;
 }
 #gradient-canvas {
     width:100%;
@@ -24,7 +24,7 @@
     background: white;
     /* clip-path: polygon(100% 0, 0% 100%, 100% 100%); */
     clip-path: polygon(100% 30%, 0% 100%, 100% 100%);
-    position: absolute;
+    position: fixed;
 }
 
 

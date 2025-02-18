@@ -9,23 +9,7 @@
 </style>
 <section
     id="home"
-    class="
-    Section
-    HomepageHero
-    theme--White
-
-    accent--Slate
-
-    Section--bleed1
-    Section--bleed2
-    Section--paddingNormal
-
-
-
-    Section--hasGuides
-
-
-  ">
+    class="Section HomepageHero theme--White accent--Slate Section--bleed1 Section--bleed2 Section--paddingNormal Section--hasGuides ">
     <div class="Section__masked">
         <div class="Section__backgroundMask">
             <div class="
@@ -49,42 +33,15 @@
             </div>
 
         </div>
-        <div class="Section__container">
+        <div class="Section__container !z-[5]">
             <div class="Section__layoutContainer">
                 <div class="Section__layout">
 
-                    <div class="
-    ColumnLayout
-
-
-
-  "
+                    <div class=" ColumnLayout "
                          data-columns="2,2">
-                        <section class="
-    Copy
-    HomepageHero__title
-    variant--Superhero
+                        <section class=" Copy HomepageHero__title variant--Superhero " >
 
-  "
-                                 style="
-
-
-
-
-
-
-
-
-
-
-  ">
-
-                            <header class="
-    HomepageHeroHeader
-    HomepageHeroHeader--hasCaption
-
-
-  "
+                            <header class=" HomepageHeroHeader HomepageHeroHeader--hasCaption "
                                     data-js-controller="HomepageHeroHeader"
                                     data-experiment-id="acquisition_text_scaling_with_viewport_sizing" "="">
   <div class="HeroCaption HomepageHeroHeader__caption">
@@ -125,37 +82,27 @@
                 data-js-target-list="HomepageHeroHeader.title">{!! $hero['title'] !!}</h2>
 
             <div class="HomepageHeroGradient Gradient isLoaded">
-                <canvas class="Gradient__canvas isLoaded"
-                        data-js-controller="Gradient"
-                        data-js-darken-top=""
-                        data-transition-in=""
-                        width="1030"
-                        height="600"></canvas>
+                    <canvas id="gradient-canvas" class="fixed"></canvas>
+                    <!-- <div class="gradient-clip !fixed"></div> -->
+
+                <!-- <canvas class="Gradient__canvas isLoaded" -->
+                <!--         data-js-controller="Gradient" -->
+                <!--         data-js-darken-top="" -->
+                <!--         data-transition-in="" -->
+                <!--         width="1030" -->
+                <!--         height="600"></canvas> -->
             </div>
 
-            <div class="
-      HomepageHeroHeader__title
-      HomepageHeroHeader__title--overlay
-      HomepageHeroHeader__title--burn
-      HomepageHeroHeader__title--scaled
-    "
+            <div class=" HomepageHeroHeader__title HomepageHeroHeader__title--overlay HomepageHeroHeader__title--burn HomepageHeroHeader__title--scaled "
                  data-js-target-list="HomepageHeroHeader.title"
                  aria-hidden="true">{!! $hero['title'] !!}</div>
 
-            <div class="
-      HomepageHeroHeader__title
-      HomepageHeroHeader__title--overlay
-      HomepageHeroHeader__title--scaled
-    "
+            <div class=" HomepageHeroHeader__title HomepageHeroHeader__title--overlay HomepageHeroHeader__title--scaled "
                  data-js-target-list="HomepageHeroHeader.title"
                  aria-hidden="true">{!! $hero['title'] !!}</div>
             </header>
 
-            <div class="
-        Copy__body
-
-
-      ">{!! $hero['description'] !!}</div>
+            <div class=" Copy__body ">{!! $hero['description'] !!}</div>
             <footer class="Copy__footer">
                 <div class="Copy__ctaContainer">
                     <div class="HomepageHero__ctas">
@@ -248,9 +195,7 @@
             </footer>
 
 </section>
-<div class="
-    HomepageHeroGraphic
-    HomepageHero__graphic
+<div class=" HomepageHeroGraphic HomepageHero__graphic
   ">
     <div class="HomepageDashboardGraphic HomepageHeroGraphic__dashboard">
         <div class="HomepageDashboardGraphic__company">

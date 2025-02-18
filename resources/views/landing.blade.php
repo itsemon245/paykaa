@@ -13,6 +13,14 @@
 <head>
     <meta http-equiv="Content-Type"
           content="text/html; charset=UTF-8">
+        <script src="/js/animated-gradient.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const gradient = new Gradient();
+            gradient.initGradient("#gradient-canvas");
+        })
+    </script>
+
     <script>
         window.__capturedErrors = [];
         window.onerror = function(message, url, line, column, error) {
@@ -121,9 +129,9 @@
             src="/assets/landing/Bootstrapper-ZNZHVLI3.js"></script>
 </head>
 
-<body class="MktBody theme--Light flavor--Chroma accent--Blurple has-scrollbar"
+<body class="MktBody theme-light flavor--Chroma accent--Blurple has-scrollbar"
       data-js-controller="Homepage">
-    <div id="MktContent">
+    <div id="MktContent" class="">
         @include('landing.partials.header')
         <script>
             (() => {
@@ -167,6 +175,7 @@
             });
         });
     </script>
+
     @stack('scripts')
 </body>
 
