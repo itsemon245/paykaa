@@ -43,7 +43,7 @@
                 </linearGradient>
             </defs>
         </svg>
-        <span>Our Payment Methods</span>
+        <span class="max-md:text-xl">Our Payment Methods</span>
     </div>
     <div class="Section__masked">
         <div class="Section__backgroundMask">

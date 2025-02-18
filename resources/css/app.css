@@ -15,16 +15,26 @@
 }
 .gradient-clip{
     --top-offset: 0px;
-    /* width: 100%; */
     top: var(--top-offset);
     right: 0;
-    left: -20px;
+    left: -30px;
     height: calc(var(--canvas-height) - var(--top-offset) + 2px);
-    /* rotate: 140deg; */
     background: white;
-    /* clip-path: polygon(100% 0, 0% 100%, 100% 100%); */
-    clip-path: polygon(100% 30%, 0% 100%, 100% 100%);
+    clip-path: polygon(100% 67%, 0% 100%, 100% 100%);
     position: fixed;
+}
+
+.animate-active-section{
+    @apply target:animate-pulse;
+    animation-iteration-count: 1!important;
+}
+#about:target ~ #address{
+    @apply animate-pulse;
+    animation-iteration-count: 1!important;
+}
+#contact:target ~ #contact2{
+    @apply animate-pulse;
+    animation-iteration-count: 1!important;
 }
 
 

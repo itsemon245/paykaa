@@ -22,9 +22,9 @@
                 <div class="Section__layout">
                     <div class="RowLayout"
                         style="--rowLayoutGap: var(--rowLayoutGapXLarge)">
-                        <div class="ColumnLayout"
+                        <div class="ColumnLayout animate-active-section"
                               id="about"
-                            data-columns="2,2">
+                            data-columns="1">
                             <section class="Copy HomepageGlobalSection__copy variant--Section">
                                 <header class="Copy__header">
                                     <h2 class="Copy__caption">{{ $about['title'] ?? 'About us' }}</h2>
@@ -37,7 +37,7 @@
                         </div>
                         <div class="ColumnLayout"
                             data-columns="1,1,1,1">
-                            <section class="Copy HomepageGlobalSection__uptimeStat variant--Stat">
+                            <section class="Copy HomepageGlobalSection__uptimeStat variant--Stat" id="address">
                                 <header class="Copy__header">
                                     <h1 class="Copy__title">Address</h1>
                                 </header>
@@ -46,7 +46,7 @@
                                 </div>
 
                             </section>
-                            <section id="social-media" class="Copy HomepageGlobalSection__uptimeStat variant--Stat">
+                            <section id="social-media" class="Copy HomepageGlobalSection__uptimeStat variant--Stat animate-active-section">
                                 <header class="Copy__header">
                                     <h1 class="Copy__title">Social Media</h1>
                                 </header>
@@ -67,7 +67,7 @@
                                         @endforeach
                                 </div>
                             </section>
-                            <section id="contact" class="Copy HomepageGlobalSection__uptimeStat variant--Stat">
+                            <section id="contact" class="Copy HomepageGlobalSection__uptimeStat variant--Stat animate-active-section">
                                 <header class="Copy__header">
                                     <h1 class="Copy__title">Email</h1>
                                 </header>
@@ -77,7 +77,7 @@
                                         {{ $about['email'] ?? 'info@paykaa.com' }}
                                     </a></div>
                             </section>
-                            <section class="Copy HomepageGlobalSection__uptimeStat variant--Stat">
+                            <section class="Copy HomepageGlobalSection__uptimeStat variant--Stat" id="contact2">
                                 <header class="Copy__header">
                                     <h1 class="Copy__title">Phone</h1>
                                 </header>

@@ -1,5 +1,6 @@
 import defaultTheme from 'tailwindcss/defaultTheme';
 import forms from '@tailwindcss/forms';
+import plugin from 'tailwindcss';
 
 const primaryColors = {
     DEFAULT: 'var(--primary-500)',
@@ -64,6 +65,16 @@ export default {
     },
     plugins: [
         forms,
+        plugin(function({ matchUtilities, theme }) {
+            matchUtilities(
+                {
+                    'animate-duration': (value) => ({
+                        animationDuration: value,
+                    }),
+                },
+                { values: theme('transitionDuration') }
+            )
+        }),
         function({ addUtilities }) {
             addUtilities({
                 '.hide-scrollbar': {

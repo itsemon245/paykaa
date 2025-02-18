@@ -59,10 +59,10 @@
                             @php
                                 $links = [
                                 #'How it works' => '#how-it-works',
-                                'Payment Methods' => '#payment-methods',
-                                'Social Media' => '#social-media',
-                                'Contact' => '#contact',
-                                'About Us' => '#about',
+                                'Payment Methods' => '/#payment-methods',
+                                'Social Media' => '/#social-media',
+                                'Contact' => '/#contact',
+                                'About Us' => '/#about',
                                 ]
                             @endphp
                             @foreach ($links as $link=> $url)
