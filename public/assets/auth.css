@@ -6,6 +6,7 @@
     --placeholder-color: #888;
     --box-shadow-color: rgba(0, 0, 0, .2);
     --input-bg: #eee;
+    --auth-border-radius: 30px;
 }
 
 .main-div {
@@ -20,7 +21,7 @@
     position: relative;
     height: 500px;
     background: var(--secondary-color);
-    border-radius: 30px;
+    border-radius: var(--auth-border-radius);
     box-shadow: 0 0 30px var(--box-shadow-color);
     margin: 20px;
     overflow: hidden;
@@ -65,7 +66,7 @@
 
 .input-box {
     position: relative;
-    margin: 30px 0px;
+    margin: 15px 0px;
 }
 
 .input-box input {
@@ -151,7 +152,7 @@
     width: 300%;
     height: 100%;
     background: var(--primary-color);
-    border-radius: 150px;
+    border-radius: calc(var(--auth-border-radius) + 20px);
     z-index: 2;
     transition: 1s ease-in-out;
 }
@@ -207,6 +208,6 @@
 
 @media (max-width: 650px) {
     .auth-container {
-        height: calc(100vh - 120px);
+        height: calc(100vh - 200px);
     }
 }
