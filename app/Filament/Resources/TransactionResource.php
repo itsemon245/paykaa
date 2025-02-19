@@ -106,7 +106,7 @@ class TransactionResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Date')
-                    ->datetime("d M, Y H:i a")
+                    ->datetime("d M, Y h:i A")
                     ->toggleable(isToggledHiddenByDefault: false)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')

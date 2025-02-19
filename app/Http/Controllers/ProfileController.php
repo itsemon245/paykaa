@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Data\UserData;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\PhoneHistory;
 use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\JsonResponse;
@@ -54,8 +55,12 @@ class ProfileController extends Controller
     {
         $request->user()->fill($request->validated());
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        if ($request->user()->isDirty('phone')) {
+            $data = [
+                'user_id' => $request->user()->id,
+                'phone' => $request->user()->phone,
+            ];
+            PhoneHistory::updateOrCreate($data, $data);
         }
         $request->user()->save();
 

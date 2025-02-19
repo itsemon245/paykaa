@@ -3,20 +3,19 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
-use App\Models\Model;
 use App\Models\User;
 use Carbon\Carbon;
 use Filament\Forms;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\ActionSize;
 use Filament\Tables;
-use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Database\Eloquent\Model;
 use stdClass;
 
 class UserResource extends Resource
@@ -54,7 +53,37 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('address')
                     ->disabled(),
                 Forms\Components\TextInput::make('referral_id')
-                    ->readOnly()
+                    ->readOnly(),
+                Forms\Components\Fieldset::make('Documents')
+                    ->relationship('kyc')
+                    ->hidden(fn($record) => $record->kyc == null)
+                    ->schema([
+                        Forms\Components\FileUpload::make('front_image')
+                            ->downloadable()
+                            ->openable(true)
+                            ->image()
+                            ->required(),
+                        Forms\Components\FileUpload::make('back_image')
+                            ->downloadable()
+                            ->openable(true)
+                            ->image()
+                            ->required(),
+                    ])->columnSpanFull(),
+                Repeater::make('phoneHistory')
+                    ->relationship('phoneHistory')
+                    ->label('Phone History')
+                    ->hidden(fn($record) => $record->phoneHistory->count() == 0)
+                    ->itemLabel(fn($state): ?string => Carbon::parse($state['created_at'])->format('d M, Y, h:i A'))
+                    ->reorderable(false)
+                    ->deletable(false)
+                    ->addable(false)
+                    ->schema([
+                        TextInput::make('phone')
+                            ->hiddenLabel(true)
+                            ->required(),
+                    ])
+                    ->grid(2)
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -62,7 +91,7 @@ class UserResource extends Resource
     {
         return $table
             ->modifyQueryUsing(
-                fn(Builder $query) => $query->with('kyc')->whereNot('id', auth()->user()->id)->orderBy('id', 'asc')
+                fn(Builder $query) => $query->with('kyc', 'phoneHistory')->whereNot('id', auth()->user()->id)->orderBy('id', 'asc')
             )->columns([
                 Tables\Columns\TextColumn::make('#')->state(
                     static function (HasTable $livewire, stdClass $rowLoop): string {

@@ -31,6 +31,11 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         return $this->hasMany(User::class, 'referred_by');
     }
 
+    public function phoneHistory(): HasMany
+    {
+        return $this->hasMany(PhoneHistory::class);
+    }
+
     public function referer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'referred_by');

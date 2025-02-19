@@ -149,10 +149,22 @@ class KycResource extends Resource
                 ->tooltip('Approve')
                 ->action(fn(Model $record) => $record->update(['approved_at' => now(), 'rejected_at' => null]))
                 ->size(ActionSize::Large)
+                ->after(function () {
+                    $indexUrl = self::getUrl();
+                    if (url()->current() !== $indexUrl) {
+                        redirect($indexUrl);
+                    }
+                })
                 ->color('success')
                 ->icon('heroicon-o-check-circle'),
             Action::make('Reject')
                 ->requiresConfirmation()
+                ->after(function () {
+                    $indexUrl = self::getUrl();
+                    if (url()->current() !== $indexUrl) {
+                        redirect($indexUrl);
+                    }
+                })
                 ->hidden(fn(Model $record) => $record->rejected_at)
                 ->tooltip('Reject')
                 ->action(fn(Model $record) => $record->update(['rejected_at' => now(), 'approved_at' => null]))

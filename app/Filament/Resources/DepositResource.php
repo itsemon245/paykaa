@@ -76,6 +76,10 @@ class DepositResource extends Resource
                             }
                         }
                     }
+                    $indexUrl = self::getUrl();
+                    if (url()->current() !== $indexUrl) {
+                        redirect($indexUrl);
+                    }
                 })
                 ->tooltip('Approve')
                 ->action(function (Model $record) {
@@ -88,6 +92,12 @@ class DepositResource extends Resource
                 ->requiresConfirmation()
                 ->hidden(fn(Model $record) => $record->status === WalletStatus::CANCELLED->value || $record->status === WalletStatus::FAILED->value || $record->status === WalletStatus::APPROVED->value)
                 ->tooltip('Reject')
+                ->after(function () {
+                    $indexUrl = self::getUrl();
+                    if (url()->current() !== $indexUrl) {
+                        redirect($indexUrl);
+                    }
+                })
                 ->action(fn(Model $record) => $record->update(['cancelled_at' => now(), 'approved_at' => null, 'failed_at' => null]))
                 ->size(ActionSize::Large)
                 ->color('danger')
@@ -197,7 +207,7 @@ class DepositResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Date')
-                    ->datetime("d M, Y H:i a")
+                    ->datetime("d M, Y h:i A")
                     ->toggleable(isToggledHiddenByDefault: false)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')

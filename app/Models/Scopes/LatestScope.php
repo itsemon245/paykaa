@@ -13,6 +13,8 @@ class LatestScope implements Scope
      */
     public function apply(Builder $builder, Model $model): void
     {
-        $builder->latest();
+        if (!str_starts_with(request()->path(), 'admin')) {
+            $builder->latest();
+        }
     }
 }
