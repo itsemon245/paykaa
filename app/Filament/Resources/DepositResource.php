@@ -108,6 +108,7 @@ class DepositResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+            ->disabled()
             ->schema([
                 Forms\Components\Fieldset::make('User')
                     ->relationship('owner')

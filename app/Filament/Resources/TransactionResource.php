@@ -33,6 +33,7 @@ class TransactionResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+            ->disabled()
             ->schema([
                 Forms\Components\Fieldset::make('Sender')
                     ->relationship('sender')
@@ -173,4 +174,3 @@ class TransactionResource extends Resource
         ];
     }
 }
-

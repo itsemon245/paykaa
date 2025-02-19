@@ -23,6 +23,7 @@ class SettingResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-cog-8-tooth';
     protected static ?string $navigationLabel = 'Settings';
+    protected static ?int $navigationSort = 21;
 
     public static function getNavigationUrl(): string
     {

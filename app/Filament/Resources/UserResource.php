@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Resources\TestResource\Pages\EditUser;
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
 use Carbon\Carbon;
@@ -28,6 +29,7 @@ class UserResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+            ->disabled()
             ->schema([
                 Forms\Components\FileUpload::make('avatar')
                     ->alignCenter()
@@ -185,6 +187,7 @@ class UserResource extends Resource
     {
         return [
             'index' => Pages\ManageUsers::route('/'),
+            'edit' => EditUser::route('/{record}/edit'),
         ];
     }
 }

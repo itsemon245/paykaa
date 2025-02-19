@@ -24,6 +24,7 @@ class MoneyRequestResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+            ->disabled()
             ->schema([
                 Forms\Components\TextInput::make('sender_id')
                     ->label('Receiver')
