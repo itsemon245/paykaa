@@ -35,7 +35,7 @@ export default function Topbar() {
                                 <h5><a href="#">{chat.from?.name}</a></h5>
                                 {activeStatus && <span>{activeStatus === true ? "Active now" : activeStatus}</span>}
                             </div>
-                            <RequestMoneyChatList chat={chat} />
+                            {!route().current('helpline') && <RequestMoneyChatList chat={chat} />}
                         </div>
                     </div>
                 </div>

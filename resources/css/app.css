@@ -37,6 +37,10 @@
     animation-iteration-count: 1!important;
 }
 
+.heading{
+    @apply text-gray-800 text-lg font-semibold mb-2 md:text-xl md:font-bold md:mb-3
+}
+
 
 :root {
     --primary-50: #e9f0f7!important;

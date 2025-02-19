@@ -31,6 +31,7 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $adminUuid = \Illuminate\Support\Facades\Cache::rememberForever('admin-uuid', fn() => \App\Models\User::where('id', 1)->pluck('uuid'));
         return [
             ...parent::share($request),
             'settings' => Setting::first(),
@@ -53,7 +54,7 @@ class HandleInertiaRequests extends Middleware
                 'storage' => storage_path(),
                 'base' => base_path(),
             ],
-            'impersonating' => session('impersonating')
+            'impersonating' => session('impersonating'),
         ];
     }
 }

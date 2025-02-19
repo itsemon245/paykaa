@@ -30,11 +30,12 @@ export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?
         } else {
             setProcessing(false)
             setMessage(moneyRequestMessage)
+            setMoneyRequest(moneyRequestMessage?.moneyRequest as MoneyRequestData)
         }
     }, [])
 
     const accept = async () => {
-        if (!moneyRequest) return
+        if (!moneyRequest || processing) return
         setProcessing(true)
         const toastId = toast.loading("Accepting money request...")
         router.post(route('money.accept' as RouteName, {
@@ -56,7 +57,7 @@ export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?
         })
     }
     const release = async () => {
-        if (!moneyRequest) return
+        if (!moneyRequest || processing) return
         setProcessing(true)
         const toastId = toast.loading("Releasing money request...")
         router.post(route('money.release' as RouteName, {
@@ -82,7 +83,7 @@ export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?
         })
     }
     const reject = async () => {
-        if (!moneyRequest) return
+        if (!moneyRequest || processing) return
         setProcessing(true)
         const toastId = toast.loading("Rejecting money request...")
         router.post(route('money.reject' as RouteName, {
@@ -105,7 +106,7 @@ export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?
     }
 
     const cancel = async () => {
-        if (!moneyRequest) return
+        if (!moneyRequest || processing) return
         setProcessing(true)
         const toastId = toast.loading("Cancelling money request...")
         router.post(route('money.cancel' as RouteName, {
@@ -128,7 +129,7 @@ export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?
     }
 
     const requestRelease = async () => {
-        if (!moneyRequest) return
+        if (!moneyRequest || processing) return
         setProcessing(true)
         const toastId = toast.loading("Requesting release...")
         router.post(route('money.request-release' as RouteName, {

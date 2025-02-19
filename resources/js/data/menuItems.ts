@@ -51,8 +51,8 @@ const menuItems = [
     {
         label: "Help Line",
         icon: "/assets/dashboard/help.png",
-        url: "#",
-        isActive: () => false,
+        url: route('helpline'),
+        isActive: () => route().current('helpline'),
     },
 ] as const
 export default menuItems;

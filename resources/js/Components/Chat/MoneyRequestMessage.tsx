@@ -1,7 +1,7 @@
 import useMoneyRequest from "@/Hooks/useMoneyRequest";
 import { RouteName } from "@/types";
 import { ChatData, MessageData, MoneyRequestData } from "@/types/_generated";
-import { cn } from "@/utils";
+import { cn, defaultAvatar } from "@/utils";
 import { router, usePage } from "@inertiajs/react";
 import { format, parseISO } from "date-fns";
 import { Button } from "primereact/button";
@@ -72,13 +72,17 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
         </div>
         )
     }
-
     return (
         <div className={cn("message", message.by_me ? "me" : "")}>
             {!message.by_me && (
                 <img
                     className="avatar-md"
                     src={chat.from?.avatar}
+                    onError={(e) => {
+                        //@ts-ignore
+                        e.target.src = defaultAvatar
+                    }}
+
                     data-toggle="tooltip"
                     data-placement="top"
                     title={chat.from?.name}

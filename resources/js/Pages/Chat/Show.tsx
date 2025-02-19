@@ -1,6 +1,4 @@
 import useBreakpoint from "@/Hooks/useBrakpoints";
-import { PaginatedCollection } from "@/types";
-import { MessageData } from "@/types/_generated";
 
 export default function Show() {
     const { chats, setChats, messages, setMessages, fetchChats } = useChat();

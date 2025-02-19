@@ -198,7 +198,7 @@ export default function Deposit() {
         }
         return (
             <div className="" key={item.category}>
-                <h1 className="md:text-xl font-bold mb-3 text-gray-800">{item.category === 'Mobile Banking' ? 'E-Payments' : item.category}</h1>
+                <h1 className="heading">{item.category === 'Mobile Banking' ? 'E-Payments' : item.category}</h1>
                 <div className="flex flex-col w-full justify-start items-center gap-3 sm:gap-5">
                     {item.methods.map((method, index) => {
                         return (

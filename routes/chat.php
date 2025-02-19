@@ -22,4 +22,5 @@ Route::middleware('auth', 'redirect-if-admin')->group(function () {
         Route::get('/get-new-messages/{chat}', [MessageController::class, 'getNewMessages'])->name('messages.get-new');
         Route::post('/messages/{chat}', [MessageController::class, 'store'])->name('message.store');
     });
+    Route::get('helpline', [ChatController::class, 'helpline'])->name('helpline');
 });

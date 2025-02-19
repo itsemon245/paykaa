@@ -16,13 +16,6 @@ export default function Index() {
                         Choose a conversation to start chatting
                     </div>
                 </div>
-
-                {/*                <div className="chat" id="chat1" >
-                    <Topbar />
-                    <Messages messages={messages} setMessages={setMessages} />
-                    <Writer />
-                </div>
-*/}
             </div>
         </>
 

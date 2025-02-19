@@ -1,7 +1,7 @@
 import { Echo } from "@/echo";
 import { PaginatedCollection } from "@/types";
 import { ChatData, MessageData } from "@/types/_generated";
-import { cn, defaultAvatar, image, poll } from "@/utils";
+import { cn, defaultAvatar, image } from "@/utils";
 import { Link, usePage } from "@inertiajs/react";
 
 export default function ChatSidebar({

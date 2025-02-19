@@ -54,6 +54,32 @@ class ChatController extends Controller
                 ->paginate()),
         ]);
     }
+
+    public function helpline(Request $request)
+    {
+        $adminId = 1;
+        $people = [auth()->user()->id, $adminId];
+        $chat = Chat::whereIn('receiver_id', $people)->whereIn('sender_id', $people)->first();
+        if (!$chat) {
+            $chat = Chat::create([
+                'sender_id' => auth()->user()->id,
+                'receiver_id' => $adminId,
+            ]);
+        }
+        $chat->messages()->received()->unread()->update(['is_read' => true]);
+        $chat->loadMissing('sender', 'receiver', 'lastMessage');
+
+        return Inertia::render('Chat/Show', [
+            'chat' => ChatData::from($chat),
+            'chats' => $this->getChats($request, true),
+            'helpline' => true,
+            'messages' => MessageData::collect($chat
+                ->messages()
+                ->with('moneyRequest', 'sender', 'receiver', 'moneyRequest', 'moneyRequest.from')
+                ->paginate()),
+        ]);
+    }
+
     public function typing(Request $request, Chat $chat)
     {
         if (auth()->id() !== $chat->sender_id) {
@@ -92,12 +118,15 @@ class ChatController extends Controller
         return redirect()->route('chat.show', ['chat' => $chat->uuid]);
     }
 
-    public function getChats(Request $request)
+    public function getChats(Request $request, $helpline = false)
     {
         $chats = Chat::with('lastMessage', 'sender', 'receiver')
             ->orderBy('last_message_at', 'desc')
-            ->where(function (Builder $q) use ($request) {
+            ->where(function (Builder $q) use ($request, $helpline) {
                 $q->where('sender_id', auth()->id());
+                if ($helpline) {
+                    $q->where('receiver_id', 1);
+                }
                 if ($request->search) {
                     $q->where('receiver_id', $request->search)->orWhere('sender_id', $request->search);
                 }

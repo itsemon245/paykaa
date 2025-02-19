@@ -100,7 +100,7 @@ export default function Transactions() {
             <Head title="Transactions" />
             <div className="container mx-auto my-6">
                 <Card>
-                    <h1 className="text-xl font-bold mb-3">Transactions</h1>
+                    <h1 className="heading">Transactions</h1>
                     {min('sm') ? <DataTable className="rounded-lg overflow-hidden" emptyMessage={<div className="text-center font-bold">No Transactions Yet</div>} dataKey="uuid" totalRecords={transactions.total} value={transactions.data} rows={perPage} tableStyle={{ minWidth: '50rem' }}>
                         <Column field="id" className="!p-1" header="No." body={slBodyTemplate} style={{ width: 'max-content' }}></Column>
                         <Column field="created_at" body={(item) => format(parseISO(item.created_at), "PPp")} header="Date" className="!p-1 !w-[200px]"></Column>
