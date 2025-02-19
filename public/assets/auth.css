@@ -13,13 +13,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    min-height: 100dvh;
+    width: 100dvw;
+    overflow: hidden;
     /* background: var(--background-gradient); */
 }
 
 .auth-container {
     position: relative;
-    height: 500px;
+    height: 420px;
     background: var(--secondary-color);
     border-radius: var(--auth-border-radius);
     box-shadow: 0 0 30px var(--box-shadow-color);
@@ -37,10 +39,9 @@
     align-items: center;
     color: var(--text-color);
     text-align: center;
-    padding: 20px;
     z-index: 1;
     transition: .6s ease-in-out 1.2s, visibility 0s 1s;
-    @apply md:w-[50%] w-full;
+    @apply md:w-[50%] w-full p-3 md:p-5;
 }
 
 .auth-container.active .form-box {
@@ -206,8 +207,8 @@
     box-shadow: none;
 }
 
-@media (max-width: 650px) {
+@media (max-width: 450px) {
     .auth-container {
-        height: calc(100vh - 200px);
+        margin: 10px;
     }
 }

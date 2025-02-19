@@ -64,7 +64,7 @@ export default function Login() {
                 <div className={cn("auth-container", getQuery('register') && 'active')} ref={container}>
                     <div className="form-box login">
                         <form onSubmit={submit} className="form">
-                            <span className="font-bold text-2xl text-gray-700">Sign in to your account</span>
+                            <span className="font-bold text-lg md:text-2xl text-gray-700">Sign in to your account</span>
                             <div className="input-box">
                                 <input
                                     onChange={(e) => setData('email', e.target.value)}

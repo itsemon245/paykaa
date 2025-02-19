@@ -60,7 +60,7 @@ export default function RegisterForm({ children }: { children: any }) {
     return (
         <div className="form-box register">
             <form onSubmit={submit} className="form">
-                <span className="font-bold text-xl text-gray-700">Create your Paykaa account</span>
+                <span className="font-bold text-lg md:text-xl text-gray-700">Create your PayKaa account</span>
                 <div className="input-box">
                     <input type="text" placeholder="Full Name" required onChange={(e) => setData('name', e.target.value)} />
                     <i className='bx bxs-user'></i>
