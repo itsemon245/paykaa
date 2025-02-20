@@ -58,7 +58,7 @@ class UserResource extends Resource
                     ->readOnly(),
                 Forms\Components\Fieldset::make('Documents')
                     ->relationship('kyc')
-                    ->hidden(fn($record) => $record->kyc == null)
+                    ->hidden(fn($record) => $record?->kyc == null)
                     ->schema([
                         Forms\Components\FileUpload::make('front_image')
                             ->downloadable()
@@ -74,8 +74,8 @@ class UserResource extends Resource
                 Repeater::make('phoneHistory')
                     ->relationship('phoneHistory')
                     ->label('Phone History')
-                    ->hidden(fn($record) => $record->phoneHistory->count() == 0)
-                    ->itemLabel(fn($state): ?string => Carbon::parse($state['created_at'])->format('d M, Y, h:i A'))
+                    ->hidden(fn($record) => $record?->phoneHistory?->count() == 0)
+                    ->itemLabel(fn($state): ?string => isset($state['created_at']) ? Carbon::parse($state['created_at'])->format('d M, Y, h:i A') : '')
                     ->reorderable(false)
                     ->deletable(false)
                     ->addable(false)
@@ -160,15 +160,20 @@ class UserResource extends Resource
                 Tables\Actions\Action::make('Action')
                     ->icon('heroicon-o-user')
                     ->color('warning')
-                    ->url(fn(User $record) => url('/admin/login-as/' . $record->uuid))
+                    ->url(fn(User $record) => url('/admin/login-as/' . $record?->uuid))
                     ->size(ActionSize::Large),
                 Tables\Actions\ViewAction::make()->modalFooterActions([
                     Tables\Actions\Action::make('Action')
                         ->icon('heroicon-o-user')
                         ->color('warning')
-                        ->url(fn(User $record) => url('/admin/login-as/' . $record->uuid))
+                        ->url(fn(User $record) => url('/admin/login-as/' . $record?->uuid))
                         ->size(ActionSize::Large),
-                    Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\DeleteAction::make()->after(function () {
+                        $indexUrl = self::getUrl();
+                        if (url()->current() !== $indexUrl) {
+                            redirect($indexUrl);
+                        }
+                    }),
                 ]),
                 // ActionGroup::make([
                 //     // Tables\Actions\EditAction::make(),
@@ -187,7 +192,7 @@ class UserResource extends Resource
     {
         return [
             'index' => Pages\ManageUsers::route('/'),
-            'edit' => EditUser::route('/{record}/edit'),
+            // 'edit' => EditUser::route('/{record}/edit'),
         ];
     }
 }
