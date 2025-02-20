@@ -21,7 +21,7 @@
 
 .auth-container {
     position: relative;
-    height: 420px;
+    height: 430px;
     background: var(--secondary-color);
     border-radius: var(--auth-border-radius);
     box-shadow: 0 0 30px var(--box-shadow-color);
@@ -58,6 +58,8 @@
 
 .form {
     width: 100%;
+    height: 100%;
+    @apply flex flex-col justify-center gap-4;
 }
 
 .auth-container h1 {
@@ -67,7 +69,6 @@
 
 .input-box {
     position: relative;
-    margin: 15px 0px;
 }
 
 .input-box input {

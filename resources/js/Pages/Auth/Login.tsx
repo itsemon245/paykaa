@@ -64,7 +64,8 @@ export default function Login() {
                 <div className={cn("auth-container", getQuery('register') && 'active')} ref={container}>
                     <div className="form-box login">
                         <form onSubmit={submit} className="form">
-                            <span className="font-bold text-lg md:text-2xl text-gray-700">Sign in to your account</span>
+                            <span className="font-bold text-lg md:text-2xl text-gray-700 my-auto">Sign in to your account</span>
+
                             <div className="input-box">
                                 <input
                                     onChange={(e) => setData('email', e.target.value)}
@@ -98,6 +99,7 @@ export default function Login() {
                             }}
                                 type="button" className="mt-2">Don't have an account? <span className="text-primary font-semibold">Register</span></button>
                             }
+                            <div className="mb-auto"></div>
                         </form>
                     </div>
 
@@ -105,7 +107,7 @@ export default function Login() {
                         {max('md') && <button onClick={() => {
                             container.current?.classList.remove('active');
                         }}
-                            type="button" className="mt-2">Already have an account? <span className="text-primary font-semibold">Login</span> </button>
+                            type="button" className="">Already have an account? <span className="text-primary font-semibold">Login</span> </button>
                         }
                     </RegisterForm>
 

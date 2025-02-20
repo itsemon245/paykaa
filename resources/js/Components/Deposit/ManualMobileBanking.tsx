@@ -9,13 +9,15 @@ interface ManualMobileBankingProps {
     setData: SetData<WalletData>,
     errors: Partial<Record<keyof WalletData, string>>
     depositMethod?: DepositMethodData
+    setUploading: (uploading: boolean) => void
 }
 
 export default function ManualMobileBanking({
     data,
     setData,
     errors,
-    depositMethod
+    depositMethod,
+    setUploading
 }: ManualMobileBankingProps) {
     const { app } = useConfig()
     const { base_commission } = usePage().props.settings.transactions
@@ -81,7 +83,9 @@ export default function ManualMobileBanking({
 
             <Textarea autoResize label="Note" placeholder="Optional" className="w-full" onChange={e => setData('note', e.target.value)} error={errors.note} />
             {depositMethod?.category === 'Bank' && (
-                <Filedrop className="min-h-[120px]" label="Upload receipt (optional)" onProcessFile={(path, storageUrl) => setData('receipt', storageUrl)} accept="image/*" />
+                <Filedrop setUploading={setUploading} className="min-h-[120px]" label="Upload receipt (optional)" onProcessFile={(path, storageUrl) => {
+                    setData('receipt', storageUrl)
+                }} accept="image/*" />
             )}
         </div>
     )

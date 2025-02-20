@@ -184,11 +184,12 @@ export default function Deposit() {
     }
 
     const depositForm = useRef<HTMLFormElement>(null)
+    const [uploading, setUploading] = useState(false)
     const DepositFooter = () => {
         return (
             <div className="flex justify-end md:flex-row-reverse gap-2 mt-3">
                 <Button outlined label="Cancel" onClick={() => setActiveDepositMethod(undefined)} />
-                <Button label="Deposit" onClick={(e) => depositForm.current?.requestSubmit()} loading={processing} />
+                <Button label={uploading ? 'Uploading...' : (processing ? 'Depositing...' : 'Deposit')} onClick={(e) => depositForm.current?.requestSubmit()} loading={processing || uploading} />
             </div>
         )
     }
@@ -234,7 +235,7 @@ export default function Deposit() {
                     }} ref={depositForm}>
                         <DepositInfo depositMethod={activeDepositMethod} />
                         {activeDepositMethod?.mode !== "payment" && (
-                            <ManualMobileBanking depositMethod={activeDepositMethod} errors={errors} data={data} setData={setData} />
+                            <ManualMobileBanking setUploading={setUploading} depositMethod={activeDepositMethod} errors={errors} data={data} setData={setData} />
                         )}
                     </form>
                 </Dialog>

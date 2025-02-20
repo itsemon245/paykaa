@@ -20,6 +20,7 @@ export interface FiledropProps {
     onProcessFile?: (path: string, storageUrl: string) => void
     allowMultiple?: boolean
     accept?: string
+    setUploading?: (uploading: boolean) => void
 }
 export default function Filedrop({
     className,
@@ -28,6 +29,7 @@ export default function Filedrop({
     labelIdle = 'Drag and drop your file here',
     onProcessFile,
     allowMultiple,
+    setUploading,
     ...props
 }: FiledropProps) {
     const [files, setFiles] = useState<FilePondFile[]>([])
@@ -51,10 +53,12 @@ export default function Filedrop({
                 server={{
                     url: '/upload/chunk',
                 }}
+                onaddfilestart={() => setUploading?.(true)}
                 onprocessfile={(_, file) => {
                     let path = `${paths.storage}/app/public/temp/completed/${file.serverId}.${file.fileExtension}`;;
                     let storageUrl = "temp/completed/" + file.serverId + "." + file.fileExtension;
                     onProcessFile?.(path, storageUrl);
+                    setUploading?.(false)
                 }}
                 allowMultiple={allowMultiple}
                 maxFiles={maxFiles}
