@@ -43,6 +43,10 @@ class ChatController extends Controller
     public function show(Request $request, Chat $chat)
     {
         $chat->messages()->received()->unread()->update(['is_read' => true]);
+        $chat->update([
+            'is_read' => true,
+            'is_notified' => true
+        ]);
         $chat->loadMissing('sender', 'receiver', 'lastMessage');
 
         return Inertia::render('Chat/Show', [
@@ -125,7 +129,13 @@ class ChatController extends Controller
             ->where(function (Builder $q) use ($request, $helpline) {
                 $q->where('sender_id', auth()->id());
                 if ($helpline) {
-                    $q->where('receiver_id', 1);
+                    if (auth()->id() !== 1) {
+                        $q->where('receiver_id', 1);
+                    } else {
+                        $q->whereNot('receiver_id', 1);
+                    }
+                } else {
+                    $q->whereNot('receiver_id', 1);
                 }
                 if ($request->search) {
                     $q->where('receiver_id', $request->search)->orWhere('sender_id', $request->search);

@@ -5,7 +5,7 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\UserController;
 
-Route::middleware('auth', 'redirect-if-admin')->group(function () {
+Route::middleware('auth')->group(function () {
     Route::prefix('chats')->name('chat.')->group(function () {
         Route::get('/', [ChatController::class, 'index'])->name('index');
         Route::get('/check-new-messages', [ChatController::class, 'checkNewMessages'])->name('check-new-messages');
@@ -22,5 +22,5 @@ Route::middleware('auth', 'redirect-if-admin')->group(function () {
         Route::get('/get-new-messages/{chat}', [MessageController::class, 'getNewMessages'])->name('messages.get-new');
         Route::post('/messages/{chat}', [MessageController::class, 'store'])->name('message.store');
     });
-    Route::get('helpline', [ChatController::class, 'helpline'])->name('helpline');
+    Route::get('helpline', [ChatController::class, 'helpline'])->name('helpline')->middleware('auth');
 });

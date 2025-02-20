@@ -19,6 +19,12 @@ export default function useChat() {
     }, 500, { leading: false, trailing: true }), [])
 
     useEffect(() => {
+        if (messagesProp) {
+            setMessages(messagesProp)
+        }
+    }, [messagesProp])
+
+    useEffect(() => {
         if (!chats) return
         chats.data.forEach(item => {
             const chatChannel = 'chat.' + item.id

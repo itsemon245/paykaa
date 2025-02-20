@@ -83,7 +83,9 @@ export default function ChatSidebar({
         return () => Echo.leave(newChatChannel)
     }, [chats]);
     useEffect(() => {
-        fetchChats(searchString);
+        if (searchString) {
+            fetchChats(searchString);
+        }
     }, [searchString]);
 
     return (
@@ -100,7 +102,7 @@ export default function ChatSidebar({
                             <Logo className="!h-10 w-auto" />
                         </Link>
                     </div>
-                    <div className="search relative">
+                    {(!route().current('helpline') || user.id === 1) && <div className="search relative">
                         <form className="form-inline position-relative">
                             <input
                                 type="search"
@@ -115,6 +117,7 @@ export default function ChatSidebar({
                         </form>
                         <AddNewChat />
                     </div>
+                    }
                     {/*
                     <div className="flex items-center gap-3 sort pb-0">
                         <button

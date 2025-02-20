@@ -4,6 +4,7 @@ import { Link, usePage } from "@inertiajs/react";
 
 export default function Topbar() {
     const chat = usePage().props.chat as ChatData;
+    const { user } = useAuth()
     const { activeStatus } = useActiveStatus(chat.from);
     return (
         <div className="top max-sm:!py-3 px-2">
@@ -35,7 +36,7 @@ export default function Topbar() {
                                 <h5><a href="#">{chat.from?.name}</a></h5>
                                 {activeStatus && <span>{activeStatus === true ? "Active now" : activeStatus}</span>}
                             </div>
-                            {!route().current('helpline') && <RequestMoneyChatList chat={chat} />}
+                            {!(route().current('helpline') || user.id === 1) && <RequestMoneyChatList chat={chat} />}
                         </div>
                     </div>
                 </div>
