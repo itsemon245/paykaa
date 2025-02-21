@@ -111,16 +111,18 @@ export default function Index() {
                         {ads.data.map((ad) => (
                             <Card header={<Header ad={ad} />} footer={<Footer ad={ad} />} className="w-full" key={ad.id}>
                                 <div className="">
-                                    <div className="flex items-end gap-1 font-semibold">
+                                    {ad.type === 'Sell' && <div className="flex items-end gap-1 font-semibold">
                                         <span>Tk.</span>
                                         <div className="text-lg sm:text-xl font-bold">{ad.rate}</div>
                                     </div>
+                                    }
                                     <div>
-                                        Quantity: {ad.amount}
+                                        Quantity: {ad.amount} USD
                                     </div>
-                                    <div>
+                                    {ad.type === 'Sell' && <div>
                                         Limit: {ad.limit_min} - {ad.limit_max}
                                     </div>
+                                    }
                                 </div>
                             </Card>
                         ))}

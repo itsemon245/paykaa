@@ -1,7 +1,7 @@
 import { PaginatedCollection } from '@/types'
 import { AddData, AddMethodData, AddType } from '@/types/_generated'
 import { titleCase } from '@/utils'
-import { useForm, usePage } from '@inertiajs/react'
+import { Link, useForm, usePage } from '@inertiajs/react'
 import { format, parseISO } from 'date-fns'
 import { Button } from 'primereact/button'
 import { Card } from 'primereact/card'
@@ -20,9 +20,10 @@ export default function Index() {
     const [adds, setAdds] = useState(initialAdds)
     const [perPage, setPerPage] = useState(adds.per_page)
     const [visible, setVisible] = useState(false)
+    const [updateUrl, setUpdateUrl] = useState('')
 
-    const { data, setData, processing, errors, post, reset } = useForm({
-        type: undefined,
+    const { data, setData, processing, errors, post, patch, reset } = useForm({
+        type: "Buy",
         owner_id: user.id,
         add_method_id: undefined,
         amount: 0,
@@ -36,28 +37,56 @@ export default function Index() {
         reset()
     }
 
+    const edit = (id?: number) => {
+        if (!id) return
+        setVisible(true)
+        const item = adds.data.find(item => item.id === id)
+        if (item) {
+            setUpdateUrl(route('add.update', { add: item.uuid }))
+            setData('type', item.type)
+            setData('add_method_id', item.add_method_id)
+            setData('amount', item.amount)
+            setData('rate', item.rate)
+            setData('limit_max', item.limit_max)
+            setData('limit_min', item.limit_min)
+            setData('contact', item.contact)
+        }
+    }
+
 
     useEffect(() => {
         console.log(data)
     }, [data])
-
     const submit = async (e?: React.FormEvent<HTMLFormElement>) => {
         e?.preventDefault()
         const toastId = toast.loading('Publishing add...')
-        post(route('add.store'), {
+        type FormOptions = Parameters<typeof post>[1];
+        const options: FormOptions = {
             onSuccess: (data) => {
-                toast.success("Add published successfully!")
+                if (data.props.error) {
+                    toast.error(data.props.error, {
+                        id: toastId
+                    })
+                    return
+                }
+                toast.success(`Add ${updateUrl ? "updated" : "published"} successfully!`, {
+                    id: toastId
+                })
                 setVisible(false)
                 setAdds(data.props.adds as PaginatedCollection<AddData>)
             },
-            onError: (err) => {
+            onError: (err: any) => {
                 console.error("Error while publishing add", err)
-                toast.error('Failed to publish add')
-            },
-            onFinish: () => {
-                toast.dismiss(toastId)
+                toast.error('Failed to publish add', {
+                    id: toastId
+                })
             }
-        })
+        }
+        if (updateUrl) {
+            patch(updateUrl, options)
+        } else {
+            post(route('add.store'), options)
+        }
     }
     const Footer = () => {
         return (
@@ -77,7 +106,7 @@ export default function Index() {
                 <div className="flex justify-between items-center mb-3">
                     <h4 className="text-xl font-bold">Ads</h4>
                     <Button onClick={toggleDialog} label='Post Ad' />
-                    <Dialog onHide={toggleDialog} header="Post Ad" footer={<Footer />} visible={visible} className="min-h-[50vh]">
+                    <Dialog onHide={toggleDialog} header={updateUrl ? "Edit Add" : "Post Ad"} footer={<Footer />} visible={visible} className="h-[80vh] md:h-[70vh]">
                         <form onSubmit={submit}>
                             <div className="grid md:grid-cols-2 gap-4 items-center justify-center">
                                 <div className="">
@@ -130,7 +159,7 @@ export default function Index() {
                         </form>
                     </Dialog>
                 </div>
-                <DataTable className="rounded-lg overflow-hidden" emptyMessage={<div className="text-center font-bold">No adds Yet</div>} dataKey="uuid" totalRecords={adds.total} value={adds.data} rows={perPage} tableStyle={{ minWidth: '50rem' }}>
+                {adds.data.length !== 0 ? <DataTable className="rounded-lg overflow-hidden" emptyMessage={<div className="text-center font-bold">No adds Yet</div>} dataKey="uuid" totalRecords={adds.total} value={adds.data} rows={perPage} tableStyle={{ minWidth: '50rem' }}>
                     <Column field="id" header="No." body={(item, options) => <div className="font-bold">{options.rowIndex + 1}</div>} style={{ width: 'max-content' }}></Column>
                     <Column field="created_at" body={(item) => format(parseISO(item.created_at), "PP")} header="Date" className="w-[100px]"></Column>
                     <Column field="amount" header="Amount" style={{ width: 'max-content' }}></Column>
@@ -138,11 +167,19 @@ export default function Index() {
                     <Column field="limit_min" header="Limits" style={{ width: 'max-content' }} body={(item) => `${item.limit_min ?? '-'} - ${item.limit_max ?? '-'}`}></Column>
                     <Column field="type" header="Type" className="capitalize" body={(item) => titleCase(item.type)} style={{ width: 'max-content' }}></Column>
                     <Column field="addMethod" header="Method" body={(item: AddData) => item.addMethod?.name} style={{ width: 'max-content' }}></Column>
+                    <Column field="actions" header="Actions" body={(item: AddData) =>
+                        <div className="flex gap-2 items-center">
+                            <Button onClick={() => edit(item.id as number)} color="primary" size="small">Edit</Button>
+                            <Link href={route('add.destroy', { add: item.uuid })} preserveState={false} only={['adds']} method="delete" as="button" className="p-button p-button-danger">Delete</Link>
+                        </div>
+                    } style={{ width: 'max-content' }}></Column>
 
-                </DataTable>
+                </DataTable >
+                    : <NoItems />
+                }
                 {/*<Paginator first={first} rows={perPage} totalRecords={adds.total} rowsPerPageOptions={[15, 30, 50]} onPageChange={onPage} />*/}
 
-            </Card>
+            </Card >
         </>
     )
 }

@@ -23,7 +23,6 @@ class MarketplaceController extends Controller
                 $q->where('add_method_id', $request->wallet_id);
             }
         })
-            ->whereNot('owner_id', auth()->id())
             ->with(['owner', 'addMethod'])->paginate();
         return Inertia::render('Marketplace/Index', [
             'ads' => AddData::collect($ads),

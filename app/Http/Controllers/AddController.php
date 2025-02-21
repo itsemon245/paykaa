@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Data\AddData;
 use App\Data\AddMethodData;
+use App\Enum\AddType;
 use App\Models\Add;
 use App\Models\AddMethod;
 use Illuminate\Http\Request;
@@ -19,8 +20,8 @@ class AddController extends Controller
         $adds = Add::with('addMethod')->paginate();
         $addMethods = AddMethod::select(['id', 'name'])->get();
         return Inertia::render('Add/Index', [
-            'adds'=> AddData::collect($adds),
-            'addMethods'=> AddMethodData::collect($addMethods)
+            'adds' => AddData::collect($adds),
+            'addMethods' => AddMethodData::collect($addMethods)
         ]);
     }
 
@@ -71,7 +72,22 @@ class AddController extends Controller
      */
     public function update(Request $request, Add $add)
     {
-        //
+        $data = AddData::from($request)->only(
+            'type',
+            'add_method_id',
+            'amount',
+            'rate',
+            'limit_max',
+            'limit_min',
+            'contact'
+        );
+        if ($data->type->value == AddType::BUY->value) {
+            $data->limit_min = null;
+            $data->limit_max = null;
+            $data->rate = 0;
+        }
+        $add->update($data->toArray());
+        return back();
     }
 
     /**
@@ -79,6 +95,7 @@ class AddController extends Controller
      */
     public function destroy(Add $add)
     {
-        //
+        $add->delete();
+        return back()->with('success', 'Add deleted!');
     }
 }

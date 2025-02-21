@@ -68,6 +68,7 @@ declare global {
   const MoneyRequestMessage: typeof import('../Components/Chat/MoneyRequestMessage')['default']
   const NavLink: typeof import('../Components/NavLink')['default']
   const Navbar: typeof import('../Components/Navbar')['default']
+  const NoItems: typeof import('../Components/NoItems')['default']
   const Preloader: typeof import('../Components/Preloader')['default']
   const PrimaryButton: typeof import('../Components/PrimaryButton')['default']
   const ProfileLayout: typeof import('../Layouts/ProfileLayout')['default']
