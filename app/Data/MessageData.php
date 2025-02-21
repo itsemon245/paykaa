@@ -26,12 +26,12 @@ class MessageData extends Data
     #[Computed]
     public bool $by_me;
     public bool $is_read;
+    public ?string $body;
     public function __construct(
         public int $chat_id,
         public int $sender_id,
         public int $receiver_id,
         public MessageType $type = MessageType::Text->value,
-        public string $body,
     ) {
         $this->by_me = $sender_id === auth()->user()->id;
     }

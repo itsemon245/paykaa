@@ -35,7 +35,7 @@ export default function Referall() {
                 <Column field="name" header="Name" style={{ width: 'max-content' }}></Column>
                 <Column field="email" header="Email" style={{ width: 'max-content' }}></Column>
             </DataTable>
-                : <NoItems />}
+                : <NoItems value="No referrals yet" />}
 
         </div >
     </>

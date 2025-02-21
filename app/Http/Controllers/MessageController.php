@@ -36,16 +36,31 @@ class MessageController extends Controller
     }
     public function store(Chat $chat, Request $request)
     {
-        $messageData = MessageData::from($request->all());
-        $message = Message::create([
-            ...$messageData->only('chat_id', 'sender_id', 'receiver_id', 'type', 'body')->toArray(),
-        ]);
-        $chat->loadMissing('lastMessage');
-        if (!$chat->lastMessage) {
-            event(new ChatCreated($chat, auth()->id()));
-        }
-        event(new \App\Events\MessageCreated($message));
-        return back();
+        return backWithError(function () use ($chat, $request) {
+            $messageData = MessageData::from($request->all());
+
+            if ($request->get('body')) {
+                $message = Message::create([
+                    ...$messageData->only('chat_id', 'sender_id', 'receiver_id', 'type', 'body')->toArray(),
+                ]);
+            }
+            $chat->loadMissing('lastMessage');
+            if (!$chat->lastMessage) {
+                event(new ChatCreated($chat, auth()->id()));
+            }
+            if ($request->image) {
+                $path = $request->file('image')->store('messages', 'public');
+                $message = Message::create([
+                    ...$messageData->only('chat_id', 'sender_id', 'receiver_id')->toArray(),
+                    'body' => $path,
+                    'type' => 'image',
+                ]);
+                event(new \App\Events\MessageCreated($message));
+            }
+
+            event(new \App\Events\MessageCreated($message));
+            return back();
+        });
     }
 
     public function moneyRequestMessages(Chat $chat)

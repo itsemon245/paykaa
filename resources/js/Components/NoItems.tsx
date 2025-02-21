@@ -1,7 +1,9 @@
-export default function NoItems() {
+export default function NoItems({
+    value = 'No items yet',
+}) {
     return (
         <div className="heading text-center my-2">
-            No items yet
+            {value}
         </div>
     )
 }

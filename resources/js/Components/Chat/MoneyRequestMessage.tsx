@@ -50,12 +50,12 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                     return;
                 }
 
-            }} rounded severity={getSeverity(moneyRequest as MoneyRequestData)} className="!rounded-lg w-full justify-center *:!font-bold *:!w-max" label={processing ? 'Proccessing...' : getStatus(moneyRequest as MoneyRequestData)} />
+            }} rounded severity={getSeverity(moneyRequest as MoneyRequestData)} className="!rounded-lg w-full justify-center *:!font-bold *:!w-max" label={processing ? 'Proccessing...' : getStatus(moneyRequest as MoneyRequestData)} size="small" />
         }
         return (
             <div className="grid grid-cols-2 items-center gap-3">
-                <Button onClick={accept} rounded severity="success" className="!rounded-lg justify-center *:!font-bold" label={processing ? 'Processing...' : 'Accept'} icon="pi pi-check" />
-                <Button onClick={reject} rounded severity="danger" className="!rounded-lg justify-center *:!font-bold" label={processing ? 'Processing...' : 'Reject'} icon="pi pi-times" />
+                <Button onClick={accept} rounded severity="success" className="!rounded-lg justify-center *:!font-bold" label={processing ? 'Processing...' : 'Accept'} icon="pi pi-check" size="small" />
+                <Button onClick={reject} rounded severity="danger" className="!rounded-lg justify-center *:!font-bold" label={processing ? 'Processing...' : 'Reject'} icon="pi pi-times" size="small" />
             </div>
         )
     }
@@ -66,8 +66,8 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                 if (moneyRequest.status === 'approved') {
                     requestRelease();
                 }
-            }} rounded severity={getSeverity(moneyRequest as MoneyRequestData)} className="!rounded-lg w-full justify-center *:!font-bold *:!w-max" label={processing ? 'Proccessing...' : getStatus(moneyRequest as MoneyRequestData)} />
-            {!moneyRequest?.cancelled_at && !moneyRequest.accepted_at && !moneyRequest.rejected_at && <Button onClick={cancel} rounded severity="danger" className="!rounded-lg w-full justify-center *:!font-bold *:!w-max" label={processing ? 'Proccessing...' : 'Cancel'} />
+            }} rounded severity={getSeverity(moneyRequest as MoneyRequestData)} className="!rounded-lg w-full justify-center *:!font-bold *:!w-max" label={processing ? 'Proccessing...' : getStatus(moneyRequest as MoneyRequestData)} size="small" />
+            {!moneyRequest?.cancelled_at && !moneyRequest.accepted_at && !moneyRequest.rejected_at && <Button onClick={cancel} rounded severity="danger" className="!rounded-lg w-full justify-center *:!font-bold *:!w-max" label={processing ? 'Proccessing...' : 'Cancel'} size="small" />
             }
         </div>
         )
@@ -106,7 +106,7 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
 
                     }
                 </Card>
-                <span className="mt-1">{format(parseISO(message.created_at as string), 'hh:mm a')}</span>
+                <span className={cn("!text-gray-400 mt-1 !font-normal !text-xs", message.by_me ? 'text-end' : 'text-start')}>{format(parseISO(message.created_at as string), 'hh:mm a')}</span>
             </div>
         </div>
     )

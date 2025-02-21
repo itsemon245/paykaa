@@ -8,7 +8,7 @@ export type AddData = {
     add_method_id?: number;
     contact: string | null;
     amount: number;
-    rate: number;
+    rate: number | null;
     limit_max?: number;
     limit_min?: number;
     created_at?: string;
@@ -131,12 +131,7 @@ export type MessageData = {
     created_at_human?: string;
     updated_at_human?: string;
 };
-export type MessageType =
-    | 'text'
-    | 'money_request'
-    | 'release_request'
-    | 'money_request_accepted'
-    | 'release_request_accepted';
+export type MessageType = 'text' | 'image' | 'money_request';
 export type MethodCategory = 'Bank' | 'Cryptocurrency' | 'Mobile Banking';
 export type MethodMode = 'personal' | 'agent' | 'payment';
 export type MoneyRequestData = {

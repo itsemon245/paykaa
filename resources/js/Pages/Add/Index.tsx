@@ -175,7 +175,7 @@ export default function Index() {
                     } style={{ width: 'max-content' }}></Column>
 
                 </DataTable >
-                    : <NoItems />
+                    : <NoItems value="No adds yet" />
                 }
                 {/*<Paginator first={first} rows={perPage} totalRecords={adds.total} rowsPerPageOptions={[15, 30, 50]} onPageChange={onPage} />*/}
 

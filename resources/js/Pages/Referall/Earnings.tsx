@@ -77,7 +77,7 @@ export default function Earnings() {
                 <Column field="items" header="Earnings" body={(group: EarningGroup) => group.items.reduce((acc, item) => acc + item.amount, 0)} style={{ width: 'max-content' }}></Column>
                 <Column field="actions" header="Actions" body={action} />
             </DataTable >
-                : <NoItems />}
+                : <NoItems value="No earnings yet" />}
 
         </>
     );

@@ -1,5 +1,5 @@
 import { ChatData, MessageData } from "@/types/_generated"
-import { defaultAvatar } from "@/utils";
+import { cn, defaultAvatar } from "@/utils";
 import { usePage } from "@inertiajs/react";
 import { format, parseISO } from "date-fns"
 
@@ -29,11 +29,14 @@ const Message = ({ message, children }: { message: MessageData, children?: React
                 )}
                 <div className="text-main">
                     <div className={`text-group ${message.by_me ? 'me' : ''}`}>
-                        <div className={`text ${message.by_me ? 'me font-medium text-white' : ''}`}>
+                        {message.type === 'image' ? <div className="rounded-xl border-4 border-primary">
+                            <img className="rounded-lg w-28 md:w-36 max-h-[500px] h-auto object-cover" src={`/storage/${message.body}`} alt="image" />
+                        </div> : <div className={`text ${message.by_me ? 'me font-medium text-white' : ''}`}>
                             <div>{message.body}</div>
                         </div>
+                        }
                     </div>
-                    <div className="!text-gray-400 !font-normal !text-xs">{format(parseISO(message.created_at as string), 'hh:mm a')}</div>
+                    <div className={cn("!text-gray-400 !font-normal !text-xs", message.by_me ? 'text-end' : 'text-start')}>{format(parseISO(message.created_at as string), 'hh:mm a')}</div>
                 </div>
             </div>
         </div>

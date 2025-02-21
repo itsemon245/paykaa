@@ -165,7 +165,7 @@ export default function Transactions() {
                                 ))}
                             </div>
                         </>}
-                    </> : <NoItems />}
+                    </> : <NoItems value="No transactions yet" />}
                     {transactionItem !== undefined && <Sidebar className="h-max" header={<div className="font-bold">{transform(transactionItem?.transaction_type, 'title')}</div>} visible={transactionItem !== undefined} position="bottom" onHide={() => setTransactionItem(undefined)}>
                         <div className="grid grid-cols-2 *:p-2 *:border *:border-collapse">
                             <div>

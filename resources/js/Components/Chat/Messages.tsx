@@ -56,8 +56,9 @@ export default function Messages({
                     </motion.div>
                 </div>
             )}
-            <div className={cn("content", inSidebar ? "!h-full" : "!h-[calc(100dvh - 240px)]")} ref={messageContainerRef}>
+            <div className={cn("content", inSidebar ? "!h-full" : "!h-full")} ref={messageContainerRef}>
                 <div className="flex flex-col-reverse w-full px-4 relative" >
+                    <div className='h-[150px] w-full'></div>
                     {!messages?.data ? (
                         <div className="flex flex-col items-center justify-center w-full h-full gap-2">
                             <i className="ti-comments text-xl sm:text-3xl"></i>
