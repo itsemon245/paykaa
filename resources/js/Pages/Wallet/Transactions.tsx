@@ -101,69 +101,71 @@ export default function Transactions() {
             <div className="container mx-auto my-6">
                 <Card>
                     <h1 className="heading">Transactions</h1>
-                    {min('sm') ? <DataTable className="rounded-lg overflow-hidden" emptyMessage={<div className="text-center font-bold">No Transactions Yet</div>} dataKey="uuid" totalRecords={transactions.total} value={transactions.data} rows={perPage} tableStyle={{ minWidth: '50rem' }}>
-                        <Column field="id" className="!p-1" header="No." body={slBodyTemplate} style={{ width: 'max-content' }}></Column>
-                        <Column field="created_at" body={(item) => format(parseISO(item.created_at), "PPp")} header="Date" className="!p-1 !w-[200px]"></Column>
-                        <Column className="!p-1" field="amount" header="Amount" body={amountBodyTemplate} style={{ width: 'max-content' }}></Column>
-                        <Column className="!p-1 capitalize" field="transaction_type" header="Type" body={item => item.transaction_type} style={{ width: 'max-content' }}></Column>
-                        <Column className="!p-1" field="payment_number" header="Payment Details" style={{ width: 'max-content' }} body={(item: WalletData) => (
-                            <div className="flex flex-col gap-2">
-                                {item.transaction_type !== 'withdraw' && <div className="flex items-center gap-2">
-                                    <div className="text-sm font-bold">Sender:</div>
-                                    <div className="text-sm font-bold">{
-                                        getSenderNumber(item)
-                                    }</div>
-                                </div>}
+                    {transactions.data.length > 0 ? <>
+                        {min('sm') ? <DataTable className="rounded-lg overflow-hidden" emptyMessage={<div className="text-center font-bold">No Transactions Yet</div>} dataKey="uuid" totalRecords={transactions.total} value={transactions.data} rows={perPage} tableStyle={{ minWidth: '50rem' }}>
+                            <Column field="id" className="!p-1" header="No." body={slBodyTemplate} style={{ width: 'max-content' }}></Column>
+                            <Column field="created_at" body={(item) => format(parseISO(item.created_at), "PPp")} header="Date" className="!p-1 !w-[200px]"></Column>
+                            <Column className="!p-1" field="amount" header="Amount" body={amountBodyTemplate} style={{ width: 'max-content' }}></Column>
+                            <Column className="!p-1 capitalize" field="transaction_type" header="Type" body={item => item.transaction_type} style={{ width: 'max-content' }}></Column>
+                            <Column className="!p-1" field="payment_number" header="Payment Details" style={{ width: 'max-content' }} body={(item: WalletData) => (
+                                <div className="flex flex-col gap-2">
+                                    {item.transaction_type !== 'withdraw' && <div className="flex items-center gap-2">
+                                        <div className="text-sm font-bold">Sender:</div>
+                                        <div className="text-sm font-bold">{
+                                            getSenderNumber(item)
+                                        }</div>
+                                    </div>}
 
-                                <div className="flex items-center gap-2">
-                                    <div className="text-sm font-bold">Receiver:</div>
-                                    <div className="text-sm font-bold">{getReceiverNumber(item)}</div>
-                                </div>
+                                    <div className="flex items-center gap-2">
+                                        <div className="text-sm font-bold">Receiver:</div>
+                                        <div className="text-sm font-bold">{getReceiverNumber(item)}</div>
+                                    </div>
 
-                                {item.transaction_type !== 'transfer' && <div className="flex items-center gap-2">
-                                    <div className="text-sm font-bold">Method:</div>
-                                    <div className="text-sm font-bold">{item.transaction_type === "deposit" ? item.depositMethod?.label : item.withdrawMethod?.label}</div>
+                                    {item.transaction_type !== 'transfer' && <div className="flex items-center gap-2">
+                                        <div className="text-sm font-bold">Method:</div>
+                                        <div className="text-sm font-bold">{item.transaction_type === "deposit" ? item.depositMethod?.label : item.withdrawMethod?.label}</div>
+                                    </div>
+                                    }
                                 </div>
-                                }
-                            </div>
-                        )}></Column>
-                        {/*
+                            )}></Column>
+                            {/*
                         <Column className="!p-1 capitalize" field="method" header="Method" style={{ width: 'max-content' }}></Column>
                         <Column className="!p-1" field="payment_number" header="Payment Number" style={{ width: 'max-content' }}></Column>
                         <Column className="!p-1" field="transaction_id" header="Transaction ID" style={{ width: 'max-content' }}></Column>
                         */}
-                        <Column className="!p-1" field="approved_at" body={statusBodyTemplate} header="Status" style={{ width: 'max-content' }}></Column>
-                    </DataTable> : <>
-                        <div className="flex flex-col">
-                            {transactions.data.map((item, index) => (
-                                <div key={"transaction-" + item.uuid} className={cn("flex p-3 justify-between gap-2 border-l border-r", index == 0 && 'border-t border-b', index + 1 <= transactions.data.length && 'border-b')}>
-                                    <div className="flex items-center gap-2">
-                                        {/*<Avatar label={(index + 1).toString()} size="large" style={{ backgroundColor: 'var(--primary-500)', color: '#ffffff' }} shape="circle" />*/}
+                            <Column className="!p-1" field="approved_at" body={statusBodyTemplate} header="Status" style={{ width: 'max-content' }}></Column>
+                        </DataTable> : <>
+                            <div className="flex flex-col">
+                                {transactions.data.map((item, index) => (
+                                    <div key={"transaction-" + item.uuid} className={cn("flex p-3 justify-between gap-2 border-l border-r", index == 0 && 'border-t border-b', index + 1 <= transactions.data.length && 'border-b')}>
+                                        <div className="flex items-center gap-2">
+                                            {/*<Avatar label={(index + 1).toString()} size="large" style={{ backgroundColor: 'var(--primary-500)', color: '#ffffff' }} shape="circle" />*/}
+                                            <div>
+                                                <div className="capitalize text-lg font-semibold">{item.transaction_type}</div>
+                                                {
+                                                    item.transaction_type === 'deposit' && <div className="text-lg font-medium">To: {item.depositMethod?.number}</div>
+                                                }
+                                                {
+                                                    item.transaction_type === 'withdraw' && <div className="text-lg font-medium">To: {item.payment_number}</div>
+                                                }
+                                                <div>Status: {statusBodyTemplate(item)}</div>
+                                            </div>
+                                        </div>
                                         <div>
-                                            <div className="capitalize text-lg font-semibold">{item.transaction_type}</div>
-                                            {
-                                                item.transaction_type === 'deposit' && <div className="text-lg font-medium">To: {item.depositMethod?.number}</div>
-                                            }
-                                            {
-                                                item.transaction_type === 'withdraw' && <div className="text-lg font-medium">To: {item.payment_number}</div>
-                                            }
-                                            <div>Status: {statusBodyTemplate(item)}</div>
+                                            <div className={cn("text-lg font-semibold flex items-center justify-end", item.type === "debit" ? 'text-red-500' : 'text-green-500')}>
+                                                <span className="mb-1.5">{item.type === 'debit' ? '-' : '+'}</span><MdiCurrencyBdt className="h-5 w-5 mb-1" />{item.amount.toFixed(2)}
+                                            </div>
+                                            <div className="text-end">{
+                                                format(parseISO(item.created_at as string), "p, dd/mm/yy")
+                                            }</div>
+                                            <div className="text-end font-bold">Method: {item.transaction_type === "deposit" ? item.depositMethod?.label : item.withdrawMethod?.label}</div>
+                                            <MdiArrowRightDropCircleOutline className="ms-auto w-6 h-6 text-primary cursor-pointer" onClick={() => setTransactionItem(item)} />
                                         </div>
                                     </div>
-                                    <div>
-                                        <div className={cn("text-lg font-semibold flex items-center justify-end", item.type === "debit" ? 'text-red-500' : 'text-green-500')}>
-                                            <span className="mb-1.5">{item.type === 'debit' ? '-' : '+'}</span><MdiCurrencyBdt className="h-5 w-5 mb-1" />{item.amount.toFixed(2)}
-                                        </div>
-                                        <div className="text-end">{
-                                            format(parseISO(item.created_at as string), "p, dd/mm/yy")
-                                        }</div>
-                                        <div className="text-end font-bold">Method: {item.transaction_type === "deposit" ? item.depositMethod?.label : item.withdrawMethod?.label}</div>
-                                        <MdiArrowRightDropCircleOutline className="ms-auto w-6 h-6 text-primary cursor-pointer" onClick={() => setTransactionItem(item)} />
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </>}
+                                ))}
+                            </div>
+                        </>}
+                    </> : <NoItems />}
                     {transactionItem !== undefined && <Sidebar className="h-max" header={<div className="font-bold">{transform(transactionItem?.transaction_type, 'title')}</div>} visible={transactionItem !== undefined} position="bottom" onHide={() => setTransactionItem(undefined)}>
                         <div className="grid grid-cols-2 *:p-2 *:border *:border-collapse">
                             <div>

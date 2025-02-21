@@ -30,10 +30,17 @@ export default function Earnings() {
     const { data, post, setData, processing } = useForm({})
 
     const action = (group: EarningGroup) => {
-        if (group.items.reduce((acc, item) => acc + item.amount, 0) < parseInt(min_earnable_amount)) {
-            return "Not enough earnings";
-        }
-        return <Button label="Convert" icon="pi pi-exchange" className="p-button-success" onClick={() => convertEarnings(group.from_id)} />
+        const minEarnableAmount = parseInt(min_earnable_amount);
+        const earnings = group.items.reduce((acc, item) => acc + item.amount, 0)
+        return (
+            <div className="flex gap-2 items-center">
+                {minEarnableAmount > earnings &&
+                    <div>Need <span className="font-semibold">{minEarnableAmount - earnings} BDT </span>more</div>
+                }
+                {group.items[0]?.status !== 'converted' ? <Button label="Transfer" icon="pi pi-exchange" className="p-button-success" disabled={minEarnableAmount > earnings} onClick={() => convertEarnings(group.from_id)} /> : <Tag value="Completed" severity='success' />}
+            </div>
+        )
+
     }
     const convertEarnings = (from_id: number) => {
         const toastId = toast.loading("Converting earnings...");
@@ -62,14 +69,15 @@ export default function Earnings() {
         <>
             <Head title="Earnings" />
             <div className="flex items-center justify-between">
-                <h1 className="!text-3xl !font-bold my-3 !text-gray-800">Earnings</h1>
+                <h1 className="heading">Earnings</h1>
             </div>
-            <DataTable className="rounded-lg overflow-hidden" emptyMessage={<div className="text-center font-bold">No earnings Yet</div>} dataKey="id" value={grouppedEarnings} tableStyle={{ minWidth: '50rem' }}>
+            {grouppedEarnings.length > 0 ? <DataTable className="rounded-lg overflow-hidden" emptyMessage={<div className="text-center font-bold">No earnings Yet</div>} dataKey="id" value={grouppedEarnings} tableStyle={{ minWidth: '50rem' }}>
                 <Column field="sl" header="No." body={(group: EarningGroup, options) => <div className="font-bold">{options.rowIndex + 1}</div>} style={{ width: 'max-content' }}></Column>
                 <Column field="from" header="From" body={(group: EarningGroup) => group.from_id} style={{ width: 'max-content' }}></Column>
                 <Column field="items" header="Earnings" body={(group: EarningGroup) => group.items.reduce((acc, item) => acc + item.amount, 0)} style={{ width: 'max-content' }}></Column>
                 <Column field="actions" header="Actions" body={action} />
             </DataTable >
+                : <NoItems />}
 
         </>
     );
