@@ -196,9 +196,11 @@ export default function UpdateProfileInformation({ data, setData, submit, errors
                         }]}
                             onChange={(e) => setData('gender', e.value)}
                             value={data.gender}
+                            invalid={errors.gender !== undefined}
                             placeholder="Select Gender"
                             optionLabel="name" className='w-full' checkmark={true} highlightOnSelect={true} disabled={kyc?.approved_at != null} />
                     </div>
+                    {errors.gender && <div className="text-red-500">{errors.gender}</div>}
                 </div>
                 <div className="flex items-center gap-4">
                     <PrimaryButton disabled={processing} loading={processing}>{processing ? 'Saving...' : 'Save Changes'}</PrimaryButton>

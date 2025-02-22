@@ -1,5 +1,5 @@
 import { KycData, KycDocType } from "@/types/_generated";
-import { cn } from "@/utils";
+import { cn, transform } from "@/utils";
 import { router, useForm, usePage } from "@inertiajs/react";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
@@ -9,9 +9,16 @@ import { FormEventHandler } from "react";
 import toast from "react-hot-toast";
 import { UpdateProfileFormProps } from "../Edit";
 
-export default function VerifyDocuments({ updateProfile }: {
+export default function VerifyDocuments({ updateProfile, profileData, setProfileError, clearProfileErrors }: {
     updateProfile: (url: string, options?: {}) => void;
+    profileData: UpdateProfileFormProps;
+    setProfileError: {
+        (field: "name" | "email" | "gender" | "date_of_birth" | "address" | "phone" | "country" | "avatar", value: string): void;
+        (errors: Record<"name" | "email" | "gender" | "date_of_birth" | "address" | "phone" | "country" | "avatar", string>): void;
+    },
+    clearProfileErrors: (...fields: ("name" | "email" | "gender" | "date_of_birth" | "address" | "phone" | "country" | "avatar")[]) => void
 }) {
+    const [uploading, setUploading] = useState(false);
     const kyc = usePage().props.kyc as KycData | undefined;
     const { user } = useAuth();
     const [showUploadDocDialog, setShowUploadDocDialog] = useState(false);
@@ -21,6 +28,21 @@ export default function VerifyDocuments({ updateProfile }: {
         front_image: '',
         back_image: '',
     })
+    const uploadDocs = () => {
+        clearProfileErrors('name', 'email', 'gender', 'date_of_birth', 'address', 'phone', 'country', 'avatar')
+        type Key = "name" | "email" | "gender" | "date_of_birth" | "address" | "phone" | "country" | "avatar"
+        let error = false;
+        Object.entries(profileData).forEach(([key, value]) => {
+            console.log(key, value)
+            if (key != 'avatar' && !value) {
+                setProfileError(key as Key, `${transform(key, 'title')} is required`)
+                error = true;
+            }
+        });
+        if (!error) {
+            setShowUploadDocDialog(true)
+        }
+    }
     const submit = async (e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         if (!data.doc_type) {
@@ -56,7 +78,7 @@ export default function VerifyDocuments({ updateProfile }: {
         return (
             <div className="flex justify-end md:flex-row-reverse gap-2">
                 <Button outlined label="Cancel" onClick={() => setShowUploadDocDialog(false)} />
-                <Button label="Submit" onClick={submit} loading={processing} disabled={processing} />
+                <Button label={uploading ? 'Uploading...' : 'Submit'} onClick={submit} loading={processing || uploading} disabled={processing || uploading} />
             </div>
         )
     }
@@ -79,7 +101,7 @@ export default function VerifyDocuments({ updateProfile }: {
             {kyc?.rejected_at &&
                 <>
                     <p className='text-red-500 font-bold'>Your documents have been rejected.</p>
-                    <p className=''>Please re-upload your documents to try again.</p>
+                    <p className=''>Please check your information again and re-upload documents.</p>
                 </>
             }
             {!kyc && <p>Please upload any of the following documents to verify your identity:</p>}
@@ -89,7 +111,7 @@ export default function VerifyDocuments({ updateProfile }: {
                     <li>Driving license</li>
                     <li>National ID card</li>
                 </ul>
-                <Button className='w-full flex justify-center' label={kyc?.rejected_at ? 'Re-Upload Documents' : 'Upload Documents'} onClick={() => setShowUploadDocDialog(true)} />
+                <Button className='w-full flex justify-center' label={kyc?.rejected_at ? 'Re-Upload Documents' : 'Upload Documents'} onClick={uploadDocs} />
             </>
             }
         </div>
@@ -103,9 +125,9 @@ export default function VerifyDocuments({ updateProfile }: {
                     </div>
                 ))}
                 {data.doc_type && <div className="flex flex-col gap-3 w-full">
-                    <Filedrop label="Upload Front Image" className="min-h-[180px]" labelIdle={"Drop your front image of your " + data.doc_type} onProcessFile={(path, storageUrl) => setData('front_image', storageUrl)} />
+                    <Filedrop setUploading={setUploading} label="Upload Front Image" className="min-h-[180px]" labelIdle={"Drop your front image of your " + data.doc_type} onProcessFile={(path, storageUrl) => setData('front_image', storageUrl)} />
                     <InputError message={errors.front_image} className="-mt-4" />
-                    <Filedrop label="Upload Back Image" className="min-h-[180px]" labelIdle={"Drop your back image of your " + data.doc_type} onProcessFile={(path, storageUrl) => setData('back_image', storageUrl)} />
+                    <Filedrop setUploading={setUploading} label="Upload Back Image" className="min-h-[180px]" labelIdle={"Drop your back image of your " + data.doc_type} onProcessFile={(path, storageUrl) => setData('back_image', storageUrl)} />
                     <InputError message={errors.back_image} className="-mt-4" />
                 </div>}
 
