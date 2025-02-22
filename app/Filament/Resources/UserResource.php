@@ -148,7 +148,7 @@ class UserResource extends Resource
                     ->badge()
                     ->color(fn($state) => match ($state) {
                         'approved' => 'success',
-                        'aejected' => 'danger',
+                        'rejected' => 'danger',
                         default => 'warning',
                     })
                     ->placeholder('Not submitted Yet'),
