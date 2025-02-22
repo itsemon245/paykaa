@@ -17,6 +17,23 @@
 <section id="how-it-works" class="w-full max-w-5xl p-3 mx-auto mb-4 md:mb-8"
          data-content="{{json_encode($howItWorks)}}"
          x-data="sectionAnimation">
+    <x-section-title title="How PayKaa works?" />
+        @php
+            $items = [
+                "First you need to deposit your money in PayKaa account.",
+                "Next you need to select your payment method.",
+                "Now you will contract with your partner.",
+                "Finally we will transfer the money to your partner's account with your permission.",
+                "Money transfer system is fully automatic"
+            ];
+        @endphp
+        <div class="px-4 mb-10">
+            <ul class="flex flex-col gap-2 list-disc">
+                @foreach ($items as $item)
+                    <li class="text-lg md:text-lg font-semibold text-gray-600">{{ $item }}</li>
+                @endforeach
+            </ul>
+        </div>
     <div class="flex max-lg:flex-col-reverse gap-10 max-lg:gap-20 items-center relative">
         <!-- Left Content -->
         <div class="flex w-full flex-col gap-8 lg:gap-10 items-center ">
@@ -37,21 +54,21 @@
                     <div :class="{ 'translate-y-[var(--translate-y)]': index == 1 }" class="rounded-lg !w-[var(--image-size)] !h-[var(--image-size)] relative">
                         <div
                             x-show="visible && currentIndex >= index"
-                            class="border flex flex-col gap-1 items-center justify-center !z-20 relative !max-w-full !w-[var(--image-size)] !h-[var(--image-size)] !rounded-lg object-cover bg-white shadow-md"
+                            class="border flex flex-col gap-1 p-1 items-center justify-center !z-20 relative !max-w-full !w-[var(--image-size)] !h-[var(--image-size)] !rounded-lg object-cover bg-white shadow-md"
                             :class="{
                             'animate__animated animate__zoomIn': visible && currentIndex >= index,
                             'animate__animated animate__zoomOut': !visible && currentIndex >= index,
                             }">
                             <div x-text="titles[index]" class="font-bold"></div>
-                            <img :src="image" class="w-14 h-12 object-cover" />
+                            <img :src="image" class="grow object-cover" />
 
                         </div>
                         <div
                             x-show="visible && currentIndex >= index"
                             x-transition.duration.2000ms
                             :class="{
-                            'rounded-bl-lg border-b-4 border-l-4': index == 1,
-                            'right-[41%]': true,
+                            'rounded-bl-lg border-b-4 border-l-4 right-[50%]': index == 1,
+                            'md:right-[41%]': true,
                             'top-[50%]': index != 1,
                             'bottom-[50%]': index == 1,
                             }"
@@ -91,6 +108,23 @@
             </div>
 
         </div>
+    </div>
+    <div class="my-10">
+        <x-section-title title="Transaction Fees" />
+            @php
+                $transactionItems = [
+    "Money transfer, withdraw completely free.",
+    "Only charges apply at the time of deposit.",
+    "Minimum transaction 1 taka.",
+    ];
+@endphp
+<div class="px-4 mb-10">
+    <ul class="flex flex-col gap-2 list-disc">
+        @foreach ($transactionItems as $item)
+            <li class="text-lg md:text-lg font-semibold text-gray-600">{{ $item }}</li>
+        @endforeach
+    </ul>
+</div>
     </div>
 </section>
 
