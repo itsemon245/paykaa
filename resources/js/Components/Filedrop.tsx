@@ -47,7 +47,7 @@ export default function Filedrop({
                 allowFileSizeValidation={true}
                 acceptedFileTypes={['image/*']}
                 labelFileTypeNotAllowed="Only images are allowed"
-                maxFileSize="2MB"
+                maxFileSize="10MB"
                 chunkSize={1024 * 1024 * 2}
                 chunkForce={true}
                 server={{
