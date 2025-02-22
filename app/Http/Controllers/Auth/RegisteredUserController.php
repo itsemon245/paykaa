@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Enum\Status;
 use App\Http\Controllers\Controller;
+use App\Models\Kyc;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -42,7 +44,8 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'referred_by' => $referId
+            'referred_by' => $referId,
+            'kyc_status' => Status::PENDING->value,
         ]);
 
         event(new Registered($user));

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enum\Status;
 use App\Filament\Resources\TestResource\Pages\EditUser;
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
@@ -17,6 +18,7 @@ use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -110,13 +112,17 @@ class UserResource extends Resource
                 ),
                 Tables\Columns\ImageColumn::make('avatar'),
                 Tables\Columns\TextColumn::make('id')
+                    ->searchable()
                     ->label('UID')
                     ->copyable(true),
                 Tables\Columns\TextColumn::make('name')
+                    ->searchable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
+                    ->searchable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
+                    ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('date_of_birth')
@@ -125,25 +131,26 @@ class UserResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('gender')
                     ->toggleable(isToggledHiddenByDefault: true)
-                    ->searchable(),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('country')
                     ->searchable()
+                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('kyc.status')
+                Tables\Columns\TextColumn::make('kyc_status')
                     ->label('Verifed')
+                    ->extraAttributes(['class' => 'capitalize'])
                     ->icon(fn($state) => match ($state) {
-                        'Approved' => 'heroicon-o-check-circle',
-                        'Rejected' => 'heroicon-o-x-circle',
+                        'approved' => 'heroicon-o-check-circle',
+                        'rejected' => 'heroicon-o-x-circle',
                         default => 'heroicon-o-clock',
                     })
                     ->badge()
                     ->color(fn($state) => match ($state) {
-                        'Approved' => 'success',
-                        'Rejected' => 'danger',
+                        'approved' => 'success',
+                        'aejected' => 'danger',
                         default => 'warning',
                     })
-                    ->placeholder('Not submitted Yet')
-                    ->sortable(),
+                    ->placeholder('Not submitted Yet'),
                 Tables\Columns\TextColumn::make('referral_id')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
@@ -162,6 +169,12 @@ class UserResource extends Resource
                     ->label('Filter'),
             )
             ->filters([
+                SelectFilter::make('kyc_status')
+                    ->options([
+                        Status::APPROVED->value => 'Approved',
+                        Status::REJECTED->value => 'Rejected',
+                        Status::PENDING->value => 'Pending',
+                    ]),
                 Filter::make('created_at')
                     ->form([
                         DatePicker::make('created_from')->label('From'),
