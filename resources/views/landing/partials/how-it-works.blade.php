@@ -55,13 +55,13 @@
                     <div :class="{ 'translate-y-[var(--translate-y)]': index == 1 }" class="rounded-lg !w-[var(--image-size)] !h-[var(--image-size)] relative">
                         <div
                             x-show="visible && currentIndex >= index"
-                            class="border flex flex-col gap-1 p-1 items-center justify-center !z-20 relative !max-w-full !w-[var(--image-size)] !h-[var(--image-size)] !rounded-lg object-cover bg-white shadow-md"
+                            class="border flex flex-col gap-0.5 p-1 items-center justify-center !z-20 relative !max-w-full !w-[var(--image-size)] !h-[var(--image-size)] !rounded-lg object-cover bg-white shadow-md"
                             :class="{
                             'animate__animated animate__zoomIn': visible && currentIndex >= index,
                             'animate__animated animate__zoomOut': !visible && currentIndex >= index,
                             }">
                             <div x-text="titles[index]" class="font-bold"></div>
-                            <img :src="image" class="grow object-cover" />
+                            <img :src="image" class="grow !h-[calc(var(--image-size)-35px)] !w-[calc(var(--image-size)-35px)]  object-cover" />
 
                         </div>
                         <div
