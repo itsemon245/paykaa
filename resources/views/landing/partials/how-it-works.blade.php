@@ -27,23 +27,24 @@
                 "Money transfer system is fully automatic"
             ];
         @endphp
-        <div class="px-4 mb-10">
-            <ul class="flex flex-col gap-2 list-disc">
-                @foreach ($items as $item)
-                    <li class="text-lg md:text-lg font-semibold text-gray-600">{{ $item }}</li>
-                @endforeach
-            </ul>
-        </div>
-    <div class="flex max-lg:flex-col-reverse gap-10 max-lg:gap-20 items-center relative">
+    <div class="flex max-lg:flex-col-reverse gap-12 max-lg:gap-20 items-center relative">
         <!-- Left Content -->
         <div class="flex w-full flex-col gap-8 lg:gap-10 items-center ">
-            <template x-for="(item, index) in content" :key="index">
-                <div class="flex w-full flex-col justify-center px-3">
-                    <p class="text-sm uppercase text-cyan-500 !font-bold" x-text="item.name"></p>
-                    <h2 class="text-4xl font-bold leading-tight text-gray-800" x-text="item.title"></h2>
-                    <p class="mt-2 text-gray-600" x-text="item.description"></p>
-                </div>
-            </template>
+            <div class="">
+                <ul class="flex flex-col gap-2 list-disc">
+                    @foreach ($items as $item)
+                        <li class="text-lg md:text-lg font-semibold text-gray-600">{{ $item }}</li>
+                    @endforeach
+                </ul>
+            </div>
+
+            <!-- <template x-for="(item, index) in content" :key="index"> -->
+            <!--     <div class="flex w-full flex-col justify-center px-3"> -->
+            <!--         <p class="text-sm uppercase text-cyan-500 !font-bold" x-text="item.name"></p> -->
+            <!--         <h2 class="text-4xl font-bold leading-tight text-gray-800" x-text="item.title"></h2> -->
+            <!--         <p class="mt-2 text-gray-600" x-text="item.description"></p> -->
+            <!--     </div> -->
+            <!-- </template> -->
         </div>
         <!-- Right Images -->
         <div class="flex w-full justify-center">

@@ -1,7 +1,7 @@
 @php
     $title = $title ?? '';
 @endphp
-<div class="flex items-center gap-3 justify-center font-bold text-3xl py-8">
+<div class="flex items-center gap-3 justify-center font-bold text-3xl py-10">
     <svg class="ProductIcon ProductIcon--Payments HomepageFrontdoor__copyCaptionIcon" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
 
         <title>{{ $title }}</title>
