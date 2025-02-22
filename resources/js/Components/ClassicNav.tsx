@@ -88,7 +88,7 @@ export default function ClassicNav() {
                     <ul className='w-full flex flex-col gap-2'>
                         {navLinks.map((item, index) => (
                             <li key={index} className="w-full block">
-                                <Link className={cn("transition-all duration-300 px-3 py-1.5 rounded hover:bg-gray-100 block !w-full *:w-full", route().current(item.route) ? "bg-gray-200" : '')} href={route(item.route)}>
+                                <Link prefetch={['mount', 'hover']} className={cn("transition-all duration-300 px-3 py-1.5 rounded hover:bg-gray-100 block !w-full *:w-full", route().current(item.route) ? "bg-gray-200" : '')} href={route(item.route)}>
                                     {item.label}
                                 </Link>
                             </li>

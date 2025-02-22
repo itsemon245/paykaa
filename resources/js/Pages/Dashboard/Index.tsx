@@ -91,7 +91,7 @@ export default function Dashboard() {
                     <Card key={"menu-items-" + i} className="border">
                         <div className="grid grid-cols-4 items-center gap-2 sm:gap-5 justify-between" >
                             {items.map(item =>
-                                <Link href={item.url} className="cursor-pointer" key={item.label + "-menu-item"}>
+                                <Link prefetch={['mount', 'hover']} href={item.url} className="cursor-pointer" key={item.label + "-menu-item"}>
                                     <div className="flex flex-col w-full justify-center hover:shadow-md transition-all hover:scale-105 rounded-lg items-center h-max cursor-pointer p-1 sm:px-4 sm:py-2.5 gap-2">
                                         <div className="h-8 w-8 sm:h-14 sm:w-14">
                                             <img src={item.icon} className="object-contain w-full h-full" />

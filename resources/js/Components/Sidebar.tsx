@@ -34,7 +34,7 @@ export default function Sidebar({
         }
     ]
     const LinkItem = ({ item }: { item: MenuItem }) => {
-        return (<Link href={item.url} className="cursor-pointer w-full" key={item.label + "-menu-item-sidebar"} method={item.label === "Logout" ? "post" : "get"}>
+        return (<Link prefetch={["mount", "hover"]} href={item.url} className="cursor-pointer w-full" key={item.label + "-menu-item-sidebar"} method={item.label === "Logout" ? "post" : "get"}>
             <Button label={item.label} className={cn("w-full !p-3 rounded-2xl text-nowrap flex justify-center")} text={!item.isActive()} severity={item.isActive() ? undefined : 'contrast' as ButtonSeverity}>
             </Button>
         </Link>
@@ -51,7 +51,7 @@ export default function Sidebar({
             <div className="flex flex-col items-center w-full h-[90dvh] px-3 gap-1 overflow-y-scroll hide-scrollbar">
                 <div className="flex items-center gap-2 w-full justify-center max-md:justify-between mb-10">
                     {max('md') && <SidebarCloseBtn className="!text-primary" isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />}
-                    <Link href={route('dashboard')} className="cursor-pointer w-max" >
+                    <Link href={route('dashboard')} prefetch={['mount', 'hover']} className="cursor-pointer w-max" >
                         <Logo />
                     </Link>
                 </div>
