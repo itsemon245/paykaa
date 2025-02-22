@@ -172,9 +172,9 @@ export default function UpdateProfileInformation({ data, setData, submit, errors
                     </div>
                     <Input className={cn(user.email_verified_at && 'border-green-500')} invalid={!user.email_verified_at} error={errors.email} color="gray-700" label='Email' value={data.email} onChange={e => setData('email', e.target.value)} disabled={true} />
                 </div>
-                <Input color="gray-700" label='Date of Birth' value={data.date_of_birth} onChange={e => setData('date_of_birth', e.target.value)} type="date" max={subYears(new Date(), 12).toISOString().split('T')[0]} error={errors.date_of_birth} disabled={kyc?.approved_at != null} />
+                <Input className="w-full" color="gray-700" label='Date of Birth' value={data.date_of_birth} onChange={e => setData('date_of_birth', e.target.value)} type="date" max={subYears(new Date(), 12).toISOString().split('T')[0]} error={errors.date_of_birth} disabled={kyc?.approved_at != null} />
                 <div>
-                    <InputLabel value="Country" />
+                    <InputLabel value="Country" className='w-full block' />
                     {/*@ts-ignore */}
                     <Dropdown filter={true} filterBy='name,code' value={data.country} onChange={(e) => setData('country', e.value)} options={countries} optionLabel="name" optionValue='name' placeholder="Select a Country"
                         disabled={kyc?.approved_at != undefined}

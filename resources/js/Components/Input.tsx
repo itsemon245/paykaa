@@ -1,3 +1,4 @@
+import { cn } from '@/utils'
 import { InputProps } from '@headlessui/react'
 import { InputNumber, InputNumberProps } from 'primereact/inputnumber'
 import { InputText, InputTextProps } from 'primereact/inputtext'
@@ -25,7 +26,7 @@ export default function Input({
     }
     return (
         <div>
-            <InputLabel htmlFor={id} value={label} className={color && 'text-' + color} />
+            <InputLabel htmlFor={id} value={label} className={cn(color && 'text-' + color, "block w-full"} />
             <InputText
                 keyfilter={getKyeFilter(props.type)}
                 invalid={invalid || error !== undefined}
