@@ -137,7 +137,8 @@ class UserResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('kyc_status')
-                    ->label('Verifed')
+                    ->sortable()
+                    ->label('Verified')
                     ->extraAttributes(['class' => 'capitalize'])
                     ->icon(fn($state) => match ($state) {
                         'approved' => 'heroicon-o-check-circle',
