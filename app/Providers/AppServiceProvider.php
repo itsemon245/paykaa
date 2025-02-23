@@ -6,6 +6,7 @@ use App\Models\Model;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 
@@ -35,12 +36,12 @@ class AppServiceProvider extends ServiceProvider
                 ->action('Confirm the Email', $url)
                 ->line('**Please do not reply to this email.**');
         });
-        ResetPassword::toMailUsing(function ($notifiable, $url) {
+        ResetPassword::toMailUsing(function ($notifiable, $token) {
             return (new MailMessage)
                 ->subject('Password Recovery')
                 ->line('We have received a password reset request for your account.')
                 ->line('In order to reset the password, please follow the link below.')
-                ->action('Reset Password', $url)
+                ->action('Reset Password', route('password.reset', ['token' => $token, 'email' => $notifiable->email]))
                 ->line('**Please do not reply to this email.**');
         });
     }

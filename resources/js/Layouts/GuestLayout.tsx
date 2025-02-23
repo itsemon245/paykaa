@@ -1,8 +1,20 @@
 import { PropsWithChildren } from 'react';
 import { Gradient } from '@/utils/stripeCanvasGradient';
+import { cookie, getQuery } from '@/utils';
 
 export default function Guest({ children }: PropsWithChildren) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const auth = useAuth();
+    //poll to toggle auth users active status every 2 minutes
+    useEffect(() => {
+        if (!auth.user) {
+            const referId = getQuery('r');
+            if (referId) {
+                cookie.set('referId', referId);
+            }
+        }
+    }, [])
+
     useEffect(() => {
         if (!canvasRef.current) return;
         const gradient = new Gradient();
