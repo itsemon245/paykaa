@@ -4,7 +4,9 @@
     'align' => 'center',
 ])
 <div style="text-align: {{ $align }};margin: 24px 24px;">
-    <a href="{{ $url }}" class="button button-{{ $color }}" style="background-color:var(--primary)!important;" target="_blank" rel="noopener">{{ $slot }}</a>
+    <a
+         style="background-color: #3f75a4 !important; border-radius: 4px; font-weight: bold; color: #fff; display: inline-block; padding: 8px 18px; text-decoration: none; text-align: center; border: 8px solid transparent; border-bottom-color: #3f75a4; border-left-color: #3f75a4; border-right-color: #3f75a4; border-top-color: #3f75a4;"
+        href="{{ $url }}" class="button button-{{ $color }}" target="_blank" rel="noopener">{{ $slot }}</a>
 </div>
 {{--
 <table class="action" align="{{ $align }}" width="100%" cellpadding="0" cellspacing="0" role="presentation">

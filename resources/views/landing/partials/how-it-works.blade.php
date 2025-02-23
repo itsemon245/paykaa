@@ -21,7 +21,6 @@
         @php
             $items = [
                 "First you need to deposit your money in PayKaa account.",
-                "Next you need to select your payment method.",
                 "Now you will contract with your partner.",
                 "Finally we will transfer the money to your partner's account with your permission.",
                 "Money transfer system is fully automatic"
@@ -30,7 +29,7 @@
     <div class="flex max-lg:flex-col gap-12 max-lg:gap-20 items-center relative">
         <!-- Left Content -->
         <div class="flex w-full flex-col gap-8 lg:gap-10 items-center ">
-            <div class="">
+            <div class="px-4">
                 <ul class="flex flex-col gap-2 list-disc">
                     @foreach ($items as $item)
                         <li class="text-lg md:text-lg font-semibold text-gray-600">{{ $item }}</li>
@@ -135,9 +134,9 @@
             Alpine.data('sectionAnimation', () => ({
                 content: [],
                 titles: [
-                    "Person 1",
+                    "You",
                     "Website",
-                    "Person 2",
+                    "Your Partner",
                 ],
                 init(){
                     const data = document.querySelector('[data-content]').getAttribute('data-content')
