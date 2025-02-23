@@ -1,10 +1,11 @@
 import menuItems from "@/data/menuItems";
 import { UserData } from "@/types/_generated";
 import { defaultAvatar } from "@/utils";
-import { Link, router } from "@inertiajs/react";
+import { Link, router, usePage } from "@inertiajs/react";
 import { chunk } from "lodash";
 import { Card } from "primereact/card";
 import { ScrollPanel } from "primereact/scrollpanel";
+import { Badge } from 'primereact/badge';
 import toast from "react-hot-toast";
 
 export const UserItemTemplate = ({ user, onSelect }: { user: UserData, onSelect?: () => void }) => {
@@ -42,6 +43,7 @@ export const UserItemTemplate = ({ user, onSelect }: { user: UserData, onSelect?
 };
 export default function Dashboard() {
     const { users, loading, searchString, setSearchString, search } = useUsers();
+    const unreadCount = usePage().props.unreadCount;
     const menus = chunk(menuItems, 4);
     return (
         <>
@@ -50,7 +52,8 @@ export default function Dashboard() {
                 <Card>
                     <div className="grid grid-cols-4 gap-4 sm:gap-6 md:gap-8 items-center justify-center ">
                         <Link prefetch href={route('chat.index')} className="flex items-center justify-center h-max cursor-pointer">
-                            <div className="p-2">
+                            <div className="p-2 relative">
+                                {unreadCount > 0 && <Badge className="absolute top-0 right-0" value={unreadCount}></Badge>}
                                 <img src="/assets/dashboard/chat.png" className="object-contain h-8 w-8 sm:h-14 sm:w-14" />
                                 <span className="font-medium text-xs sm:text-lg">Chats</span>
                             </div>

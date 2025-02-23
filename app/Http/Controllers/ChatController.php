@@ -138,7 +138,11 @@ class ChatController extends Controller
                     $q->whereNot('receiver_id', 1);
                 }
                 if ($request->search) {
-                    $q->where('receiver_id', $request->search)->orWhere('sender_id', $request->search);
+                    if ($request->search == 'unread') {
+                        $q->where('is_read', false);
+                    } else {
+                        $q->where('receiver_id', $request->search)->orWhere('sender_id', $request->search);
+                    }
                 }
             })
             ->orWhere(function (Builder $q) {

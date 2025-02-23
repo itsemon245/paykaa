@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\HasUuid;
+use Illuminate\Database\Eloquent\Builder;
 
 class Chat extends Model
 {
@@ -26,6 +27,7 @@ class Chat extends Model
         // dd($isTyping, $this->typing, $this->from?->uuid);
         return $isTyping;
     }
+
     public function getFromAttribute()
     {
         if ($this->sender_id == auth()->id()) {
@@ -42,5 +44,15 @@ class Chat extends Model
     public function lastMessage()
     {
         return $this->messages()->latest()->one();
+    }
+
+    public function scopeMyChats(Builder $query): void
+    {
+        $query->where(['sender_id' => auth()->id()])
+            ->whereNot('receiver_id', 1)
+            ->orWhere(function (Builder $q) {
+                $q->where('receiver_id', auth()->id());
+                $q->has('lastMessage');
+            });
     }
 }

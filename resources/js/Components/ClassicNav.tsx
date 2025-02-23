@@ -53,7 +53,7 @@ export default function ClassicNav() {
                 <div className="lg:w-[80%] relative">
                     <div className="flex">
                         <InputText placeholder="Search" className="rounded-r-none" onChange={e => setSearchString(e.target.value)} />
-                        <button className="p-button rounded-l-none" onClick={e => search(searchString)}>
+                        <button className="p-button rounded-l-none w-max !px-2" onClick={e => search(searchString)}>
                             {!max(500) ? "Search" : <i className="pi pi-search text-xl font-bold" />}
                         </button>
 

@@ -99,8 +99,8 @@ export default function Transactions() {
         <>
             <Head title="Transactions" />
             <div className="container mx-auto my-6">
-                <Card>
-                    <h1 className="heading">Transactions</h1>
+                <h1 className="heading">Transactions</h1>
+                <div className="bg-white rounded-lg">
                     {transactions.data.length > 0 ? <>
                         {min('sm') ? <DataTable className="rounded-lg overflow-hidden" emptyMessage={<div className="text-center font-bold">No Transactions Yet</div>} dataKey="uuid" totalRecords={transactions.total} value={transactions.data} rows={perPage} tableStyle={{ minWidth: '50rem' }}>
                             <Column field="id" className="!p-1" header="No." body={slBodyTemplate} style={{ width: 'max-content' }}></Column>
@@ -137,11 +137,11 @@ export default function Transactions() {
                         </DataTable> : <>
                             <div className="flex flex-col">
                                 {transactions.data.map((item, index) => (
-                                    <div key={"transaction-" + item.uuid} className={cn("flex p-3 justify-between gap-2 border-l border-r", index == 0 && 'border-t border-b', index + 1 <= transactions.data.length && 'border-b')}>
-                                        <div className="flex items-center gap-2">
+                                    <div key={"transaction-" + item.uuid} className={cn("flex px-3 py-2 justify-between gap-2 border-l border-r", index == 0 && 'border-t border-b', index + 1 <= transactions.data.length && 'border-b')}>
+                                        <div className="flex items-start gap-2">
                                             {/*<Avatar label={(index + 1).toString()} size="large" style={{ backgroundColor: 'var(--primary-500)', color: '#ffffff' }} shape="circle" />*/}
                                             <div>
-                                                <div className="capitalize text-lg font-semibold">{item.transaction_type}</div>
+                                                <div className="text-gray-600 text-base md:text-xl font-semibold capitalize mb-1">{item.transaction_type}</div>
                                                 {
                                                     item.transaction_type === 'deposit' && <div className="text-lg font-medium">To: {item.depositMethod?.number}</div>
                                                 }
@@ -218,7 +218,8 @@ export default function Transactions() {
                     </Sidebar>
                     }
                     {/*<Paginator first={first} rows={perPage} totalRecords={transactions.total} rowsPerPageOptions={[15, 30, 50]} onPageChange={onPage} />*/}
-                </Card>
+
+                </div>
             </div >
         </>
     )

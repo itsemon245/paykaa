@@ -118,6 +118,10 @@
     "HugeiconsCopy01": true,
     "useChat": true,
     "useMoneyRequest": true,
-    "NoItems": true
+    "NoItems": true,
+    "HugeiconsArrowUp04": true,
+    "HugeiconsArrowUp02": true,
+    "HugeiconsCancelCircle": true,
+    "HeroiconsPhoto20Solid": true
   }
 }

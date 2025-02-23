@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Data\MessageData;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -10,13 +11,14 @@ use Illuminate\Notifications\Notification;
 class MoneyReqeuestNotification extends Notification implements ShouldQueue
 {
     use Queueable;
+    public MessageData $message;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct(MessageData $message)
     {
-        //
+        $this->message = $message;
     }
 
     /**
@@ -48,7 +50,9 @@ class MoneyReqeuestNotification extends Notification implements ShouldQueue
     public function toArray(object $notifiable): array
     {
         return [
-            //
+            'moneyRequest' => $this->message->moneyRequest,
+            'sender_id' => $this->message->sender_id,
+            'receiver_id' => $this->message->receiver_id,
         ];
     }
 }

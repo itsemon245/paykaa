@@ -1,7 +1,7 @@
 import { Echo } from "@/echo";
 import { PaginatedCollection } from "@/types";
 import { ChatData, MessageData } from "@/types/_generated";
-import { cn, defaultAvatar, image } from "@/utils";
+import { cn, defaultAvatar, getQuery, image } from "@/utils";
 import { Link, usePage } from "@inertiajs/react";
 
 export default function ChatSidebar({
@@ -15,12 +15,12 @@ export default function ChatSidebar({
 }) {
     const [searchString, setSearchString] = useState("");
     const chat = usePage().props.chat as ChatData | undefined;
-    const { user } = useAuth();
+    const { user, isAdmin } = useAuth();
     const itemTemplate = (item: ChatData, key?: any) => {
         return (<Link
-            href={route('chat.show', { chat: item.uuid })}
+            href={route().current('helpline') && !isAdmin ? route('helpline') : route('chat.show', { chat: item.uuid })}
             key={key}
-            className={`filterDiscussions all unread single ${item.uuid === chat?.uuid ? 'active' : ''}`}
+            className={` !py-3 filterDiscussions all unread single ${item.uuid === chat?.uuid ? 'active' : ''}`}
         >
             <img
                 className="avatar-md"
@@ -52,14 +52,12 @@ export default function ChatSidebar({
                 </div> : (
                     item.last_message ?
                         (
-                            <div className="text-ellipsis text-nowrap overflow-hidden flex items-center gap-2">
+                            <div className={cn(
+                                "!max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap flex items-center gap-1",
+                                !item.last_message.by_me && !item.last_message.is_read && "!font-bold !text-black",
+                            )}>
                                 {item.last_message.by_me && <div className="font-medium">You:</div>}
-                                <div className={cn(
-                                    "!max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap",
-                                    !item.last_message.by_me && !item.last_message.is_read && "!font-bold !text-black",
-
-                                )}>{item.last_message.body}</div>
-                            </div>
+                                {item.last_message.type === 'image' ? <HeroiconsPhoto20Solid className="w-4 h-auto mt-1" /> : item.last_message.body}</div>
                         ) :
                         <p>No messages yet</p>
                 )}
@@ -118,53 +116,37 @@ export default function ChatSidebar({
                         <AddNewChat />
                     </div>
                     }
-                    {/*
-                    <div className="flex items-center gap-3 sort pb-0">
-                        <button
-                            className="btn filterDiscussionsBtn active show"
-                            data-toggle="list"
-                            data-filter="all"
-                        >
-                            All
-                        </button>
-                        <button
-                            className="btn filterDiscussionsBtn"
-                            data-toggle="list"
-                            data-filter="read"
-                        >
-                            Favourit
-                        </button>
-                        <button
-                            className="btn filterDiscussionsBtn"
-                            data-toggle="list"
-                            data-filter="unread"
-                        >
-                            Unread
-                        </button>
-                    </div>*/}
-                    <div className="discussions mt-3">
+                    <div className="discussions mt-3 flex justify-between items-center">
                         <h1>Chats</h1>
-                        {/*                                <div className="btn-group add-group mt-3" role="group">
-                            <button
-                                id="btnGroupDrop2"
-                                type="button"
-                                className="btn btn-secondary dropdown-toggle"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
+                        {(!route().current('helpline') || user.id === 1) && <div className="flex items-center gap-3 sort pb-0">
+                            <Link
+                                className={cn("btn filterDiscussionsBtn", getQuery('search') !== 'unread' ? 'active' : '')}
+                                data-toggle="list"
+                                data-filter="unread"
+                                replace
+                                href={route('chat.index', { search: '' })}
                             >
-                                Add +
+                                All
+                            </Link>
+                            {/*
+                                                            <button
+                                className="btn filterDiscussionsBtn"
+                                data-toggle="list"
+                                data-filter="read"
+                            >
+                                Favourite
                             </button>
-                            <div
-                                className="dropdown-menu"
-                                aria-labelledby="btnGroupDrop1"
+                            */}
+                            <Link
+                                className={cn("btn filterDiscussionsBtn", getQuery('search') === 'unread' ? 'active' : '')}
+                                data-toggle="list"
+                                data-filter="unread"
+                                replace
+                                href={route('chat.index', { search: 'unread' })}
                             >
-                                <a className="dropdown-item" href="#">New user</a>
-                                <a className="dropdown-item" href="#">New Group +</a>
-                                <a className="dropdown-item" href="#">Private Chat +</a>
-                            </div>
-                        </div>
-*/}
+                                Unread
+                            </Link>
+                        </div>}
                     </div>
                     <div className="discussions h-[700px] hide-scrollbar overflow-y-scroll my-2" id="scroller">
                         <div className="list-group px-0" id="chats" role="tablist">
@@ -176,6 +158,6 @@ export default function ChatSidebar({
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Chat;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -55,6 +56,7 @@ class HandleInertiaRequests extends Middleware
                 'base' => base_path(),
             ],
             'impersonating' => session('impersonating'),
+            'unreadCount' => Chat::myChats()->where('is_read', false)->count(),
         ];
     }
 }

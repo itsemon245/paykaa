@@ -52,6 +52,7 @@ export type PageProps<
         backUrl: string
     },
     csrfToken: string,
+    unreadCount: number,
 };
 export type PaginatedCollection<T extends object> = {
     data: Array<T>;
