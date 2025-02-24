@@ -9,11 +9,12 @@ import { Dialog } from "primereact/dialog"
 
 export default function Index() {
     const initialAds = usePage().props.ads as PaginatedCollection<AddData>
+    const { user } = useAuth()
     const [ads, setAds] = useState(initialAds)
     const wallets = usePage().props.wallets as AddMethodData[]
     const Header = ({ ad }: { ad: AddData }) => {
         return (
-            <div className="flex py-4 px-3 items-center border-b">
+            <div className="flex py-2 md:py-3 px-3 items-center border-b">
                 <div className="flex-1 flex items-center gap-2">
                     <img src={image(ad.owner?.avatar)} className="w-10 h-10 rounded-full" />
                     <div className="font-bold text-lg">{ad.owner?.name}</div>
@@ -26,7 +27,7 @@ export default function Index() {
     }
     const Footer = ({ ad }: { ad: AddData }) => {
         return (
-            <div className="flex items-center pb-3">
+            <div className="flex items-center pb-2">
                 <div className="flex-1">
                     <div className="font-bold">Method: {ad.addMethod?.name}</div>
                 </div>
@@ -64,25 +65,36 @@ export default function Index() {
                     content: {
                         className: "!py-0"
                     },
-                    footer: {
-                        className: "!pb-0"
+                    header: {
+                        className: "!text-base"
                     }
                 }}
-                footer={
-                    <div className="flex flex-row-reverse sm:flex-row gap-1 items-center">
-                        {selectedAd?.owner?.uuid &&
-                            <Link href={route('chat.receiver-chat', {
-                                receiver: selectedAd?.owner?.uuid,
-                            })}>
-                                <Button label="Chat" />
-                            </Link>
+                className="max-w-max"
+                visible={selectedAd !== undefined} onHide={() => setSelectedAd(undefined)}>
+                <div className="md:px-5">
+                    <h2 className="heading text-center">Are you interested in the deal?</h2>
+                    <div className="font-medium text-base">Start chatting with <span className="font-bold">{selectedAd?.owner?.name}</span></div>
+                    <div className="text-base font-semibold">User ID: #{selectedAd?.owner_id}</div>
+                    <div className="text-base font-semibold">Contact: {selectedAd?.contact}</div>
+
+                    <div className="flex items-center justify-center my-3">
+                        {
+                            selectedAd?.owner?.uuid &&
+                            <>
+                                {
+                                    user?.uuid !== selectedAd?.owner?.uuid ?
+                                        <Link href={route('chat.receiver-chat', {
+                                            receiver: selectedAd?.owner?.uuid,
+                                        })}>
+                                            <Button label="Open Chat" />
+                                        </Link>
+                                        :
+                                        <Button label="This is Your Ad" disabled />
+                                }
+                            </>
                         }
-                        <Button label="Cancel" onClick={() => setSelectedAd(undefined)} className="bg-white text-primary border-primary" text />
                     </div>
-                } visible={selectedAd !== undefined} onHide={() => setSelectedAd(undefined)}>
-                <div className="">
-                    <h2 className="font-lg font-semibold">Start chatting with {selectedAd?.owner?.name}</h2>
-                    <h2 className="font-lg font-semibold">Contact: {selectedAd?.contact}</h2>
+
                 </div>
             </Dialog>
             <div className="flex flex-col h-full w-full">
@@ -109,20 +121,38 @@ export default function Index() {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 3xl:grid-cols-4 gap-3" >
                         {ads.data.map((ad) => (
-                            <Card header={<Header ad={ad} />} footer={<Footer ad={ad} />} className="w-full" key={ad.id}>
-                                <div className="">
-                                    {ad.type === 'Sell' && <div className="flex items-end gap-1 font-semibold">
+                            <Card pt={{
+                                content: {
+                                    className: "!py-0"
+                                },
+                                body: {
+                                    className: "flex flex-col justify-between grow"
+                                },
+                                footer: {
+                                    className: "!pt-0 mt-auto"
+                                }
+                            }} header={<Header ad={ad} />} footer={<Footer ad={ad} />} className="w-full flex flex-col" key={ad.id}>
+                                <div className="py-2 flex flex-col gap-1">
+                                    {ad.type === 'Sell' && <div className="flex items-end gap-0 font-semibold mb-2">
+                                        <span className="me-2">Rate:</span>
                                         <span>Tk.</span>
-                                        <div className="text-lg sm:text-xl font-bold">{ad.rate}</div>
+                                        <div className="text-lg sm:text-xl font-bold">{ad.rate}</div>/
+                                        <span className="text-sm">USD</span>
                                     </div>
                                     }
-                                    <div>
-                                        Quantity: {ad.amount} USD
+                                    <div className="font-medium">
+                                        <span>Quantity:</span> <span className="font-semibold">{ad.amount} USD</span>
                                     </div>
-                                    {ad.type === 'Sell' && <div>
-                                        Limit: {ad.limit_min} - {ad.limit_max}
-                                    </div>
+                                    {ad.type === 'Sell' &&
+                                        <div className="font-medium">
+                                            <span>Limit:</span> <span className="font-semibold">
+                                                {ad.limit_min} BDT - {ad.limit_max} BDT
+                                            </span>
+                                        </div>
                                     }
+                                    <div className="font-medium">
+                                        <span>Contact:</span> <span className="font-semibold">{ad.contact}</span>
+                                    </div>
                                 </div>
                             </Card>
                         ))}

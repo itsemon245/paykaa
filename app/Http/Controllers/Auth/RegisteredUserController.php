@@ -41,11 +41,12 @@ class RegisteredUserController extends Controller
         ]);
 
         $user = User::create([
+            'avatar' => 'assets/images/user.png',
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'referred_by' => $referId,
-            'kyc_status' => Status::PENDING->value,
+            'kyc_status' => Status::NOT_VERIFIED->value,
         ]);
 
         event(new Registered($user));

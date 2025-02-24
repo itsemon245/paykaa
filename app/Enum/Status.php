@@ -11,4 +11,5 @@ enum Status: string
     case FAILED = 'failed';
     case REJECTED = 'rejected';
     case CANCELLED = 'cancelled';
+    case NOT_VERIFIED = 'not verified';
 }

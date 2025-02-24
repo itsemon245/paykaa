@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Http\Request;
 use App\Data\KycData;
+use App\Enum\Status;
 
 class KycController extends Model
 {
@@ -19,7 +20,11 @@ class KycController extends Model
         $kyc = Kyc::updateOrCreate(['user_id' => auth()->id()], [
             'user_id' => auth()->id(),
             ...$data,
+            'approved_at' => null,
+            "approved_at" => null,
+            "updated_at" => now(),
         ]);
+        $kyc->user()->update(['kyc_status' => Status::PENDING->value]);
         return back();
     }
 }

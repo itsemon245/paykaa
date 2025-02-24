@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enum\Status;
 use App\Filament\Resources\KycResource\Pages;
 use App\Filament\Resources\KycResource\RelationManagers;
 use App\Models\Kyc;
@@ -150,8 +151,12 @@ class KycResource extends Resource
                 ->tooltip('Approve')
                 ->action(fn(Model $record) => $record->update(['approved_at' => now(), 'rejected_at' => null]))
                 ->size(ActionSize::Large)
-                ->after(function () {
+                ->after(function (Model $record) {
                     $indexUrl = self::getUrl();
+                    $record->user()->update([
+                        'kyc_status' => Status::APPROVED->value,
+                    ]);
+
                     if (url()->current() !== $indexUrl) {
                         redirect($indexUrl);
                     }
@@ -160,7 +165,10 @@ class KycResource extends Resource
                 ->icon('heroicon-o-check-circle'),
             Action::make('Reject')
                 ->requiresConfirmation()
-                ->after(function () {
+                ->after(function (Model $record) {
+                    $record->user()->update([
+                        'kyc_status' => Status::REJECTED->value,
+                    ]);
                     $indexUrl = self::getUrl();
                     if (url()->current() !== $indexUrl) {
                         redirect($indexUrl);

@@ -143,12 +143,14 @@ class UserResource extends Resource
                     ->icon(fn($state) => match ($state) {
                         'approved' => 'heroicon-o-check-circle',
                         'rejected' => 'heroicon-o-x-circle',
-                        default => 'heroicon-o-clock',
+                        'pending' => 'heroicon-o-clock',
+                        default => 'heroicon-o-x-circle',
                     })
                     ->badge()
                     ->color(fn($state) => match ($state) {
                         'approved' => 'success',
                         'rejected' => 'danger',
+                        'not verified' => 'danger',
                         default => 'warning',
                     })
                     ->placeholder('Not submitted Yet'),
@@ -175,6 +177,7 @@ class UserResource extends Resource
                         Status::APPROVED->value => 'Approved',
                         Status::REJECTED->value => 'Rejected',
                         Status::PENDING->value => 'Pending',
+                        Status::NOT_VERIFIED->value => 'Not Verified',
                     ]),
                 Filter::make('created_at')
                     ->form([
