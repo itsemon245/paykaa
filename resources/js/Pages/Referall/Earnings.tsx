@@ -71,13 +71,13 @@ export default function Earnings() {
             <div className="flex items-center justify-between">
                 <h1 className="heading">Earnings</h1>
             </div>
-            {grouppedEarnings.length > 0 ? <DataTable className="rounded-lg overflow-hidden" emptyMessage={<div className="text-center font-bold">No earnings Yet</div>} dataKey="id" value={grouppedEarnings} tableStyle={{ minWidth: '50rem' }}>
+            {grouppedEarnings.length > 0 ? <DataTable className="rounded-lg overflow-hidden" emptyMessage={<div className="text-center font-bold">No earnings</div>} dataKey="id" value={grouppedEarnings} tableStyle={{ minWidth: '50rem' }}>
                 <Column field="sl" header="No." body={(group: EarningGroup, options) => <div className="font-bold">{options.rowIndex + 1}</div>} style={{ width: 'max-content' }}></Column>
                 <Column field="from" header="From" body={(group: EarningGroup) => group.from_id} style={{ width: 'max-content' }}></Column>
                 <Column field="items" header="Earnings" body={(group: EarningGroup) => group.items.reduce((acc, item) => acc + item.amount, 0)} style={{ width: 'max-content' }}></Column>
                 <Column field="actions" header="Actions" body={action} />
             </DataTable >
-                : <NoItems value="No earnings yet" />}
+                : <NoItems value="No earnings" />}
 
         </>
     );

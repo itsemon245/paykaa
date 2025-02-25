@@ -43,7 +43,7 @@ export default function ForgotPassword({ status }: { status?: string }) {
                         )}
 
                         <form onSubmit={submit} className='form'>
-                            <TextInput
+                            <Input
                                 id="email"
                                 placeholder="Enter your email"
                                 type="email"

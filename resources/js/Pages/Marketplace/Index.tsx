@@ -158,7 +158,7 @@ export default function Index() {
                         ))}
                         {ads.data.length === 0 &&
                             <div className="col-span-full flex justify-center items-center !mt-5 p-3 text-gray-700 font-bold">
-                                No ads published yet
+                                No ads published
                             </div>
                         }
                     </div>

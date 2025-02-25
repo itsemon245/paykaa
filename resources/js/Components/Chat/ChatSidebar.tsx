@@ -59,7 +59,7 @@ export default function ChatSidebar({
                                 {item.last_message.by_me && <div className="font-medium">You:</div>}
                                 {item.last_message.type === 'image' ? <HeroiconsPhoto20Solid className="w-4 h-auto mt-1" /> : item.last_message.body}</div>
                         ) :
-                        <p>No messages yet</p>
+                        <p>No messages</p>
                 )}
             </div>
         </Link>
@@ -152,7 +152,7 @@ export default function ChatSidebar({
                         <div className="list-group px-0" id="chats" role="tablist">
                             {chats?.data.map(item => itemTemplate(item, "chat-" + item.uuid))}
                             {chats?.data.length === 0 && <div className="flex items-center justify-center gap-3 mt-10">
-                                <div>No chats yet</div>
+                                <div>No chats</div>
                             </div>}
                         </div>
                     </div>

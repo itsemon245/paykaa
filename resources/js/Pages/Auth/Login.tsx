@@ -3,6 +3,7 @@ import { cn, getQuery } from "@/utils";
 import { Link, useForm } from "@inertiajs/react";
 import { FormEventHandler, HTMLAttributes, HTMLProps, useEffect, useRef } from "react";
 import { toast } from 'react-hot-toast'
+import { Checkbox } from 'primereact/checkbox';
 
 export const PasswordInput = ({ onChange, placeholder, required, value, ...props }: { onChange: (...args: any) => any, value?: string, placeholder?: string, props?: any, required?: boolean }) => {
     const [passwordVisible, setPasswordVisible] = useState(false);
@@ -87,11 +88,13 @@ export default function Login() {
                                 {errors.password && <InputError message={errors.password} className="mt-1 mb-0" />}
                             </div>
                             <div className="flex items-center justify-between -!mt-5 mb-2">
-                                <div className="text-gray-600 flex items-center gap-1">
-                                    <Checkbox id="remember" name="remember" checked={data.remember} onChange={(e) => setData('remember', e.target.checked)} />
-                                    <label htmlFor="remember" className="text-gray-600 mb-0">Remember Me</label>
+                                <div className="text-gray-600 ">
+                                    <label className="text-gray-600 mb-0 !flex items-center gap-1 cursor-pointer" htmlFor="remember-me">
+                                        <Checkbox id="remember-me" name="remember-me" checked={data.remember} onChange={(e) => setData('remember', e.value)} />
+                                        <span className="font-semibold" onClick={() => setData('remember', !data.remember)}>Remember Me</span>
+                                    </label>
                                 </div>
-                                <div className="text-gray-600">
+                                <div className="text-blue-600 font-medium">
                                     <Link href={route('password.request')}>Forgot Password?</Link>
                                 </div>
                             </div>

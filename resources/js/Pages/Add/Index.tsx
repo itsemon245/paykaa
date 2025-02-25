@@ -159,7 +159,7 @@ export default function Index() {
                         </form>
                     </Dialog>
                 </div>
-                {adds.data.length !== 0 ? <DataTable className="rounded-lg overflow-hidden" emptyMessage={<div className="text-center font-bold">No adds Yet</div>} dataKey="uuid" totalRecords={adds.total} value={adds.data} rows={perPage} tableStyle={{ minWidth: '50rem' }}>
+                {adds.data.length !== 0 ? <DataTable className="rounded-lg overflow-hidden" emptyMessage={<div className="text-center font-bold">No adds</div>} dataKey="uuid" totalRecords={adds.total} value={adds.data} rows={perPage} tableStyle={{ minWidth: '50rem' }}>
                     <Column field="id" header="No." body={(item, options) => <div className="font-bold">{options.rowIndex + 1}</div>} style={{ width: 'max-content' }}></Column>
                     <Column field="created_at" body={(item) => format(parseISO(item.created_at), "PP")} header="Date" className="w-[100px]"></Column>
                     <Column field="amount" header="Amount" style={{ width: 'max-content' }}></Column>
@@ -175,7 +175,7 @@ export default function Index() {
                     } style={{ width: 'max-content' }}></Column>
 
                 </DataTable >
-                    : <NoItems value="No adds yet" />
+                    : <NoItems value="No adds" />
                 }
                 {/*<Paginator first={first} rows={perPage} totalRecords={adds.total} rowsPerPageOptions={[15, 30, 50]} onPageChange={onPage} />*/}
 

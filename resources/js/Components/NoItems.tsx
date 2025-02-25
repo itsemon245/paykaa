@@ -1,5 +1,5 @@
 export default function NoItems({
-    value = 'No items yet',
+    value = 'No items',
 }) {
     return (
         <div className="heading text-center my-2">

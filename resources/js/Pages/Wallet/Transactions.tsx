@@ -102,7 +102,7 @@ export default function Transactions() {
                 <h1 className="heading">Transactions</h1>
                 <div className="bg-white rounded-lg">
                     {transactions.data.length > 0 ? <>
-                        {min('sm') ? <DataTable className="rounded-lg overflow-hidden" emptyMessage={<div className="text-center font-bold">No Transactions Yet</div>} dataKey="uuid" totalRecords={transactions.total} value={transactions.data} rows={perPage} tableStyle={{ minWidth: '50rem' }}>
+                        {min('sm') ? <DataTable className="rounded-lg overflow-hidden" emptyMessage={<div className="text-center font-bold">No Transactions</div>} dataKey="uuid" totalRecords={transactions.total} value={transactions.data} rows={perPage} tableStyle={{ minWidth: '50rem' }}>
                             <Column field="id" className="!p-1" header="No." body={slBodyTemplate} style={{ width: 'max-content' }}></Column>
                             <Column field="created_at" body={(item) => format(parseISO(item.created_at), "PPp")} header="Date" className="!p-1 !w-[200px]"></Column>
                             <Column className="!p-1" field="amount" header="Amount" body={amountBodyTemplate} style={{ width: 'max-content' }}></Column>
@@ -165,7 +165,7 @@ export default function Transactions() {
                                 ))}
                             </div>
                         </>}
-                    </> : <NoItems value="No transactions yet" />}
+                    </> : <NoItems value="No transactions" />}
                     {transactionItem !== undefined && <Sidebar className="h-max" header={<div className="font-bold">{transform(transactionItem?.transaction_type, 'title')}</div>} visible={transactionItem !== undefined} position="bottom" onHide={() => setTransactionItem(undefined)}>
                         <div className="grid grid-cols-2 *:p-2 *:border *:border-collapse">
                             <div>
