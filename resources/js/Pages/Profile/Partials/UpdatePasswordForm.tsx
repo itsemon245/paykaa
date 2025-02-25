@@ -2,8 +2,10 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
+import { PasswordInput } from '@/Pages/Auth/Login';
 import { Transition } from '@headlessui/react';
 import { useForm } from '@inertiajs/react';
+import { Password } from 'primereact/password';
 import { FormEventHandler, useRef } from 'react';
 
 export default function UpdatePasswordForm({
@@ -11,8 +13,8 @@ export default function UpdatePasswordForm({
 }: {
     className?: string;
 }) {
-    const passwordInput = useRef<HTMLInputElement>(null);
-    const currentPasswordInput = useRef<HTMLInputElement>(null);
+    const passwordInput = useRef(null);
+    const currentPasswordInput = useRef(null);
 
     const {
         data,
@@ -58,10 +60,11 @@ export default function UpdatePasswordForm({
                         value="Current Password"
                     />
 
-                    <TextInput
+                    <Password
                         id="current_password"
-                        ref={currentPasswordInput}
                         value={data.current_password}
+                        ref={currentPasswordInput}
+                        toggleMask
                         onChange={(e) =>
                             setData('current_password', e.target.value)
                         }
@@ -79,8 +82,9 @@ export default function UpdatePasswordForm({
                 <div>
                     <InputLabel className='text-gray-700' htmlFor="password" value="New Password" />
 
-                    <TextInput
+                    <Password
                         id="password"
+                        toggleMask
                         ref={passwordInput}
                         value={data.password}
                         onChange={(e) => setData('password', e.target.value)}
@@ -99,8 +103,9 @@ export default function UpdatePasswordForm({
                         value="Confirm Password"
                     />
 
-                    <TextInput
+                    <Password
                         id="password_confirmation"
+                        toggleMask
                         value={data.password_confirmation}
                         onChange={(e) =>
                             setData('password_confirmation', e.target.value)

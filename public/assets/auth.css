@@ -21,7 +21,7 @@
 
 .auth-container {
     position: relative;
-    height: 430px;
+    height: 450px;
     background: var(--secondary-color);
     border-radius: var(--auth-border-radius);
     box-shadow: 0 0 30px var(--box-shadow-color);

@@ -66,22 +66,26 @@ export default function Login() {
                         <form onSubmit={submit} className="form">
                             <span className="font-bold text-lg md:text-2xl text-gray-700 my-auto">Sign in to your account</span>
 
-                            <div className="input-box">
-                                <input
-                                    onChange={(e) => setData('email', e.target.value)}
-                                    type="email"
-                                    value={data.email}
-                                    placeholder="Email"
-                                    required
-                                />
-                                <i className="bx bxs-user"></i>
+                            <div>
+                                <div className="input-box">
+                                    <input
+                                        onChange={(e) => setData('email', e.target.value)}
+                                        type="email"
+                                        value={data.email}
+                                        placeholder="Email"
+                                        required
+                                    />
+                                    <i className="bx bxs-user"></i>
+                                </div>
+                                {errors.email && <InputError message={errors.email} className="mt-1 mb-0" />}
                             </div>
-                            {errors.email && <InputError message={errors.email} className="mt-2" />}
-                            <PasswordInput
-                                onChange={(e: any) => setData('password', e.target.value)}
-                                value={data.password}
-                                placeholder="Password" required />
-                            {errors.password && <InputError message={errors.password} className="mt-2" />}
+                            <div>
+                                <PasswordInput
+                                    onChange={(e: any) => setData('password', e.target.value)}
+                                    value={data.password}
+                                    placeholder="Password" required />
+                                {errors.password && <InputError message={errors.password} className="mt-1 mb-0" />}
+                            </div>
                             <div className="flex items-center justify-between -!mt-5 mb-2">
                                 <div className="text-gray-600 flex items-center gap-1">
                                     <Checkbox id="remember" name="remember" checked={data.remember} onChange={(e) => setData('remember', e.target.checked)} />
@@ -91,8 +95,8 @@ export default function Login() {
                                     <Link href={route('password.request')}>Forgot Password?</Link>
                                 </div>
                             </div>
-                            <button type="submit" className="auth-btn">
-                                Login
+                            <button type="submit" className="auth-btn" disabled={processing}>
+                                {processing ? 'Processing ...' : 'Login'}
                             </button>
                             {max('md') && <button onClick={() => {
                                 container.current?.classList.add('active');

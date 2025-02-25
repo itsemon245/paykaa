@@ -12,20 +12,6 @@ export default function RegisterForm({ children }: { children: any }) {
         password_confirmation: '',
     });
 
-    // useEffect(() => {
-    //     console.log(data.password, data.password_confirmation)
-    //     if (data.password !== '' || data.password_confirmation !== '') {
-    //         if (data.password !== data.password_confirmation) {
-    //             setError('password', 'Passwords must match');
-    //             setError('password_confirmation', 'Passwords must match');
-    //         } else {
-    //             clearErrors('password', 'password_confirmation');
-    //         }
-    //     } else {
-    //         clearErrors('password', 'password_confirmation');
-    //     }
-    // }, [data.password_confirmation, data.password])
-
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         clearErrors();
@@ -36,21 +22,25 @@ export default function RegisterForm({ children }: { children: any }) {
             setError('email', 'Email is required!');
         } else if (!data.email.includes('@')) {
             setError('email', 'Email is invalid!');
+            return;
         }
 
         if (data.password === '') {
             setError('password', 'Password is required!')
+            return;
         }
         if (data.password_confirmation === '') {
             setError('password_confirmation', 'Password confirmation is required!')
+            return;
         }
 
         if (data.password !== data.password_confirmation) {
             setError('password', 'Passwords must match');
             setError('password_confirmation', 'Passwords must match');
+            return;
         }
 
-        if (errors.name || errors.email || errors.password || errors.password_confirmation) {
+        if (hasErrors) {
             return;
         }
         post(route('register'), {
@@ -61,21 +51,29 @@ export default function RegisterForm({ children }: { children: any }) {
         <div className="form-box register">
             <form onSubmit={submit} className="form">
                 <span className="font-bold text-lg md:text-xl text-gray-700">Create your PayKaa account</span>
-                <div className="input-box">
-                    <input type="text" placeholder="Full Name" required onChange={(e) => setData('name', e.target.value)} />
-                    <i className='bx bxs-user'></i>
+                <div>
+                    <div className="input-box">
+                        <input type="text" placeholder="Full Name" required onChange={(e) => setData('name', e.target.value)} />
+                        <i className='bx bxs-user'></i>
+                    </div>
+                    {errors.name && <InputError message={errors.name} className="mt-0 mb-1" />}
                 </div>
-                {errors.name && <InputError message={errors.name} className="mt-2" />}
-                <div className="input-box">
-                    <input type="email" value={data.email} placeholder="Email" required onChange={(e) => setData('email', e.target.value)} />
-                    <i className='bx bxs-envelope'></i>
+                <div>
+                    <div className="input-box">
+                        <input type="email" value={data.email} placeholder="Email" required onChange={(e) => setData('email', e.target.value)} />
+                        <i className='bx bxs-envelope'></i>
+                    </div>
+                    {errors.email && <InputError message={errors.email} className="mt-0 mb-1" />}
                 </div>
-                {errors.email && <InputError message={errors.email} className="mt-2" />}
-                <PasswordInput placeholder="Password" required onChange={(e) => setData('password', e.target.value)} value={data.password} />
-                {errors.password && <InputError message={errors.password} className="mt-2" />}
-                <PasswordInput placeholder="Confirm Password" required onChange={e => setData('password_confirmation', e.target.value)} value={data.password_confirmation} />
-                {errors.password_confirmation && <InputError message={errors.password_confirmation} className="mt-2" />}
-                <button type="submit" className="auth-btn">Register</button>
+                <div>
+                    <PasswordInput placeholder="Password" required onChange={(e) => setData('password', e.target.value)} value={data.password} />
+                    {errors.password && <InputError message={errors.password} className="mt-0 mb-1" />}
+                </div>
+                <div>
+                    <PasswordInput placeholder="Confirm Password" required onChange={e => setData('password_confirmation', e.target.value)} value={data.password_confirmation} />
+                    {errors.password_confirmation && <InputError message={errors.password_confirmation} className="mt-0 mb-1" />}
+                </div>
+                <button type="submit" className="auth-btn" disabled={processing}>{processing ? 'Processing ...' : 'Register'}</button>
                 {children}
                 {/*<p>or register with social platforms</p>
                             <div className="social-icons">
