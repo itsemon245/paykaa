@@ -7,6 +7,7 @@ import { Transition } from '@headlessui/react';
 import { useForm } from '@inertiajs/react';
 import { Password } from 'primereact/password';
 import { FormEventHandler, useRef } from 'react';
+import toast from 'react-hot-toast';
 
 export default function UpdatePasswordForm({
     className = '',
@@ -35,7 +36,10 @@ export default function UpdatePasswordForm({
 
         put(route('password.update'), {
             preserveScroll: true,
-            onSuccess: () => reset(),
+            onSuccess: () => {
+                toast.success('Password Updated');
+                reset();
+            },
             onError: (errors) => {
                 if (errors.password) {
                     reset('password', 'password_confirmation');
@@ -63,6 +67,7 @@ export default function UpdatePasswordForm({
                     <Password
                         id="current_password"
                         value={data.current_password}
+                        feedback={false}
                         ref={currentPasswordInput}
                         toggleMask
                         onChange={(e) =>
@@ -84,6 +89,7 @@ export default function UpdatePasswordForm({
 
                     <Password
                         id="password"
+                        feedback={false}
                         toggleMask
                         ref={passwordInput}
                         value={data.password}
@@ -105,6 +111,7 @@ export default function UpdatePasswordForm({
 
                     <Password
                         id="password_confirmation"
+                        feedback={false}
                         toggleMask
                         value={data.password_confirmation}
                         onChange={(e) =>
