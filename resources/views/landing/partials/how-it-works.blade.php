@@ -31,9 +31,9 @@
         <div class="flex w-full flex-col gap-8 lg:gap-10 items-center ">
             <div class="px-4">
                 <ul class="flex flex-col gap-2 list-disc">
-                    @foreach ($items as $item)
-                        <li class="text-lg md:text-lg font-semibold text-gray-600">{{ $item }}</li>
-                    @endforeach
+                    <template x-for="(item, index) in howItWorks" :key="`howItWorks-${index}`">
+                        <li class="text-lg md:text-lg font-semibold text-gray-600" x-text="item"></li>
+                    </template>
                 </ul>
             </div>
 
@@ -120,9 +120,9 @@
 @endphp
 <div class="px-4 mb-10">
     <ul class="flex flex-col gap-2 list-disc">
-        @foreach ($transactionItems as $item)
-            <li class="text-lg md:text-lg font-semibold text-gray-600">{{ $item }}</li>
-        @endforeach
+        <template x-for="(item, index) in transactions" :key="`transactions-${index}`">
+            <li class="text-lg md:text-lg font-semibold text-gray-600" x-text="item"></li>
+        </template>
     </ul>
 </div>
     </div>
@@ -138,11 +138,14 @@
                     "Website",
                     "Your Partner",
                 ],
+                howItWorks: [],
+                transactions: [],
                 init(){
                     const data = document.querySelector('[data-content]').getAttribute('data-content')
                     const content = JSON.parse(data)
                     this.content = content
-                    console.log(this.content)
+                    this.howItWorks = content.lists
+                    this.transactions = content.transactions
                 },
                 currentIndex: 0,
                 visible: false,
@@ -156,7 +159,12 @@
                     }, 2000)
                 },
                 get images(){
-                    return this.content.map(item => item.image?.startsWith('http') ? item.image : `/storage/${item.image}`)
+                    const images = [
+                        Object.values(this.content.your_image)[0],
+                        Object.values(this.content.website_image)[0],
+                        Object.values(this.content.partner_image)[0]
+                    ]
+                    return images.map(item => item?.startsWith('http') ? item : `/storage/${item}`)
                 },
             }));
         });

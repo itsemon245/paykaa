@@ -8,6 +8,7 @@ use App\Models\Model;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -78,24 +79,43 @@ class LandingPageResource extends Resource
 
                 Fieldset::make('how_it_works')
                     ->label('How it works')
+                    ->statePath('how_it_works')
                     ->schema([
-                        Repeater::make('how_it_works')
-                            ->label('Sections')
-                            ->itemLabel(fn(array $state): ?string => $state['name'] ?? null)
-                            ->reorderable(false)
-                            ->deletable(false)
-                            ->addable(false)
-                            ->schema([
-                                TextInput::make('name')
-                                    ->visible(false)
-                                    ->required(),
-                                TextInput::make('title')
-                                    ->required(),
-                                Textarea::make('description')
-                                    ->required(),
-                                FileUpload::make('image')
-                            ]),
-                    ])->columns(1),
+                        TagsInput::make('lists')
+                            ->hiddenLabel(true)
+                            ->reorderable(true)
+                            ->columnSpanFull()
+                            ->required(),
+                    ])->columns(['md' => 2, 'lg' => 3]),
+                Fieldset::make('how_it_works')
+                    ->label('Images')
+                    ->statePath('how_it_works')
+                    ->schema([
+                        FileUpload::make('your_image')
+                            ->label('You Image')
+                            ->image()
+                            ->required(),
+                        FileUpload::make('website_image')
+                            ->label('Website Image')
+                            ->image()
+                            ->required(),
+                        FileUpload::make('website_image')
+                            ->label('Your Partner Image')
+                            ->image()
+                            ->required(),
+                    ])->columns(['md' => 2, 'lg' => 3]),
+
+                Fieldset::make('how_it_works')
+                    ->label('Transaction Fees')
+                    ->statePath('how_it_works')
+                    ->columns(['md' => 2, 'lg' => 3])
+                    ->schema([
+                        TagsInput::make('transactions')
+                            ->hiddenLabel(true)
+                            ->reorderable(true)
+                            ->columnSpanFull()
+                            ->required(),
+                    ]),
                 Repeater::make('socials')
                     ->label('Social Media')
                     ->itemLabel(fn(array $state): ?string => $state['title'] ?? null)

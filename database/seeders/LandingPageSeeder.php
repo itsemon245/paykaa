@@ -47,23 +47,21 @@ class LandingPageSeeder extends Seeder
                 ],
             ],
             'how_it_works' => [
-                [
-                    'name' => 'Easy to use',
-                    'title' => 'You',
-                    'description' => "You send request for money to the other party and they can choose to accept or reject the money request.",
-                    'image' => ''
+                'images' => [
+                    'test',
+                    'test',
+                    'test'
                 ],
-                [
-                    'name' => 'Safe & Secure',
-                    'title' => 'Website',
-                    'description' => "Upon accepting the request, the money will be deducted from the other party and will be safely locked by Paykaa until the request is completed.",
-                    'image' => ''
+                'lists' => [
+                    "First you need to deposit your money in PayKaa account.",
+                    "Now you will contract with your partner.",
+                    "Finally we will transfer the money to your partner's account with your permission.",
+                    "Money transfer system is fully automatic"
                 ],
-                [
-                    'name' => 'Fast & Reliable',
-                    'title' => 'Other Party',
-                    'description' => "After the other party accepts the request, you can request for a release. If the other party releases the money then the money will be credited to your account.",
-                    'image' => ''
+                'transactions' => [
+                    "Money transfer, withdraw completely free.",
+                    "Only charges apply at the time of deposit.",
+                    "Minimum transaction 1 taka.",
                 ],
             ],
         ]);
