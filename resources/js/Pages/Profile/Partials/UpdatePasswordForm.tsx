@@ -43,12 +43,10 @@ export default function UpdatePasswordForm({
             onError: (errors) => {
                 if (errors.password) {
                     reset('password', 'password_confirmation');
-                    passwordInput.current?.focus();
                 }
 
                 if (errors.current_password) {
                     reset('current_password');
-                    currentPasswordInput.current?.focus();
                 }
             },
         });
