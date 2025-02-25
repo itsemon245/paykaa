@@ -53,12 +53,12 @@ class MoneyRequestController extends Controller
                 'type' => MessageType::MoneyRequest->value,
                 'body' => "Money Request to {$receiver->name} from " . auth()->user()->name,
             ]);
-            event(new \App\Events\MessageCreated($message));
             $moneyRequest = MoneyRequest::create([
                 ...$request->only('amount', 'note', 'receiver_id'),
                 'sender_id' => auth()->id(),
                 'message_id' => $message->id,
             ]);
+            event(new \App\Events\MessageCreated($message));
             return back();
         });
     }
@@ -83,6 +83,7 @@ class MoneyRequestController extends Controller
                 'note' => $moneyRequest->note,
                 'payment_number' => $moneyRequest->sender_id,
             ]);
+            event(new \App\Events\MessageCreated($moneyRequest->message));
             return back();
         });
     }
@@ -92,6 +93,7 @@ class MoneyRequestController extends Controller
         return backWithError(function () use ($request, $moneyRequest) {
             $moneyRequest->cancelled_at = now();
             $moneyRequest->save();
+            event(new \App\Events\MessageCreated($moneyRequest->message));
             return back();
         });
     }
@@ -101,6 +103,7 @@ class MoneyRequestController extends Controller
         return backWithError(function () use ($request, $moneyRequest) {
             $moneyRequest->rejected_at = now();
             $moneyRequest->save();
+            event(new \App\Events\MessageCreated($moneyRequest->message));
             return back();
         });
     }
@@ -110,6 +113,7 @@ class MoneyRequestController extends Controller
             $moneyRequest->update([
                 'release_requested_at' => now(),
             ]);
+            event(new \App\Events\MessageCreated($moneyRequest->message));
             return back();
         });
     }
@@ -142,6 +146,7 @@ class MoneyRequestController extends Controller
                 'released_at' => now(),
                 'rejected_at' => null,
             ]);
+            event(new \App\Events\MessageCreated($moneyRequest->message));
             return back();
         });
     }

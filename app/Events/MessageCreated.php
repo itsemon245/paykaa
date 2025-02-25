@@ -12,10 +12,12 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Queue\ShouldQueueAfterCommit;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
-class MessageCreated implements ShouldBroadcast
+class MessageCreated implements ShouldBroadcast, ShouldQueueAfterCommit
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     public MessageData $message;
@@ -30,7 +32,6 @@ class MessageCreated implements ShouldBroadcast
             'last_message_at' => now(),
         ]);
         $this->message = MessageData::from($message);
-        $this->message->by_me = false;
     }
 
     /**
@@ -40,9 +41,10 @@ class MessageCreated implements ShouldBroadcast
      */
     public function broadcastOn(): array
     {
-        $user = User::find($this->message->receiver_id);
-        if ($user && $this->message->type->value == MessageType::MoneyRequest->value) {
-            $user->notify(new MoneyReqeuestNotification($this->message));
+        if ($this->message->type->value == MessageType::MoneyRequest->value) {
+            $user = User::find($this->message->receiver_id);
+            Log::info("Sending MoneyRequest Notification: ", $this->message->moneyRequest->toArray());
+            $user->notify(new MoneyReqeuestNotification($this->message->moneyRequest));
         }
         return [
             new Channel('chat.' . $this->message->chat_id),

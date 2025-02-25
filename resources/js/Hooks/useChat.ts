@@ -1,8 +1,9 @@
 import { Echo } from "@/echo";
 import { PaginatedCollection } from "@/types";
 import { ChatData, MessageData } from "@/types/_generated";
-import { usePage } from "@inertiajs/react";
+import { router, usePage } from "@inertiajs/react";
 import { throttle } from "lodash";
+import toast from "react-hot-toast";
 
 export default function useChat() {
     const { user } = useAuth();
@@ -32,28 +33,45 @@ export default function useChat() {
             Echo.leave(chatChannel)
             Echo.channel(chatChannel)
                 .listen('MessageCreated', (e: { message: MessageData }) => {
+                    if (e.message.type === 'money_request') {
+                        console.log("MoneyRequest notification arrived:", e.message)
+                        playSound()
+                        router.reload()
+                        return;
+                    }
                     console.log("New message arrived:", e.message)
                     const newChats = chats.data.map(chat => {
                         if (chat.id === e.message.chat_id) {
                             if (e.message.receiver_id === user.id) {
                                 e.message.by_me = false
+                                playSound()
                             } else {
                                 e.message.by_me = true
                             }
-                            messages.data.unshift(e.message)
-                            console.log("messages", messages)
-                            setMessages(messages)
-                            if (!e.message.by_me) {
-                                playSound()
+                            //update existing message
+                            if (messages.data.find(m => m.id === e.message.id)) {
+                                const data = messages.data.map(m => {
+                                    if (m.id === e.message.id) {
+                                        return e.message
+                                    }
+                                    return m
+                                })
+                                setMessages({
+                                    ...messages,
+                                    data: data,
+                                })
+                            } else {//add new message
+                                messages.data.unshift(e.message)
+                                setMessages(messages)
+                                return {
+                                    ...chat,
+                                    last_message: e.message, //add new message to last message
+                                }
                             }
-                            return {
-                                ...chat,
-                                last_message: e.message,
-                            }
+                            return chat //return the chat
                         }
-                        return chat
+                        return chat //return the chat anyways
                     })
-                    console.log("new chats", newChats)
                     setChats({
                         ...chats,
                         data: newChats,

@@ -26,7 +26,7 @@
                 "Money transfer system is fully automatic"
             ];
         @endphp
-    <div class="flex max-lg:flex-col md:gap-12 gap-7 items-center relative">
+    <div class="flex max-lg:flex-col-reverse md:gap-12 gap-7 items-center relative">
         <!-- Left Content -->
         <div class="flex w-full flex-col gap-8 lg:gap-10 items-center ">
             <div class="px-4">

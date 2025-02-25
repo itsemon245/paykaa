@@ -146,7 +146,7 @@ export default function RequestMoney({ chat }: { chat: ChatData }) {
                                     message && moneyRequest ?
                                         <div className="mt-2">
                                             <div className="justify-center text-lg font-medium mb-2 flex items-center gap-2">{message.by_me ? "You have " : `${moneyRequest?.from?.name} has `} requested
-                                                <div className={cn("font-bold", message.by_me ? 'text-green-500' : 'text-red-500')}>{moneyRequest?.amount} BDT</div>
+                                                <div className={cn("font-bold", message.by_me ? 'text-green-500' : 'text-red-500')}>{(message.by_me ? '+' : '-') + moneyRequest?.amount} BDT</div>
                                             </div>
                                             {
                                                 message.by_me ?
