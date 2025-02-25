@@ -27,10 +27,7 @@ export default function Index() {
     }
     const Footer = ({ ad }: { ad: AddData }) => {
         return (
-            <div className="flex items-center pb-2">
-                <div className="flex-1">
-                    <div className="font-bold">Method: {ad.addMethod?.name}</div>
-                </div>
+            <div className="flex items-center justify-end pb-2">
                 <Button className="uppercase" label={ad.type} severity={ad.type == 'Buy' ? 'success' : 'danger'} size="small" onClick={() => setSelectedAd(ad)} />
             </div>
         )
@@ -66,14 +63,13 @@ export default function Index() {
                         className: "!py-0"
                     },
                     header: {
-                        className: "!text-base"
+                        className: "!text-base py-2"
                     }
                 }}
                 className="max-w-max"
                 visible={selectedAd !== undefined} onHide={() => setSelectedAd(undefined)}>
-                <div className="md:px-5">
-                    <h2 className="heading text-center">Are you interested in the deal?</h2>
-                    <div className="font-medium text-base">Start chatting with <span className="font-bold">{selectedAd?.owner?.name}</span></div>
+                <div className="md:px-5 min-w-[300px]">
+                    <h2 className="heading text-center tracking-wide">Do you want to <span className={cn(selectedAd?.type == "Buy" ? 'text-green-500' : 'text-red-500')}>{selectedAd?.type}</span>?</h2>
                     <div className="text-base font-semibold">User ID: #{selectedAd?.owner_id}</div>
                     <div className="text-base font-semibold">Contact: {selectedAd?.contact}</div>
 
@@ -132,26 +128,29 @@ export default function Index() {
                                     className: "!pt-0 mt-auto"
                                 }
                             }} header={<Header ad={ad} />} footer={<Footer ad={ad} />} className="w-full flex flex-col" key={ad.id}>
-                                <div className="py-2 flex flex-col gap-1">
-                                    {ad.type === 'Sell' && <div className="flex items-end gap-0 font-semibold mb-2">
-                                        <span className="me-2">Rate:</span>
-                                        <span>Tk.</span>
-                                        <div className="text-lg sm:text-xl font-bold">{ad.rate}</div>/
-                                        <span className="text-sm">USD</span>
-                                    </div>
-                                    }
-                                    <div className="font-medium">
-                                        <span>Quantity:</span> <span className="font-semibold">{ad.amount} USD</span>
-                                    </div>
-                                    {ad.type === 'Sell' &&
-                                        <div className="font-medium">
-                                            <span>Limit:</span> <span className="font-semibold">
-                                                {ad.limit_min} BDT - {ad.limit_max} BDT
-                                            </span>
+                                <div className="py-2 flex flex-col gap-1 ">
+                                    <div className="flex items-center gap-3">
+                                        <div className="flex flex-col font-medium gap-0.5">
+                                            {ad.type === 'Sell' && <div>Rate</div>}
+                                            <div>Wallet</div>
+                                            <div>Quantity</div>
+                                            {ad.type === 'Sell' && <div>Limit</div>}
+                                            <div>Contact</div>
                                         </div>
-                                    }
-                                    <div className="font-medium">
-                                        <span>Contact:</span> <span className="font-semibold">{ad.contact}</span>
+                                        <div className="flex flex-col font-semibold gap-0.5">
+                                            {
+                                                ad.type === 'Sell' &&
+                                                <div className="flex items-center">
+                                                    <span>: Tk.</span>
+                                                    <div className="text-lg sm:text-xl font-bold">{ad.rate}</div>/
+                                                    <span className="text-sm">USD</span>
+                                                </div>
+                                            }
+                                            <div>: {ad.addMethod?.name}</div>
+                                            <div>: {ad.amount} USD</div>
+                                            {ad.type === 'Sell' && <div>: {ad.limit_min} BDT - {ad.limit_max} BDT </div>}
+                                            <div>: {ad.contact}</div>
+                                        </div>
                                     </div>
                                 </div>
                             </Card>

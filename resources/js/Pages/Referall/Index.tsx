@@ -29,7 +29,7 @@ export default function Referall() {
                 <Button onClick={copy} className="bg-white text-gray-800 border rounded-lg shadow-sm !p-3.5" icon="pi pi-copy" label="Copy" />
             </div>
             <h1 className="heading mt-4 mb-2">Referrals</h1>
-            {referrals.length > 0 ? <DataTable className="rounded-lg overflow-hidden" emptyMessage={<div className="text-center font-bold">No referrals</div>} dataKey="id" value={referrals} tableStyle={{ minWidth: '50rem' }}>
+            {referrals.length > 0 ? <DataTable className="rounded-lg overflow-hidden" emptyMessage={<div className="text-center font-bold">No referrals</div>} dataKey="id" value={referrals} tableStyle={{ minWidth: 'max-content' }}>
                 <Column field="sl" header="No." body={(item, options) => <div className="font-bold">{options.rowIndex + 1}</div>} style={{ width: 'max-content' }}></Column>
                 <Column field="id" header="UID" body={(item) => item.id} style={{ width: 'max-content' }}></Column>
                 <Column field="name" header="Name" style={{ width: 'max-content' }}></Column>
