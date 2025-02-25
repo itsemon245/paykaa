@@ -99,7 +99,7 @@ class LandingPageResource extends Resource
                             ->label('Website Image')
                             ->image()
                             ->required(),
-                        FileUpload::make('website_image')
+                        FileUpload::make('partner_image')
                             ->label('Your Partner Image')
                             ->image()
                             ->required(),
