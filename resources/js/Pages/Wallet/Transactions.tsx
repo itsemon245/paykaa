@@ -109,30 +109,29 @@ export default function Transactions() {
                             <Column className="!p-1 capitalize" field="transaction_type" header="Type" body={item => item.transaction_type} style={{ width: 'max-content' }}></Column>
                             <Column className="!p-1" field="payment_number" header="Payment Details" style={{ width: 'max-content' }} body={(item: WalletData) => (
                                 <div className="flex flex-col gap-2">
-                                    {item.transaction_type !== 'withdraw' && <div className="flex items-center gap-2">
-                                        <div className="text-sm font-bold">Sender:</div>
-                                        <div className="text-sm font-bold">{
-                                            getSenderNumber(item)
-                                        }</div>
-                                    </div>}
+                                    {item.transaction_type !== 'earn' && <>
+                                        {item.transaction_type !== 'withdraw' && <div className="flex items-center gap-2">
+                                            <div className="text-sm font-bold">Sender:</div>
+                                            <div className="text-sm font-bold">{
+                                                getSenderNumber(item)
+                                            }</div>
+                                        </div>
+                                        }
+                                    </>}
+
+                                    {
+                                        item.transaction_type !== 'earn' && <div className="flex items-center gap-2">
+                                            <div className="text-sm font-bold">Receiver:</div>
+                                            <div className="text-sm font-bold">{getReceiverNumber(item)}</div>
+                                        </div>
+                                    }
 
                                     <div className="flex items-center gap-2">
-                                        <div className="text-sm font-bold">Receiver:</div>
-                                        <div className="text-sm font-bold">{getReceiverNumber(item)}</div>
-                                    </div>
-
-                                    {item.transaction_type !== 'transfer' && <div className="flex items-center gap-2">
                                         <div className="text-sm font-bold">Method:</div>
-                                        <div className="text-sm font-bold">{item.transaction_type === "deposit" ? item.depositMethod?.label : item.withdrawMethod?.label}</div>
+                                        <div className="text-sm font-bold capitalize">{(item.transaction_type === "deposit" ? item.depositMethod?.label : item.withdrawMethod?.label) || item.transaction_type}</div>
                                     </div>
-                                    }
                                 </div>
                             )}></Column>
-                            {/*
-                        <Column className="!p-1 capitalize" field="method" header="Method" style={{ width: 'max-content' }}></Column>
-                        <Column className="!p-1" field="payment_number" header="Payment Number" style={{ width: 'max-content' }}></Column>
-                        <Column className="!p-1" field="transaction_id" header="Transaction ID" style={{ width: 'max-content' }}></Column>
-                        */}
                             <Column className="!p-1" field="approved_at" body={statusBodyTemplate} header="Status" style={{ width: 'max-content' }}></Column>
                         </DataTable> : <>
                             <div className="flex flex-col">
@@ -210,7 +209,7 @@ export default function Transactions() {
                             }
                             <div>
                                 <div className="font-medium">Method</div>
-                                <div className={cn("mt-1 text-lg font-semibold flex items-center")}>
+                                <div className={cn("mt-1 text-lg font-semibold flex items-center capitalize")}>
                                     {(transactionItem.transaction_type === "deposit" ? transactionItem.depositMethod?.label : transactionItem.withdrawMethod?.label) || transactionItem.transaction_type}
                                 </div>
                             </div>

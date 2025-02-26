@@ -121,11 +121,11 @@ export type MessageData = {
     moneyRequest?: MoneyRequestData;
     by_me: boolean;
     is_read: boolean;
+    body: string | null;
     chat_id: number;
     sender_id: number;
     receiver_id: number;
     type: MessageType;
-    body: string;
     created_at?: string;
     updated_at?: string;
     created_at_human?: string;
@@ -155,7 +155,15 @@ export type MoneyRequestData = {
     created_at_human?: string;
     updated_at_human?: string;
 };
-export type Status = 'completed' | 'waiting for release' | 'pending' | 'approved' | 'failed' | 'rejected' | 'cancelled';
+export type Status =
+    | 'completed'
+    | 'waiting for release'
+    | 'pending'
+    | 'approved'
+    | 'failed'
+    | 'rejected'
+    | 'cancelled'
+    | 'not verified';
 export type UserData = {
     id: number;
     uuid: string;
