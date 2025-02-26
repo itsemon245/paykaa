@@ -56,12 +56,17 @@ export type RouteParams = {
     };
     "password.confirm": {};
     "dashboard": {};
+    "earnings.index": {};
+    "earnings.convert": {
+        from_id: string;
+    };
     "verification.send": {};
     "password.request": {};
     "password.email": {};
     "messages.get-new": {
         chat: string;
     };
+    "helpline": {};
     "kyc.store": {};
     "login": {};
     "logout": {};

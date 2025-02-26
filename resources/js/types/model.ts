@@ -38,6 +38,7 @@ export type Chat = {
     is_pinned: any;
     created_at: string;
     updated_at?: string;
+    last_message_at?: any;
     is_typing: any;
     from: any;
     created_at_human: any;
@@ -69,6 +70,20 @@ export type DepositMethod = {
     is_fixed_amount: any;
     created_at_human: any;
     updated_at_human: any;
+};
+export type Earning = {
+    id: any;
+    user_id: any;
+    from_id?: any;
+    amount: any;
+    currency: string;
+    status: string;
+    created_at: string;
+    updated_at?: string;
+    created_at_human: any;
+    updated_at_human: any;
+    user?: User;
+    from?: User;
 };
 export type Kyc = {
     id: any;
@@ -150,6 +165,15 @@ export type MoneyRequest = {
     chat?: Chat;
     from?: User;
 };
+export type PhoneHistory = {
+    id: any;
+    user_id: any;
+    phone: string;
+    created_at?: string;
+    updated_at?: string;
+    created_at_human: any;
+    updated_at_human: any;
+};
 export type Setting = {
     id: any;
     transactions?: string;
@@ -177,8 +201,11 @@ export type User = {
     updated_at?: string;
     last_seen_at?: any;
     referred_by?: any;
+    kyc_status: string;
     balance: any;
     referrals?: User[];
+    phone_history?: PhoneHistory[];
+    referer?: User;
     kyc?: Kyc;
 };
 export type Wallet = {

@@ -1,3 +1,4 @@
+import useBreakpoint from "@/Hooks/useBrakpoints";
 import useMoneyRequest from "@/Hooks/useMoneyRequest";
 import { RouteName } from "@/types";
 import { ChatData, MessageData, MoneyRequestData } from "@/types/_generated";
@@ -10,6 +11,8 @@ import { Tag } from "primereact/tag";
 import toast from "react-hot-toast";
 
 export default function MoneyRequestMessage({ message, chat }: { message: MessageData, chat: ChatData }) {
+
+    const { min } = useBreakpoint();
 
     const getSeverity = (moneyRequest: MoneyRequestData) => {
         if (moneyRequest.cancelled_at) {
@@ -61,7 +64,7 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
     }
 
     const MyButtons = ({ moneyRequest }: { moneyRequest: MoneyRequestData }) => {
-        return (<div className=" flex items-center gap-2">
+        return (<div className="flex items-center gap-2">
             <Button onClick={e => {
                 if (moneyRequest.status === 'approved') {
                     requestRelease();
@@ -76,7 +79,7 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
         <div className={cn("message", message.by_me ? "me" : "")}>
             {!message.by_me && (
                 <img
-                    className="avatar-md"
+                    className={min('md') ? "avatar-md me-2" : "avatar-sm me-2"}
                     src={chat.from?.avatar}
                     onError={(e) => {
                         //@ts-ignore
@@ -91,9 +94,9 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
             )}
 
             <div>
-                <Card pt={{
+                <Card className="max-sm:max-w-[220px]" pt={{
                     content: {
-                        className: "py-2",
+                        className: "p-1 md:py-2",
                     }
                 }}>
                     <div className="text-center text-xs font-medium">Money Request</div>

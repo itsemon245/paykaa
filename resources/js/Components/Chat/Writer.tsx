@@ -89,7 +89,7 @@ export default function Writer() {
     }, [data.body]);
     return (
         <>
-            <div className="fixed bottom-0 left-2 lg:left-[372px] right-2">
+            <div className="fixed bottom-0 md:left-2 lg:left-[372px] left-0 right-0 md:right-2">
                 {data.image &&
                     <div className="p-2 relative w-max">
                         <button className="absolute -top-0 -right-0 text-white w-5 h-5 inline-flex items-center justify-center bg-red-500 rounded-full" onClick={() => setData('image', null)}>
@@ -98,7 +98,7 @@ export default function Writer() {
                         <img className="rounded-lg max-h-[200px] w-auto object-cover shadow-md" src={URL.createObjectURL(data.image as Blob)} alt="image" />
                     </div>
                 }
-                <div className="bottom !p-2 bg-base-gradient">
+                <div className="bottom !p-1 md:!p-2 bg-base-gradient">
                     <form onSubmit={sendMessage} className="text-area relative">
                         <InputTextarea
                             className="form-control !ps-5 !rounded-full"

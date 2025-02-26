@@ -27,7 +27,15 @@ class MessageCreated implements ShouldBroadcast, ShouldQueueAfterCommit
      */
     public function __construct(Message $message)
     {
-        $message->loadMissing('chat', 'sender', 'receiver', 'moneyRequest');
+        $message->loadMissing('chat', 'sender', 'receiver');
+        if ($message->type == MessageType::MoneyRequest->value) {
+            $message->loadMissing('moneyRequest');
+            $message->loadMissing('moneyRequest.sender');
+            $message->loadMissing('moneyRequest.receiver');
+            $message->update([
+                'created_at' => now(),
+            ]);
+        }
         $message->chat->update([
             'last_message_at' => now(),
         ]);

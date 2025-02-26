@@ -1,4 +1,5 @@
 import { Echo } from "@/echo";
+import useBreakpoint from "@/Hooks/useBrakpoints";
 import { PaginatedCollection } from "@/types";
 import { ChatData, MessageData } from "@/types/_generated";
 import { cn, defaultAvatar, getQuery, image } from "@/utils";
@@ -14,6 +15,7 @@ export default function ChatSidebar({
     fetchChats: (search?: string) => void
 }) {
     const [searchString, setSearchString] = useState("");
+    const { min } = useBreakpoint();
     const chat = usePage().props.chat as ChatData | undefined;
     const { user, isAdmin } = useAuth();
     const itemTemplate = (item: ChatData, key?: any) => {
@@ -23,7 +25,7 @@ export default function ChatSidebar({
             className={` !py-3 filterDiscussions all unread single ${item.uuid === chat?.uuid ? 'active' : ''}`}
         >
             <img
-                className="avatar-md"
+                className={min('md') ? "avatar-md me-2" : "avatar-sm me-2"}
                 src={image(item.from?.avatar)}
                 onError={(e) => {
                     //@ts-ignore
@@ -37,7 +39,7 @@ export default function ChatSidebar({
             {/* <div className="status online"></div> */}
 
             <div className="data">
-                <h5>{item.from?.name}</h5>
+                <div className="text-sm font-bold md:text-lg">{item.from?.name}</div>
                 {/*
                 <div className="new bg-yellow">
                     <span>5+</span>
@@ -46,14 +48,14 @@ export default function ChatSidebar({
                 <span className={cn(
                     item.last_message && !item.last_message?.by_me && !item.last_message?.is_read && "!font-bold !text-black",
                 )}>{item.last_message?.created_at_human}</span>
-                {item.is_typing ? <div className="flex items-center gap-1 text-sm text-green-500 font-bold">
+                {item.is_typing ? <div className="flex items-center gap-1 text-xs md:text-sm text-green-500 font-bold">
                     <div>Typing</div>
                     <SvgSpinners3DotsBounce className="w-6 h-4" />
                 </div> : (
                     item.last_message ?
                         (
                             <div className={cn(
-                                "!max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap flex items-center gap-1",
+                                "!max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap flex items-center gap-1 max-md:text-xs",
                                 !item.last_message.by_me && !item.last_message.is_read && "!font-bold !text-black",
                             )}>
                                 {item.last_message.by_me && <div className="font-medium">You:</div>}

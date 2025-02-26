@@ -38,7 +38,7 @@ export default function ProfileLayout({ children, animate }: { children?: JSX.El
                     <div className="grid lg:grid-cols-3 gap-5 justify-center !mb-5 pb-3 border-b">
                         <div className="flex lg:col-span-2 2xl:col-span-1 items-center justify-center gap-1 sm:gap-2 px-1 sm:px-3">
                             {menuItems.map((item, i) => (
-                                <Link href={route(item.route)}>
+                                <Link prefetch href={route(item.route)}>
                                     <button className={cn("text-center px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg font-semibold max-sm:text-sm", route().current(item.route) ? 'bg-[var(--green-500)]  text-white' : 'text-gray-700')}>
                                         {item.label}
                                     </button>

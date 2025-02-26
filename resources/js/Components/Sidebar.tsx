@@ -34,8 +34,8 @@ export default function Sidebar({
         }
     ]
     const LinkItem = ({ item }: { item: MenuItem }) => {
-        return (<Link prefetch={["mount", "hover"]} href={item.url} onSuccess={() => {
-            if (max('md')) {
+        return (<Link prefetch={["mount", "hover"]} href={item.url} as="a" disabled={item.url === '#'} onSuccess={() => {
+            if (max('md') && item.url !== '#') {
                 toggleSidebar();
             }
         }} className="cursor-pointer w-full" key={item.label + "-menu-item-sidebar"} method={item.label === "Logout" ? "post" : "get"}>

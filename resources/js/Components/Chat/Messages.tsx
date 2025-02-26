@@ -57,7 +57,7 @@ export default function Messages({
                 </div>
             )}
             <div className={cn("content", inSidebar ? "!h-full" : "!h-full")} ref={messageContainerRef}>
-                <div className="flex flex-col-reverse w-full px-4 relative" >
+                <div className="flex flex-col-reverse w-full px-1 md:px-4 relative" >
                     <div className='h-[150px] w-full'></div>
                     {!messages?.data ? (
                         <div className="flex flex-col items-center justify-center w-full h-full gap-2">

@@ -34,8 +34,12 @@ export default function ClassicNav() {
             route: "chat.index",
         },
         {
+            label: "Refer",
+            route: "referrals.index",
+        },
+        {
             label: "Earn",
-            route: "wallet.deposit.index",
+            route: "earnings.index",
         },
         {
             label: "Account",
@@ -56,7 +60,6 @@ export default function ClassicNav() {
                         <button className="p-button rounded-l-none w-max !px-2" onClick={e => search(searchString)}>
                             {!max(500) ? "Search" : <i className="pi pi-search text-xl font-bold" />}
                         </button>
-
                     </div>
                     {(users.length > 0 && searchString !== "") &&
                         <div className="absolute top-[100%] left-2 rounded-md bg-white border-gray-200 mt-2 shadow w-full !z-[2000]">
@@ -95,10 +98,10 @@ export default function ClassicNav() {
                         ))}
                     </ul>
                 </Sidebar>
-                <ul className="hidden items-center gap-1 text-gray-100 font-bold lg:flex">
+                <ul className="hidden mb-0 items-center gap-1 text-gray-100 font-bold lg:flex">
                     {navLinks.map((item, index) => (
                         <li key={index}>
-                            <Link className={cn("transition-all duration-300 px-3 py-1.5 rounded hover:bg-primary-400", route().current(item.route) ? "bg-primary-400" : '')} href={route(item.route)}>
+                            <Link prefetch className={cn("transition-all duration-300 px-2 py-1.5 rounded hover:bg-primary-400", route().current(item.route) ? "bg-primary-400" : '')} href={route(item.route)}>
                                 {item.label}
                             </Link>
                         </li>

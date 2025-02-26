@@ -11,7 +11,7 @@ export default function Show() {
     return (
         <>
             {(route().current('chat.index') || !isMobile) && <ChatSidebar chats={chats} setChats={setChats} fetchChats={fetchChats} />}
-            <div className={`main h-full ${route().current('chat.show') ? '!right-0' : ''}`}>
+            <div className={`main h-full ${route().current('chat.show') || route().current('helpline') ? '!right-0' : ''}`}>
                 <div className="chat" id="chat1" >
                     <Topbar />
                     <Messages messages={messages} setMessages={setMessages} />

@@ -1,3 +1,4 @@
+import useBreakpoint from "@/Hooks/useBrakpoints";
 import { ChatData, MessageData } from "@/types/_generated"
 import { cn, defaultAvatar, image } from "@/utils";
 import { usePage } from "@inertiajs/react";
@@ -6,6 +7,7 @@ import { Image } from "primereact/image";
 
 const Message = ({ message, children }: { message: MessageData, children?: React.ReactNode }) => {
     const chat = usePage().props.chat as ChatData;
+    const { min } = useBreakpoint();
     if (message.moneyRequest) {
         return <MoneyRequestMessage message={message} chat={chat} />
     }
@@ -15,7 +17,7 @@ const Message = ({ message, children }: { message: MessageData, children?: React
             <div className={`message ${message.by_me ? 'me' : ''}`}>
                 {!message.by_me && (
                     <img
-                        className="avatar-md"
+                        className={min('md') ? "avatar-md me-2" : "avatar-sm me-2"}
                         src={chat.from?.avatar}
                         onError={(e) => {
                             //@ts-ignore
@@ -33,7 +35,7 @@ const Message = ({ message, children }: { message: MessageData, children?: React
                         {message.type === 'image' ?
                             <Image pt={{
                                 image: {
-                                    className: "rounded-lg w-28 md:w-52 max-h-[500px] h-auto object-contain",
+                                    className: "rounded-lg w-44 md:w-52 max-h-[500px] h-auto object-contain",
                                 },
                                 preview: {
                                     className: "py-4"
