@@ -73,6 +73,8 @@ declare global {
   const NavLink: typeof import('../Components/NavLink')['default']
   const Navbar: typeof import('../Components/Navbar')['default']
   const NoItems: typeof import('../Components/NoItems')['default']
+  const Notification: typeof import('../Components/Notification')['default']
+  const Notifications: typeof import('../Components/Notifications')['default']
   const Preloader: typeof import('../Components/Preloader')['default']
   const PrimaryButton: typeof import('../Components/PrimaryButton')['default']
   const ProfileLayout: typeof import('../Layouts/ProfileLayout')['default']

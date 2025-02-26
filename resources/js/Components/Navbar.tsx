@@ -1,14 +1,7 @@
-import { Link, usePage } from "@inertiajs/react";
-import { Button } from "primereact/button";
-import { Card } from "primereact/card";
-import { Sidebar } from "primereact/sidebar";
-import { Tag } from "primereact/tag";
-import toast from "react-hot-toast";
 import autoAnimate from '@formkit/auto-animate'
 import { useRef } from "react";
-import { motion } from "motion/react"
 import useBreakpoint from "@/Hooks/useBrakpoints";
-import { cn, copyToClipboard, defaultAvatar, image } from "@/utils";
+import { copyToClipboard, defaultAvatar, image } from "@/utils";
 
 export default function Navbar({
     className,
@@ -63,15 +56,7 @@ export default function Navbar({
                 </div>
 
             </div>
-            <div className="flex items-center gap-2 md:gap-4">
-                {user.type === 'admin' && <a href="/admin">
-                    <HugeiconsPresentationBarChart02 className="text-white w-10 h-10" />
-                </a>}
-                <Button className="!p-1.5 border border-white" text rounded>
-                    <FlowbiteBellRingSolid className="text-white w-8 h-8" />
-                </Button>
-
-            </div>
+            <Notifications />
         </div>
 
     )

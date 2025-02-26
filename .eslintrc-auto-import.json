@@ -122,6 +122,8 @@
     "HugeiconsArrowUp04": true,
     "HugeiconsArrowUp02": true,
     "HugeiconsCancelCircle": true,
-    "HeroiconsPhoto20Solid": true
+    "HeroiconsPhoto20Solid": true,
+    "Notification": true,
+    "Notifications": true
   }
 }

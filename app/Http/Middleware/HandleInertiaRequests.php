@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Models\Chat;
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
 
@@ -57,6 +58,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'impersonating' => session('impersonating'),
             'unreadCount' => Chat::myChats()->where('is_read', false)->count(),
+            'notifications' => auth()->user()?->notifications ?? [],
         ];
     }
 }

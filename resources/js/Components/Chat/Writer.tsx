@@ -104,7 +104,7 @@ export default function Writer() {
                             className="form-control !ps-5 !rounded-full"
                             cols={3}
                             placeholder="Message ..."
-                            value={data.body}
+                            value={data.body as string}
                             autoResize
                             ref={textAreaRef}
                             onKeyDown={handleKeyDown}

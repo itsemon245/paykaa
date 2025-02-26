@@ -53,7 +53,7 @@ class MoneyReqeuestNotification extends Notification implements ShouldQueue, Sho
     public function toArray(object $notifiable): array
     {
         return [
-            'moneyRequest' => $this->moneyRequest,
+            'moneyRequest' => $this->moneyRequest->toArray(),
             'sender_id' => $this->moneyRequest->sender_id,
             'receiver_id' => $this->moneyRequest->receiver_id,
         ];

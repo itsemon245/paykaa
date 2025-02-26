@@ -42,7 +42,7 @@ const Message = ({ message, children }: { message: MessageData, children?: React
                                 }
                             }}
                                 downloadable
-                                src={image(message.body)}
+                                src={image(message.body as string)}
                                 alt="Image" preview />
                             : <div className={`text ${message.by_me ? 'me font-medium text-white' : ''}`}>
                                 <div>{message.body}</div>

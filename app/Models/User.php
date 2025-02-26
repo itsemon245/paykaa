@@ -21,6 +21,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
     use HasUuid;
+    use Notifiable;
 
     public function isAdmin(): bool
     {

@@ -34,8 +34,15 @@ export default function Sidebar({
         }
     ]
     const LinkItem = ({ item }: { item: MenuItem }) => {
-        return (<Link prefetch={["mount", "hover"]} href={item.url} as="a" disabled={item.url === '#'} onSuccess={() => {
-            if (max('md') && item.url !== '#') {
+        if (item.url === "#") {
+            return (<div className="cursor-pointer w-full" key={item.label + "-menu-item-sidebar"}>
+                <Button label={item.label} className={cn("w-full !p-3 rounded-2xl text-nowrap flex justify-center")} text={!item.isActive()} severity={item.isActive() ? undefined : 'contrast' as ButtonSeverity}>
+                </Button>
+            </div>
+            )
+        }
+        return (<Link prefetch={["mount", "hover"]} href={item.url} as="a" onSuccess={() => {
+            if (max('md')) {
                 toggleSidebar();
             }
         }} className="cursor-pointer w-full" key={item.label + "-menu-item-sidebar"} method={item.label === "Logout" ? "post" : "get"}>

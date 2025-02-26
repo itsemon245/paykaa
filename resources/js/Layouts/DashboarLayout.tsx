@@ -1,9 +1,8 @@
 import Sidebar from "@/Components/Sidebar";
 import useBreakpoint from "@/Hooks/useBrakpoints";
 import { cn } from "@/utils";
-import { motion } from "motion/react"
 export default function DashboardLayout({ children, animate }: { children?: JSX.Element | JSX.Element[], animate?: boolean }) {
-    const { min, max, between } = useBreakpoint();
+    const { min, max } = useBreakpoint();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
