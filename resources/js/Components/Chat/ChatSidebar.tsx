@@ -82,11 +82,11 @@ export default function ChatSidebar({
             })
         return () => Echo.leave(newChatChannel)
     }, [chats]);
-    useEffect(() => {
-        if (searchString) {
-            fetchChats(searchString);
-        }
-    }, [searchString]);
+    // useEffect(() => {
+    //     if (searchString) {
+    //         fetchChats(searchString);
+    //     }
+    // }, [searchString]);
 
     return (
         <div className="sidebar" id="sidebar">
@@ -106,7 +106,7 @@ export default function ChatSidebar({
                         <form className="form-inline position-relative">
                             <input
                                 type="search"
-                                onChange={e => setSearchString(e.target.value)}
+                                onChange={e => fetchChats(e.target.value)}
                                 className="form-control"
                                 id="conversations"
                                 placeholder="Search for conversations..."

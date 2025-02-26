@@ -25,6 +25,21 @@ class ChatController extends Controller
 
     public function getUserChats(Request $request)
     {
+        if ((int)$request->search) {
+            $people = [auth()->user()->id, $request->search];
+            $chat = Chat::whereIn('receiver_id', $people)->whereIn('sender_id', $people)->first();
+            if (!$chat) {
+                $userExists = User::whereNot('id', auth()->id()) //skip self
+                    ->whereNot('id', 1) //skip admin
+                    ->where('id', $request->search)->exists();
+                if ($userExists) {
+                    $chat = Chat::create([
+                        'sender_id' => auth()->user()->id,
+                        'receiver_id' => $request->search,
+                    ]);
+                }
+            }
+        }
         return response()->json($this->getChats($request));
     }
 
