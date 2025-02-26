@@ -87,7 +87,6 @@ Route::middleware('auth', 'redirect-if-admin', 'verified')->group(function () {
 
     Route::get('earnings', function () {
         $earnings = Earning::where('user_id', auth()->id())
-            ->where('status', 'approved')
             ->with('user', 'from')
             ->get();
         return Inertia::render('Referall/Earnings', [

@@ -173,4 +173,23 @@
     .p-dialog{
         @apply w-[95%] sm:w-[70vw] md:w-[50vw] max-h-[90vh]
     }
+   .p-datatable-table td, .p-column-header-content{
+     @apply px-1 !align-middle !text-center
+    }
+.p-column-title{
+    @apply mx-auto;
+}
+    .p-datatable-wrapper, .p-datatable-table{
+      @apply max-md:w-max rounded-md
+    }
+.p-datatable-table{
+    @apply overflow-scroll
+    }
+.p-datatable .p-datatable-tbody td{
+    @apply *:w-max *:mx-auto
+}
+.p-datatable .p-datatable-tbody td:last-child{
+    @apply !px-3
+}
+
 }

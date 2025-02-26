@@ -211,7 +211,7 @@ export default function Transactions() {
                             <div>
                                 <div className="font-medium">Method</div>
                                 <div className={cn("mt-1 text-lg font-semibold flex items-center")}>
-                                    {transactionItem.transaction_type === "deposit" ? transactionItem.depositMethod?.label : transactionItem.withdrawMethod?.label}
+                                    {(transactionItem.transaction_type === "deposit" ? transactionItem.depositMethod?.label : transactionItem.withdrawMethod?.label) || transactionItem.transaction_type}
                                 </div>
                             </div>
                         </div>

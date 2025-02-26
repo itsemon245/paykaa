@@ -167,8 +167,8 @@ export default function Index() {
             }} className="rounded-lg overflow-hidden" emptyMessage={<div className="text-center font-bold">No adds</div>} dataKey="uuid" totalRecords={adds.total} value={adds.data} rows={perPage} tableStyle={{ minWidth: '50rem' }}>
                 <Column field="id" header="No." body={(item, options) => <div className="font-bold">{options.rowIndex + 1}</div>} style={{ width: 'max-content' }}></Column>
                 <Column field="created_at" body={(item) => format(parseISO(item.created_at), "PP")} header="Date" className="w-[100px]"></Column>
-                <Column field="amount" header="Amount" style={{ width: 'max-content' }}></Column>
-                <Column field="rate" header="Rate" style={{ width: 'max-content' }}></Column>
+                <Column field="amount" header="Amount" body={item=> `${item.amount} USD`} style={{ width: 'max-content' }}></Column>
+                <Column field="rate" header="Rate" body={item=> `${item.rate} BDT`}  style={{ width: 'max-content' }}></Column>
                 <Column field="limit_min" header="Limits" style={{ width: 'max-content' }} body={(item) => `${item.limit_min ?? '-'} - ${item.limit_max ?? '-'}`}></Column>
                 <Column field="type" header="Type" className="capitalize" body={(item) => titleCase(item.type)} style={{ width: 'max-content' }}></Column>
                 <Column field="addMethod" header="Method" body={(item: AddData) => item.addMethod?.name} style={{ width: 'max-content' }}></Column>

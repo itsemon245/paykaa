@@ -14,7 +14,12 @@ interface EarningGroup {
 export default function Earnings() {
     const earnings = usePage().props.earnings as EarningData[];
     const { min_earnable_amount } = usePage().props.settings.transactions;
+    const minEarnableAmount = parseInt(min_earnable_amount);
     const grouppedEarnings = [] as EarningGroup[];
+    const getEarnings = (group: EarningGroup) => {
+        const earning = group.items.reduce((acc, item) => acc + item.amount, 0);
+        return earning > minEarnableAmount ? minEarnableAmount : earning;
+    }
     earnings.forEach((earning) => {
         const earningGroup = grouppedEarnings.find((group) => group.from_id === earning.from_id);
         if (earningGroup) {
@@ -30,12 +35,11 @@ export default function Earnings() {
     const { data, post, setData, processing } = useForm({})
 
     const action = (group: EarningGroup) => {
-        const minEarnableAmount = parseInt(min_earnable_amount);
         const earnings = group.items.reduce((acc, item) => acc + item.amount, 0)
         return (
             <div className="flex gap-2 items-center">
                 {minEarnableAmount > earnings &&
-                    <div>Need <span className="font-semibold">{minEarnableAmount - earnings} BDT </span>more</div>
+                    <div>Need <span className="font-semibold">{minEarnableAmount} BDT </span></div>
                 }
                 {group.items[0]?.status !== 'converted' ? <Button label="Transfer" icon="pi pi-exchange" className="p-button-success" disabled={minEarnableAmount > earnings} onClick={() => convertEarnings(group.from_id)} /> : <Tag value="Completed" severity='success' />}
             </div>
@@ -71,10 +75,11 @@ export default function Earnings() {
             <div className="flex items-center justify-between">
                 <h1 className="heading">Earnings</h1>
             </div>
-            {grouppedEarnings.length > 0 ? <DataTable className="rounded-lg overflow-hidden" emptyMessage={<div className="text-center font-bold">No earnings</div>} dataKey="id" value={grouppedEarnings} tableStyle={{ minWidth: '50rem' }}>
+            {grouppedEarnings.length > 0 ? <DataTable pt={{
+            }} className="rounded-lg overflow-hidden" emptyMessage={<div className="text-center font-bold">No earnings</div>} dataKey="id" value={grouppedEarnings} tableStyle={{ minWidth: 'max-content' }}>
                 <Column field="sl" header="No." body={(group: EarningGroup, options) => <div className="font-bold">{options.rowIndex + 1}</div>} style={{ width: 'max-content' }}></Column>
                 <Column field="from" header="From" body={(group: EarningGroup) => group.from_id} style={{ width: 'max-content' }}></Column>
-                <Column field="items" header="Earnings" body={(group: EarningGroup) => group.items.reduce((acc, item) => acc + item.amount, 0)} style={{ width: 'max-content' }}></Column>
+                <Column field="items" header="Earnings" body={(group: EarningGroup) => <span>{getEarnings(group)} BDT</span>} style={{ width: 'max-content' }}></Column>
                 <Column field="actions" header="Actions" body={action} />
             </DataTable >
                 : <NoItems value="No earnings" />}
