@@ -11,7 +11,7 @@ export default function Notifications() {
     useEffect(() => {
         Echo.leaveChannel('notifications.' + user?.id)
         Echo.channel('notifications.' + user?.id)
-            .listen('MoneyRequestUpdated', (e) => {
+            .listen('MoneyRequestUpdated', (e: any) => {
                 console.log(e)
             })
     }, [notifications])
