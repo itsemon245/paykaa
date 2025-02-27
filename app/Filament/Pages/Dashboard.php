@@ -1,9 +1,9 @@
 <?php
 
+namespace App\Filament\Pages;
+
 use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Form;
 use Filament\Pages\Dashboard as BaseDashboard;
 use Filament\Pages\Dashboard\Actions\FilterAction;
 use Filament\Pages\Dashboard\Concerns\HasFiltersAction;
@@ -12,7 +12,6 @@ use Livewire\Component;
 
 class Dashboard extends BaseDashboard
 {
-    use HasFiltersForm;
     use HasFiltersAction;
 
     protected function getActionColor(string $query): string
