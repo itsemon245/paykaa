@@ -58,10 +58,10 @@ class StatsOverview extends BaseWidget
     {
         $dateFrom = '';
         $dateTo = today();
-        if (array_key_exists('startDate', $this->filters) && array_key_exists('endDate', $this->filters)) {
+        if (array_key_exists('startDate', $this->filters ?? []) && array_key_exists('endDate', $this->filters ?? [])) {
             $dateFrom = $this->filters['startDate'];
             $dateTo = $this->filters['endDate'];
-        } elseif (array_key_exists('date', $this->filters)) {
+        } elseif (array_key_exists('date', $this->filters ?? [])) {
             switch ($this->filters['date']) {
                 case 'today':
                     $dateFrom = today();

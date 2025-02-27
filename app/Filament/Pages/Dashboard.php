@@ -18,10 +18,10 @@ class Dashboard extends BaseDashboard
     protected function getActionColor(string $query): string
     {
         $color = 'gray';
-        if (array_key_exists('date', $this->filters) && $this->filters['date'] === $query) {
+        if (array_key_exists('date', $this->filters ?? []) && $this->filters['date'] === $query) {
             $color = 'primary';
         }
-        if (!array_key_exists('date', $this->filters) && $query === 'all') {
+        if (!array_key_exists('date', $this->filters ?? []) && $query === 'all') {
             $color = 'primary';
         }
         return $color;
