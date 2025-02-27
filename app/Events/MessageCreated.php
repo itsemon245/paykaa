@@ -35,36 +35,6 @@ class MessageCreated implements ShouldBroadcast, ShouldQueueAfterCommit
             $message->update([
                 'created_at' => now(),
             ]);
-            Log::info("Sending MoneyRequest Notification: ", $message->moneyRequest->toArray());
-            $notification = Notification::where([
-                'type' => MoneyReqeuestNotification::class,
-                'notifiable_id' => $message->receiver_id,
-                'data->moneyRequest->uuid' => $message->moneyRequest->uuid,
-            ])->first();
-            if (!$notification) {
-                $notification = Notification::create([
-                    'id' => Uuid::uuid7()->toString(),
-                    'notifiable_type' => User::class,
-                    'notifiable_id' => $message->receiver_id,
-                    'type' => MoneyReqeuestNotification::class,
-                    'data' => [
-                        'moneyRequest' => $message->moneyRequest->toArray(),
-                    ],
-                    'read_at' => null,
-                ]);
-            } else {
-                $notification = tap($notification)->update([
-                    'data' => [
-                        ...$notification->data,
-                        'moneyRequest' => $message->moneyRequest->toArray(),
-                    ],
-                    'read_at' => null,
-                ]);
-            }
-            Log::info("Notification: ", $notification->toArray());
-            if ($notification) {
-                event(new MoneyRequestUpdated($notification));
-            }
         }
         $message->chat->update([
             'last_message_at' => now(),

@@ -1,8 +1,60 @@
+import { MoneyRequestData } from "@/types/_generated";
+import { cn } from "@/utils";
+import { Link } from "@inertiajs/react";
+import { Avatar } from "primereact/avatar";
+import { Tag } from "primereact/tag";
+
 export default function Notification({ notification }: { notification: any }) {
+    const moneyRequest = notification.data.moneyRequest as MoneyRequestData
+    const user = useAuth()
+    const getSeverity = (moneyRequest: MoneyRequestData) => {
+        if (moneyRequest.cancelled_at) {
+            return "danger"
+        }
+        if (moneyRequest.status === 'completed') {
+            return "success"
+        }
+        if (moneyRequest.status === 'waiting for release') {
+            return moneyRequest.sender_id !== user.id ? undefined : "warning"
+        }
+        if (moneyRequest.rejected_at) {
+            return "danger"
+        }
+        if (moneyRequest.accepted_at) {
+            return undefined
+        }
+        return "warning"
+    }
+
     useEffect(() => {
         console.log(notification)
     }, [notification])
-    return <div>
-        Notification
-    </div>
+    return <div className={cn("py-2 px-3 border shadow-sm rounded-lg", notification.read_at ? 'opacity-50' : '')}>
+        <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+                <Avatar image={moneyRequest.from?.avatar} shape="circle" />
+                <div className="font-semibold text-sm">{moneyRequest.from?.name}</div>
+            </div>
+            <div className="text-xs">
+                {moneyRequest.updated_at_human}
+            </div>
+        </div>
+        <div className="mt-1 ms-4">
+            <div className="flex items-center justify-between ">
+                <div>Money request for <span className={cn(moneyRequest.sender_id === user.id ? 'text-green-500' : 'text-red-500')}>{moneyRequest.sender_id === user.id ? '+' : '-'} {moneyRequest.amount} BDT</span></div>
+            </div>
+            <div className="flex items-center  mt-2 gap-3">
+                <div className="flex items-center gap-1">
+                    <span className="font-semibold">Status:</span>
+                    <Tag className="capitalize" severity={getSeverity(moneyRequest)} value={moneyRequest.status} />
+                </div>
+                {!moneyRequest.rejected_at
+                    && !moneyRequest.cancelled_at
+                    && !moneyRequest.released_at
+                    && moneyRequest.from && <Link href={route('chat.receiver-chat', { receiver: moneyRequest.from.uuid })}>
+                        <Tag className="capitalize" severity="info" value="Open Chat" />
+                    </Link>}
+            </div>
+        </div>
+    </div >
 }

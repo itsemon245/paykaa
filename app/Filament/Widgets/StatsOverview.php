@@ -7,7 +7,9 @@ use App\Models\User;
 use App\Models\Kyc;
 use App\Models\Wallet;
 use App\Enum\Wallet\WalletTransactionType;
+use App\Filament\Resources\DepositResource;
 use App\Filament\Resources\KycResource;
+use App\Filament\Resources\UserResource;
 use App\Filament\Resources\WithdrawResource;
 use App\Models\Chat;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
@@ -104,8 +106,10 @@ class StatsOverview extends BaseWidget
                 $this->format($this->depositAmount, true),
             )
                 ->color('success')
+                ->url(DepositResource::getUrl())
                 ->icon('heroicon-o-document-currency-bangladeshi'),
             Stat::make('Withdraw Amount', $this->format($this->withdrawAmount, true))
+                ->url(WithdrawResource::getUrl())
                 ->color('success')
                 ->icon('heroicon-o-document-currency-bangladeshi'),
             Stat::make('PayKaa Balance', $this->format($this->paykaaBalance, true))
@@ -113,6 +117,7 @@ class StatsOverview extends BaseWidget
                 ->icon('heroicon-o-document-currency-bangladeshi'),
             Stat::make('Users', $this->getTotalUsers())
                 ->color('success')
+                ->url(UserResource::getUrl())
                 ->icon('heroicon-o-user-group'),
 
 

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enum\Status;
+use App\Traits\CanSendMoneyRequestNotification;
 use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -10,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class MoneyRequest extends Model
 {
     use HasUuid;
+    use CanSendMoneyRequestNotification;
     protected $casts = [
         'accepted_at' => 'datetime',
         'cancelled_at' => 'datetime',

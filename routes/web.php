@@ -59,6 +59,16 @@ Route::middleware('auth', 'verified')->group(function () {
 });
 
 Route::middleware('auth', 'redirect-if-admin', 'verified')->group(function () {
+    Route::get('notification/mark-all-as-read', function () {
+        $user = User::find(auth()->id());
+        $user->notifications()->update(['read_at' => now()]);
+        return back();
+    })->name('notification.mark-all-as-read');
+    Route::get('notification/clear-all', function () {
+        $user = User::find(auth()->id());
+        $user->notifications()->delete();
+        return back();
+    })->name('notification.clear-all');
     //Wallet Routes
     Route::prefix('wallet')->name('wallet.')->group(function () {
         Route::get('deposit', [DepositController::class, 'index'])->name('deposit.index');

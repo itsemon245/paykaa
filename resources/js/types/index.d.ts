@@ -32,6 +32,8 @@ export type PageProps<
     settings: Settings;
     auth: {
         user: UserData;
+    } & {
+        id: number
     };
     ziggy: Config & { location: string };
     error?: string,

@@ -95,6 +95,8 @@ export type RouteParams = {
     "money.request-release": {
         moneyRequest: string;
     };
+    "notification.clear-all": {};
+    "notification.mark-all-as-read": {};
     "password.update": {};
     "profile.edit": {};
     "profile.update": {};
