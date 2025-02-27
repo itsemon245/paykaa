@@ -76,6 +76,7 @@ class MoneyRequestResource extends Resource
                         Status::REJECTED->value => 'danger',
                         Status::RELEASED->value => 'success',
                         Status::WAITING_FOR_RELEASE->value => 'warning',
+                        default => 'info',
                     })
                     ->label('Status'),
                 Tables\Columns\TextColumn::make('sender_id')
