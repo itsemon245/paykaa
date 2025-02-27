@@ -14,6 +14,7 @@ export type RouteParams = {
     "add.edit": {
         add: string;
     };
+    "filament.admin.pages.dashboard": {};
     "filament.admin.resources.add-methods.index": {};
     "filament.admin.resources.adds.index": {};
     "filament.admin.resources.deposit-methods.index": {};

@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'payment'=> [
+    'payment' => [
         'charge' => env('PAYMENT_CHARGE', 3),
         'is_fixed_amount' => env('PAYMENT_IS_FIXED_AMOUNT', false),
     ],
@@ -81,7 +81,7 @@ return [
     |
     */
 
-    'locale' => env('APP_LOCALE', 'en'),
+    'locale' => env('APP_LOCALE', 'bn_BD'),
 
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
 

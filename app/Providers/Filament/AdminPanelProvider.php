@@ -55,11 +55,11 @@ class AdminPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
             ])
             ->navigationItems([
-                NavigationItem::make('Helpline')
-                    ->url('/chats', shouldOpenInNewTab: true)
-                    ->icon('heroicon-o-chat-bubble-left-right')
-                    ->badge(fn() => Chat::where(['receiver_id' => 1, 'is_read' => false])->count() || null)
-                    ->sort(30),
+                // NavigationItem::make('Helpline')
+                //     ->url('/chats', shouldOpenInNewTab: true)
+                //     ->icon('heroicon-o-chat-bubble-left-right')
+                //     ->badge(fn() => Chat::where(['receiver_id' => 1, 'is_read' => false])->whereHas('lastMessage')->count() || null)
+                //     ->sort(30),
             ])
             ->authMiddleware([
                 Authenticate::class,

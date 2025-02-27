@@ -165,6 +165,18 @@ export type MoneyRequest = {
     chat?: Chat;
     from?: User;
 };
+export type Notification = {
+    id: string;
+    type: string;
+    notifiable_type: string;
+    notifiable_id: any;
+    data: string;
+    read_at?: any;
+    created_at?: string;
+    updated_at?: string;
+    created_at_human: any;
+    updated_at_human: any;
+};
 export type PhoneHistory = {
     id: any;
     user_id: any;
