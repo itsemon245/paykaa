@@ -13,7 +13,9 @@ export interface Settings {
         referral_commission: string;
         min_earnable_amount: string;
     };
-    general: object;
+    general: {
+        intant_reply: string;
+    };
 }
 export interface ServerAppConfig {
     name: string;

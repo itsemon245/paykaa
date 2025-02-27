@@ -72,7 +72,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     protected function avatar(): Attribute
     {
         return Attribute::make(
-            get: fn(?string $value) => $value ? $value : avatar(),
+            get: fn(?string $value) => $this->id === 1 ? asset('assets/favicon.png') : ($value ? $value : avatar()),
         );
     }
 

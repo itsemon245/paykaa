@@ -7,6 +7,7 @@ use App\Filament\Resources\SettingResource\RelationManagers;
 use App\Models\Setting;
 use Filament\Forms;
 use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -68,6 +69,16 @@ class SettingResource extends Resource
                             ->label('Max Earnable Amount')
                             ->suffixIcon('heroicon-o-currency-bangladeshi')
                             ->numeric(),
+                    ]),
+                Fieldset::make('General')
+                    ->statePath('general')
+                    ->schema([
+                        Textarea::make('instant_reply')
+                            ->label('Instant Reply')
+                            ->rows(5)
+                            ->columnSpanFull()
+                            ->placeholder('Instant Reply for helpline chats')
+                            ->default('Thank you for your interest in Paykaa. We will get back to you shortly.'),
                     ]),
             ]);
     }

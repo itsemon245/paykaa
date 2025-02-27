@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\Kyc;
 use App\Models\Wallet;
 use App\Enum\Wallet\WalletTransactionType;
+use App\Filament\Resources\KycResource;
+use App\Filament\Resources\WithdrawResource;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Card;
@@ -17,32 +19,58 @@ use Illuminate\Support\Number;
 class StatsOverview extends BaseWidget
 {
     use InteractsWithPageFilters;
+    protected static bool $isLazy = false;
+
     protected function getStats(): array
     {
         return [
-            Stat::make('Users', $this->getTotalUsers())
-                ->color('success')
-                ->icon('heroicon-o-user-group'),
+            Stat::make(
+                'Pending Deposits',
+                $this->format(
+                    Wallet::where([
+                        'transaction_type' => WalletTransactionType::DEPOSIT->value,
+                        'approved_at' => null,
+                        'cancelled_at' => null
+                    ])
+                        ->where(fn(Builder $query) => $this->getQuery($query))
+                        ->count()
+                )
+            )
+                ->color('warning')
+                ->icon('heroicon-o-document-currency-bangladeshi')
+                ->url(url('/admin/deposits'))
+                ->extraAttributes(['class' => 'cursor-pointer']),
+
+            Stat::make(
+                'Pending Withdrawals',
+                $this->format(
+                    Wallet::where([
+                        'transaction_type' => WalletTransactionType::WITHDRAW->value,
+                        'approved_at' => null,
+                        'cancelled_at' => null
+                    ])
+                        ->where(fn(Builder $query) => $this->getQuery($query))
+                        ->count()
+                )
+            )
+                ->color('warning')
+                ->icon('heroicon-o-document-currency-bangladeshi')
+                ->url(WithdrawResource::getUrl())
+                ->extraAttributes(['class' => 'cursor-pointer']),
+
             Stat::make('Pending Verifications', $this->format(Kyc::where([
                 'approved_at' => null,
                 'rejected_at' => null,
             ])
                 ->where(fn(Builder $query) => $this->getQuery($query))
                 ->count()))
+                ->url(KycResource::getUrl())
                 ->color('warning')
                 ->icon('heroicon-o-shield-check'),
-            Stat::make('Pending Deposits', $this->format(Wallet::where([
-                'transaction_type' => WalletTransactionType::DEPOSIT->value,
-                'approved_at' => null,
-                'cancelled_at' => null,
-            ])
-                ->where(fn(Builder $query) => $this->getQuery($query))
-                ->count()))
-                ->color('warning')
-                ->icon('heroicon-o-document-currency-bangladeshi')
-                ->url(url('/admin/deposits'))
-                ->extraAttributes(['class' => 'cursor-pointer']),
 
+            Stat::make('Users', $this->getTotalUsers())
+                ->color('success')
+                ->icon('heroicon-o-user-group'),
         ];
     }
 
