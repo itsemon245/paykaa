@@ -12,6 +12,7 @@ use Livewire\Component;
 
 class Dashboard extends BaseDashboard
 {
+    use HasFiltersForm;
     use HasFiltersAction;
 
     protected function getActionColor(string $query): string
