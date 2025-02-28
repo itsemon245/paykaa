@@ -25,7 +25,7 @@ width: 100% !important;
 </style>
 {{ $head ?? '' }}
 </head>
-<body>
+<body style="--bg-color: #d1dce8;">
 
 <table class="wrapper" width="100%" cellpadding="0" cellspacing="0" role="presentation">
 <tr>

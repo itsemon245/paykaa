@@ -180,10 +180,10 @@
     @apply mx-auto;
 }
     .p-datatable-wrapper, .p-datatable-table{
-      @apply max-md:w-max rounded-md
+      @apply max-sm:max-w-[640px] rounded-md
     }
 .p-datatable-table{
-    @apply overflow-scroll
+    @apply overflow-auto
     }
 .p-datatable .p-datatable-tbody td{
     @apply *:w-max *:mx-auto
