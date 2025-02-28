@@ -43,6 +43,7 @@ export default function VerifyDocuments({ updateProfile, profileData, setProfile
             setShowUploadDocDialog(true)
         }
     }
+    const [submitting, setSubmitting] = useState(false);
     const submit = async (e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         if (!data.doc_type) {
@@ -50,35 +51,42 @@ export default function VerifyDocuments({ updateProfile, profileData, setProfile
             return;
         }
         const toastId = toast.loading('Submitting Documents...')
-        post(route('kyc.store'), {
-            onSuccess: (data) => {
-                console.log(data);
+        setSubmitting(true);
+        updateProfile(route('profile.update'), {
+            onSuccess(data: any) {
                 if (data.props.error) {
                     toast.error(data.props.error)
                     return;
                 }
-                updateProfile(route('profile.update'), {
-                    onSuccess() {
+                post(route('kyc.store'), {
+                    onSuccess: (data) => {
+                        if (data.props.error) {
+                            toast.error(data.props.error)
+                            return;
+                        }
                         toast.success('Documents Submitted Successfully!', {
                             id: toastId
                         })
+                        setSubmitting(false);
                         setShowUploadDocDialog(false)
-                    }
+                    },
+                    onError: (err) => {
+                        setSubmitting(false);
+                        console.error('Error while submitting KYC', err)
+                        toast.error('Failed to submit documents!', {
+                            id: toastId
+                        })
+                    },
                 })
-            },
-            onError: (err) => {
-                console.error('Error while submitting KYC', err)
-                toast.error('Failed to submit documents!', {
-                    id: toastId
-                })
-            },
+            }
         })
+
     }
     const Footer = () => {
         return (
             <div className="flex justify-end md:flex-row-reverse gap-2">
                 <Button outlined label="Cancel" onClick={() => setShowUploadDocDialog(false)} />
-                <Button label={uploading ? 'Uploading...' : 'Submit'} onClick={submit} loading={processing || uploading} disabled={processing || uploading} />
+                <Button label={uploading ? 'Uploading...' : 'Submit'} onClick={submit} loading={submitting || uploading} disabled={submitting || uploading} />
             </div>
         )
     }
@@ -125,9 +133,9 @@ export default function VerifyDocuments({ updateProfile, profileData, setProfile
                     </div>
                 ))}
                 {data.doc_type && <div className="flex flex-col gap-3 w-full">
-                    <Filedrop setUploading={setUploading} label="Upload Front Image" className="min-h-[180px]" labelIdle={"Drop your front image of your " + data.doc_type} onProcessFile={(path, storageUrl) => setData('front_image', storageUrl)} />
+                    <Filedrop accept="image/*" setUploading={setUploading} label="Upload Front Image" className="min-h-[180px]" labelIdle={"Drop your front image of your " + data.doc_type} onProcessFile={(path, storageUrl) => setData('front_image', storageUrl)} />
                     <InputError message={errors.front_image} className="-mt-4" />
-                    <Filedrop setUploading={setUploading} label="Upload Back Image" className="min-h-[180px]" labelIdle={"Drop your back image of your " + data.doc_type} onProcessFile={(path, storageUrl) => setData('back_image', storageUrl)} />
+                    <Filedrop accept="image/*" setUploading={setUploading} label="Upload Back Image" className="min-h-[180px]" labelIdle={"Drop your back image of your " + data.doc_type} onProcessFile={(path, storageUrl) => setData('back_image', storageUrl)} />
                     <InputError message={errors.back_image} className="-mt-4" />
                 </div>}
 

@@ -54,6 +54,8 @@ export default function Filedrop({
                     url: '/upload/chunk',
                 }}
                 onaddfilestart={() => setUploading?.(true)}
+                onerror={() => setUploading?.(false)}
+                onprocessfileprogress={() => setUploading?.(true)}
                 onprocessfile={(_, file) => {
                     let path = `${paths.storage}/app/public/temp/completed/${file.serverId}.${file.fileExtension}`;;
                     let storageUrl = "temp/completed/" + file.serverId + "." + file.fileExtension;

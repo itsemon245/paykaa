@@ -13,6 +13,11 @@ class KycController extends Model
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'doc_type' => ['required'],
+            'front_image' => ['required'],
+            'back_image' => ['required'],
+        ]);
         $data = KycData::from($request)->except(
             'created_at_human',
             'updated_at_human',
