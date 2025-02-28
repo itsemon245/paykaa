@@ -188,7 +188,7 @@ class StatsOverview extends BaseWidget
     }
     protected function getQuery(Builder $query): Builder
     {
-        $dateFrom = '';
+        $dateFrom = null;
         $dateTo = today();
         if (array_key_exists('startDate', $this->filters ?? []) && array_key_exists('endDate', $this->filters ?? [])) {
             $dateFrom = $this->filters['startDate'];
@@ -213,7 +213,7 @@ class StatsOverview extends BaseWidget
                     break;
             }
         }
-        if ($dateFrom === null && $dateTo === null) {
+        if (!$dateFrom) {
             return $query;
         }
         return $query->where('created_at', '>=', $dateFrom)->where('created_at', '<=', $dateTo);
