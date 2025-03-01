@@ -7,6 +7,7 @@ use App\Models\LandingPage;
 use App\Models\Model;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\Textarea;
@@ -70,7 +71,7 @@ class LandingPageResource extends Resource
                         TextInput::make('about.address')
                             ->default('Dhaka, Bangladesh')
                             ->required(),
-                        Textarea::make('about.description')
+                        RichEditor::make('about.description')
                             ->default('We are a team of developers, designers, and product managers who are passionate about making the world a better place. We believe that everyone deserves access to financial services and we are committed to making that a reality.')
                             ->required(),
                         // FileUpload::make('image')

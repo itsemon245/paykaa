@@ -2,6 +2,19 @@
     $socials = $landing->socials ?? [];
     $about = $landing->about ?? [];
 @endphp
+<style>
+    .Copy__body h2 strong {
+	position: relative;
+	font: var(--titleFont);
+	color: var(--titleColor);
+	letter-spacing: var(--titleLetterSpacing, inherit);
+}
+.Copy__body strong {
+    color: var(--titleColor);
+}
+
+
+</style>
 <footer class="Section HomepageGlobalSection theme--Dark flavor--Chroma accent--Cyan Section--angleTop Section--paddingNormal Section--hasGuides relative"> <div class="Section__masked">
         <div class="Section__backgroundMask !overflow-hidden">
             <div class="Section__background">
@@ -27,11 +40,11 @@
                             data-columns="1">
                             <section class="Copy HomepageGlobalSection__copy variant--Section">
                                 <header class="Copy__header">
-                                    <h2 class="Copy__caption">{{ $about['title'] ?? 'About us' }}</h2>
+                                    <h2 class="Copy__caption">{{ 'About us' }}</h2>
                                     <h1 class="Copy__title">{{ $about['title'] ?? 'About us' }}</h1>
                                 </header>
                                 <div class="Copy__body">
-                                    {{ $about['description'] ?? 'We are a team of developers, designers, and product managers who are passionate about making the world a better place. We believe that everyone deserves access to financial services and we are committed to making that a reality.' }}
+                                    {!! $about['description'] ?? 'We are a team of developers, designers, and product managers who are passionate about making the world a better place. We believe that everyone deserves access to financial services and we are committed to making that a reality.' !!}
                                 </div>
                             </section>
                         </div>
