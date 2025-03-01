@@ -77,8 +77,8 @@ class ChatController extends Controller
     public function helpline(Request $request)
     {
         $adminId = 1;
-        $people = [auth()->user()->id, $adminId];
-        $chat = Chat::whereIn('receiver_id', $people)->whereIn('sender_id', $people)->first();
+        // $people = [auth()->user()->id, $adminId];
+        $chat = Chat::where('receiver_id', $adminId)->where('sender_id', auth()->user()->id)->first();
         if (!$chat) {
             $chat = Chat::create([
                 'sender_id' => auth()->user()->id,
@@ -160,9 +160,11 @@ class ChatController extends Controller
                     }
                 }
             })
-            ->orWhere(function (Builder $q) {
-                $q->where('receiver_id', auth()->id());
-                $q->has('lastMessage');
+            ->orWhere(function (Builder $q) use ($helpline) {
+                if (!$helpline) {
+                    $q->where('receiver_id', auth()->id());
+                    $q->has('lastMessage');
+                }
             })->paginate();
         return ChatData::collect($chats);
     }
