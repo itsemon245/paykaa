@@ -16,7 +16,7 @@ export default function Topbar() {
             <div className="container p-0">
                 <div className="inside p-0">
                     <div className="data flex items-center gap-1 md:gap-2 w-full">
-                        <Link href={route('chat.index')} className="hidden: lg:inline-block me-2">
+                        <Link href={route().current('helpline') ? '/dashboard' : route('chat.index')} className="hidden: lg:inline-block me-2">
                             <button className="!bg-gray-200 !rounded-full w-9 h-9 flex items-center justify-center" title="Back">
                                 <i className="ti-angle-left fw-bold !text-gray-800"></i>
                             </button>
