@@ -51,10 +51,12 @@ export default function Topbar() {
                                 }
 
                             </div>
-                            {!isHelpline ? <RequestMoneyChatList chat={chat} /> : <>
-                                <Link href={route('dashboard')} className="w-10 h-10 flex items-center justify-center p-1.5 transition-all rounded-full" as="a">
-                                    <HugeiconsCancelCircle className="" />
-                                </Link>
+                            {!isAdmin && <>
+                                {!isHelpline ? <RequestMoneyChatList chat={chat} /> : <>
+                                    <Link href={route('dashboard')} className="w-10 h-10 flex items-center justify-center p-1.5 transition-all rounded-full" as="a">
+                                        <HugeiconsCancelCircle className="" />
+                                    </Link>
+                                </>}
                             </>}
                         </div>
                     </div>
