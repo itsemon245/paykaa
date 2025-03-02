@@ -22,7 +22,7 @@ export default function Topbar() {
                             </button>
                         </Link>
                         <div className="relative">
-                            {isHelpline ?
+                            {isHelpline && !isAdmin ?
                                 <AvatarGroup>
                                     <Avatar image="/assets/favicon.png" size="large" shape="circle" />
                                 </AvatarGroup> : <img
