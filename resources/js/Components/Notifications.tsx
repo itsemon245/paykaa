@@ -6,8 +6,10 @@ import { Echo } from "@/echo";
 import { Toast } from "primereact/toast";
 import { MoneyRequestData } from "@/types/_generated";
 import { cn } from "@/utils";
+import { Badge } from "primereact/badge";
+import { Avatar } from "primereact/avatar";
 
-export default function Notifications() {
+export default function Notifications({ newNotification }: { newNotification?: object }) {
     const [showNotifications, setShowNotifications] = useState(false);
     const notifications = usePage().props.notifications as object[];
     const hasUnreadNotifications = notifications.filter((notification: any) => notification.read_at === null).length > 0;
@@ -20,12 +22,19 @@ export default function Notifications() {
             })
     }, [notifications])
     const toast = useRef<Toast>(null);
+    const unreadNotifications = notifications.filter((notification: any) => notification.read_at === null);
+    const unreadCount = unreadNotifications.length > 0 ? unreadNotifications.length.toString() : undefined;
 
-    const showSticky = (notification: any) => {
+    const showSticky = (notification: object) => {
+        //@ts-ignore
         const moneyRequest = notification.data.moneyRequest as MoneyRequestData
+        //@ts-ignore
+        const moneyRequestType = notification.data.moneyRequestType ?? (moneyRequest.sender_id === user.id ? 'incoming' : 'outgoing');
         toast.current?.show({
             severity: moneyRequest.sender_id === user?.id ? 'success' : 'warn',
-            summary: <div>Money Request for <span className={cn(notification.data.moneyRequest.sender_id === user?.id ? 'text-green-500' : 'text-red-500')}>{notification.data.moneyRequest.sender_id === user?.id ? '+' : '-'} {notification.data.moneyRequest.amount} BDT</span></div>,
+            summary: <div>
+                Money Request for <span className={cn(moneyRequestType === 'incoming' ? 'text-green-500' : 'text-red-500')}>{
+                    moneyRequestType === 'incoming' ? '+' : '-'} {moneyRequest.amount} BDT</span></div>,
             sticky: true,
             content: (props) => (
                 <div className="flex flex-column align-items-left" style={{ flex: '1' }}>
@@ -42,13 +51,19 @@ export default function Notifications() {
         });
         toast.current?.show({ severity: 'info', summary: 'Sticky', detail: 'Message Content', sticky: true });
     };
+    useEffect(() => {
+        if (newNotification) {
+            showSticky(newNotification);
+        }
+    }, [newNotification])
 
     return (
         <>
             <Toast ref={toast} />
-            <Button className="!p-1.5 border border-white" text rounded onClick={() => setShowNotifications(true)}>
+            <Button className="!p-1.5 border border-white relative" text rounded onClick={() => setShowNotifications(true)}>
+                {unreadCount && <Badge className="absolute -top-1 -right-1 text-white bg-red-500 h-5 w-5 flex items-center justify-center" size="normal" value={unreadCount}></Badge>}
                 <FlowbiteBellRingSolid className="text-white w-8 h-8" />
-            </Button>
+            </Button >
 
             <Sidebar pt={{
                 header: {

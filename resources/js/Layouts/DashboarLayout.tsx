@@ -1,12 +1,31 @@
 import Sidebar from "@/Components/Sidebar";
 import useBreakpoint from "@/Hooks/useBrakpoints";
 import { cn } from "@/utils";
+import { usePoll, usePage } from "@inertiajs/react";
 export default function DashboardLayout({ children, animate }: { children?: JSX.Element | JSX.Element[], animate?: boolean }) {
     const { min, max } = useBreakpoint();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
     }
+    const [newNotification, setNewNotification] = useState<object>();
+    const [oldNotifications, setOldNotifications] = useState(usePage().props.notifications.filter((notification: any) => notification.read_at === null));
+    const { start, stop } = usePoll(2000, {
+        onSuccess: (data) => {
+            // const newNotications = data.props.notifications.filter((notification: any) => notification.read_at === null);
+            // if (newNotications.length > oldNotifications.length) {
+            //     setOldNotifications(newNotications);
+            //     setNewNotification(newNotications[0]);
+            // }
+        },
+        only: ['unreadCount', 'notifications']
+    });
+
+    useEffect(() => {
+        start();
+        return stop;
+    }, []);
+
     useEffect(() => {
         setIsSidebarOpen(min('md'));
     }, [])
@@ -16,7 +35,7 @@ export default function DashboardLayout({ children, animate }: { children?: JSX.
             <div className="flex gap-4 relative justify-center z-10 h-screen px-2 w-screen overflow-x-hidden">
                 {isSidebarOpen && <Sidebar className={cn("sticky", max('sm') ? '!w-[300px] flex-1 grow' : '')} isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />}
                 <div className={cn("grow !mt-5 max-w-5xl sm:px-3 overflow-y-scroll hide-scrollbar transition duration-500", max('sm') && isSidebarOpen ? 'translate-x-[1000px]' : '')}>
-                    <Navbar toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} className="!mb-6" />
+                    <Navbar newNotification={newNotification} toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} className="!mb-6" />
                     {children}
                 </div>
             </div>

@@ -107,7 +107,7 @@ class LandingPageResource extends Resource
                     ->columns(['md' => 2, 'lg' => 3])
                     ->schema([
                         TagsInput::make('transactions')
-                            ->hiddenLafalsebel(true)
+                            ->hiddenLabel(true)
                             ->reorderable(true)
                             ->columnSpanFull()
                             ->required(),

@@ -1,7 +1,7 @@
 import menuItems from "@/data/menuItems";
 import { UserData } from "@/types/_generated";
 import { defaultAvatar } from "@/utils";
-import { Link, router, usePage } from "@inertiajs/react";
+import { Link, router, usePage, usePoll } from "@inertiajs/react";
 import { chunk } from "lodash";
 import { Card } from "primereact/card";
 import { ScrollPanel } from "primereact/scrollpanel";

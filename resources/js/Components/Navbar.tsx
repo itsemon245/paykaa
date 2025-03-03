@@ -7,10 +7,12 @@ export default function Navbar({
     className,
     toggleSidebar,
     isSidebarOpen,
+    newNotification,
     ...props
 }: {
     className?: string,
     toggleSidebar?: () => void,
+    newNotification?: object,
     isSidebarOpen: boolean
 }) {
     const { user } = useAuth();
@@ -56,7 +58,7 @@ export default function Navbar({
                 </div>
 
             </div>
-            <Notifications />
+            <Notifications newNotification={newNotification} />
         </div>
 
     )

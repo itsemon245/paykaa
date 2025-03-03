@@ -103,7 +103,7 @@ export default function ChatSidebar({
                         </Link>
                     </div>
                     {(!route().current('helpline') || user.id === 1) && <div className="search relative">
-                        <form className="form-inline position-relative">
+                        <form onSubmit={e=> e.preventDefault()} className="form-inline position-relative">
                             <input
                                 type="search"
                                 onChange={e => fetchChats(e.target.value)}

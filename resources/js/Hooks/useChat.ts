@@ -14,7 +14,7 @@ export default function useChat() {
     const [messages, setMessages] = useState<PaginatedCollection<MessageData>>(messagesProp);
 
     const fetchChats = useCallback(throttle(async (search?: string) => {
-        const response = await fetch(route('chat.user-chats', { search: search }));
+        const response = await fetch(route('chat.user-chats', { search: search, helpline: route().current('helpline') }));
         const data: PaginatedCollection<ChatData> = await response.json();
         setChats(data);
     }, 500, { leading: false, trailing: true }), [])

@@ -32,7 +32,7 @@ class ChatController extends Controller
                 if (auth()->user()->id == 1) {
                     $chat = Chat::where('sender_id', $request->search)->where('receiver_id', 1)->first();
                 } else {
-                    $chat = Chat::whereIn('receiver_id', $people)->whereIn('sender_id', $people)->first();
+                    $chat = Chat::myChats($request->search)->first();
                 }
                 if (!$chat) {
                     $userExists = User::whereNot('id', auth()->id()) //skip self
@@ -48,29 +48,14 @@ class ChatController extends Controller
                 }
             }
         }
-        return response()->json($this->getChats($request));
-    }
-
-    public function checkNewMessages(Request $request)
-    {
-        $chat = Chat::where('uuid', $request->chat)->with('lastMessage', 'sender', 'receiver')->first();
-        $updateCount = Chat::where('receiver_id', auth()->id())
-            ->where('is_notified', false)
-            ->update(['is_notified' => true]);
-        return response()->json([
-            'success' => $updateCount > 0,
-            'chat' => $chat ? ChatData::from($chat) : null,
-        ]);
+        return response()->json($this->getChats($request, $request->helpline));
     }
 
     public function show(Request $request, Chat $chat)
     {
         $chat->messages()->received()->unread()->update(['is_read' => true]);
-        $chat->update([
-            'is_read' => true,
-            'is_notified' => true
-        ]);
         $chat->loadMissing('sender', 'receiver', 'lastMessage');
+        Chat::myChats()->where('uuid', $chat->uuid)->where('is_read', false)->update(['is_read' => true]);
 
         return Inertia::render('Chat/Show', [
             'chat' => ChatData::from($chat),
@@ -136,8 +121,7 @@ class ChatController extends Controller
 
     public function receiverChat(User $receiver)
     {
-        $people = [auth()->user()->id, $receiver->id];
-        $chat = Chat::whereIn('receiver_id', $people)->whereIn('sender_id', $people)->first();
+        $chat = Chat::myChats($receiver->id)->first();
         if (!$chat) {
             $chat = Chat::create([
                 'sender_id' => auth()->user()->id,
@@ -149,49 +133,23 @@ class ChatController extends Controller
 
     public function getChats(Request $request, $helpline = false)
     {
-        $chats = Chat::with('lastMessage', 'sender', 'receiver')
-            ->orderBy('last_message_at', 'desc')
-            ->where(function (Builder $q) use ($request, $helpline) {
-                if ($helpline) {
-                    if (auth()->user()->id === 1) {
-                        $q->where('receiver_id', 1);
-                        $q->whereNot('sender_id', 1);
-                        $q->whereHas('lastMessage');
-                    } else {
-                        $q->where('sender_id', auth()->user()->id);
-                        $q->where('receiver_id', 1);
-                    }
-                } else {
-                    if (auth()->user()->id == 1) {
-                        $q->where('receiver_id', 1);
-                    } else {
-                        $q->whereNot('receiver_id', 1);
-                    }
+        $chats = Chat::with('lastMessage', 'sender', 'receiver')->clone();
+        $chats->myChats($request->search);
+        if (auth()->user()->isAdmin()) {
+            $chats->where('receiver_id', 1);
+            $chats->whereNot('sender_id', 1);
+            $chats->whereHas('lastMessage');
+        } else {
+            if ($helpline) {
+                $chats->where('receiver_id', 1);
+            } else {
+                $chats->whereNot('receiver_id', 1);
+                if (!$request->search) {
+                    $chats->withEmpty();
                 }
-                if ($request->search) {
-                    if ($request->search == 'unread') {
-                        $q->where('is_read', false);
-                    } else {
-                        if (auth()->user()->id == 1) {
-                            $q->where('sender_id', $request->search);
-                        } else {
-                            $q->where(function (Builder $builder) use ($request) {
-                                $builder->where('sender_id', $request->search)->orWhere('receiver_id', $request->search);
-                            });
-                        }
-                    }
-                } else {
-                    $q->where(function (Builder $builder) {
-                        $builder->where('sender_id', auth()->id())->orWhere('receiver_id', auth()->id());
-                    });
-                }
-            })
-            ->orWhere(function (Builder $q) use ($helpline) {
-                if (!$helpline && auth()->user()->id != 1) {
-                    $q->where('receiver_id', auth()->id());
-                    $q->has('lastMessage');
-                }
-            })->paginate();
+            }
+        }
+        $chats = $chats->paginate();
         return ChatData::collect($chats);
     }
 }

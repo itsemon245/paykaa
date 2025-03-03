@@ -46,13 +46,35 @@ class Chat extends Model
         return $this->messages()->latest()->one();
     }
 
-    public function scopeMyChats(Builder $query): void
+    public function scopeMyChats(Builder $query, string|null $search = null): void
     {
-        $query->where(['sender_id' => auth()->id()])
-            ->whereNot('receiver_id', 1)
-            ->orWhere(function (Builder $q) {
-                $q->where('receiver_id', auth()->id());
-                $q->has('lastMessage');
+        $query
+            ->orderBy('last_message_at', 'desc')
+            ->where(function (Builder $q) use ($search) {
+                if ($search != auth()->user()?->id) {
+                    $q->where('receiver_id', auth()->id());
+                    $q->orWhere('sender_id', auth()->id());
+                } else {
+                    $q->where(function (Builder $builder) {
+                        $builder->whereNot('receiver_id', auth()->id())->orWhereNot('sender_id', auth()->id());
+                    });
+                }
+            })->where(function (Builder $q) use ($search) {
+                if ($search) {
+                    if ($search == 'unread') {
+                        $q->where('is_read', false);
+                    } else {
+                        $q->where('sender_id', $search);
+                        $q->orWhere('receiver_id', $search);
+                    }
+                }
             });
+    }
+    public function scopeWithEmpty(Builder $query): void
+    {
+        $query->orWhere(function (Builder $q) {
+            $q->where('receiver_id', auth()->id())
+                ->whereNotNull('last_message_at');
+        });
     }
 }
