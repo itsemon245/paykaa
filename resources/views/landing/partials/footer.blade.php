@@ -40,8 +40,8 @@
                             data-columns="1">
                             <section class="Copy HomepageGlobalSection__copy variant--Section">
                                 <header class="Copy__header">
-                                    <h2 class="Copy__caption">{{ 'About us' }}</h2>
-                                    <h1 class="Copy__title">{{ $about['title'] ?? 'About us' }}</h1>
+                                    <!-- <h2 class="Copy__caption">{{ 'About us' }}</h2> -->
+                                    <h1 class="Copy__title">{{ 'About us' }}</h1>
                                 </header>
                                 <div class="Copy__body">
                                     {!! $about['description'] ?? 'We are a team of developers, designers, and product managers who are passionate about making the world a better place. We believe that everyone deserves access to financial services and we are committed to making that a reality.' !!}
@@ -64,19 +64,31 @@
                                     <h1 class="Copy__title">Social Media</h1>
                                 </header>
                                 <div
-                                    class="z-[1000] flex flex-wrap justify-start items-center gap-3 Copy__body"
+                                    class="z-[1000] flex flex-col flex-wrap justify-start items-start gap-3 Copy__body"
                                     >
                                     @foreach($socials as $social)
                                         @php
                                             $icon = [
                                                     'instagram' => 'skill-icons:instagram',
+                                                    'twitter'=> 'garden:twitter-stroke-12',
                                                     'youtube'=> 'logos:youtube-icon'
                                                 ][$social['title']] ?? "logos:".$social['title'];
                                             @endphp
-                                            <a href="{{ $social['url'] }}" class="Link Link--social w-6 h-6 cursor-pointer">
-                                                <!-- Icones are collected from https://icones.js.org -->
-                                                <img class="w-full h-full" src="https://api.iconify.design/{{$icon}}.svg" alt="{{ $social['title'] }}" />
-                                            </a>
+                                            @if (isset($social['url']) && $social['url'])
+                                                <a href="{{ $social['url'] }}" class="flex items-center" target="_blank" rel="noopener noreferrer">
+                                                    <div class="Link Link--social w-6 h-6 cursor-pointer">
+                                                        <!-- Icones are collected from https://icones.js.org -->
+                                                        <img class="w-full h-full" src="https://api.iconify.design/{{$icon}}.svg{{$social['title']=='twitter' ? '?color=%23ffffff' : ''}}" alt="{{ $social['title'] }}" />
+                                                    </div>
+                                                    <div class="Copy__body !font-bold">
+                                                        @if ($social['title'] == 'twitter')
+                                                            X.com <!-- <span class="text-xs font-medium">(formerly Twitter)</span> -->
+                                                        @else
+                                                           <span class="capitalize">{{ $social['title'] }}</span>
+                                                        @endif
+                                                </div>
+                                                </a>
+                                            @endif
                                         @endforeach
                                 </div>
                             </section>

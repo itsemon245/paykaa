@@ -20,6 +20,7 @@ export interface FiledropProps {
     onProcessFile?: (path: string, storageUrl: string) => void
     allowMultiple?: boolean
     accept?: string
+    path?:string
     setUploading?: (uploading: boolean) => void
 }
 export default function Filedrop({
@@ -30,6 +31,7 @@ export default function Filedrop({
     onProcessFile,
     allowMultiple,
     setUploading,
+    path,
     ...props
 }: FiledropProps) {
     const [files, setFiles] = useState<FilePondFile[]>([])
@@ -51,14 +53,14 @@ export default function Filedrop({
                 chunkSize={1024 * 1024 * 2}
                 chunkForce={true}
                 server={{
-                    url: '/upload/chunk',
+                    url: '/upload/chunk?path='+path,
                 }}
                 onaddfilestart={() => setUploading?.(true)}
                 onerror={() => setUploading?.(false)}
                 onprocessfileprogress={() => setUploading?.(true)}
                 onprocessfile={(_, file) => {
-                    let path = `${paths.storage}/app/public/temp/completed/${file.serverId}.${file.fileExtension}`;;
-                    let storageUrl = "temp/completed/" + file.serverId + "." + file.fileExtension;
+                    let path = `${paths.storage}/app/public/uploads/completed/${file.serverId}.${file.fileExtension}`;;
+                    let storageUrl = "uploads/completed/" + file.serverId + "." + file.fileExtension;
                     onProcessFile?.(path, storageUrl);
                     setUploading?.(false)
                 }}

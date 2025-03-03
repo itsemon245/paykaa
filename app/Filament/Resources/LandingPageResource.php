@@ -58,9 +58,6 @@ class LandingPageResource extends Resource
                 Fieldset::make('about')
                     ->label('About Us')
                     ->schema([
-                        TextInput::make('about.title')
-                            ->default('About us')
-                            ->required(),
                         TextInput::make('about.email')
                             ->email()
                             ->default('info@paykaa.com')
@@ -74,8 +71,6 @@ class LandingPageResource extends Resource
                         RichEditor::make('about.description')
                             ->default('We are a team of developers, designers, and product managers who are passionate about making the world a better place. We believe that everyone deserves access to financial services and we are committed to making that a reality.')
                             ->required(),
-                        // FileUpload::make('image')
-                        //     ->required()
                     ])->columns(1),
 
                 Fieldset::make('how_it_works')
@@ -112,7 +107,7 @@ class LandingPageResource extends Resource
                     ->columns(['md' => 2, 'lg' => 3])
                     ->schema([
                         TagsInput::make('transactions')
-                            ->hiddenLabel(true)
+                            ->hiddenLafalsebel(true)
                             ->reorderable(true)
                             ->columnSpanFull()
                             ->required(),
@@ -120,17 +115,17 @@ class LandingPageResource extends Resource
                 Repeater::make('socials')
                     ->label('Social Media')
                     ->itemLabel(fn(array $state): ?string => $state['title'] ?? null)
-                    ->reorderable(false)
+                    ->reorderable(true)
                     ->deletable(false)
                     ->addable(false)
                     ->schema([
                         TextInput::make('title')
                             ->visible(false)
-                            ->required(),
+                            ->nullable(),
                         TextInput::make('url')
                             ->hiddenLabel(true)
                             ->url(true)
-                            ->required(),
+                            ->nullable(),
                     ])
                     ->grid(2)
                     ->columnSpanFull(),

@@ -92,13 +92,13 @@ export default function ChatSidebar({
         <div className="sidebar" id="sidebar">
             <div className="h-full px-3 md:px-5">
                 <div id="discussions" className="tab-pane flex flex-col fade in active show">
-                    <div className="flex items-center justify-center gap-3">
-                        <Link href={route('dashboard')} className="me-auto">
+                    <div className="flex items-center justify-center gap-3 relative">
+                        <Link href={route('dashboard')} className="me-auto absolute left-4">
                             <button className="!bg-gray-200 !rounded-full w-9 h-9 flex items-center justify-center" title="Back">
                                 <i className="ti-angle-left fw-bold !text-gray-800"></i>
                             </button>
                         </Link>
-                        <Link href={route('dashboard')} className="flex items-center justify-center gap-5 me-auto">
+                        <Link href={route('dashboard')} className="flex items-center justify-center gap-5">
                             <Logo className="!h-10 w-auto" />
                         </Link>
                     </div>

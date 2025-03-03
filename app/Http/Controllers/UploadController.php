@@ -8,20 +8,23 @@ use Ramsey\Uuid\Uuid;
 
 class UploadController extends Controller
 {
-    private function getPath(string $folder): string {
-        return storage_path('app/public/temp/'.$folder);
+    private function getPath(string $folder): string
+    {
+        return storage_path('app/public/temp/' . $folder);
     }
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $folder = Uuid::uuid7()->toString() ?? uniqid('temp-');
         $path = $this->getPath($folder);
         mkdir($path, recursive: true);
-        file_put_contents($path.'/file.part', '');
+        file_put_contents($path . '/file.part', '');
         return $folder;
     }
 
-    public function update(Request $request) {
+    public function update(Request $request)
+    {
         $tempFolder = $this->getPath($request->query('patch'));
-        $path = $tempFolder.'/file.part';
+        $path = $tempFolder . '/file.part';
 
         File::append($path, $request->getContent());
 
@@ -31,13 +34,14 @@ class UploadController extends Controller
             $name = $request->header('Upload-Name');
             $arr = explode('.', $name);
             $ext = array_pop($arr);
-            $name = implode('-', $arr)."-".now()->toDateTimeString('microseconds');
-            $filename = $request->query('patch').".".$ext;
-            $location = storage_path("app/public/temp/completed");
+            $name = implode('-', $arr) . "-" . now()->toDateTimeString('microseconds');
+            $filename = $request->query('patch') . "." . $ext;
+            $requestPath = $request->query('path') ? $request->query('path') : 'uploads/completed';
+            $location = storage_path("app/public/$requestPath");
             if (!File::exists($location)) {
                 mkdir($location, recursive: true);
             }
-            $destination = $location."/".$filename;
+            $destination = $location . "/" . $filename;
             // Delete the old file
             if (File::exists($destination)) {
                 File::delete($destination);

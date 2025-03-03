@@ -1,20 +1,27 @@
 <?php
 
+use App\Models\Chat;
+use Illuminate\Console\Command;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Schedule;
 
+//scheduler
+// Schedule::command('typing:off')->everyFiveSeconds();
+
+//command registry
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote')->hourly();
+})->hourly();
 
-Artisan::command('schedule:run', function () {
-    $this->info('Running scheduled commands...');
-    Artisan::call('delete:temp');
-})->purpose('Run scheduled commands')->daily();
+Artisan::command('typing:off', function () {
+    $this->info('Turning off typing...');
+    $chats = Chat::whereNot('typing', '[]')->update(['typing' => '[]']);
+})->everyTenSeconds();
 
-Artisan::command('delete:temp {days?}', function ($days = 0) {
+Artisan::command('delete:temp {days?}', function ($days = 30) {
     $this->info("Deleting temp files older than $days days...");
 
     $path = storage_path('app/public/temp');
@@ -26,13 +33,10 @@ Artisan::command('delete:temp {days?}', function ($days = 0) {
         $this->info("File: {$file->getPath()}");
         // Convert timestamp to Carbon instance
         $lastModified = Carbon::createFromTimestamp($file->getMTime());
-        dd($lastModified->diffInDays($now));
-
-        if ($now->diffInDays($lastModified) >= $days) {
+        if (round($lastModified->diffInDays($now)) >= $days) {
             File::delete($file->getPathname());
             $deletedCount++;
         }
     }
-
     $this->info("Deleted $deletedCount files.");
-})->purpose('Delete temp files')->monthly();
+})->monthly();

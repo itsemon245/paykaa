@@ -23,14 +23,13 @@ const Message = ({ message, children }: { message: MessageData, children?: React
                             //@ts-ignore
                             e.target.src = defaultAvatar
                         }}
-
                         data-toggle="tooltip"
                         data-placement="top"
                         title={chat.from?.name}
                         alt="avatar"
                     />
                 )}
-                <div className="text-main">
+                <div className="text-main max-sm:max-w-[300px]">
                     <div className={`text-group ${message.by_me ? 'me' : ''}`}>
                         {message.type === 'image' ?
                             <Image pt={{

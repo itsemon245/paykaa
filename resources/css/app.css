@@ -10,7 +10,7 @@
     --gradient-color-1: var(--primary-500);
     --gradient-color-2: #ff333d;
     --gradient-color-3: var(--primary-300);
-    --gradient-color-4: #90e0ff;
+    --gradient-color-4: #56a2bf;
     z-index:0;
 }
 .gradient-clip{
