@@ -83,7 +83,7 @@ export default function ManualMobileBanking({
 
             <Textarea autoResize label="Note" placeholder="Optional" className="w-full" onChange={e => setData('note', e.target.value)} error={errors.note} />
             {depositMethod?.category === 'Bank' && (
-                <Filedrop path="temp/receipts" setUploading={setUploading} className="min-h-[120px]" label="Upload receipt (optional)" onProcessFile={(path, storageUrl) => {
+                <Filedrop path="/temp/receipts" setUploading={setUploading} className="min-h-[120px]" label="Upload receipt (optional)" onProcessFile={(path, storageUrl) => {
                     setData('receipt', storageUrl)
                 }} accept="image/*" />
             )}

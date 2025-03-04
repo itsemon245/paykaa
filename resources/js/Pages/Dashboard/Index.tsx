@@ -1,14 +1,13 @@
-import menuItems from "@/data/menuItems";
-import { UserData } from "@/types/_generated";
-import { defaultAvatar } from "@/utils";
-import { Link, router, usePage, usePoll } from "@inertiajs/react";
-import { chunk } from "lodash";
-import { Card } from "primereact/card";
-import { ScrollPanel } from "primereact/scrollpanel";
+import menuItems from '@/data/menuItems';
+import { UserData } from '@/types/_generated';
+import { defaultAvatar } from '@/utils';
+import { Link, router, usePage } from '@inertiajs/react';
+import { chunk } from 'lodash';
 import { Badge } from 'primereact/badge';
-import toast from "react-hot-toast";
+import { Card } from 'primereact/card';
+import toast from 'react-hot-toast';
 
-export const UserItemTemplate = ({ user, onSelect }: { user: UserData, onSelect?: () => void }) => {
+export const UserItemTemplate = ({ user, onSelect }: { user: UserData; onSelect?: () => void }) => {
     const handleClick = () => {
         router.visit(route('chat.receiver-chat', { receiver: user.uuid }), {
             onSuccess: () => {
@@ -17,26 +16,25 @@ export const UserItemTemplate = ({ user, onSelect }: { user: UserData, onSelect?
                 }
             },
             onError: (error) => {
-                console.log("Error while visiting the chat show route", error);
-                toast.error("Something went wrong!")
-            }
+                console.log('Error while visiting the chat show route', error);
+                toast.error('Something went wrong!');
+            },
         });
     };
     return (
-        <button onClick={handleClick} className="flex items-center p-2 h-max cursor-pointer w-full">
+        <button onClick={handleClick} className="flex h-max w-full cursor-pointer items-center p-2">
             <img
                 alt={user.name}
                 src={user.avatar}
                 onError={(e) => {
                     //@ts-ignore
-                    e.target.src = defaultAvatar
+                    e.target.src = defaultAvatar;
                 }}
-
-                className="rounded-full w-10 me-2"
+                className="me-2 w-10 rounded-full"
             />
-            <div className="flex flex-col items-start select-none *:cursor-pointer">
-                <label className="font-bold mb-0 leading-none">{user.name}</label>
-                <label className="text-sm text-gray-500 mb-0">{user.email}</label>
+            <div className="flex select-none flex-col items-start *:cursor-pointer">
+                <label className="mb-0 font-bold leading-none">{user.name}</label>
+                <label className="mb-0 text-sm text-gray-500">{user.email}</label>
             </div>
         </button>
     );
@@ -50,59 +48,81 @@ export default function Dashboard() {
             <Head title="Dashboard" />
             <div className="flex flex-col gap-3 sm:gap-6">
                 <Card>
-                    <div className="grid grid-cols-4 gap-4 sm:gap-6 md:gap-8 items-center justify-center ">
-                        <Link prefetch href={route('chat.index')} className="flex items-center justify-center h-max cursor-pointer">
-                            <div className="p-2 relative">
-                                {unreadCount > 0 && <Badge className="absolute top-0 right-0" value={unreadCount}></Badge>}
-                                <img src="/assets/dashboard/chat.png" className="object-contain h-8 w-8 sm:h-14 sm:w-14" />
-                                <span className="font-medium text-xs sm:text-lg">Chats</span>
+                    <div className="grid grid-cols-4 items-center justify-center gap-4 sm:gap-6 md:gap-8">
+                        <Link
+                            prefetch
+                            href={route('chat.index')}
+                            className="flex h-max cursor-pointer items-center justify-center">
+                            <div className="relative p-2">
+                                {unreadCount > 0 && (
+                                    <Badge className="absolute right-0 top-0" value={unreadCount}></Badge>
+                                )}
+                                <img
+                                    src="/assets/dashboard/chat.png"
+                                    className="h-8 w-8 object-contain sm:h-14 sm:w-14"
+                                />
+                                <span className="text-xs font-medium sm:text-lg">Chats</span>
                             </div>
                         </Link>
 
-                        <div className="grow max-w-lg col-span-3 relative">
-                            <div className="flex-1 relative flex items-center">
-                                <input placeholder="Search user" className="py-3 text-sm sm:text-lg sm:py-4 !rounded-2xl border-2 w-full border-primary-300 active:border-primary-500" onChange={e => setSearchString(e.target.value)} />
-                                <button type="submit" className="absolute my-auto right-4" onClick={e => search(searchString)}>
+                        <div className="relative col-span-3 max-w-lg grow">
+                            <div className="relative flex flex-1 items-center">
+                                <input
+                                    placeholder="Search user"
+                                    className="w-full !rounded-2xl border-2 border-primary-300 py-3 text-sm active:border-primary-500 sm:py-4 sm:text-lg"
+                                    onChange={(e) => setSearchString(e.target.value)}
+                                />
+                                <button
+                                    type="submit"
+                                    className="absolute right-4 my-auto"
+                                    onClick={(e) => search(searchString)}>
                                     <i className="pi pi-search text-primary-500" />
                                 </button>
                             </div>
-                            {(users.length > 0 && searchString !== "") &&
-                                <div className="absolute top-[100%] left-2 rounded-md bg-white border-gray-200 mt-2 shadow w-full !z-[2000]">
-                                    {loading ? (<div className="flex justify-center items-center p-3 min-w-[300px]">
-                                        <i className="pi pi-spinner pi-spin" />
-                                    </div>)
-                                        :
-                                        <ul className=" max-h-[300px] overflow-y-auto">
+                            {users.length > 0 && searchString !== '' && (
+                                <div className="absolute left-2 top-[100%] !z-[2000] mt-2 w-full rounded-md border-gray-200 bg-white shadow">
+                                    {loading ? (
+                                        <div className="flex min-w-[300px] items-center justify-center p-3">
+                                            <i className="pi pi-spinner pi-spin" />
+                                        </div>
+                                    ) : (
+                                        <ul className="max-h-[300px] overflow-y-auto">
                                             {users.map((user) => (
-                                                <li key={"user-" + user.id} >
+                                                <li key={'user-' + user.id}>
                                                     <UserItemTemplate user={user} />
                                                 </li>
                                             ))}
-                                            {users.length === 0 &&
+                                            {users.length === 0 && (
                                                 <li className="text-center">
                                                     <p>No users found</p>
                                                 </li>
-                                            }
+                                            )}
                                         </ul>
-                                    }
+                                    )}
                                 </div>
-                            }
+                            )}
                         </div>
                     </div>
                 </Card>
                 {menus.map((items, i) => (
-                    <Card key={"menu-items-" + i} className="border">
-                        <div className="grid grid-cols-4 items-center gap-2 sm:gap-5 justify-between" >
-                            {items.map(item =>
-                                <Link prefetch={['mount', 'hover']} href={item.url} className="cursor-pointer" key={item.label + "-menu-item"}>
-                                    <div className="flex flex-col w-full justify-center hover:shadow-md transition-all hover:scale-105 rounded-lg items-center h-max cursor-pointer p-1 sm:px-4 sm:py-2.5 gap-2">
+                    <Card key={'menu-items-' + i} className="border">
+                        <div className="grid grid-cols-4 items-center justify-between gap-2 sm:gap-5">
+                            {items.map((item) => (
+                                <Link
+                                    prefetch={['mount', 'hover']}
+                                    href={item.url}
+                                    className="cursor-pointer"
+                                    key={item.label + '-menu-item'}>
+                                    <div className="flex h-max w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-lg p-1 transition-all hover:scale-105 hover:shadow-md sm:px-4 sm:py-2.5">
                                         <div className="h-8 w-8 sm:h-14 sm:w-14">
-                                            <img src={item.icon} className="object-contain w-full h-full" />
+                                            <img src={item.icon} className="h-full w-full object-contain" />
                                         </div>
-                                        <span className="text-xs sm:text-lg font-medium sm:font-bold">{item.label}</span>
+                                        <span className="text-xs font-medium sm:text-lg sm:font-bold">
+                                            {item.label}
+                                        </span>
                                     </div>
                                 </Link>
-                            )}
+                            ))}
                         </div>
                     </Card>
                 ))}

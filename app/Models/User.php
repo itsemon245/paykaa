@@ -66,15 +66,19 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         return Wallet::getBalance($this);
     }
 
-    /**
-     * Get the user's first name.
-     */
     protected function avatar(): Attribute
     {
         return Attribute::make(
             get: fn(?string $value) => $this->id === 1 ? asset('assets/favicon.png') : ($value ? $value : avatar()),
         );
     }
+    protected function email(): Attribute
+    {
+        return Attribute::make(
+            get: fn(string $value) => $this->id === 1 || $this->id === auth()->id() ? $value : str($value)->mask('*', 2, -9)->toString(),
+        );
+    }
+
 
     /**
      * The attributes that are mass assignable.

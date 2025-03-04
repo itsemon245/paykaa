@@ -22,6 +22,7 @@ export default function useUsers() {
             return;
         }
         const data = await response.json();
+        console.log(data)
         setUsers(data);
         setLoading(false);
     }, 500, { leading: false, trailing: true }), []);

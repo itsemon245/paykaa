@@ -13,6 +13,7 @@ class UserController extends Controller
         $users = User::where(function ($query) use ($request) {
             $search = $request->search;
             $query->whereNot('id', auth()->id());
+            $query->whereNot('id', 1);
             if ($request->has('search')) {
                 if (filter_var($search, FILTER_VALIDATE_INT) !== false) {
                     $query->where('id', $search);

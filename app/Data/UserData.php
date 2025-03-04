@@ -1,14 +1,15 @@
 <?php
 
 namespace App\Data;
+
 use App\Data\Partials\TimestampData;
 use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
 use App\Enum\UserType;
 use Spatie\LaravelData\Data;
 
 /**
-* @typescript
-*/
+ * @typescript
+ */
 class UserData extends Data
 {
     use TimestampData;
@@ -21,6 +22,7 @@ class UserData extends Data
     public ?float $balance;
     #[TypeScriptOptional]
     public ?string $email_verified_at;
+    public ?string $maskedEmail;
     public function __construct(
         public string $name,
         public string $email,
@@ -43,5 +45,6 @@ class UserData extends Data
     ) {
         $this->type = $type ?? UserType::Customer->value;
         $this->avatar = $avatar ?? avatar($this->name);
+        $this->maskedEmail = str($this->email)->mask("*", -8, 2)->toString();
     }
 }

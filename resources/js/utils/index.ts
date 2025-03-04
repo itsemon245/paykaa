@@ -114,3 +114,15 @@ export const copyToClipboard = (text?: any) => {
 }
 
 export const defaultAvatar = "/assets/images/user.png"
+
+export function removeLeadingSlash(str: string): string {
+    return str.replace(/^\/+/, "");
+}
+
+export function removeTrailingSlash(str: string): string {
+    return str.replace(/\/+$/, "");
+}
+
+export function trimSlashes(str: string): string {
+    return removeLeadingSlash(removeTrailingSlash(str));
+}

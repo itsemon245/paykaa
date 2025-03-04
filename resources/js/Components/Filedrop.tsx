@@ -6,7 +6,7 @@ import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css'
 import { FilePondFile } from 'filepond'
-import { cn } from '@/utils'
+import { cn, trimSlashes } from '@/utils'
 import { usePage } from '@inertiajs/react'
 
 // Register the plugins
@@ -20,7 +20,7 @@ export interface FiledropProps {
     onProcessFile?: (path: string, storageUrl: string) => void
     allowMultiple?: boolean
     accept?: string
-    path?:string
+    path?: string
     setUploading?: (uploading: boolean) => void
 }
 export default function Filedrop({
@@ -31,7 +31,7 @@ export default function Filedrop({
     onProcessFile,
     allowMultiple,
     setUploading,
-    path,
+    path = 'completed',
     ...props
 }: FiledropProps) {
     const [files, setFiles] = useState<FilePondFile[]>([])
@@ -53,15 +53,16 @@ export default function Filedrop({
                 chunkSize={1024 * 1024 * 2}
                 chunkForce={true}
                 server={{
-                    url: '/upload/chunk?path='+path,
+                    url: '/upload/chunk?path=' + path,
                 }}
                 onaddfilestart={() => setUploading?.(true)}
                 onerror={() => setUploading?.(false)}
                 onprocessfileprogress={() => setUploading?.(true)}
                 onprocessfile={(_, file) => {
-                    let filepath = `${paths.storage}/app/public/uploads/${path}/${file.serverId}.${file.fileExtension}`;;
-                    let storageUrl = "uploads/completed/" + file.serverId + "." + file.fileExtension;
-                    onProcessFile?.(path, storageUrl);
+                    const trimmedPath = trimSlashes(path);
+                    let filepath = `${paths.storage}/app/public/uploads/${trimmedPath}/${file.serverId}.${file.fileExtension}`;;
+                    let storageUrl = `uploads/${trimmedPath}/${file.serverId}.${file.fileExtension}`;
+                    onProcessFile?.(filepath, storageUrl);
                     setUploading?.(false)
                 }}
                 allowMultiple={allowMultiple}
