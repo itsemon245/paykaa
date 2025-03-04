@@ -2,7 +2,7 @@
 {{-- Header --}}
 <x-slot:header>
 <x-mail::header :url="config('app.url')">
-    <img src="{{asset('/assets/logo-long.png')}}" style="max-height:50px; width:auto; margin: 0 auto;" alt="PayKaa Logo">
+    <img src="https://paykaa.com/assets/logo-long.png" style="max-height:50px; width:auto; margin: 0 auto;box-shadow: 0px 0px 8px rgba(255, 255, 255, 0.6);" alt="PayKaa Logo">
 </x-mail::header>
 </x-slot:header>
 
