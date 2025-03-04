@@ -57,7 +57,7 @@ class HandleInertiaRequests extends Middleware
                 'base' => base_path(),
             ],
             'impersonating' => session('impersonating'),
-            'unreadCount' => Chat::myChats()->where('is_read', false)->count(),
+            'unreadCount' => Chat::myChats()->whereNot('receiver_id', 1)->where('is_read', false)->count(),
             'notifications' => auth()->user()?->notifications ?? [],
         ];
     }

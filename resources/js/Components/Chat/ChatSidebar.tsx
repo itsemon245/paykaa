@@ -68,6 +68,16 @@ export default function ChatSidebar({
         )
     }
 
+    // const { start, stop } = usePoll(2000, {
+    //     only: ['']
+    // });
+    //
+    // useEffect(() => {
+    //     start();
+    //     return stop;
+    // }, []);
+
+
     useEffect(() => {
         if (!chats) return
         const newChatChannel = 'new-chat.' + user.id
@@ -103,7 +113,7 @@ export default function ChatSidebar({
                         </Link>
                     </div>
                     {(!route().current('helpline') || user.id === 1) && <div className="search relative">
-                        <form onSubmit={e=> e.preventDefault()} className="form-inline position-relative">
+                        <form onSubmit={e => e.preventDefault()} className="form-inline position-relative">
                             <input
                                 type="search"
                                 onChange={e => fetchChats(e.target.value)}

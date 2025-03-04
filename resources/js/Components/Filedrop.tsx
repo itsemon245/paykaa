@@ -31,7 +31,7 @@ export default function Filedrop({
     onProcessFile,
     allowMultiple,
     setUploading,
-    path = 'completed',
+    path = 'uploads/completed',
     ...props
 }: FiledropProps) {
     const [files, setFiles] = useState<FilePondFile[]>([])
@@ -60,8 +60,8 @@ export default function Filedrop({
                 onprocessfileprogress={() => setUploading?.(true)}
                 onprocessfile={(_, file) => {
                     const trimmedPath = trimSlashes(path);
-                    let filepath = `${paths.storage}/app/public/uploads/${trimmedPath}/${file.serverId}.${file.fileExtension}`;;
-                    let storageUrl = `uploads/${trimmedPath}/${file.serverId}.${file.fileExtension}`;
+                    let filepath = `${paths.storage}/app/public/${trimmedPath}/${file.serverId}.${file.fileExtension}`;;
+                    let storageUrl = `${trimmedPath}/${file.serverId}.${file.fileExtension}`;
                     onProcessFile?.(filepath, storageUrl);
                     setUploading?.(false)
                 }}

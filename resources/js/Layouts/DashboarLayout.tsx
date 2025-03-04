@@ -11,13 +11,6 @@ export default function DashboardLayout({ children, animate }: { children?: JSX.
     const [newNotification, setNewNotification] = useState<object>();
     const [oldNotifications, setOldNotifications] = useState(usePage().props.notifications.filter((notification: any) => notification.read_at === null));
     const { start, stop } = usePoll(2000, {
-        onSuccess: (data) => {
-            // const newNotications = data.props.notifications.filter((notification: any) => notification.read_at === null);
-            // if (newNotications.length > oldNotifications.length) {
-            //     setOldNotifications(newNotications);
-            //     setNewNotification(newNotications[0]);
-            // }
-        },
         only: ['unreadCount', 'notifications']
     });
 
