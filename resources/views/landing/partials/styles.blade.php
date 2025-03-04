@@ -5,6 +5,11 @@
     }
 </style>
 <style>
+#about .Copy__title, #about .Copy__body h2 strong {
+	font-size: 26px!important;
+	color: var(--accentColor)!important;
+    letter-spacing: var(--titleLetterSpacing, inherit);
+}
     .SiteHeader {
         --siteMenuTransition: 250ms;
         --siteMenuArrowSpacing: 13px;

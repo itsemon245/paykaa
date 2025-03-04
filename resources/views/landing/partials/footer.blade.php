@@ -3,12 +3,6 @@
     $about = $landing->about ?? [];
 @endphp
 <style>
-    .Copy__body h2 strong {
-	position: relative;
-	font: var(--titleFont);
-	color: var(--titleColor);
-	letter-spacing: var(--titleLetterSpacing, inherit);
-}
 .Copy__body strong {
     color: var(--titleColor);
 }
@@ -50,15 +44,6 @@
                         </div>
                         <div class="ColumnLayout"
                             data-columns="1,1,1,1">
-                            <section class="Copy HomepageGlobalSection__uptimeStat variant--Stat" id="address">
-                                <header class="Copy__header">
-                                    <h1 class="Copy__title">Address</h1>
-                                </header>
-                                <div class="Copy__body">
-                                    {{ $about['address'] ?? '123 Main St, San Francisco, CA 94102' }}
-                                </div>
-
-                            </section>
                             <section id="social-media" class="Copy HomepageGlobalSection__uptimeStat variant--Stat animate-active-section">
                                 <header class="Copy__header">
                                     <h1 class="Copy__title">Social Media</h1>
@@ -84,14 +69,15 @@
                                                         @if ($social['title'] == 'twitter')
                                                             X.com <!-- <span class="text-xs font-medium">(formerly Twitter)</span> -->
                                                         @else
-                                                           <span class="capitalize">{{ $social['title'] }}</span>
+                                                            <span class="capitalize">{{ $social['title'] }}</span>
                                                         @endif
-                                                </div>
+                                                    </div>
                                                 </a>
                                             @endif
                                         @endforeach
                                 </div>
                             </section>
+
                             <section id="contact" class="Copy HomepageGlobalSection__uptimeStat variant--Stat animate-active-section">
                                 <header class="Copy__header">
                                     <h1 class="Copy__title">Email</h1>
@@ -112,6 +98,16 @@
                                         {{ $about['phone'] ?? '+8801643428395' }}
                                     </a></div>
                             </section>
+                            <section class="Copy HomepageGlobalSection__uptimeStat variant--Stat" id="address">
+                                <header class="Copy__header">
+                                    <h1 class="Copy__title">Address</h1>
+                                </header>
+                                <div class="Copy__body">
+                                    {{ $about['address'] ?? '123 Main St, San Francisco, CA 94102' }}
+                                </div>
+
+                            </section>
+
                         </div>
                     </div>
                 </div>
