@@ -23,6 +23,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     use HasUuid;
     use Notifiable;
 
+
     public function isAdmin(): bool
     {
         return $this->type === UserType::Admin->value || $this->id == 1;
@@ -70,12 +71,6 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     {
         return Attribute::make(
             get: fn(?string $value) => $this->id === 1 ? asset('assets/favicon.png') : ($value ? $value : avatar()),
-        );
-    }
-    protected function email(): Attribute
-    {
-        return Attribute::make(
-            get: fn(string $value) => $this->id === 1 || $this->id === auth()->id() ? $value : str($value)->mask('*', 2, -9)->toString(),
         );
     }
 

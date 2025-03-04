@@ -1,6 +1,6 @@
 import menuItems from '@/data/menuItems';
 import { UserData } from '@/types/_generated';
-import { defaultAvatar } from '@/utils';
+import { defaultAvatar, mask } from '@/utils';
 import { Link, router, usePage } from '@inertiajs/react';
 import { chunk } from 'lodash';
 import { Badge } from 'primereact/badge';
@@ -34,7 +34,7 @@ export const UserItemTemplate = ({ user, onSelect }: { user: UserData; onSelect?
             />
             <div className="flex select-none flex-col items-start *:cursor-pointer">
                 <label className="mb-0 font-bold leading-none">{user.name}</label>
-                <label className="mb-0 text-sm text-gray-500">{user.email}</label>
+                <label className="mb-0 text-sm text-gray-500">{mask(user.email, '*', 2, 9)}</label>
             </div>
         </button>
     );

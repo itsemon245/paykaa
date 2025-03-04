@@ -126,3 +126,32 @@ export function removeTrailingSlash(str: string): string {
 export function trimSlashes(str: string): string {
     return removeLeadingSlash(removeTrailingSlash(str));
 }
+
+export function mask(
+    value: string,
+    maskChar: string = '*',
+    startKeep: number = 0,
+    endKeep: number = 0
+): string {
+    // Ensure valid mask character (use first character of the input)
+    const effectiveMaskChar = maskChar.length > 0 ? maskChar[0] : '*';
+
+    // Ensure non-negative values for start/end keep
+    startKeep = Math.max(startKeep, 0);
+    endKeep = Math.max(endKeep, 0);
+
+    const totalVisible = startKeep + endKeep;
+    const length = value.length;
+
+    // If there's nothing to mask or keep values exceed string length
+    if (totalVisible >= length) {
+        return value;
+    }
+
+    // Calculate visible portions
+    const start = value.slice(0, startKeep);
+    const end = endKeep > 0 ? value.slice(-endKeep) : '';
+    const maskedLength = length - totalVisible;
+
+    return start + effectiveMaskChar.repeat(maskedLength) + end;
+}
