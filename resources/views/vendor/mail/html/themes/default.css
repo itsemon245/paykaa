@@ -81,7 +81,7 @@ img {
     -premailer-cellpadding: 0;
     -premailer-cellspacing: 0;
     -premailer-width: 100%;
-    background-color: #f7fbff;
+    background-color: #dbe4ee;
     margin: 0;
     padding: 0;
     width: 100%;
@@ -124,9 +124,9 @@ img {
     -premailer-cellpadding: 0;
     -premailer-cellspacing: 0;
     -premailer-width: 100%;
-    background-color: #f7fbff;
-    border-bottom: 1px solid #f7fbff;
-    border-top: 1px solid #f7fbff;
+    background-color: #dbe4ee;
+    border-bottom: 1px solid #dbe4ee;
+    border-top: 1px solid #dbe4ee;
     margin: 0;
     padding: 0;
     width: 100%;
@@ -272,7 +272,7 @@ img {
 }
 
 .panel-content {
-    background-color: #f7fbff;
+    background-color: #dbe4ee;
     color: #718096;
     padding: 16px;
 }

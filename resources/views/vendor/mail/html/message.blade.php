@@ -21,7 +21,8 @@
 {{-- Footer --}}
 <x-slot:footer>
 <x-mail::footer>
-© {{ date('Y') }} {{ config('app.name') }}. {{ __('All rights reserved.') }}
+<div style="text-align:center;">© {{ date('Y') }} {{ config('app.name') }}. {{ __('All rights reserved.') }}</div>
+<div style="text-align:center;font-size:11px;color:gray;margin-top:6px">MessageID: {{ \Illuminate\Support\Str::uuid()->toString() }}</div>
 </x-mail::footer>
 </x-slot:footer>
 </x-mail::layout>
