@@ -59,7 +59,7 @@ export default function Filedrop({
                 onerror={() => setUploading?.(false)}
                 onprocessfileprogress={() => setUploading?.(true)}
                 onprocessfile={(_, file) => {
-                    let path = `${paths.storage}/app/public/uploads/completed/${file.serverId}.${file.fileExtension}`;;
+                    let filepath = `${paths.storage}/app/public/uploads/${path}/${file.serverId}.${file.fileExtension}`;;
                     let storageUrl = "uploads/completed/" + file.serverId + "." + file.fileExtension;
                     onProcessFile?.(path, storageUrl);
                     setUploading?.(false)
