@@ -1,11 +1,13 @@
 import { EarningData } from "@/types/_generated";
-import { useForm, usePage } from "@inertiajs/react";
+import { cn } from "@/utils";
+import { Link, useForm, usePage } from "@inertiajs/react";
 import { format, parseISO } from "date-fns";
 import { Button } from "primereact/button";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Tag } from "primereact/tag";
 import toast from "react-hot-toast";
+import { ReferNav } from "./Index";
 
 interface EarningGroup {
     from_id: number,
@@ -72,6 +74,7 @@ export default function Earnings() {
     return (
         <>
             <Head title="Earnings" />
+            <ReferNav />
             <div className="flex items-center justify-between">
                 <h1 className="heading">Earnings</h1>
             </div>

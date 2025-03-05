@@ -14,7 +14,7 @@ interface NavLink {
     route: RouteName;
 }
 
-export default function ClassicNav() {
+export default function ClassicNav({ only }: { only?: string[] }) {
     const { users, loading, searchString, setSearchString, search } = useUsers();
     const navLinks: NavLink[] = [
         {
@@ -89,13 +89,23 @@ export default function ClassicNav() {
                 </button>
                 <Sidebar header={<Logo className="!w-28 sm:h-8 sm:w-auto object-contain" />} visible={visibleRight} position="right" onHide={() => setVisibleRight(false)}>
                     <ul className='w-full flex flex-col gap-2'>
-                        {navLinks.map((item, index) => (
-                            <li key={index} className="w-full block">
+                        {navLinks.map((item, index) => {
+                            if (only) {
+                                if (only.includes(item.label)) {
+                                    return <li key={index} className="w-full block">
+                                        <Link prefetch={['mount', 'hover']} className={cn("transition-all duration-300 px-3 py-1.5 rounded hover:bg-gray-100 block !w-full *:w-full", route().current(item.route) ? "bg-gray-200" : '')} href={route(item.route)}>
+                                            {item.label}
+                                        </Link>
+                                    </li>
+                                }
+                                return null;
+                            }
+                            return <li key={index} className="w-full block">
                                 <Link prefetch={['mount', 'hover']} className={cn("transition-all duration-300 px-3 py-1.5 rounded hover:bg-gray-100 block !w-full *:w-full", route().current(item.route) ? "bg-gray-200" : '')} href={route(item.route)}>
                                     {item.label}
                                 </Link>
                             </li>
-                        ))}
+                        })}
                     </ul>
                 </Sidebar>
                 <ul className="hidden mb-0 items-center gap-1 text-gray-100 font-bold lg:flex">

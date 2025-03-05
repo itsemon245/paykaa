@@ -128,34 +128,37 @@ export default function Dashboard() {
                 {menus.map((items, i) => (
                     <Card key={'menu-items-' + i} className="border">
                         <div className="grid grid-cols-4 items-center justify-between gap-2 sm:gap-5">
-                            {i !== 0 && <button
-                                onClick={() => setSendMoneyVisible(true)}
-                                className="cursor-pointer border-none outline-none">
-                                <div className="flex h-max w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-lg p-1 transition-all hover:scale-105 hover:shadow-md sm:px-4 sm:py-2.5">
-                                    <div className="h-8 w-8 sm:h-14 sm:w-14">
-                                        <img src="/assets/dashboard/send-money.png" className="h-full w-full object-contain" />
-                                    </div>
-                                    <span className="text-xs font-medium sm:text-lg sm:font-bold">
-                                        Send Money
-                                    </span>
-                                </div>
-                            </button>}
                             {items.map((item) => (
-                                <Link
-                                    prefetch={['mount', 'hover']}
-                                    href={item.url}
-                                    className="cursor-pointer"
-                                    key={item.label + '-menu-item'}>
-                                    <div className="flex h-max w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-lg p-1 transition-all hover:scale-105 hover:shadow-md sm:px-4 sm:py-2.5">
-                                        <div className="h-8 w-8 sm:h-14 sm:w-14">
-                                            <img src={item.icon} className="h-full w-full object-contain" />
+                                <>
+                                    {i !== 0 && item.label === 'Earn' ? <button
+                                        onClick={() => setSendMoneyVisible(true)}
+                                        className="cursor-pointer border-none outline-none">
+                                        <div className="flex h-max w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-lg p-1 transition-all hover:scale-105 hover:shadow-md sm:px-4 sm:py-2.5">
+                                            <div className="h-8 w-8 sm:h-14 sm:w-14">
+                                                <img src="/assets/dashboard/send-money.png" className="h-full w-full object-contain" />
+                                            </div>
+                                            <span className="text-xs font-medium sm:text-lg sm:font-bold">
+                                                Send Money
+                                            </span>
                                         </div>
-                                        <span className="text-xs font-medium sm:text-lg sm:font-bold">
-                                            {item.label}
-                                        </span>
-                                    </div>
-                                </Link>
-                            ))}
+                                    </button> :
+
+                                        <Link
+                                            prefetch={['mount', 'hover']}
+                                            href={item.url}
+                                            className="cursor-pointer"
+                                            key={item.label + '-menu-item'}>
+                                            <div className="flex h-max w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-lg p-1 transition-all hover:scale-105 hover:shadow-md sm:px-4 sm:py-2.5">
+                                                <div className="h-8 w-8 sm:h-14 sm:w-14">
+                                                    <img src={item.icon} className="h-full w-full object-contain" />
+                                                </div>
+                                                <span className="text-xs font-medium sm:text-lg sm:font-bold">
+                                                    {item.label}
+                                                </span>
+                                            </div>
+                                        </Link>
+                                    }
+                                </>))}
                         </div>
                     </Card>
                 ))}

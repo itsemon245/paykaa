@@ -39,6 +39,12 @@ const menuItems = [
         isActive: () => route().current('referrals.index'),
     },
     {
+        label: "Earn",
+        icon: "/assets/dashboard/earnings.png",
+        url: route('earnings.index'),
+        isActive: () => route().current('earnings.index'),
+    },
+    {
         label: "Transaction",
         icon: "/assets/dashboard/transaction.png",
         url: route('wallet.transactions.index'),
