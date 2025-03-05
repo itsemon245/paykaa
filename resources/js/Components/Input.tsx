@@ -26,7 +26,7 @@ export default function Input({
     }
     return (
         <div>
-            <InputLabel htmlFor={id} value={label} className={cn(color && 'text-' + color, "block w-full")} />
+            {label && <InputLabel htmlFor={id} value={label} className={cn(color && 'text-' + color, "block w-full")} />}
             <InputText
                 keyfilter={getKyeFilter(props.type)}
                 invalid={invalid || error !== undefined}

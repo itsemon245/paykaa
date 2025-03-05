@@ -69,6 +69,8 @@ Route::middleware('auth', 'redirect-if-admin', 'verified')->group(function () {
         $user->notifications()->delete();
         return back();
     })->name('notification.clear-all');
+    Route::post('send-money-verify-password', [TransactionController::class, 'sendMoneyVerifyPassword'])->name('send-money.verify-password');
+    Route::post('send-money', [TransactionController::class, 'sendMoneyStore'])->name('send-money.store');
     //Wallet Routes
     Route::prefix('wallet')->name('wallet.')->group(function () {
         Route::get('deposit', [DepositController::class, 'index'])->name('deposit.index');

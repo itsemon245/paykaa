@@ -1,3 +1,5 @@
+import { getQuery } from "@/utils";
+
 export interface MenuItem {
     label: string;
     icon: string;
@@ -35,12 +37,6 @@ const menuItems = [
         icon: "/assets/dashboard/referral.png",
         url: route('referrals.index'),
         isActive: () => route().current('referrals.index'),
-    },
-    {
-        label: "Earn",
-        icon: "/assets/dashboard/earn.png",
-        url: route('earnings.index'),
-        isActive: () => route().current('earnings.index'),
     },
     {
         label: "Transaction",

@@ -124,6 +124,12 @@
     "HugeiconsCancelCircle": true,
     "HeroiconsPhoto20Solid": true,
     "Notification": true,
-    "Notifications": true
+    "Notifications": true,
+    "confirmationPage": true,
+    "holdToSendButton": true,
+    "searchRecipient": true,
+    "successPage": true,
+    "transactionForm": true,
+    "SendMoney": true
   }
 }

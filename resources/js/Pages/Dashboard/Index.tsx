@@ -1,3 +1,5 @@
+import SendMoney from '@/Components/SendMoney';
+import { usePoll } from '@inertiajs/react'
 import menuItems from '@/data/menuItems';
 import { UserData } from '@/types/_generated';
 import { defaultAvatar, mask } from '@/utils';
@@ -43,8 +45,27 @@ export default function Dashboard() {
     const { users, loading, searchString, setSearchString, search } = useUsers();
     const unreadCount = usePage().props.unreadCount;
     const menus = chunk(menuItems, 4);
+
+    const [sendMoneyVisible, setSendMoneyVisible] = useState(false);
+    const { start, stop } = usePoll(5000, {
+        only: ['unreadCount', 'notifications']
+    }, {
+        autoStart: false
+    });
+
+    useEffect(() => {
+        if (sendMoneyVisible) {
+            stop();
+        } else {
+            start();
+        }
+        return stop;
+    }, [sendMoneyVisible])
+
+
     return (
         <>
+            <SendMoney sendMoneyVisible={sendMoneyVisible} setSendMoneyVisible={setSendMoneyVisible} />
             <Head title="Dashboard" />
             <div className="flex flex-col gap-3 sm:gap-6">
                 <Card>
@@ -107,6 +128,18 @@ export default function Dashboard() {
                 {menus.map((items, i) => (
                     <Card key={'menu-items-' + i} className="border">
                         <div className="grid grid-cols-4 items-center justify-between gap-2 sm:gap-5">
+                            {i !== 0 && <button
+                                onClick={() => setSendMoneyVisible(true)}
+                                className="cursor-pointer border-none outline-none">
+                                <div className="flex h-max w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-lg p-1 transition-all hover:scale-105 hover:shadow-md sm:px-4 sm:py-2.5">
+                                    <div className="h-8 w-8 sm:h-14 sm:w-14">
+                                        <img src="/assets/dashboard/send-money.png" className="h-full w-full object-contain" />
+                                    </div>
+                                    <span className="text-xs font-medium sm:text-lg sm:font-bold">
+                                        Send Money
+                                    </span>
+                                </div>
+                            </button>}
                             {items.map((item) => (
                                 <Link
                                     prefetch={['mount', 'hover']}

@@ -38,6 +38,7 @@ export type PageProps<
     ziggy: Config & { location: string };
     error?: string,
     success?: string,
+    sendMoney?: boolean,
     config: {
         app: ServerAppConfig
     },
@@ -74,3 +75,9 @@ export type PaginatedCollection<T extends object> = {
     total: number;
 };
 
+export interface Recipient {
+    id: string
+    name: string
+    phone?: string
+    avatar?: string
+}

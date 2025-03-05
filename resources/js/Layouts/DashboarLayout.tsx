@@ -1,3 +1,4 @@
+import SendMoney from "@/Components/SendMoney";
 import Sidebar from "@/Components/Sidebar";
 import useBreakpoint from "@/Hooks/useBrakpoints";
 import { cn } from "@/utils";
@@ -10,14 +11,6 @@ export default function DashboardLayout({ children, animate }: { children?: JSX.
     }
     const [newNotification, setNewNotification] = useState<object>();
     const [oldNotifications, setOldNotifications] = useState(usePage().props.notifications.filter((notification: any) => notification.read_at === null));
-    const { start, stop } = usePoll(2000, {
-        only: ['unreadCount', 'notifications']
-    });
-
-    useEffect(() => {
-        start();
-        return stop;
-    }, []);
 
     useEffect(() => {
         setIsSidebarOpen(min('md'));
