@@ -22,7 +22,10 @@ export default function Notifications({ newNotification }: { newNotification?: o
             })
     }, [notifications])
     const toast = useRef<Toast>(null);
-    const unreadNotifications = notifications.filter((notification: any) => notification.read_at === null);
+    const unreadNotifications = notifications.filter((notification: any) => {
+        const moneyRequest = notification.data.moneyRequest as MoneyRequestData
+        return !moneyRequest.released_at && !moneyRequest.rejected_at && !moneyRequest.cancelled_at
+    });
     const unreadCount = unreadNotifications.length > 0 ? unreadNotifications.length.toString() : undefined;
 
     const showSticky = (notification: object) => {
@@ -75,11 +78,11 @@ export default function Notifications({ newNotification }: { newNotification?: o
                 <div className="my-3">
                     <div className="flex justify-end gap-3">
                         {
-                            notifications.length > 0 && <Link only={['notifications']} href={route('notification.clear-all')} className="text-sm text-end font-medium mb-2">Clear all</Link>
+                            notifications.length > 0 && <Link only={['notifications', 'success']} href={route('notification.clear-all')} className="text-sm text-end font-medium mb-2">Clear all</Link>
                         }
 
                         {
-                            hasUnreadNotifications &&
+                            false &&
                             <div className="text-sm text-end font-medium mb-2">
                                 <Link href={route('notification.mark-all-as-read')} only={['notifications']} >Mark all read</Link>
                             </div>

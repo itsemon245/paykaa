@@ -79,7 +79,7 @@ export default function HoldToSendButton({ onComplete, holdTime = 3000 }: HoldTo
         <div className="w-full">
             <button
                 ref={buttonRef}
-                className="relative w-full py-4 rounded-lg font-medium text-white bg-primary overflow-hidden"
+                className="relative select-none w-full py-4 rounded-lg font-medium text-white bg-primary overflow-hidden"
                 onMouseDown={startHold}
                 onMouseUp={stopHold}
                 onMouseLeave={stopHold}

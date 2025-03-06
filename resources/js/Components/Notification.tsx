@@ -1,30 +1,27 @@
-import { MoneyRequestData } from "@/types/_generated";
+import { ButtonSeverity } from "@/types";
+import { MoneyRequestData, Status } from "@/types/_generated";
 import { cn, defaultAvatar } from "@/utils";
 import { Link } from "@inertiajs/react";
 import { Avatar } from "primereact/avatar";
-import { Tag } from "primereact/tag";
+import { Tag, TagProps } from "primereact/tag";
 
 export default function Notification({ notification }: { notification: any }) {
     const moneyRequest = notification.data.moneyRequest as MoneyRequestData
     const user = useAuth()
     const moneyRequestType = notification.data.moneyRequestType ?? (moneyRequest.sender_id === user.id ? 'incoming' : 'outgoing');
-    const getSeverity = (moneyRequest: MoneyRequestData) => {
-        if (moneyRequest.cancelled_at) {
-            return "danger"
+    const status = !moneyRequest.released_at && !moneyRequest.rejected_at && !moneyRequest.cancelled_at ? 'pending' : moneyRequest.status
+    const getSeverity = () => {
+        const severityMap: Record<Status, TagProps['severity']> = {
+            pending: 'warning',
+            completed: 'success',
+            'waiting for release': 'warning',
+            rejected: 'danger',
+            cancelled: 'danger',
+            'not verified': 'danger',
+            approved: 'success',
+            failed: 'danger',
         }
-        if (moneyRequest.status === 'completed') {
-            return "success"
-        }
-        if (moneyRequest.status === 'waiting for release') {
-            return moneyRequest.sender_id !== user.id ? undefined : "warning"
-        }
-        if (moneyRequest.rejected_at) {
-            return "danger"
-        }
-        if (moneyRequest.accepted_at) {
-            return undefined
-        }
-        return "warning"
+        return severityMap[status]
     }
 
     useEffect(() => {
@@ -47,7 +44,7 @@ export default function Notification({ notification }: { notification: any }) {
             <div className="flex items-center  mt-2 gap-3">
                 <div className="flex items-center gap-1">
                     <span className="font-semibold">Status:</span>
-                    <Tag className="capitalize" severity={getSeverity(moneyRequest)} value={moneyRequest.status} />
+                    <Tag className="capitalize" severity={getSeverity()} value={status} />
                 </div>
                 {!moneyRequest.rejected_at
                     && !moneyRequest.cancelled_at

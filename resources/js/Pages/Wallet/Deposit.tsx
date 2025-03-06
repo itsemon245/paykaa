@@ -212,7 +212,7 @@ export default function Deposit() {
                                 }
                             }} className={cn("border transition-all cursor-pointer w-full py-2 px-3", min("md") && 'hover:scale-105')} key={index} onClick={e => setActiveDepositMethod(method)} role="button">
                                 <div className="flex w-full gap-5 items-center justify-start">
-                                    <img src={`/storage/${method.logo}`} className="w-[120px] h-[70px] object-contain rounded-lg" alt={method.label} />
+                                    <img src={`/storage/${method.logo}`} className="w-[120px] h-[50px] md:h-[70px] object-contain rounded-lg" alt={method.label} />
                                     <div className="text-center text-sm md:text-lg font-bold">
                                         {method.label}
                                     </div>

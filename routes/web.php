@@ -2,6 +2,7 @@
 
 use App\Data\EarningData;
 use App\Data\UserData;
+use App\Enum\Status;
 use App\Enum\Wallet\WalletTransactionType;
 use App\Enum\Wallet\WalletType;
 use App\Http\Controllers\AddController;
@@ -21,6 +22,7 @@ use App\Models\LandingPage;
 use App\Models\Setting;
 use App\Models\Wallet;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -66,8 +68,12 @@ Route::middleware('auth', 'redirect-if-admin', 'verified')->group(function () {
     })->name('notification.mark-all-as-read');
     Route::get('notification/clear-all', function () {
         $user = User::find(auth()->id());
-        $user->notifications()->delete();
-        return back();
+        $user->notifications()->where(function (Builder $builder) {
+            $builder->whereJsonContains('data->moneyRequest->status', Status::CANCELLED->value)
+                ->orWhereJsonContains('data->moneyRequest->status', Status::REJECTED->value)
+                ->orWhereJsonContains('data->moneyRequest->status', Status::RELEASED->value);
+        })->delete();
+        return back()->with('success', 'Cleared completed notifications');
     })->name('notification.clear-all');
     Route::post('send-money-verify-password', [TransactionController::class, 'sendMoneyVerifyPassword'])->name('send-money.verify-password');
     Route::post('send-money', [TransactionController::class, 'sendMoneyStore'])->name('send-money.store');
