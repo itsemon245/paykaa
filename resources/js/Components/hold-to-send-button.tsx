@@ -79,14 +79,13 @@ export default function HoldToSendButton({ onComplete, holdTime = 3000 }: HoldTo
         <div className="w-full">
             <button
                 ref={buttonRef}
-                className="relative select-none w-full py-4 rounded-lg font-medium text-white bg-primary overflow-hidden"
+                className="relative w-full py-4 rounded-lg font-medium text-white bg-primary overflow-hidden"
                 onMouseDown={startHold}
                 onMouseUp={stopHold}
                 onMouseLeave={stopHold}
                 onTouchStart={startHold}
                 onTouchEnd={stopHold}
                 onTouchCancel={stopHold}
-                onPointerDown={(e) => e.preventDefault()} // Prevents context menu on various input types
                 onContextMenu={(e) => e.preventDefault()} // Disables right-click menu
                 type="button"
             >
