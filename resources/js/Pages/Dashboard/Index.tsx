@@ -130,7 +130,7 @@ export default function Dashboard() {
                         <div className="grid grid-cols-4 items-center justify-between gap-2 sm:gap-5">
                             {items.map((item) => (
                                 <>
-                                    {i !== 0 && item.label === 'Earn' ? <button
+                                    {i === 0 && item.label === 'Earn' ? <button
                                         onClick={() => setSendMoneyVisible(true)}
                                         className="cursor-pointer border-none outline-none">
                                         <div className="flex h-max w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-lg p-1 transition-all hover:scale-105 hover:shadow-md sm:px-4 sm:py-2.5">

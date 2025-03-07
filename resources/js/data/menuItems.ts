@@ -21,6 +21,12 @@ const menuItems = [
         isActive: () => route().current('wallet.withdraw.index'),
     },
     {
+        label: "Earn",
+        icon: "/assets/dashboard/earnings.png",
+        url: route('earnings.index'),
+        isActive: () => route().current('earnings.index'),
+    },
+    {
         label: "P2P",
         icon: "/assets/dashboard/p2p.png",
         url: route('marketplace.index'),
@@ -37,12 +43,6 @@ const menuItems = [
         icon: "/assets/dashboard/referral.png",
         url: route('referrals.index'),
         isActive: () => route().current('referrals.index'),
-    },
-    {
-        label: "Earn",
-        icon: "/assets/dashboard/earnings.png",
-        url: route('earnings.index'),
-        isActive: () => route().current('earnings.index'),
     },
     {
         label: "Transaction",
