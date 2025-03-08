@@ -22,7 +22,7 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
             return "success"
         }
         if (moneyRequest.status === 'waiting for release') {
-            return !message.by_me && "warning"
+            return "warning"
         }
         if (moneyRequest.rejected_at) {
             return "danger"
