@@ -234,9 +234,7 @@ export default function Deposit() {
                         deposit(e)
                     }} ref={depositForm}>
                         <DepositInfo depositMethod={activeDepositMethod} />
-                        {activeDepositMethod?.mode !== "payment" && (
-                            <ManualMobileBanking setUploading={setUploading} depositMethod={activeDepositMethod} errors={errors} data={data} setData={setData} />
-                        )}
+                        <ManualMobileBanking setUploading={setUploading} depositMethod={activeDepositMethod} errors={errors} data={data} setData={setData} />
                     </form>
                 </Dialog>
                 <div className="grid md:grid-cols-3 md:gap-10 w-full my-6 px-2">

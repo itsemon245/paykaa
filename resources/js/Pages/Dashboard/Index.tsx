@@ -36,7 +36,7 @@ export const UserItemTemplate = ({ user, onSelect }: { user: UserData; onSelect?
             />
             <div className="flex select-none flex-col items-start *:cursor-pointer">
                 <label className="mb-0 font-bold leading-none">{user.name}</label>
-                <label className="mb-0 text-sm text-gray-500">{mask(user.email, '*', 2, 9)}</label>
+                <label className="mb-0 text-sm text-gray-500">{mask(user.email, '*', 3, 9)}</label>
             </div>
         </button>
     );

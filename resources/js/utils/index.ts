@@ -133,6 +133,13 @@ export function mask(
     startKeep: number = 0,
     endKeep: number = 0
 ): string {
+    const emailPart = value.split('@')[0];
+    if (emailPart.length > 5) {
+        endKeep += 3
+    }
+    if (emailPart.length < 4) {
+        startKeep = 1
+    }
     // Ensure valid mask character (use first character of the input)
     const effectiveMaskChar = maskChar.length > 0 ? maskChar[0] : '*';
 

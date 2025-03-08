@@ -59,7 +59,7 @@ export default function RequestMoney({ chat }: { chat: ChatData }) {
             return "success"
         }
         if (moneyRequest.status === 'waiting for release') {
-            return !message.by_me ? undefined : "warning"
+            return !message.by_me && "warning"
         }
         if (moneyRequest.rejected_at) {
             return "danger"
@@ -76,7 +76,7 @@ export default function RequestMoney({ chat }: { chat: ChatData }) {
             return message.by_me ? "Request release" : "Accepted"
         }
         if (moneyRequest.status === 'waiting for release') {
-            return !message.by_me ? "Release" : "Waiting for Release"
+            return !message.by_me ? "Please Release" : "Waiting for Release"
         }
         return moneyRequest.status
     }

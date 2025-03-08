@@ -52,7 +52,7 @@ class DepositMethodResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('number')
                     ->label(fn(Get $get) => $get('category') !== MethodCategory::CRYPTO->value ? 'Account Number' : 'Wallet Address')
-                    ->hidden(fn(Get $get) => !$get('category') || $get('mode') === MethodMode::PAYMENT->value || $get('category') === MethodCategory::CRYPTO->value)
+                    ->hidden(fn(Get $get) => !$get('category') || $get('category') === MethodCategory::CRYPTO->value)
                     ->placeholder(fn(Get $get) => $get('category') !== MethodCategory::CRYPTO->value ? 'Account Number' : '0x...')
                     ->columnSpan(fn(Get $get) => $get('category') !== MethodCategory::MOBILE_BANKING->value ? 'full' : 1)
                     ->required()
@@ -105,7 +105,8 @@ class DepositMethodResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Repeater::make('secrets')
-                    ->hidden(fn(Get $get) => $get('mode') !== MethodMode::PAYMENT->value)
+                    //todo: remove or fix this
+                    ->hidden()
                     ->label('Secrets')
                     ->columns(2)
                     ->schema([
