@@ -11,11 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('phone_histories', function (Blueprint $table) {
-            $table->dropUnique(['phone']);
-        });
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropUnique(['phone']);
-        });
+        try {
+            Schema::table('users', function (Blueprint $table) {
+                $table->dropUnique(['phone']);
+            });
+        } catch (\Throwable $th) {
+        }
+        try {
+            Schema::table('phone_histories', function (Blueprint $table) {
+                $table->dropUnique(['phone']);
+            });
+        } catch (\Throwable $th) {
+        }
     }
 };
