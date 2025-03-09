@@ -3,7 +3,7 @@ import { ArrowLeft } from "lucide-react"
 import type { Recipient } from "@/types"
 import HoldToSendButton from "@/Components/hold-to-send-button"
 import { Button } from "primereact/button"
-import { defaultAvatar } from "@/utils"
+import { defaultAvatar, image } from "@/utils"
 import { UserData } from "@/types/_generated"
 
 
@@ -33,7 +33,7 @@ export default function ConfirmationPage({ recipient, amount, onSendMoney, onBac
                     <div className="flex items-center mb-4">
                         <div className="h-12 w-12 rounded-full overflow-hidden bg-gray-200 mr-3">
                             <img
-                                src={recipient.avatar}
+                                src={image(recipient.avatar)}
                                 onError={(e) => {
                                     //@ts-ignore
                                     e.target.src = defaultAvatar

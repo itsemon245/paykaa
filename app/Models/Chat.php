@@ -46,8 +46,9 @@ class Chat extends Model
         return $this->messages()->latest()->one();
     }
 
-    public function scopeMyChats(Builder $query, string|null $search = null): void
+    public function scopeMyChats(Builder $query, string $search = null): void
     {
+        $search = $search ?? request()->get('search');
         $query
             ->orderBy('last_message_at', 'desc')
             ->where(function (Builder $q) use ($search) {
@@ -69,12 +70,18 @@ class Chat extends Model
                     }
                 }
             });
+        if (!$search) {
+            $query->whereNotNull('last_message_at');
+        }
     }
     public function scopeWithEmpty(Builder $query): void
     {
-        $query->orWhere(function (Builder $q) {
-            $q->where('receiver_id', auth()->id())
-                ->whereNotNull('last_message_at');
-        });
+        $search = request()->get('search');
+        if ($search) {
+            $query->orWhere(function (Builder $q) {
+                $q->where('receiver_id', auth()->id())
+                    ->whereNotNull('last_message_at');
+            });
+        }
     }
 }

@@ -2,7 +2,7 @@ import type React from "react"
 import { Edit2 } from "lucide-react"
 import type { Recipient } from "@/types"
 import { Button } from "primereact/button"
-import { defaultAvatar } from "@/utils"
+import { defaultAvatar, image } from "@/utils"
 import { Password } from "primereact/password"
 import { UserData } from "@/types/_generated"
 import toast from "react-hot-toast"
@@ -80,7 +80,7 @@ export default function TransactionForm({
             <div className="flex flex-col items-center mb-3 relative">
                 <div className="h-20 w-20 rounded-full overflow-hidden bg-gray-200 mb-1">
                     <img
-                        src={recipient.avatar}
+                        src={image(recipient.avatar)}
                         onError={(e) => {
                             //@ts-ignore
                             e.target.src = defaultAvatar

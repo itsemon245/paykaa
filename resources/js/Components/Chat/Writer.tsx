@@ -24,7 +24,7 @@ export default function Writer() {
         const messageStoreUrl = route('message.store', { chat: chat.uuid });
         const loadingToast = toast.loading("Sending message...");
         post(messageStoreUrl, {
-            only: ['messages'],
+            preserveState: false,
             onSuccess(data) {
                 if (data.props.error) {
                     toast.error(data.props.error, {

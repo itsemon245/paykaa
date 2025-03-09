@@ -73,7 +73,7 @@ export default function RequestMoney({ chat }: { chat: ChatData }) {
     const getStatus = (moneyRequest: MoneyRequestData) => {
         if (!message) return
         if (moneyRequest.status === 'approved') {
-            return message.by_me ? "Request release" : "Accepted"
+            return message.by_me ? "Request Release" : "Request Accepted"
         }
         if (moneyRequest.status === 'waiting for release') {
             return !message.by_me ? "Please Release" : "Waiting for Release"
@@ -93,7 +93,7 @@ export default function RequestMoney({ chat }: { chat: ChatData }) {
                         return;
                     }
 
-                }} rounded severity={getSeverity(moneyRequest as MoneyRequestData)} className="capitalize !rounded-lg w-full justify-center *:!font-bold *:!w-max" label={processing ? 'Proccessing...' : getStatus(moneyRequest as MoneyRequestData)} />
+                }} rounded severity={getSeverity(moneyRequest as MoneyRequestData)} className={cn("capitalize !rounded-lg w-full justify-center *:!font-bold *:!w-max", moneyRequest.status === 'approved' && '!text-black !bg-[#D8BBFF] !border-[#D8BBFF]')} label={processing ? 'Proccessing...' : getStatus(moneyRequest as MoneyRequestData)} />
         }
         return (
             <div className="grid grid-cols-2 items-center gap-3">
@@ -116,7 +116,7 @@ export default function RequestMoney({ chat }: { chat: ChatData }) {
                     if (moneyRequest.status === 'approved') {
                         requestRelease();
                     }
-                }} rounded severity={getSeverity(moneyRequest as MoneyRequestData)} className="!rounded-lg w-full justify-center capitalize *:!font-bold *:!w-max" label={processing ? 'Proccessing...' : getStatus(moneyRequest as MoneyRequestData)} />
+                }} rounded severity={getSeverity(moneyRequest as MoneyRequestData)} className={cn("!rounded-lg w-full justify-center capitalize *:!font-bold *:!w-max", moneyRequest.status === 'approved' && '!text-black !bg-[#D8BBFF] !border-[#D8BBFF]')} label={processing ? 'Proccessing...' : getStatus(moneyRequest as MoneyRequestData)} />
             {!moneyRequest?.cancelled_at && !moneyRequest.accepted_at && !moneyRequest.rejected_at && <Button
                 type="button"
                 onClick={cancel} rounded severity="danger" className="!rounded-lg w-full justify-center *:!font-bold *:!w-max capitalize" label={processing ? 'Proccessing...' : 'Cancel'} />}

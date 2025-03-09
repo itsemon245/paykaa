@@ -43,7 +43,13 @@ export default function Earnings() {
                 {minEarnableAmount > earnings &&
                     <div>Need <span className="font-semibold">{minEarnableAmount} BDT </span></div>
                 }
-                {group.items[0]?.status !== 'converted' ? <Button label="Transfer" icon="pi pi-exchange" className="p-button-success" disabled={minEarnableAmount > earnings} onClick={() => convertEarnings(group.from_id)} /> : <Tag value="Completed" severity='success' />}
+                {group.items[0]?.status !== 'converted' ? <Button
+                    pt={{
+                        label: {
+                            className: 'max-sm:text-sm'
+                        }
+                    }}
+                    label="Transfer" className="p-button-success !w-max max-sm:px-1.5 max-sm:py-1" disabled={minEarnableAmount > earnings} onClick={() => convertEarnings(group.from_id)} /> : <Tag value="Completed" severity='success' />}
             </div>
         )
 
@@ -78,8 +84,7 @@ export default function Earnings() {
             <div className="flex items-center justify-between">
                 <h1 className="heading">Earnings</h1>
             </div>
-            {grouppedEarnings.length > 0 ? <DataTable pt={{
-            }} className="rounded-lg overflow-hidden" emptyMessage={<div className="text-center font-bold">No earnings</div>} dataKey="id" value={grouppedEarnings} tableStyle={{ minWidth: 'max-content' }}>
+            {grouppedEarnings.length > 0 ? <DataTable className="rounded-lg overflow-hidden max-sm:text-sm" emptyMessage={<div className="text-center font-bold">No earnings</div>} dataKey="id" value={grouppedEarnings} tableStyle={{ minWidth: 'max-content' }}>
                 <Column field="sl" header="No." body={(group: EarningGroup, options) => <div className="font-bold">{options.rowIndex + 1}</div>} style={{ width: 'max-content' }}></Column>
                 <Column field="from" header="From" body={(group: EarningGroup) => group.from_id} style={{ width: 'max-content' }}></Column>
                 <Column field="items" header="Earnings" body={(group: EarningGroup) => <span>{getEarnings(group)} BDT</span>} style={{ width: 'max-content' }}></Column>

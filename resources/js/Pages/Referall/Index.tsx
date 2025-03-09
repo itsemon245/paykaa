@@ -58,7 +58,7 @@ export default function Referall() {
                 <Column field="sl" header="No." body={(item, options) => <div className="font-bold">{options.rowIndex + 1}</div>} style={{ width: 'max-content' }}></Column>
                 <Column field="id" header="UID" body={(item) => item.id} style={{ width: 'max-content' }}></Column>
                 <Column field="name" header="Name" style={{ width: 'max-content' }}></Column>
-                <Column field="email" header="Email" style={{ width: 'max-content' }}></Column>
+                <Column field="created_at" header="Date" style={{ width: 'max-content' }} body={item => item.created_at?.split('T')[0]}></Column>
             </DataTable>
                 : <NoItems value="No referrals" />}
 

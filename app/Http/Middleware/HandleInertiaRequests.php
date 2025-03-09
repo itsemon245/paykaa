@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\Chat;
 use App\Models\Setting;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Middleware;
@@ -34,6 +35,11 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         $adminUuid = \Illuminate\Support\Facades\Cache::rememberForever('admin-uuid', fn() => \App\Models\User::where('id', 1)->pluck('uuid'));
+        $unreadCount = Chat::myChats()->whereNot('receiver_id', 1)->whereNot('sender_id', 1)->whereHas('lastMessage', function (Builder $q) {
+            $q->where('is_read', false);
+            $q->where('receiver_id', auth()->id());
+        })
+            ->count();
         return [
             ...parent::share($request),
             'settings' => Setting::first(),
@@ -57,7 +63,7 @@ class HandleInertiaRequests extends Middleware
                 'base' => base_path(),
             ],
             'impersonating' => session('impersonating'),
-            'unreadCount' => Chat::myChats()->whereNot('receiver_id', 1)->where('is_read', false)->count(),
+            'unreadCount' => $unreadCount,
             'notifications' => auth()->user()?->notifications ?? [],
         ];
     }

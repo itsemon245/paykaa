@@ -2,7 +2,7 @@ import SendMoney from '@/Components/SendMoney';
 import { usePoll } from '@inertiajs/react'
 import menuItems from '@/data/menuItems';
 import { UserData } from '@/types/_generated';
-import { defaultAvatar, mask } from '@/utils';
+import { defaultAvatar, image, mask } from '@/utils';
 import { Link, router, usePage } from '@inertiajs/react';
 import { chunk } from 'lodash';
 import { Badge } from 'primereact/badge';
@@ -27,7 +27,7 @@ export const UserItemTemplate = ({ user, onSelect }: { user: UserData; onSelect?
         <button onClick={handleClick} className="flex h-max w-full cursor-pointer items-center p-2">
             <img
                 alt={user.name}
-                src={user.avatar}
+                src={image(user.avatar)}
                 onError={(e) => {
                     //@ts-ignore
                     e.target.src = defaultAvatar;
@@ -36,7 +36,7 @@ export const UserItemTemplate = ({ user, onSelect }: { user: UserData; onSelect?
             />
             <div className="flex select-none flex-col items-start *:cursor-pointer">
                 <label className="mb-0 font-bold leading-none">{user.name}</label>
-                <label className="mb-0 text-sm text-gray-500">{mask(user.email, '*', 3, 9)}</label>
+                <label className="mb-0 text-sm text-gray-500">UID: {user.id}</label>
             </div>
         </button>
     );
@@ -45,7 +45,6 @@ export default function Dashboard() {
     const { users, loading, searchString, setSearchString, search } = useUsers();
     const unreadCount = usePage().props.unreadCount;
     const menus = chunk(menuItems, 4);
-
     const [sendMoneyVisible, setSendMoneyVisible] = useState(false);
     const { start, stop } = usePoll(5000, {
         only: ['unreadCount', 'notifications']

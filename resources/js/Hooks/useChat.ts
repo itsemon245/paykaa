@@ -3,7 +3,6 @@ import { PaginatedCollection } from "@/types";
 import { ChatData, MessageData } from "@/types/_generated";
 import { router, usePage } from "@inertiajs/react";
 import { throttle } from "lodash";
-import toast from "react-hot-toast";
 
 export default function useChat() {
     const { user } = useAuth();
@@ -33,12 +32,14 @@ export default function useChat() {
             Echo.leave(chatChannel)
             Echo.channel(chatChannel)
                 .listen('MessageCreated', (e: { message: MessageData }) => {
-                    if (e.message.type === 'money_request') {
-                        console.log("MoneyRequest notification arrived:", e.message)
-                        playSound()
-                        router.reload()
-                        return;
-                    }
+                    // if (e.message.type === 'money_request') {
+                    console.log('new message arrived, reloading...')
+                    playSound()
+                    router.visit(window.location.href, {
+                        preserveState: false,
+                    })
+                    return;
+                    // }
                     console.log("New message arrived:", e.message)
                     const newChats = chats.data.map(chat => {
                         if (chat.id === e.message.chat_id) {

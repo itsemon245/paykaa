@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import { Search } from "lucide-react"
-import { defaultAvatar } from "@/utils"
+import { defaultAvatar, image } from "@/utils"
 import { UserData } from "@/types/_generated"
 
 interface SearchRecipientProps {
@@ -66,7 +66,7 @@ export default function SearchRecipient({ onSelectRecipient }: SearchRecipientPr
                         >
                             <div className="h-10 w-10 rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
                                 <img
-                                    src={recipient.avatar}
+                                    src={image(recipient.avatar)}
                                     onError={(e) => {
                                         //@ts-ignore
                                         e.target.src = defaultAvatar

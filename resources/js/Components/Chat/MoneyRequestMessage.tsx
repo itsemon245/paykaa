@@ -35,7 +35,7 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
 
     const getStatus = (moneyRequest: MoneyRequestData) => {
         if (moneyRequest.status === 'approved') {
-            return message.by_me ? "Request release" : "Accepted"
+            return message.by_me ? "Request release" : "Request Accepted"
         }
         if (moneyRequest.status === 'waiting for release') {
             return !message.by_me ? "Please Release" : "Waiting for Release"
@@ -53,7 +53,7 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                     return;
                 }
 
-            }} rounded severity={getSeverity(moneyRequest as MoneyRequestData)} className="!rounded-lg w-full justify-center *:!font-bold *:!w-max" label={processing ? 'Proccessing...' : getStatus(moneyRequest as MoneyRequestData)} size="small" />
+            }} rounded severity={getSeverity(moneyRequest as MoneyRequestData)} className={cn("!rounded-lg w-full justify-center *:!font-bold *:!w-max", moneyRequest.status === 'approved' && '!text-black !bg-[#D8BBFF] !border-[#D8BBFF]')} label={processing ? 'Proccessing...' : getStatus(moneyRequest as MoneyRequestData)} size="small" />
         }
         return (
             <div className="grid grid-cols-2 items-center gap-3">
@@ -69,7 +69,7 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                 if (moneyRequest.status === 'approved') {
                     requestRelease();
                 }
-            }} rounded severity={getSeverity(moneyRequest as MoneyRequestData)} className="!rounded-lg w-full justify-center *:!font-bold *:!w-max" label={processing ? 'Proccessing...' : getStatus(moneyRequest as MoneyRequestData)} size="small" />
+            }} rounded severity={getSeverity(moneyRequest as MoneyRequestData)} className={cn("!rounded-lg w-full justify-center *:!font-bold *:!w-max", moneyRequest.status === 'approved' && '!text-black !bg-[#D8BBFF] !border-[#D8BBFF]')} label={processing ? 'Proccessing...' : getStatus(moneyRequest as MoneyRequestData)} size="small" />
             {!moneyRequest?.cancelled_at && !moneyRequest.accepted_at && !moneyRequest.rejected_at && <Button onClick={cancel} rounded severity="danger" className="!rounded-lg w-full justify-center *:!font-bold *:!w-max" label={processing ? 'Proccessing...' : 'Cancel'} size="small" />
             }
         </div>

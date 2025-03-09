@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { CheckCircle } from "lucide-react"
-import { defaultAvatar } from "@/utils"
+import { defaultAvatar, image } from "@/utils"
 import { UserData, WalletData } from "@/types/_generated"
 
 interface SuccessPageProps {
@@ -77,7 +77,7 @@ export default function SuccessPage({ transaction, recipient, amount, onDone }: 
                 <div className="flex items-center mb-4">
                     <div className="h-12 w-12 rounded-full overflow-hidden bg-gray-200 mr-3">
                         <img
-                            src={recipient.avatar || "/placeholder.svg"}
+                            src={image(recipient.avatar)}
                             onError={(e) => {
                                 //@ts-ignore
                                 e.target.src = defaultAvatar
