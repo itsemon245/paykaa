@@ -4,6 +4,7 @@ import UpdateProfileInformation from './Partials/UpdateProfileInformationForm';
 import VerifyDocuments from './Partials/VerifyDocuments';
 import { FormEventHandler } from 'react';
 import { UserData } from '@/types/_generated';
+import toast from 'react-hot-toast';
 
 export interface UpdateProfileFormProps {
     name: string;
@@ -31,7 +32,15 @@ export default function Edit() {
         });
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        patch(route('profile.update'));
+        patch(route('profile.update'), {
+            onSuccess: () => {
+                toast.success('Profile Updated Successfully!')
+            },
+            onError: (errors) => {
+                toast.error('Something went wrong!')
+                console.log("Something went wrong", errors);
+            },
+        });
     };
 
     return (

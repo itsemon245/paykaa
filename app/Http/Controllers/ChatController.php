@@ -72,13 +72,15 @@ class ChatController extends Controller
         $adminId = 1;
         // $people = [auth()->user()->id, $adminId];
         $chat = Chat::where('receiver_id', $adminId)->where('sender_id', auth()->user()->id)->first();
-        if (!$chat && auth()->user()->id != 1) {
-            $chat = Chat::create([
-                'sender_id' => auth()->user()->id,
-                'receiver_id' => $adminId,
-            ]);
-        } else {
-            $chat = Chat::where('receiver_id', $adminId)->orderBy('last_message_at', 'desc')->first();
+        if (!$chat) {
+            if (auth()->user()->id == 1) {
+                $chat = Chat::where('receiver_id', $adminId)->orderBy('last_message_at', 'desc')->first();
+            } else {
+                $chat = Chat::create([
+                    'sender_id' => auth()->user()->id,
+                    'receiver_id' => $adminId,
+                ]);
+            }
         }
         $chat->messages()->received()->unread()->update(['is_read' => true]);
         $chat->loadMissing('sender', 'receiver', 'lastMessage');

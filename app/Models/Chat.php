@@ -70,7 +70,7 @@ class Chat extends Model
                     }
                 }
             });
-        if (!$search) {
+        if (!$search && !request()->routeIs('helpline')) {
             $query->whereNotNull('last_message_at');
         }
     }
