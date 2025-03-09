@@ -14,5 +14,8 @@ return new class extends Migration
         Schema::table('phone_histories', function (Blueprint $table) {
             $table->dropUnique(['phone']);
         });
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropUnique(['phone']);
+        });
     }
 };
