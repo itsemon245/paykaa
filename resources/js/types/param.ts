@@ -109,6 +109,8 @@ export type RouteParams = {
         token: string;
     };
     "search-users": {};
+    "send-money.store": {};
+    "send-money.verify-password": {};
     "active-status.update": {};
     "upload.chunk.start": {};
     "upload.chunk.update": {};

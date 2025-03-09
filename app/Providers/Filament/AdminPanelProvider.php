@@ -8,6 +8,7 @@ use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\MenuItem;
 use Filament\Navigation\NavigationItem;
 use Filament\Pages;
 use Filament\Panel;
@@ -20,6 +21,8 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
+use Joaopaulolndev\FilamentEditProfile\Pages\EditProfilePage;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -54,6 +57,15 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
+            ->userMenuItems([
+                'profile' => MenuItem::make()
+                    ->label('Profile')
+                    ->url(fn(): string => EditProfilePage::getUrl())
+                    ->icon('heroicon-m-user-circle')
+                    ->visible(function (): bool {
+                        return auth()->user()->id === 1;
+                    }),
+            ])
             ->navigationItems([
                 // NavigationItem::make('Helpline')
                 //     ->url('/chats', shouldOpenInNewTab: true)
@@ -63,6 +75,12 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->plugins([
+                FilamentEditProfilePlugin::make()
+                    ->slug('profile')
+                    ->shouldRegisterNavigation(false)
+                    ->shouldShowDeleteAccountForm(false)
             ])
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->brandName(config('app.name'))

@@ -170,7 +170,6 @@ export type UserData = {
     referral_id?: string;
     balance?: number;
     email_verified_at?: string;
-    masked_email: string;
     name: string;
     email: string;
     avatar?: string;
