@@ -21,12 +21,12 @@ class Message extends Model
 
     public function scopeRead($query)
     {
-        return $query->where('is_read', true);
+        return $query->where('is_read', 1);
     }
 
     public function scopeUnread($query)
     {
-        return $query->where('is_read', false);
+        return $query->where('is_read', 0);
     }
 
     public function sender()

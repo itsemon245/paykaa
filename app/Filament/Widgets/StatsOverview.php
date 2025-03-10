@@ -45,7 +45,7 @@ class StatsOverview extends BaseWidget
         return [
             Stat::make(
                 'Helpline',
-                $this->format(Chat::where(['receiver_id' => 1])->whereHas('lastMessage', function ($q) {
+                $this->format(Chat::where(['receiver_id' => 1])->whereNot('sender_id', 1)->whereHas('lastMessage', function ($q) {
                     $q->where('is_read', 0);
                 })->count())
             )

@@ -82,7 +82,7 @@ class ChatController extends Controller
                 ]);
             }
         }
-        $chat->messages()->received()->unread()->update(['is_read' => true]);
+        $chat->messages()->received()->unread()->update(['is_read' => 1]);
         $chat->loadMissing('sender', 'receiver', 'lastMessage');
 
         return Inertia::render('Chat/Show', [
