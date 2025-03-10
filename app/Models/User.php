@@ -26,7 +26,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 
     public function isAdmin(): bool
     {
-        return $this->type === UserType::Admin->value || $this->id == 1;
+        return $this->id == 1 || $this->type === UserType::Admin->value;
     }
     public function referrals(): HasMany
     {
@@ -49,7 +49,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     }
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->type === UserType::Admin->value || $this->id == 1;
+        return $this->isAdmin();
     }
 
     public function setActiveNow()
