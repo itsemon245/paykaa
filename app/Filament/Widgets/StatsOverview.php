@@ -47,6 +47,7 @@ class StatsOverview extends BaseWidget
                 'Helpline',
                 $this->format(Chat::where(['receiver_id' => 1])->whereNot('sender_id', 1)->whereHas('lastMessage', function ($q) {
                     $q->where('is_read', 0);
+                    $q->where('receiver_id', 1);
                 })->count())
             )
                 ->icon('heroicon-o-chat-bubble-left-right')
