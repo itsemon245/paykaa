@@ -27,15 +27,15 @@ export default function useTyping(chat?: ChatData) {
         }
     };
     useEffect(() => {
-        // // Attach event listeners
-        // window.addEventListener("blur", handleBlurOrBeforeUnload);
-        // window.addEventListener("beforeunload", handleBlurOrBeforeUnload);
-        //
-        // // Cleanup event listeners on component unmount
-        // return () => {
-        //     window.removeEventListener("blur", handleBlurOrBeforeUnload);
-        //     window.removeEventListener("beforeunload", handleBlurOrBeforeUnload);
-        // };
+        // Attach event listeners
+        window.addEventListener("blur", handleBlurOrBeforeUnload);
+        window.addEventListener("beforeunload", handleBlurOrBeforeUnload);
+
+        // Cleanup event listeners on component unmount
+        return () => {
+            window.removeEventListener("blur", handleBlurOrBeforeUnload);
+            window.removeEventListener("beforeunload", handleBlurOrBeforeUnload);
+        };
     }, []);
     return {
         toggleTyping,

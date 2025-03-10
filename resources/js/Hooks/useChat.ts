@@ -36,7 +36,7 @@ export default function useChat() {
                     console.log('new message arrived, reloading...')
                     playSound()
                     router.visit(window.location.href, {
-                        preserveState: false,
+                        except: ['chat']
                     })
                     return;
                     // }

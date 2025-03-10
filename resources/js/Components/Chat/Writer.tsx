@@ -66,7 +66,6 @@ export default function Writer() {
         if (e.shiftKey === false) {
             e.preventDefault();
             sendThrottledMessage();
-            toggleTyping(false);
         } else {
             setData('body', data.body + "\n");
         }
