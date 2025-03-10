@@ -25,7 +25,8 @@ export default function Topbar() {
                             {isHelpline && !isAdmin ?
                                 <AvatarGroup>
                                     <Avatar image="/assets/favicon.png" size="large" shape="circle" />
-                                </AvatarGroup> : <img
+                                </AvatarGroup> :
+                                <img
                                     className={min('md') ? "avatar-md" : "avatar-sm"}
                                     src={image(chat.from?.avatar)}
                                     onError={(e) => {
@@ -36,7 +37,8 @@ export default function Topbar() {
                                     data-placement="top"
                                     title={chat.from?.name}
                                     alt={chat.from?.name + "'s avatar"}
-                                />}
+                                />
+                            }
                             {activeStatus === true && <span className="absolute bottom-1 border-white border-2 right-4 bg-green-500 rounded-full w-3 h-3"></span>}
                         </div>
                         <div className="flex items-center gap-1 md:gap-2 justify-between w-full grow">
@@ -46,6 +48,7 @@ export default function Topbar() {
                                     isHelpline && !isAdmin ?
                                         <span>Helpline</span>
                                         : <>
+                                            {chat.from && <UID className="!m-0" labelClass="!text-current text-xs" iconClass="!text-current" uid={chat.from?.id} />}
                                             {activeStatus && <span>{activeStatus === true ? "Active now" : activeStatus}</span>}
                                         </>
                                 }

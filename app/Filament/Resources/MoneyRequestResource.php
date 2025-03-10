@@ -14,6 +14,7 @@ use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\DB;
 
 class MoneyRequestResource extends Resource
 {
@@ -44,6 +45,27 @@ class MoneyRequestResource extends Resource
     public static function getCustomActions(): array
     {
         return [
+            Tables\Actions\Action::make('Return Money')
+                ->hidden(fn(MoneyRequest $record) => match ($record->status) {
+                    Status::APPROVED->value => false,
+                    default => true,
+                })
+                ->action(function (MoneyRequest $record) {
+                    DB::transaction(function () use ($record) {
+                        $record->transaction()->update([
+                            'approved_at' => null,
+                            'cancelled_at' => now(),
+                            'failed_at' => null,
+                        ]);
+                        $record->update([
+                            'cancelled_at' => now(),
+                            'rejected_at' => null,
+                        ]);
+                    });
+                })
+                ->icon('heroicon-o-check')
+                ->color('success')
+                ->size(ActionSize::Large),
             Tables\Actions\Action::make('Sender')
                 ->icon('heroicon-o-user')
                 ->color('success')

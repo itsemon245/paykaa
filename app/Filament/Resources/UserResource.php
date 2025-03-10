@@ -57,7 +57,7 @@ class UserResource extends Resource
                     ->disabled(),
                 Forms\Components\TextInput::make('country')
                     ->disabled(),
-                Forms\Components\TextInput::make('address')
+                Forms\Components\Textarea::make('address')
                     ->disabled(),
                 Forms\Components\TextInput::make('referral_id')
                     ->readOnly(),

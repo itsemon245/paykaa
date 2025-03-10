@@ -49,10 +49,7 @@ export default function Navbar({
                         className="w-14 h-14 md:w-[72px] md:h-[72px] rounded-full border-white border-2 object-cover" />
                     <div ref={animationParentRef} className="flex flex-col items-start">
                         <label className="text-white text-base md:text-lg font-bold mb-0">{user.name}</label>
-                        <div className="flex gap-2 items-center mb-0.5 -mt-1.5">
-                            <label className="text-white text-sm font-bold mb-0"> UID: {user.id}</label>
-                            <HugeiconsCopy01 className="text-white w-4 h-4 cursor-pointer" onClick={() => copyToClipboard(user.id)} />
-                        </div>
+                        <UID uid={user.id} />
                         <button onClick={refreshBalance} className="bg-white min-w-36 md:min-w-48 text-center py-1 md:py-1.5 rounded-xl text-primary text-sm md:text-base font-medium">{label}</button>
                     </div>
                 </div>

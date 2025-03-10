@@ -130,6 +130,7 @@
     "searchRecipient": true,
     "successPage": true,
     "transactionForm": true,
-    "SendMoney": true
+    "SendMoney": true,
+    "UID": true
   }
 }

@@ -92,6 +92,7 @@ declare global {
   const TextInput: typeof import('../Components/TextInput')['default']
   const Textarea: typeof import('../Components/Textarea')['default']
   const Topbar: typeof import('../Components/Chat/Topbar')['default']
+  const UID: typeof import('../Components/UID')['default']
   const UserType: typeof import('./_generated')['UserType']
   const WalletRemark: typeof import('./_generated')['WalletRemark']
   const WalletStatus: typeof import('./_generated')['WalletStatus']
