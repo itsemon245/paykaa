@@ -16,7 +16,7 @@ class RedirectIfAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if($request->user() && $request->user()->email === 'admin@mail.com'){
+        if ($request->user() && $request->user()->isAdmin()) {
             return Inertia::location(url('admin'));
         }
         return $next($request);
