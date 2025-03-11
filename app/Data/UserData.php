@@ -23,6 +23,8 @@ class UserData extends Data
     public ?float $balance;
     #[TypeScriptOptional]
     public ?string $email_verified_at;
+    #[TypeScriptOptional]
+    public string | bool $active_status = false;
     public function __construct(
         public string $name,
         public string $email,

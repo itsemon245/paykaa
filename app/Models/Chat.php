@@ -80,7 +80,7 @@ class Chat extends Model
         if ($search) {
             $query->orWhere(function (Builder $q) {
                 $q->where('receiver_id', auth()->id())
-                    ->whereNotNull('last_message_at');
+                    ->whereNull('last_message_at');
             });
         }
     }

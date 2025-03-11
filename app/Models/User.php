@@ -7,6 +7,7 @@ use App\Enum\UserType;
 use App\Models\Wallet;
 use App\Traits\HasLatestScope;
 use App\Traits\HasUuid;
+use Carbon\Carbon;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -57,6 +58,16 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         $this->update([
             'last_seen_at' => now()
         ]);
+    }
+
+    public function getActiveStatusAttribute()
+    {
+        $date = Carbon::parse($this->last_seen_at);
+        $activeStatus = $date->greaterThanOrEqualTo(now()->subMinutes(2)) ? true : $date->diffForHumans();
+        if ($this->last_seen_at === null) {
+            $activeStatus = false;
+        }
+        return $activeStatus;
     }
 
     /**

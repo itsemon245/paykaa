@@ -39,7 +39,7 @@ export default function Topbar() {
                                     alt={chat.from?.name + "'s avatar"}
                                 />
                             }
-                            {activeStatus === true && <span className="absolute bottom-1 border-white border-2 right-4 bg-green-500 rounded-full w-3 h-3"></span>}
+                            {activeStatus === true && <span className="absolute bottom-0 right-2 md:bottom-1 border-white border-2 md:right-4 bg-green-500 rounded-full w-3 h-3"></span>}
                         </div>
                         <div className="flex items-center gap-1 md:gap-2 justify-between w-full grow">
                             <div>

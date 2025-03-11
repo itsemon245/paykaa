@@ -19,23 +19,28 @@ export default function ChatSidebar({
     const chat = usePage().props.chat as ChatData | undefined;
     const { user, isAdmin } = useAuth();
     const itemTemplate = (item: ChatData, key?: any) => {
+        const activeStatus = item.from?.active_status;
+
         return (<Link
             href={route().current('helpline') && !isAdmin ? route('helpline') : route('chat.show', { chat: item.uuid })}
             key={key}
             className={` !py-3 filterDiscussions all unread single ${item.uuid === chat?.uuid ? 'active' : ''}`}
         >
-            <img
-                className={min('md') ? "avatar-md me-2" : "avatar-sm me-2"}
-                src={image(item.from?.avatar)}
-                onError={(e) => {
-                    //@ts-ignore
-                    e.target.src = defaultAvatar
-                }}
-                data-toggle="tooltip"
-                data-placement="top"
-                title={item.from?.name}
-                alt={item.from?.name + "'s avatar"}
-            />
+            <div className="relative">
+                <img
+                    className={min('md') ? "avatar-md me-2" : "avatar-sm me-2"}
+                    src={image(item.from?.avatar)}
+                    onError={(e) => {
+                        //@ts-ignore
+                        e.target.src = defaultAvatar
+                    }}
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title={item.from?.name}
+                    alt={item.from?.name + "'s avatar"}
+                />
+                {activeStatus === true && <span className="absolute bottom-0 right-2 md:bottom-1 border-white border-2 md:right-4 bg-green-500 rounded-full w-3 h-3"></span>}
+            </div>
             {/* <div className="status online"></div> */}
 
             <div className="data">

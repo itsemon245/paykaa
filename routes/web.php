@@ -51,12 +51,7 @@ Route::middleware('auth', 'verified')->group(function () {
     })->name('active-status.update');
 
     Route::post('check-active-status/{user?}', function (User $user) {
-        $date = Carbon::parse($user->last_seen_at);
-        $activeStatus = $date->greaterThanOrEqualTo(now()->subMinutes(2)) ? true : $date->diffForHumans();
-        if ($user->last_seen_at === null) {
-            $activeStatus = false;
-        }
-        return response()->json(['active_status' => $activeStatus]);
+        return response()->json(['active_status' => $user->active_status]);
     })->name('active-status.check');
 });
 
