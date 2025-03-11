@@ -82,18 +82,23 @@ class ChatController extends Controller
                 ]);
             }
         }
-        $chat->messages()->received()->unread()->update(['is_read' => 1]);
         $chat->loadMissing('sender', 'receiver', 'lastMessage');
-
-        return Inertia::render('Chat/Show', [
-            'chat' => ChatData::from($chat),
-            'chats' => $this->getChats($request, true),
-            'helpline' => true,
-            'messages' => MessageData::collect($chat
-                ->messages()
-                ->with('moneyRequest', 'sender', 'receiver', 'moneyRequest', 'moneyRequest.from')
-                ->paginate()),
-        ]);
+        if (auth()->user()->isAdmin()) {
+            return Inertia::render('Chat/Index', [
+                'chats' => $this->getChats($request, true),
+            ]);
+        } else {
+            $chat->messages()->received()->unread()->update(['is_read' => 1]);
+            return Inertia::render('Chat/Show', [
+                'chat' => ChatData::from($chat),
+                'chats' => $this->getChats($request, true),
+                'helpline' => true,
+                'messages' => MessageData::collect($chat
+                    ->messages()
+                    ->with('moneyRequest', 'sender', 'receiver', 'moneyRequest', 'moneyRequest.from')
+                    ->paginate()),
+            ]);
+        }
     }
 
     public function typing(Request $request, Chat $chat)

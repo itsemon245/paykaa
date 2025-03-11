@@ -100,7 +100,7 @@ export default function Writer() {
                 <div className="bottom !p-1 md:!p-2 bg-base-gradient">
                     <form onSubmit={sendMessage} className="text-area relative">
                         <InputTextarea
-                            className="form-control !ps-5 !rounded-full"
+                            className="form-control !ps-5 !rounded-full max-sm:text-[16px]"
                             cols={3}
                             placeholder="Message ..."
                             value={data.body as string}
