@@ -29,7 +29,13 @@ export default defineConfig({
             registerType: 'autoUpdate',
             injectRegister: 'script-defer',
             workbox: {
-                globPatterns: ['**/*.{js,css,html,ico,png,svg,webp}']
+                globPatterns: ['**/*.{js,css,ico,png,svg,webp}'],
+                runtimeCaching: [
+                    {
+                        urlPattern: ({ request }) => request.mode === 'navigate', // Match all navigation requests
+                        handler: 'NetworkOnly' // Let Laravel handle routing
+                    }
+                ]
             },
             includeAssets: ['/assets/favicon.ico'],
             manifest: pwaManifest,
