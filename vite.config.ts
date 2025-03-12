@@ -1,10 +1,11 @@
 import { defineConfig } from 'vite';
+import { VitePWA } from 'vite-plugin-pwa'
 import laravel from 'laravel-vite-plugin';
 import react from '@vitejs/plugin-react';
 import Icons from 'unplugin-icons/vite';
 import AutoImport from 'unplugin-auto-import/vite';
 import IconsResolver from 'unplugin-icons/resolver'
-
+import { pwaManifest } from './pwa-manifest'
 
 const iconCollection = [
     'mdi',
@@ -24,6 +25,16 @@ export default defineConfig({
             refresh: true,
         }),
         react(),
+        VitePWA({
+            registerType: 'autoUpdate',
+            injectRegister: 'script-defer',
+            workbox: {
+                globPatterns: ['**/*.{js,css,html,ico,png,svg,webp}']
+            },
+            includeAssets: ['/assets/favicon.ico'],
+            manifest: pwaManifest,
+            manifestFilename: 'pwa-manifest.json',
+        }),
         Icons({
             compiler: 'jsx',
             jsx: 'react',

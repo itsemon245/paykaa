@@ -1,30 +1,16 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+@php
+    $landing = Cache::remember('landing', now()->addHour(), fn() => \App\Models\LandingPage::select('hero')->first());
+    $tagline = $landing?->hero['title'] ?? '';
+@endphp
 
 <head>
-    <meta charset="utf-8">
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1"
-    >
-
     <title inertia>{{ config('app.name', 'Laravel') }}</title>
-
-    <link
-        rel="icon"
-        type="image/png"
-        sizes="32x32"
-        href="{{ asset('assets/favicon.png') }}"
-    >
+    @include('partials.meta', ['landing' => $landing, 'tagline' => $tagline])
     <!-- Fonts -->
-    <link
-        rel="preconnect"
-        href="https://fonts.bunny.net"
-    >
-    <link
-        href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap"
-        rel="stylesheet"
-    />
+    <link rel="preconnect" href="https://fonts.bunny.net" >
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <!-- Scripts -->
     @routes
