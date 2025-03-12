@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline - PayKaa</title>
+    <style>
+        :root {
+            --brand-color: #3f75a4;
+            --text-color: #ffffff;
+            --bg-color: #f4f4f4;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: var(--bg-color);
+            color: var(--brand-color);
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+            padding: 20px;
+        }
+        .logo {
+            max-width: 300px;
+            width: 80%;
+            margin-bottom: 20px;
+        }
+        .message {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        .retry-btn {
+            background: var(--brand-color);
+            color: var(--text-color);
+            border: none;
+            padding: 12px 20px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .retry-btn:hover {
+            background: #2c5980;
+        }
+    </style>
+</head>
+<body>
+    <img src="/assets/logo-long.png" alt="PayKaa Logo" class="logo" id="logo">
+    <p class="message">Oops! You are offline. Please check your internet connection.</p>
+    <button class="retry-btn" onclick="window.location.reload();">Try Again</button>
+
+    <script>
+        // Dynamically switch logo if screen is small
+        window.onload = function() {
+            if (window.innerWidth < 500) {
+                document.getElementById("logo").src = "/assets/logo-short.png";
+            }
+        };
+    </script>
+</body>
+</html>

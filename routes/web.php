@@ -26,11 +26,11 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-Route::get('/sw.js', function () {
-    return response()->file(public_path('build/sw.js'), [
-        'Content-Type' => 'application/javascript',
-    ]);
-});
+// Route::get('/sw.js', function () {
+//     return response()->file(public_path('build/sw.js'), [
+//         'Content-Type' => 'application/javascript',
+//     ]);
+// });
 Route::get('/', function () {
     $landing = LandingPage::first();
     return view('landing', compact('landing'));
