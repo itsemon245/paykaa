@@ -69,11 +69,13 @@ class UserResource extends Resource
                             ->downloadable()
                             ->openable(true)
                             ->image()
+                            ->columnSpanFull()
                             ->required(),
                         Forms\Components\FileUpload::make('back_image')
                             ->downloadable()
                             ->openable(true)
                             ->image()
+                            ->columnSpanFull()
                             ->required(),
                     ])->columnSpanFull(),
                 Repeater::make('phoneHistory')

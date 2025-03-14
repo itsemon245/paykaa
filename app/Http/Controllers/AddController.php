@@ -17,7 +17,7 @@ class AddController extends Controller
      */
     public function index()
     {
-        $adds = Add::with('addMethod')->paginate();
+        $adds = Add::with('addMethod')->paginate(500);
         $addMethods = AddMethod::select(['id', 'name'])->get();
         return Inertia::render('Add/Index', [
             'adds' => AddData::collect($adds),
