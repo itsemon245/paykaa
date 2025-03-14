@@ -102,6 +102,9 @@ button:focus {
 .filepond--drop-label{
     @apply !h-full w-full flex items-center justify-center
 }
+.avatar-md, .avatar-sm{
+    @apply object-cover
+}
 @layer components {
     .bg-base-gradient{
         background: rgb(235,234,241);
