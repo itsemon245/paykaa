@@ -2,7 +2,7 @@ export const pwaManifest = {
     "name": "PayKaa",
     "short_name": "PayKaa",
     "id": "/dashboard",
-    "start_url": "/",
+    "start_url": "/dashboard",
     "scope": "/",
     "description": "Protecting your money is our responsibility",
     "theme_color": "#4177a6",
