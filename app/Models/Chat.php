@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Chat extends Model
 {
@@ -44,6 +45,13 @@ class Chat extends Model
     public function lastMessage()
     {
         return $this->hasOne(Message::class)->latestOfMany();
+    }
+
+    protected function isRead(): Attribute
+    {
+        return Attribute::make(
+            get: fn(string $value) => !$this->messages()->unread()->exists(),
+        );
     }
 
     public function scopeMyChats(Builder $query, string $search = null): void

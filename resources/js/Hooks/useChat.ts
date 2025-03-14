@@ -1,4 +1,5 @@
 import { Echo } from "@/echo";
+import { useChatStore } from "@/stores/useChatStore";
 import { PaginatedCollection } from "@/types";
 import { ChatData, MessageData } from "@/types/_generated";
 import { router, usePage } from "@inertiajs/react";
@@ -11,6 +12,8 @@ export default function useChat() {
     const chatsProp = usePage().props.chats as PaginatedCollection<ChatData>;
     const [chats, setChats] = useState<PaginatedCollection<ChatData>>(chatsProp);
     const [messages, setMessages] = useState<PaginatedCollection<MessageData>>(messagesProp);
+
+    const setMessageBody = useChatStore(state => state.setMessageBody);
 
     const fetchChats = useCallback(throttle(async (search?: string) => {
         const response = await fetch(route('chat.user-chats', { search: search, helpline: route().current('helpline') }));
@@ -32,15 +35,13 @@ export default function useChat() {
             Echo.leave(chatChannel)
             Echo.channel(chatChannel)
                 .listen('MessageCreated', (e: { message: MessageData }) => {
-                    // if (e.message.type === 'money_request') {
-                    console.log('new message arrived, reloading...')
-                    playSound()
-                    router.visit(window.location.href, {
-                        except: ['chat']
-                    })
-                    return;
-                    // }
-                    console.log("New message arrived:", e.message)
+                    if (e.message.receiver_id === user.id) {
+                        playSound()
+                        router.visit(window.location.href, {
+                            only: ['messages', 'chats'],
+                        })
+                    }
+                    return
                     const newChats = chats.data.map(chat => {
                         if (chat.id === e.message.chat_id) {
                             if (e.message.receiver_id === user.id) {

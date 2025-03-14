@@ -190,5 +190,9 @@ export const pwaManifest = {
             "type": "image/png",
             "form_factor": "narrow"
         }
+    ],
+    "display_override": [
+        "standalone",
+        "window-controls-overlay"
     ]
 }

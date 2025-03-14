@@ -26,7 +26,7 @@ export default function AddNewChat() {
             <div className="relative">
                 <div className="form-group relative">
                     <i className="pi pi-search absolute left-4 top-3 text-xl text-primary flex items-center justify-start"></i>
-                    <input type="text" onChange={e => setSearchString(e.target.value)} className="form-control" id="topic" placeholder="Search for user" />
+                    <input type="text" onChange={e => setSearchString(e.target.value)} className="form-control !text-[16px]" id="topic" placeholder="Search for user" />
                 </div>
                 {(users.length > 0 && searchString !== "") &&
                     <div className="absolute top-[100%] left-2 rounded-md bg-white border-gray-200 mt-2 shadow w-full !z-[2000]">

@@ -55,7 +55,7 @@ class ChatController extends Controller
     {
         $chat->messages()->received()->unread()->update(['is_read' => true]);
         $chat->loadMissing('sender', 'receiver', 'lastMessage');
-        Chat::myChats()->where('uuid', $chat->uuid)->where('is_read', false)->update(['is_read' => true]);
+        // Chat::myChats()->where('uuid', $chat->uuid)->where('is_read', false)->update(['is_read' => true]);
 
         return Inertia::render('Chat/Show', [
             'chat' => ChatData::from($chat),
@@ -157,6 +157,7 @@ class ChatController extends Controller
             }
         }
         $chats = $chats->paginate();
-        return ChatData::collect($chats);
+        $chats = ChatData::collect($chats);
+        return $chats;
     }
 }

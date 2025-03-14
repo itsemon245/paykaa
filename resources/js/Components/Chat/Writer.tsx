@@ -5,15 +5,18 @@ import { ChatData, MessageData, MessageType } from "@/types/_generated";
 import { useForm, usePage } from "@inertiajs/react";
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Button } from 'primereact/button';
-import { cn } from '@/utils';
+import { cn, storage } from '@/utils';
+import { useChatStore } from '@/stores/useChatStore';
 
 export default function Writer() {
     const chat = usePage().props.chat as ChatData;
     const { toggleTyping } = useTyping(chat);
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
     const { user } = useAuth();
+    const messageBody = useChatStore(state => state.messageBody);
+    const setMessageBody = useChatStore(state => state.setMessageBody);
     const { data, setData, processing, post } = useForm<Partial<MessageData> & { image: File | null }>({
-        body: "",
+        body: messageBody,
         sender_id: user.id,
         receiver_id: chat.from?.id,
         chat_id: chat.id,
@@ -36,6 +39,7 @@ export default function Writer() {
                     id: loadingToast
                 });
                 setData('body', "");
+                setMessageBody("");
                 setData('image', null);
             },
             onError(error) {
@@ -86,6 +90,9 @@ export default function Writer() {
             toggleTyping(true);
         }
     }, [data.body]);
+    useEffect(() => {
+        setData('body', messageBody)
+    }, [messageBody])
     return (
         <>
             <div className="fixed bottom-0 md:left-2 lg:left-[372px] left-0 right-0 md:right-2">
@@ -103,11 +110,13 @@ export default function Writer() {
                             className="form-control !ps-5 !rounded-full max-sm:text-[16px]"
                             cols={3}
                             placeholder="Message ..."
-                            value={data.body as string}
+                            value={messageBody as string}
                             autoResize
                             ref={textAreaRef}
                             onKeyDown={handleKeyDown}
-                            onChange={e => setData('body', e.target.value)}
+                            onChange={e => {
+                                setMessageBody(e.target.value);
+                            }}
                             rows={1}
                         ></InputTextarea>
                         <div className="flex h-full items-center gap-2 absolute top-0 right-0 !pe-3">
