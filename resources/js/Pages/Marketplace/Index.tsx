@@ -1,5 +1,5 @@
 import { PaginatedCollection, RouteName } from "@/types"
-import { AddData, AddMethodData } from "@/types/_generated"
+import { AddData, AddMethodData, UserData } from "@/types/_generated"
 import { cn, getQuery, image } from "@/utils"
 import { Link, router, useForm, usePage } from "@inertiajs/react"
 import { Button } from "primereact/button"
@@ -9,6 +9,7 @@ import { Dialog } from "primereact/dialog"
 
 export default function Index() {
     const initialAds = usePage().props.ads as PaginatedCollection<AddData>
+    const adUser = usePage().props.adUser as UserData | undefined
     const { user } = useAuth()
     const [ads, setAds] = useState(initialAds)
     const wallets = usePage().props.wallets as AddMethodData[]
@@ -41,6 +42,7 @@ export default function Index() {
         router.visit(route('marketplace.index', {
             type,
             wallet_id: walletId,
+            user_id: getQuery('user_id'),
         }), {
             preserveScroll: true,
             preserveState: true,
@@ -117,6 +119,12 @@ export default function Index() {
                         </select>
                     </form>
 
+                    {adUser && <div className="flex items-center gap-2 my-3">
+                        <div className="heading !text-gray-700 mb-0">Showing {adUser.name}'s({adUser.id}) Ads</div>
+                        <Link href={route('marketplace.index')}>
+                            <Button label="Clear" size="small" className="px-3 py-1" severity="warning" />
+                        </Link>
+                    </div>}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 3xl:grid-cols-4 gap-3" >
                         {ads.data.map((ad) => (
                             <Card pt={{
