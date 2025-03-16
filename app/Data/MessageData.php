@@ -7,6 +7,7 @@ use App\Enum\MessageType;
 use App\Models\MoneyRequest;
 use Carbon\Carbon;
 use Spatie\LaravelData\Attributes\Computed;
+use Spatie\LaravelData\Attributes\Validation\Exists;
 use Spatie\TypeScriptTransformer\Attributes\Optional as TypeScriptOptional;
 use Spatie\LaravelData\Data;
 
@@ -26,7 +27,14 @@ class MessageData extends Data
     #[Computed]
     public bool $by_me;
     public bool $is_read;
+    #[TypeScriptOptional]
     public ?string $body;
+    #[TypeScriptOptional]
+    public ?UserData $from;
+    #[TypeScriptOptional, Exists(table: 'messages', column: 'id')]
+    public ?int $replied_to;
+    #[TypeScriptOptional]
+    public ?MessageData $parent;
     public function __construct(
         public int $chat_id,
         public int $sender_id,

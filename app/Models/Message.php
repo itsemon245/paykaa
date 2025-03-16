@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\HasUuid;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Message extends Model
@@ -42,6 +43,14 @@ class Message extends Model
     public function receiver()
     {
         return $this->belongsTo(User::class, 'receiver_id');
+    }
+
+    public function from(): BelongsTo
+    {
+        if ($this->sender_id == auth()->id()) {
+            return $this->sender();
+        }
+        return $this->receiver();
     }
 
     public function chat()

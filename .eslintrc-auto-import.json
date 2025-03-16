@@ -137,6 +137,8 @@
     "ImageMessage": true,
     "HeroiconsChevronDown16Solid": true,
     "HeroiconsChevronDown20Solid": true,
-    "MessageContextMenu": true
+    "MessageContextMenu": true,
+    "PopoverDemo": true,
+    "ReplyToMessage": true
   }
 }

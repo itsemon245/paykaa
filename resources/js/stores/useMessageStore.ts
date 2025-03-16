@@ -1,18 +1,11 @@
-import toast from 'react-hot-toast'
+import { MessageData } from '@/types/_generated'
 import { create } from 'zustand'
 
 interface MessageStore {
-    contextMenu: boolean
-    replyTo?: number
-    setContextMenu: (contextMenu: boolean) => void
+    replyTo?: MessageData
+    setReplyTo: (replyTo?: MessageData) => void
 }
 export const useMessageStore = create<MessageStore>((set, get) => ({
-    contextMenu: false,
     replyTo: undefined,
-    setReplyTo: (replyTo: number) => set({ replyTo }),
-    setContextMenu: (contextMenu: boolean) => set({ contextMenu }),
-    reply: (message: string) => {
-        //send message
-        toast.success("Reply")
-    },
+    setReplyTo: (replyTo?: MessageData) => set({ replyTo }),
 }))

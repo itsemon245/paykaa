@@ -45,7 +45,7 @@ class MessageController extends Controller
             $chat->loadMissing('lastMessage');
             if ($request->get('body')) {
                 $message = Message::create([
-                    ...$messageData->only('chat_id', 'sender_id', 'receiver_id', 'type', 'body')->toArray(),
+                    ...$messageData->only('chat_id', 'sender_id', 'receiver_id', 'type', 'body', 'replied_to')->toArray(),
                     'created_at' => $now,
                     'updated_at' => $now,
                 ]);

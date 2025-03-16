@@ -62,8 +62,8 @@ class ChatController extends Controller
             'chats' => $this->getChats($request),
             'messages' => MessageData::collect($chat
                 ->messages()
-                ->with('moneyRequest', 'sender', 'receiver', 'moneyRequest', 'moneyRequest.from')
-                ->paginate()),
+                ->with('moneyRequest', 'from', 'parent', 'moneyRequest', 'moneyRequest.from')
+                ->paginate(120)),
         ]);
     }
 

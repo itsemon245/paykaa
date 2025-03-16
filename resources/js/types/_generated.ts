@@ -121,7 +121,10 @@ export type MessageData = {
     moneyRequest?: MoneyRequestData;
     by_me: boolean;
     is_read: boolean;
-    body: string | null;
+    body?: string;
+    from?: UserData;
+    replied_to?: number;
+    parent?: MessageData;
     chat_id: number;
     sender_id: number;
     receiver_id: number;

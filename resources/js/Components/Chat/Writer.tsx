@@ -7,6 +7,7 @@ import { InputTextarea } from 'primereact/inputtextarea';
 import { Button } from 'primereact/button';
 import { cn, storage } from '@/utils';
 import { useChatStore } from '@/stores/useChatStore';
+import { useMessageStore } from '@/stores/useMessageStore';
 
 export default function Writer() {
     const chat = usePage().props.chat as ChatData;
@@ -16,6 +17,8 @@ export default function Writer() {
     const { user } = useAuth();
     const messageBody = useChatStore(state => state.messageBody);
     const setMessageBody = useChatStore(state => state.setMessageBody);
+    const replyTo = useMessageStore(state => state.replyTo)
+    const setReplyTo = useMessageStore(state => state.setReplyTo)
     const { data, setData, processing, post } = useForm<Partial<MessageData> & { image: File | null }>({
         body: messageBody,
         sender_id: user.id,
@@ -23,7 +26,13 @@ export default function Writer() {
         chat_id: chat.id,
         type: "text",
         image: null,
+        replied_to: replyTo?.id,
     });
+    useEffect(() => {
+        if (replyTo) {
+            setData('replied_to', replyTo.id)
+        }
+    }, [replyTo])
     const sendThrottledMessage = throttle(async () => {
         const messageStoreUrl = route('message.store', { chat: chat.uuid });
         const loadingToast = toast.loading("Sending message...");
@@ -42,12 +51,16 @@ export default function Writer() {
                 setData('body', "");
                 setMessageBody("");
                 setData('image', null);
+                setReplyTo(undefined)
             },
             onError(error) {
                 console.error("Error while sending message", error);
                 toast.error("Error while sending message", {
                     id: loadingToast
                 });
+            },
+            onFinish() {
+                toast.dismiss(loadingToast)
             }
         });
     }, 1000, { leading: true, trailing: false });
@@ -97,6 +110,13 @@ export default function Writer() {
     return (
         <>
             <div className="fixed bottom-0 md:left-2 lg:left-[372px] left-0 right-0 md:right-2">
+
+                {replyTo &&
+                    <div className='bg-base-gradient text-gray-800 p-2 md:!px-4'>
+                        <div className='font-bold'>Reply To: {replyTo.by_me ? 'Self' : replyTo.from?.name}</div>
+                        <ReplyToMessage message={replyTo} />
+                    </div>
+                }
                 {data.image &&
                     <div className="p-2 relative w-max">
                         <button className="absolute -top-0 -right-0 text-white w-5 h-5 inline-flex items-center justify-center bg-red-500 rounded-full" onClick={() => setData('image', null)}>
