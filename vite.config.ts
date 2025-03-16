@@ -55,7 +55,7 @@ export default defineConfig({
             resolvers: [
                 IconsResolver({
                     prefix: false,
-                    extension: 'tsx',
+                    extension: "jsx",
                     enabledCollections: iconCollection,
                 }),
             ],

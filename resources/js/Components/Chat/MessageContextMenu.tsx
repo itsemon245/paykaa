@@ -8,9 +8,11 @@ export default function MessageContextMenu({
 }: { message: MessageData }) {
     const setReplyTo = useMessageStore(state => state.setReplyTo)
     return (
-        <div className={cn("absolute top-0 opacity-0 group-hover:opacity-100 transition-opacity", message.by_me ? 'left-0' : 'right-0')}>
-            <HeroiconsChevronDown20Solid className="h-6 w-6 cursor-pointer" onClick={() => setReplyTo(message)} />
+        <div className={cn("absolute top-0 md:opacity-0 group-hover:opacity-100 transition-opacity right-0")}>
+            <MdiReply className="h-5 w-5 cursor-pointer" onClick={() => setReplyTo(message)} />
         </div>
 
     )
 }
+
+

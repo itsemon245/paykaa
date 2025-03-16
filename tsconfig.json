@@ -12,7 +12,7 @@
         "skipLibCheck": true,
         "noEmit": true,
         "types": [
-            "unplugin-icons/types/react",
+            "unplugin-icons/types/react"
         ],
         "paths": {
             "@/*": ["./resources/js/*"],

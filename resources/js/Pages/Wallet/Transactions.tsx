@@ -12,6 +12,8 @@ import { DataTable, DataTableStateEvent } from "primereact/datatable";
 import { Dialog } from "primereact/dialog";
 import { Paginator, PaginatorPageChangeEvent } from "primereact/paginator";
 import { Tag, TagProps } from "primereact/tag";
+import { MdiArrowRightDropCircleOutline } from "@/Components/Icons/MdiArrowRightDropCircleOutline";
+import { MdiCurrencyBdt } from "@/Components/Icons/MdiCurrencyBdt";
 
 export default function Transactions() {
     const pageProps = usePage().props

@@ -17,6 +17,7 @@ import { cn, copyToClipboard, defaultAvatar, image } from '@/utils';
 import countries from '@/data/countries';
 import { SelectItemOptionsType } from 'primereact/selectitem';
 import { UpdateProfileFormProps } from '../Edit';
+import { HeroiconsCameraSolid } from '@/Components/Icons/HeroiconsCameraSolid';
 
 const EmailVerifiedTag = ({ user, id, ...props }: HTMLProps<HTMLDivElement> & { user: UserData, id?: string }) => {
     const [loading, setLoading] = useState(false);

@@ -1,3 +1,5 @@
+import { ManifestOptions } from "vite-plugin-pwa";
+
 export const pwaManifest = {
     "name": "PayKaa",
     "short_name": "PayKaa",
@@ -195,4 +197,4 @@ export const pwaManifest = {
         "standalone",
         "window-controls-overlay"
     ]
-}
+} as Partial<ManifestOptions>
