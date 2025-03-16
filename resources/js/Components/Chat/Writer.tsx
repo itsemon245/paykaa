@@ -116,8 +116,10 @@ export default function Writer() {
             <div className="fixed bottom-0 md:left-2 lg:left-[372px] left-0 right-0 md:right-2">
 
                 {replyTo &&
-                    <div className='bg-base-gradient text-gray-800 p-2 md:!px-4'>
-                        <div className='font-bold'>Reply To: {replyTo.by_me ? 'Self' : replyTo.from?.name}</div>
+                    <div className='bg-base-gradient text-gray-800 p-2 md:!px-4 gap-0.5'>
+                        <div className='font-bold'>Reply To: {replyTo.by_me ? 'Self' : replyTo.from?.name}
+                            <span className='!text-red-500 text-md cursor-pointer px-2' onClick={e => setReplyTo(undefined)}>Cancel</span>
+                        </div>
                         <ReplyToMessage message={replyTo} />
                     </div>
                 }

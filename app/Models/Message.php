@@ -48,9 +48,9 @@ class Message extends Model
     public function from(): BelongsTo
     {
         if ($this->sender_id == auth()->id()) {
-            return $this->sender();
+            return $this->receiver();
         }
-        return $this->receiver();
+        return $this->sender();
     }
 
     public function chat()
