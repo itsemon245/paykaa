@@ -9,6 +9,11 @@ class Message extends Model
 {
     use HasUuid;
 
+    public function parent()
+    {
+        return $this->belongsTo(Message::class, 'replied_to');
+    }
+
     public function scopeReceived($query)
     {
         return $query->where('receiver_id', auth()->id());

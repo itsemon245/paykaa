@@ -1,13 +1,15 @@
 import useBreakpoint from "@/Hooks/useBrakpoints";
+import { useMessageStore } from "@/stores/useMessageStore";
 import { ChatData, MessageData } from "@/types/_generated"
 import { cn, defaultAvatar, image } from "@/utils";
 import { usePage } from "@inertiajs/react";
 import { format, parseISO } from "date-fns"
-import { Image } from "primereact/image";
 
 const Message = ({ message, children }: { message: MessageData, children?: React.ReactNode }) => {
     const chat = usePage().props.chat as ChatData;
     const { min } = useBreakpoint();
+    const { user } = useAuth()
+    const setContextMenu = useMessageStore(state => state.setContextMenu)
     if (message.moneyRequest) {
         return <MoneyRequestMessage message={message} chat={chat} />
     }
@@ -15,10 +17,11 @@ const Message = ({ message, children }: { message: MessageData, children?: React
         <div key={"message-" + message.uuid}>
             {children}
             <div className={`message ${message.by_me ? 'me' : ''}`}>
+
                 {!message.by_me && (
                     <img
                         className={min('md') ? "avatar-md me-2" : "avatar-sm me-2"}
-                        src={chat.from?.avatar}
+                        src={image(chat.from?.avatar)}
                         onError={(e) => {
                             //@ts-ignore
                             e.target.src = defaultAvatar
@@ -29,27 +32,14 @@ const Message = ({ message, children }: { message: MessageData, children?: React
                         alt="avatar"
                     />
                 )}
-                <div className="text-main max-sm:max-w-[300px]">
-                    <div className={`text-group ${message.by_me ? 'me' : ''}`}>
-                        {message.type === 'image' ?
-                            <Image pt={{
-                                image: {
-                                    className: "rounded-lg w-44 md:w-52 max-h-[500px] h-auto object-contain",
-                                },
-                                preview: {
-                                    className: "py-4"
-                                }
-                            }}
-                                downloadable
-                                src={image(message.body as string)}
-                                alt="Image" preview />
-                            : <div className={`text ${message.by_me ? 'me font-medium text-white' : ''}`}>
-                                <div>{message.body}</div>
-                            </div>
-                        }
+                <div onContextMenu={setContextMenu(true)} className={cn("relative group w-max", message.by_me ? 'text-white' : 'text-gray-800')}>
+                    <MessageContextMenu message={message} />
+                    <div className={cn("font-medium text !rounded-xl !py-2.5 !px-3 w-full flex items-center justify-center flex-col", message.by_me ? "me !rounded-br-none" : "!rounded-bl-none")}>
+                        {message.type === 'text' ? <TextMessage message={message} /> : <ImageMessage message={message} />}
                     </div>
-                    <div className={cn("!text-gray-400 !font-normal !text-xs", message.by_me ? 'text-end' : 'text-start')}>{format(parseISO(message.created_at as string), 'hh:mm a')}</div>
+                    <div className={cn("!text-gray-400 !font-normal !text-xs mt-1", message.by_me ? 'text-end' : 'text-start')}>{format(parseISO(message.created_at as string), 'hh:mm a')}</div>
                 </div>
+
             </div>
         </div>
     )

@@ -1,4 +1,3 @@
-//zustand store
 import { create } from 'zustand'
 
 interface ChatStore {
