@@ -22,6 +22,7 @@ class MessageCreated implements ShouldBroadcast, ShouldQueueAfterCommit
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     public MessageData $message;
+    public int $authId;
 
     /**
      * Create a new event instance.
@@ -40,6 +41,7 @@ class MessageCreated implements ShouldBroadcast, ShouldQueueAfterCommit
             'last_message_at' => now(),
         ]);
         $this->message = MessageData::from($message);
+        $this->authId = auth()->id();
     }
 
     /**

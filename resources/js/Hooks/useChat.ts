@@ -26,6 +26,11 @@ export default function useChat() {
             setMessages(messagesProp)
         }
     }, [messagesProp])
+    useEffect(() => {
+        if (chatsProp) {
+            setChats(chatsProp)
+        }
+    }, [chatsProp])
 
     useEffect(() => {
         if (!chats) return
@@ -34,10 +39,12 @@ export default function useChat() {
             console.log("listening to channel:", chatChannel)
             Echo.leave(chatChannel)
             Echo.channel(chatChannel)
-                .listen('MessageCreated', (e: { message: MessageData }) => {
-                    if (e.message.receiver_id === user.id) {
+                .listen('MessageCreated', (e: { message: MessageData, authId: number }) => {
+                    if (e.authId !== user.id) {
                         playSound()
                         router.visit(window.location.href, {
+                            preserveState: true,
+                            preserveScroll: true,
                             only: ['messages', 'chats'],
                         })
                     }

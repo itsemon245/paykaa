@@ -43,7 +43,7 @@ export default function Topbar() {
                         </div>
                         <div className="flex items-center gap-1 md:gap-2 justify-between w-full grow">
                             <div>
-                                <div className="text-base font-bold md:text-lg"><a href="#">{isHelpline && !isAdmin ? 'PayKaa' : chat.from?.name}</a></div>
+                                <div className="text-base font-bold md:text-lg"><a href={isHelpline && !isAdmin ? "#" : `/marketplace?user_id=${chat.from?.id}`}>{isHelpline && !isAdmin ? 'PayKaa' : chat.from?.name}</a></div>
                                 {
                                     isHelpline && !isAdmin ?
                                         <span>Helpline</span>

@@ -11,6 +11,7 @@ import { useChatStore } from '@/stores/useChatStore';
 export default function Writer() {
     const chat = usePage().props.chat as ChatData;
     const { toggleTyping } = useTyping(chat);
+    const { setChats, chats } = useChat();
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
     const { user } = useAuth();
     const messageBody = useChatStore(state => state.messageBody);
@@ -27,7 +28,7 @@ export default function Writer() {
         const messageStoreUrl = route('message.store', { chat: chat.uuid });
         const loadingToast = toast.loading("Sending message...");
         post(messageStoreUrl, {
-            preserveState: false,
+            only: ['messages', 'chats'],
             onSuccess(data) {
                 if (data.props.error) {
                     toast.error(data.props.error, {
