@@ -2,7 +2,7 @@ import { debounce, throttle } from 'lodash';
 import toast, { Toaster } from 'react-hot-toast';
 import { PaginatedCollection } from "@/types";
 import { ChatData, MessageData, MessageType } from "@/types/_generated";
-import { useForm, usePage } from "@inertiajs/react";
+import { router, useForm, usePage } from "@inertiajs/react";
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Button } from 'primereact/button';
 import { cn, storage } from '@/utils';
@@ -32,6 +32,9 @@ export default function Writer() {
         if (replyTo) {
             setData('replied_to', replyTo.id)
             textAreaRef.current?.focus()
+            router.on('navigate', () => {
+                setReplyTo(undefined)
+            })
         }
     }, [replyTo])
     const sendThrottledMessage = throttle(async () => {
