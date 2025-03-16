@@ -31,6 +31,7 @@ export default function Writer() {
     useEffect(() => {
         if (replyTo) {
             setData('replied_to', replyTo.id)
+            textAreaRef.current?.focus()
         }
     }, [replyTo])
     const sendThrottledMessage = throttle(async () => {
