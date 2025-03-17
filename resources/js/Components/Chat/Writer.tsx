@@ -35,6 +35,8 @@ export default function Writer() {
             router.on('navigate', () => {
                 setReplyTo(undefined)
             })
+        } else {
+            setData('replied_to', undefined)
         }
     }, [replyTo])
     const sendThrottledMessage = throttle(async () => {
