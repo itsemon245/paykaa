@@ -25,6 +25,10 @@ class MoneyRequestController extends Controller
                 'note' => 'nullable|string',
                 'receiver_id' => 'required|numeric|exists:users,id',
                 'chat_id' => 'required|numeric|exists:chats,id',
+                'duration' => 'required|array',
+                'duration.day' => 'required|numeric|max:31',
+                'duration.hour' => 'required|numeric|max:24',
+                'duration.minute' => 'required|numeric|max:60',
             ]);
 
             $requestPending = MoneyRequest::where(function ($query) use ($request) {
@@ -57,6 +61,7 @@ class MoneyRequestController extends Controller
                 ...$request->only('amount', 'note', 'receiver_id'),
                 'sender_id' => auth()->id(),
                 'message_id' => $message->id,
+                'duration' => $request->duration,
             ]);
             event(new \App\Events\MessageCreated($message));
             return back();
@@ -70,6 +75,7 @@ class MoneyRequestController extends Controller
                 return back();
             }
             $moneyRequest->accepted_at = now();
+            $moneyRequest->expires_at = now()->addMinutes($moneyRequest->duration['minute'])->addHours($moneyRequest->duration['hour'])->addDays($moneyRequest->duration['day']);
             $moneyRequest->save();
             Wallet::create([
                 'owner_id' => auth()->id(),

@@ -242,6 +242,12 @@ button:focus {
     .p-button-sm, .p-button{
         @apply py-2 px-4 text-base font-medium
     }
+    .money-request .p-button-sm, .p-button{
+     @apply py-1.5 px-2 text-xs md:text-base font-medium
+    }
+.money-request .disabled .p-button{
+    @apply cursor-not-allowed
+}
     .p-button-label{
         @apply text-base font-medium
     }

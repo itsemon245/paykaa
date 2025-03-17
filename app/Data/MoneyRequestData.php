@@ -30,6 +30,8 @@ class MoneyRequestData extends Data
         public int $message_id,
         public int $amount,
         #[Optional]
+        public ?DurationData $duration,
+        #[Optional]
         public ?string $currency,
         #[Optional]
         public ?string $note,
@@ -43,5 +45,7 @@ class MoneyRequestData extends Data
         public ?Carbon $released_at,
         #[Optional]
         public ?Carbon $rejected_at,
+        #[Optional]
+        public ?Carbon $expires_at,
     ) {}
 }

@@ -13,11 +13,13 @@ class MoneyRequest extends Model
     use HasUuid;
     use CanSendMoneyRequestNotification;
     protected $casts = [
+        'duration' => 'array',
         'accepted_at' => 'datetime',
         'cancelled_at' => 'datetime',
         'release_requested_at' => 'datetime',
         'released_at' => 'datetime',
         'rejected_at' => 'datetime',
+        'expires_at' => 'datetime',
     ];
 
     public function getStatusAttribute(): string

@@ -80,6 +80,11 @@ export type DepositMethodData = {
 export type DepositMethodMetaData = {
     qr_code: string;
 };
+export type DurationData = {
+    day: number;
+    hour: number;
+    minute: number;
+};
 export type EarningData = {
     id: number | null;
     user_id: number;
@@ -146,6 +151,7 @@ export type MoneyRequestData = {
     receiver_id: number;
     message_id: number;
     amount: number;
+    duration?: DurationData;
     currency?: string;
     note?: string;
     accepted_at?: string;
@@ -153,6 +159,7 @@ export type MoneyRequestData = {
     release_requested_at?: string;
     released_at?: string;
     rejected_at?: string;
+    expires_at?: string;
     created_at?: string;
     updated_at?: string;
     created_at_human?: string;

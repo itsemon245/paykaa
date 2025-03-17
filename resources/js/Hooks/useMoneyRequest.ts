@@ -2,12 +2,12 @@ import { PaginatedCollection, RouteName } from "@/types";
 import { ChatData, MessageData, MoneyRequestData } from "@/types/_generated";
 import { router } from "@inertiajs/react";
 import toast from "react-hot-toast";
+import { useState, useEffect } from "react";
 
-export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?: ChatData) {
+export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?: ChatData, onSuccess?: () => void) {
     const [processing, setProcessing] = useState(true);
     const [message, setMessage] = useState<MessageData>();
     const [moneyRequest, setMoneyRequest] = useState<MoneyRequestData>();
-
     const fetchMessage = async () => {
         console.log("Fetching message")
         const res = await fetch(route('messages.money-requests', { chat: moneyRequestMessage?.chat?.uuid ?? chat?.uuid }))
@@ -45,6 +45,7 @@ export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?
                 setProcessing(false)
                 toast.success("Requested accept!")
                 toast.dismiss(toastId)
+                onSuccess?.()
             },
             onError: () => {
                 setProcessing(false)
@@ -52,7 +53,7 @@ export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?
                 console.error("Error accept request")
                 toast.dismiss(toastId)
             },
-            preserveState: false,
+            only: ['messages', 'chats'],
             preserveScroll: true
         })
     }
@@ -71,6 +72,7 @@ export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?
                     toast.success(`Success! ${moneyRequest.amount} BDT has been sent!`)
                 }
                 toast.dismiss(toastId)
+                onSuccess?.()
             },
             onError: () => {
                 setProcessing(false)
@@ -78,7 +80,7 @@ export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?
                 console.error("Error release request")
                 toast.dismiss(toastId)
             },
-            preserveState: false,
+            only: ['messages', 'chats'],
             preserveScroll: true
         })
     }
@@ -93,6 +95,7 @@ export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?
                 setProcessing(false)
                 toast.success("Requested rejected!")
                 toast.dismiss(toastId)
+                onSuccess?.()
             },
             onError: () => {
                 setProcessing(false)
@@ -100,7 +103,7 @@ export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?
                 console.error("Error rejecting request")
                 toast.dismiss(toastId)
             },
-            preserveState: false,
+            only: ['messages', 'chats'],
             preserveScroll: true
         })
     }
@@ -116,6 +119,7 @@ export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?
                 setProcessing(false)
                 toast.success("Cancelled request!")
                 toast.dismiss(toastId)
+                onSuccess?.()
             },
             onError: () => {
                 setProcessing(false)
@@ -123,7 +127,7 @@ export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?
                 console.error("Error cancel request")
                 toast.dismiss(toastId)
             },
-            preserveState: false,
+            only: ['messages', 'chats'],
             preserveScroll: true
         })
     }
@@ -139,6 +143,7 @@ export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?
                 setProcessing(false)
                 toast.success("Requested release")
                 toast.dismiss(toastId)
+                onSuccess?.()
             },
             onError: () => {
                 setProcessing(false)
@@ -146,7 +151,7 @@ export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?
                 console.error("Error release request")
                 toast.dismiss(toastId)
             },
-            preserveState: false,
+            only: ['messages', 'chats'],
             preserveScroll: true
         })
     }

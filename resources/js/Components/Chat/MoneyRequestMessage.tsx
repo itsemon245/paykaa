@@ -75,8 +75,11 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
         </div>
         )
     }
+    useEffect(() => {
+        console.log('Money request', message.moneyRequest)
+    }, [message])
     return (
-        <div className={cn("message", message.by_me ? "me" : "")}>
+        <div className={cn("message money-request", message.by_me ? "me" : "")}>
             {!message.by_me && (
                 <img
                     className={min('md') ? "avatar-md me-2" : "avatar-sm me-2"}
@@ -94,15 +97,23 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
             )}
 
             <div>
-                <Card className="max-sm:max-w-[220px]" pt={{
+                <Card className={cn(message.moneyRequest?.cancelled_at != null || message.moneyRequest?.rejected_at != null || message.moneyRequest?.released_at != null ? "opacity-75 cursor-not-allowed disabled" : '', "max-sm:max-w-[220px]")} pt={{
                     content: {
                         className: "p-1 md:py-2",
+                    },
+                    body: {
+                        className: "px-2",
                     }
                 }}>
                     <div className="text-center text-xs font-medium">Money Request</div>
-                    <div className="text-center md:text-lg font-bold my-1.5 text-green-600">{message.moneyRequest?.amount.toFixed(2)} BDT</div>
-                    <div className="text-sm font-medium mb-2 flex items-center gap-2">{message.by_me ? "You have " : `${message.moneyRequest?.from?.name} has `} requested Money
+                    <div className="flex items-end justify-center w-full gap-1">
+                        <div className="text-sm font-medium mb-1">{message.by_me ? "You" : `${message.moneyRequest?.from?.name}`} requested</div>
+                        <div className={cn("text-center text-base font-bold mt-1 mb-0.5", message.by_me ? 'text-green-500' : 'text-red-500')}>{message.by_me ? '+' : '-'}{message.moneyRequest?.amount.toFixed(2)} BDT</div>
                     </div>
+                    {message.moneyRequest && <div className="mb-1">
+                        <Countdown moneyRequest={message.moneyRequest} />
+                    </div>
+                    }
                     {message.by_me ?
                         <MyButtons moneyRequest={message.moneyRequest as MoneyRequestData} />
                         : <UserButtons moneyRequest={message.moneyRequest as MoneyRequestData} />
@@ -111,7 +122,7 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                 </Card>
                 <span className={cn("!text-gray-400 mt-1 !font-normal !text-xs", message.by_me ? 'text-end' : 'text-start')}>{format(parseISO(message.created_at as string), 'hh:mm a')}</span>
             </div>
-        </div>
+        </div >
     )
 }
 

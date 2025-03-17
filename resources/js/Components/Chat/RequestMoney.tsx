@@ -1,16 +1,20 @@
+import { useMessageStore } from "@/stores/useMessageStore";
 import { RouteName } from "@/types";
 import { ChatData, MoneyRequestData, WalletData } from "@/types/_generated";
 import { cn } from "@/utils";
 import { useForm, usePage } from "@inertiajs/react";
+import { add, format } from "date-fns";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { InputNumber } from "primereact/inputnumber";
 import { FormEvent } from "react";
 import toast from "react-hot-toast";
 
-export default function RequestMoney({ chat }: { chat: ChatData }) {
-    const { accept, release, requestRelease, message, cancel, processing: moneyRequestProcessing, reject, moneyRequest } = useMoneyRequest(undefined, chat)
+export default function RequestMoney({ chat, onSuccess }: { chat: ChatData, onSuccess?: () => void }) {
+    const { accept, release, requestRelease, message, cancel, processing: moneyRequestProcessing, reject, moneyRequest } = useMoneyRequest(undefined, chat, onSuccess)
     const { balance, refreshBalance, loadingBalance } = useBalance(chat.from);
+    const duration = useMessageStore(state => state.duration)
+    const setDuration = useMessageStore(state => state.setDuration)
 
     const { post, processing, errors, data, setData } = useForm<Partial<MoneyRequestData & { chat_id: number }>>({
         amount: 0,
@@ -18,17 +22,26 @@ export default function RequestMoney({ chat }: { chat: ChatData }) {
         currency: "bdt",
         receiver_id: chat.from?.id,
         chat_id: chat.id,
+        duration: undefined,
     })
+    useEffect(() => {
+        setData('duration', duration)
+    }, [duration])
     const submit = (e?: FormEvent) => {
         e?.preventDefault()
         if (processing) return
+        if (duration.day === 0 && duration.hour < 6) {
+            toast.error("Minimum duration is 6 hours")
+            return
+        }
+
         if (!data.amount) {
             toast.error("Please enter an amount")
             return
         }
         const toastId = toast.loading("Sending money request...")
         post(route('money.request' as RouteName), {
-            preserveState: false,
+            only: ['messages', 'chats'],
             onSuccess: (data) => {
                 const error = data.props.error
                 console.log(data)
@@ -41,12 +54,24 @@ export default function RequestMoney({ chat }: { chat: ChatData }) {
                 toast.success("Money request sent successfully!", {
                     id: toastId,
                 })
+                onSuccess?.()
+
             },
             onError: (error) => {
                 console.error("Error sending money request", error)
                 toast.error("Error sending money request!", {
                     id: toastId,
                 })
+            },
+            onFinish: () => {
+                setDuration({
+                    day: 0,
+                    hour: 6,
+                    minute: 0
+                })
+                setTimeout(() => {
+                    toast.dismiss(toastId)
+                }, 1000)
             }
         })
     }
@@ -145,9 +170,13 @@ export default function RequestMoney({ chat }: { chat: ChatData }) {
                                 {
                                     message && moneyRequest ?
                                         <div className="mt-2">
-                                            <div className="justify-center text-lg font-medium mb-2 flex items-center gap-2">{message.by_me ? "You have " : `${moneyRequest?.from?.name} has `} requested
+                                            <div className="justify-center text-lg font-medium mb-1 flex items-center gap-2">{message.by_me ? "You have " : `${moneyRequest?.from?.name} has `} requested
                                                 <div className={cn("font-bold", message.by_me ? 'text-green-500' : 'text-red-500')}>{(message.by_me ? '+' : '-') + moneyRequest?.amount} BDT</div>
                                             </div>
+                                            {message.moneyRequest && <div className="mb-1">
+                                                <Countdown moneyRequest={message.moneyRequest} />
+                                            </div>
+                                            }
                                             {
                                                 message.by_me ?
                                                     <MyButtons moneyRequest={moneyRequest} />
@@ -162,6 +191,10 @@ export default function RequestMoney({ chat }: { chat: ChatData }) {
                                                 {Object.entries(errors).map(([key, value]) => {
                                                     return <InputError key={key} message={value} />
                                                 })}
+                                            </div>
+                                            <div className="my-2">
+                                                <label className="text-gray-800 text-md font-bold">Time Limit:</label>
+                                                <TimeSelector />
                                             </div>
                                             <Button size="small" label={processing ? "Processing..." : "Send Request"} />
                                         </>
