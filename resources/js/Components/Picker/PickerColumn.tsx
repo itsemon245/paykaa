@@ -14,11 +14,6 @@ export function useColumnData(componentName: string) {
     const context = useContext(PickerColumnDataContext)
     if (context === null) {
         const error = new Error(`<${componentName} /> is missing a parent <Picker.Column /> component.`)
-        //@ts-ignore
-        if (Error.captureStackTrace) {
-            //@ts-ignore
-            Error.captureStackTrace(error, useColumnData)
-        }
         throw error
     }
     return context
@@ -43,7 +38,7 @@ function PickerColumn({
     )
     const selectedIndex = useMemo(
         () => {
-            let index = options.findIndex((o) => o.value === value)
+            let index = options.findIndex((o: any) => o.value === value)
             if (index < 0) {
                 index = 0
             }

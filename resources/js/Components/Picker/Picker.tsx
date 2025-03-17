@@ -34,11 +34,6 @@ export function usePickerData(componentName: string) {
     const context = useContext(PickerDataContext)
     if (context === null) {
         const error = new Error(`<${componentName} /> is missing a parent <Picker /> component.`)
-        //@ts-ignore
-        if (Error.captureStackTrace) {
-            //@ts-ignore
-            Error.captureStackTrace(error, usePickerData)
-        }
         throw error
     }
     return context
@@ -54,11 +49,6 @@ export function usePickerActions(componentName: string) {
     const context = useContext(PickerActionsContext)
     if (context === null) {
         const error = new Error(`<${componentName} /> is missing a parent <Picker /> component.`)
-        //@ts-ignore
-        if (Error.captureStackTrace) {
-            //@ts-ignore
-            Error.captureStackTrace(error, usePickerActions)
-        }
         throw error
     }
     return context
