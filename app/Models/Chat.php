@@ -71,7 +71,13 @@ class Chat extends Model
             })->where(function (Builder $q) use ($search) {
                 if ($search) {
                     if ($search == 'unread') {
-                        $q->where('is_read', false);
+                        $q->whereNotNull('last_message_at');
+                        $q->whereHas('lastMessage', function ($query) {
+                            if (auth()->user()->isAdmin()) {
+                                $query->whereNot('sender_id', auth()->id());
+                            }
+                            $query->where('is_read', false);
+                        });
                     } else {
                         $q->where('sender_id', $search);
                         $q->orWhere('receiver_id', $search);

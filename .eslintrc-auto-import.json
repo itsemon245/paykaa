@@ -110,6 +110,7 @@
     "usePickerActions": true,
     "usePickerData": true,
     "PickerItem": true,
-    "Countdown": true
+    "Countdown": true,
+    "MoneyRequestActions": true
   }
 }

@@ -32,7 +32,7 @@ export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?
             setMessage(moneyRequestMessage)
             setMoneyRequest(moneyRequestMessage?.moneyRequest as MoneyRequestData)
         }
-    }, [])
+    }, [moneyRequestMessage])
 
     const accept = async () => {
         if (!moneyRequest || processing) return
@@ -59,6 +59,7 @@ export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?
     }
     const release = async () => {
         if (!moneyRequest || processing) return
+        if (moneyRequest.released_at || moneyRequest.by_me) return
         setProcessing(true)
         const toastId = toast.loading("Releasing money request...")
         router.post(route('money.release' as RouteName, {

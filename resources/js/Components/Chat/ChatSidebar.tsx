@@ -62,7 +62,7 @@ export default function ChatSidebar({
                         (
                             <div className={cn(
                                 "!max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap flex items-center gap-1 max-md:text-xs",
-                                !item.is_read && "!font-bold !text-black",
+                                !item.last_message?.is_read && "!font-bold !text-black",
                             )}>
                                 {item.last_message.by_me && <div>You:</div>}
                                 {item.last_message.type === 'image' ? <HeroiconsPhoto20Solid className="w-4 h-auto mt-1" /> : item.last_message.body}</div>

@@ -168,21 +168,8 @@ export default function RequestMoney({ chat, onSuccess }: { chat: ChatData, onSu
                         <>
                             <div>
                                 {
-                                    message && moneyRequest ?
-                                        <div className="mt-2">
-                                            <div className="justify-center text-lg font-medium mb-1 flex items-center gap-2">{message.by_me ? "You have " : `${moneyRequest?.from?.name} has `} requested
-                                                <div className={cn("font-bold", message.by_me ? 'text-green-500' : 'text-red-500')}>{(message.by_me ? '+' : '-') + moneyRequest?.amount} BDT</div>
-                                            </div>
-                                            {message.moneyRequest && <div className="mb-1">
-                                                <Countdown moneyRequest={message.moneyRequest} />
-                                            </div>
-                                            }
-                                            {
-                                                message.by_me ?
-                                                    <MyButtons moneyRequest={moneyRequest} />
-                                                    : <UserButtons moneyRequest={moneyRequest} />
-                                            }
-                                        </div>
+                                    message && message.type === 'money_request' ?
+                                        <MoneyRequestActions moneyRequest={moneyRequest} chat={chat} onSuccess={onSuccess} />
                                         :
                                         <>
                                             <div className="flex flex-col mb-2">

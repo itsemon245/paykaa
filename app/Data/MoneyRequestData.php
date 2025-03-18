@@ -24,6 +24,7 @@ class MoneyRequestData extends Data
     #[Optional]
     public ?UserData $from;
     public Status $status;
+    public bool $by_me;
     public function __construct(
         public int $sender_id,
         public int $receiver_id,
@@ -47,5 +48,7 @@ class MoneyRequestData extends Data
         public ?Carbon $rejected_at,
         #[Optional]
         public ?Carbon $expires_at,
-    ) {}
+    ) {
+        $this->by_me = $sender_id === auth()->id();
+    }
 }

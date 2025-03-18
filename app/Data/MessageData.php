@@ -42,5 +42,8 @@ class MessageData extends Data
         public MessageType $type = MessageType::Text->value,
     ) {
         $this->by_me = $sender_id === auth()->user()->id;
+        if (auth()->user()->isAdmin() && $this->sender_id === 1) {
+            $this->is_read = true;
+        }
     }
 }

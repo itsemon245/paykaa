@@ -40,6 +40,17 @@ export default function useChat() {
             Echo.leave(chatChannel)
             Echo.channel(chatChannel)
                 .listen('MessageCreated', (e: { message: MessageData, authId: number }) => {
+                    //refresh all states if the message is money request
+                    // if (e.message.type === 'money_request') {
+                    //     if (e.authId !== user.id) {
+                    //         playSound()
+                    //     }
+                    //     router.visit(window.location.href, {
+                    //         preserveState: false,
+                    //         preserveScroll: true,
+                    //     })
+                    //     return
+                    // }
                     if (e.authId !== user.id) {
                         playSound()
                         router.visit(window.location.href, {

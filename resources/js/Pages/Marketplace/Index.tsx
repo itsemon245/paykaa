@@ -121,8 +121,8 @@ export default function Index() {
 
                     {adUser && <div className="flex items-center gap-2 my-3">
                         <div className="heading !text-gray-700 mb-0">Showing {adUser.name}'s({adUser.id}) Ads</div>
-                        <Link href={route('marketplace.index')}>
-                            <Button label="Clear" size="small" className="px-3 py-1" severity="warning" />
+                        <Link href={document.referrer}>
+                            <Button label="Back" size="small" className="px-3 py-1" severity="contrast" />
                         </Link>
                     </div>}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 3xl:grid-cols-4 gap-3" >

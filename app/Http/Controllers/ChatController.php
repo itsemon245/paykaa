@@ -151,7 +151,7 @@ class ChatController extends Controller
                 $chats->where('receiver_id', 1);
             } else {
                 $chats->whereNot('receiver_id', 1);
-                if ($request->search) {
+                if ($request->search && $request->search !== 'unread') {
                     $chats->withEmpty();
                 }
             }

@@ -44,6 +44,7 @@ declare global {
   const MessageDate: typeof import('../Components/Chat/MessageDate')['default']
   const Messages: typeof import('../Components/Chat/Messages')['default']
   const Modal: typeof import('../Components/Modal')['default']
+  const MoneyRequestActions: typeof import('../Components/RequestMoney/MoneyRequestActions')['default']
   const MoneyRequestMessage: typeof import('../Components/Chat/MoneyRequestMessage')['default']
   const NavLink: typeof import('../Components/NavLink')['default']
   const Navbar: typeof import('../Components/Navbar')['default']

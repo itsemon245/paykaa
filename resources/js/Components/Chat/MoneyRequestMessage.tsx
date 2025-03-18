@@ -1,3 +1,5 @@
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import useBreakpoint from "@/Hooks/useBrakpoints";
 import useMoneyRequest from "@/Hooks/useMoneyRequest";
 import { RouteName } from "@/types";
@@ -5,79 +7,45 @@ import { ChatData, MessageData, MoneyRequestData } from "@/types/_generated";
 import { cn, defaultAvatar } from "@/utils";
 import { router, usePage } from "@inertiajs/react";
 import { format, parseISO } from "date-fns";
-import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { Tag } from "primereact/tag";
 import toast from "react-hot-toast";
 
 export default function MoneyRequestMessage({ message, chat }: { message: MessageData, chat: ChatData }) {
+    const { processing, accept, reject, cancel, moneyRequest } = useMoneyRequest(message, chat)
 
     const { min } = useBreakpoint();
 
     const getSeverity = (moneyRequest: MoneyRequestData) => {
-        if (moneyRequest.cancelled_at) {
+        if (moneyRequest?.cancelled_at) {
             return "danger"
         }
-        if (moneyRequest.status === 'completed') {
+        if (moneyRequest?.status === 'completed') {
             return "success"
         }
-        if (moneyRequest.status === 'waiting for release') {
+        if (moneyRequest?.status === 'waiting for release') {
             return "warning"
         }
-        if (moneyRequest.rejected_at) {
+        if (moneyRequest?.rejected_at) {
             return "danger"
         }
-        if (moneyRequest.accepted_at) {
+        if (moneyRequest?.accepted_at) {
             return undefined
         }
         return "warning"
     }
 
     const getStatus = (moneyRequest: MoneyRequestData) => {
-        if (moneyRequest.status === 'approved') {
+        if (moneyRequest?.status === 'approved') {
             return message.by_me ? "Request release" : "Request Accepted"
         }
-        if (moneyRequest.status === 'waiting for release') {
+        if (moneyRequest?.status === 'waiting for release') {
             return !message.by_me ? "Please Release" : "Waiting for Release"
         }
-        return moneyRequest.status
+        return moneyRequest?.status
     }
 
-    const { processing, accept, release, reject, cancel, requestRelease } = useMoneyRequest(message)
 
-    const UserButtons = ({ moneyRequest }: { moneyRequest: MoneyRequestData }) => {
-        if (moneyRequest.status !== 'pending') {
-            return <Button onClick={e => {
-                if (moneyRequest.status === 'waiting for release' && !message.by_me) {
-                    release();
-                    return;
-                }
-
-            }} rounded severity={getSeverity(moneyRequest as MoneyRequestData)} className={cn("!rounded-lg w-full justify-center *:!font-bold *:!w-max", moneyRequest.status === 'approved' && '!text-black !bg-[#D8BBFF] !border-[#D8BBFF]')} label={processing ? 'Proccessing...' : getStatus(moneyRequest as MoneyRequestData)} size="small" />
-        }
-        return (
-            <div className="grid grid-cols-2 items-center gap-3">
-                <Button onClick={accept} rounded severity="success" className="!rounded-lg justify-center *:!font-bold" label={processing ? 'Processing...' : 'Accept'} icon="pi pi-check" size="small" />
-                <Button onClick={reject} rounded severity="danger" className="!rounded-lg justify-center *:!font-bold" label={processing ? 'Processing...' : 'Reject'} icon="pi pi-times" size="small" />
-            </div>
-        )
-    }
-
-    const MyButtons = ({ moneyRequest }: { moneyRequest: MoneyRequestData }) => {
-        return (<div className="flex items-center gap-2">
-            <Button onClick={e => {
-                if (moneyRequest.status === 'approved') {
-                    requestRelease();
-                }
-            }} rounded severity={getSeverity(moneyRequest as MoneyRequestData)} className={cn("!rounded-lg w-full justify-center *:!font-bold *:!w-max", moneyRequest.status === 'approved' && '!text-black !bg-[#D8BBFF] !border-[#D8BBFF]')} label={processing ? 'Proccessing...' : getStatus(moneyRequest as MoneyRequestData)} size="small" />
-            {!moneyRequest?.cancelled_at && !moneyRequest.accepted_at && !moneyRequest.rejected_at && <Button onClick={cancel} rounded severity="danger" className="!rounded-lg w-full justify-center *:!font-bold *:!w-max" label={processing ? 'Proccessing...' : 'Cancel'} size="small" />
-            }
-        </div>
-        )
-    }
-    useEffect(() => {
-        console.log('Money request', message.moneyRequest)
-    }, [message])
     return (
         <div className={cn("message money-request", message.by_me ? "me" : "")}>
             {!message.by_me && (
@@ -97,7 +65,7 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
             )}
 
             <div>
-                <Card className={cn(message.moneyRequest?.cancelled_at != null || message.moneyRequest?.rejected_at != null || message.moneyRequest?.released_at != null ? "opacity-75 cursor-not-allowed disabled" : '', "max-sm:max-w-[220px]")} pt={{
+                <Card className={cn(message.moneyRequest?.cancelled_at != null || message.moneyRequest?.rejected_at != null || message.moneyRequest?.released_at != null ? "opacity-75 cursor-not-allowed disabled" : '', "max-sm:max-w-[230px]")} pt={{
                     content: {
                         className: "p-1 md:py-2",
                     },
@@ -106,19 +74,49 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                     }
                 }}>
                     <div className="text-center text-xs font-medium">Money Request</div>
-                    <div className="flex items-end justify-center w-full gap-1">
-                        <div className="text-sm font-medium mb-1">{message.by_me ? "You" : `${message.moneyRequest?.from?.name}`} requested</div>
-                        <div className={cn("text-center text-base font-bold mt-1 mb-0.5", message.by_me ? 'text-green-500' : 'text-red-500')}>{message.by_me ? '+' : '-'}{message.moneyRequest?.amount.toFixed(2)} BDT</div>
+                    <div className="flex items-center justify-center w-full gap-1 flex-wrap my-1">
+                        <div className="text-sm font-medium">{message.by_me ? "You" : `${message.moneyRequest?.from?.name}`} requested</div>
+                        <div className={cn("text-center text-base font-bold mb-0.5", message.by_me ? 'text-green-500' : 'text-red-500')}>{message.by_me ? '+' : '-'}{message.moneyRequest?.amount.toFixed(2)} BDT</div>
                     </div>
                     {message.moneyRequest && <div className="mb-1">
                         <Countdown moneyRequest={message.moneyRequest} />
-                    </div>
-                    }
-                    {message.by_me ?
-                        <MyButtons moneyRequest={message.moneyRequest as MoneyRequestData} />
-                        : <UserButtons moneyRequest={message.moneyRequest as MoneyRequestData} />
+                    </div>}
+                    {!moneyRequest?.accepted_at && !moneyRequest?.released_at && !moneyRequest?.cancelled_at && !moneyRequest?.rejected_at ? <>
+                        <div className="flex items-center gap-2 justify-center">
+                            <Button type="button" onClick={e => {
+                                if (!moneyRequest?.by_me) {
+                                    accept();
+                                }
+                            }} variant={moneyRequest?.by_me && moneyRequest?.accepted_at == null ? 'warning' : 'success'} loading={processing} disabled={moneyRequest?.accepted_at != null} className={cn(moneyRequest?.accepted_at && '!cursor-not-allowed col-span-2', moneyRequest?.by_me && 'cursor-not-allowed')}>{moneyRequest?.accepted_at ? 'Accepted' : moneyRequest?.by_me ? 'Pending' : 'Accept'}</Button>
+                            {!message.moneyRequest?.accepted_at &&
+                                <Button type="button" onClick={e => {
+                                    if (moneyRequest?.by_me) {
+                                        cancel();
+                                    } else {
+                                        reject();
+                                    }
+                                }} variant="destructive" loading={processing} disabled={moneyRequest?.cancelled_at != null || moneyRequest?.rejected_at != null} className="disabled:cursor-not-allowed">{
+                                        moneyRequest?.cancelled_at != null ? 'Cancelled' : moneyRequest?.rejected_at != null ? 'Rejected' : moneyRequest?.by_me ? 'Cancel' : 'Reject'
+                                    }</Button>
+                            }
+                        </div>
+                    </> : <>
+                        {
+                            moneyRequest?.released_at ?
+                                <Button variant="success" className="w-full cursor-not-allowed">Completed</Button>
+                                : <Button variant={
+                                    !moneyRequest?.cancelled_at
+                                        && !moneyRequest?.rejected_at
+                                        ? "warning" : "destructive"
+                                } className="cursor-not-allowed w-full" >{
+                                        !moneyRequest?.cancelled_at
+                                            && !moneyRequest?.rejected_at
+                                            ? "Pending"
+                                            : "Cancelled"
+                                    }</Button>
 
-                    }
+                        }
+                    </>}
                 </Card>
                 <span className={cn("!text-gray-400 mt-1 !font-normal !text-xs", message.by_me ? 'text-end' : 'text-start')}>{format(parseISO(message.created_at as string), 'hh:mm a')}</span>
             </div>
