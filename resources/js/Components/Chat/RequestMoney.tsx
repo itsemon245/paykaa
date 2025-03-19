@@ -1,17 +1,14 @@
 import { useMessageStore } from "@/stores/useMessageStore";
 import { RouteName } from "@/types";
-import { ChatData, MoneyRequestData, WalletData } from "@/types/_generated";
-import { cn } from "@/utils";
-import { useForm, usePage } from "@inertiajs/react";
-import { add, format } from "date-fns";
+import { ChatData, MoneyRequestData } from "@/types/_generated";
+import { useForm } from "@inertiajs/react";
 import { Button } from "primereact/button";
-import { Dialog } from "primereact/dialog";
 import { InputNumber } from "primereact/inputnumber";
 import { FormEvent } from "react";
 import toast from "react-hot-toast";
 
 export default function RequestMoney({ chat, onSuccess }: { chat: ChatData, onSuccess?: () => void }) {
-    const { accept, release, requestRelease, message, cancel, processing: moneyRequestProcessing, reject, moneyRequest } = useMoneyRequest(undefined, chat, onSuccess)
+    const { message, processing: moneyRequestProcessing, moneyRequest } = useMoneyRequest(undefined, chat, onSuccess)
     const { balance, refreshBalance, loadingBalance } = useBalance(chat.from);
     const duration = useMessageStore(state => state.duration)
     const setDuration = useMessageStore(state => state.setDuration)
@@ -30,8 +27,8 @@ export default function RequestMoney({ chat, onSuccess }: { chat: ChatData, onSu
     const submit = (e?: FormEvent) => {
         e?.preventDefault()
         if (processing) return
-        if (duration.day === 0 && duration.hour < 6) {
-            toast.error("Minimum duration is 6 hours")
+        if (duration.day === 0 && duration.hour === 0 && duration.minute < 30) {
+            toast.error("Minimum duration is 30 minutes")
             return
         }
 
@@ -75,85 +72,13 @@ export default function RequestMoney({ chat, onSuccess }: { chat: ChatData, onSu
             }
         })
     }
-    const getSeverity = (moneyRequest: MoneyRequestData) => {
-        if (!message) return
-        if (moneyRequest.cancelled_at) {
-            return "danger"
-        }
-        if (moneyRequest.status === 'completed') {
-            return "success"
-        }
-        if (moneyRequest.status === 'waiting for release') {
-            return "warning"
-        }
-        if (moneyRequest.rejected_at) {
-            return "danger"
-        }
-        if (moneyRequest.accepted_at) {
-            return undefined
-        }
-        return "warning"
-    }
 
-    const getStatus = (moneyRequest: MoneyRequestData) => {
-        if (!message) return
-        if (moneyRequest.status === 'approved') {
-            return message.by_me ? "Request Release" : "Request Accepted"
-        }
-        if (moneyRequest.status === 'waiting for release') {
-            return !message.by_me ? "Please Release" : "Waiting for Release"
-        }
-        return moneyRequest.status
-    }
-
-
-    const UserButtons = ({ moneyRequest }: { moneyRequest: MoneyRequestData }) => {
-        if (!message) return
-        if (moneyRequest.status !== 'pending') {
-            return <Button
-                type="button"
-                onClick={e => {
-                    if (moneyRequest.status === 'waiting for release' && !message.by_me) {
-                        release();
-                        return;
-                    }
-
-                }} rounded severity={getSeverity(moneyRequest as MoneyRequestData)} className={cn("capitalize !rounded-lg w-full justify-center *:!font-bold *:!w-max", moneyRequest.status === 'approved' && '!text-black !bg-[#D8BBFF] !border-[#D8BBFF]')} label={processing ? 'Proccessing...' : getStatus(moneyRequest as MoneyRequestData)} />
-        }
-        return (
-            <div className="grid grid-cols-2 items-center gap-3">
-                <Button
-                    type="button"
-
-                    onClick={accept} rounded severity="success" className="capitalize !rounded-lg justify-center *:!font-bold" label={processing ? 'Processing...' : 'Accept'} icon="pi pi-check" />
-                <Button
-                    type="button"
-                    onClick={reject} rounded severity="danger" className="capitalize !rounded-lg justify-center *:!font-bold" label={processing ? 'Processing...' : 'Reject'} icon="pi pi-times" />
-            </div>
-        )
-    }
-
-    const MyButtons = ({ moneyRequest }: { moneyRequest: MoneyRequestData }) => {
-        return (<div className=" flex items-center gap-2">
-            <Button
-                type="button"
-                onClick={e => {
-                    if (moneyRequest.status === 'approved') {
-                        requestRelease();
-                    }
-                }} rounded severity={getSeverity(moneyRequest as MoneyRequestData)} className={cn("!rounded-lg w-full justify-center capitalize *:!font-bold *:!w-max", moneyRequest.status === 'approved' && '!text-black !bg-[#D8BBFF] !border-[#D8BBFF]')} label={processing ? 'Proccessing...' : getStatus(moneyRequest as MoneyRequestData)} />
-            {!moneyRequest?.cancelled_at && !moneyRequest.accepted_at && !moneyRequest.rejected_at && <Button
-                type="button"
-                onClick={cancel} rounded severity="danger" className="!rounded-lg w-full justify-center *:!font-bold *:!w-max capitalize" label={processing ? 'Proccessing...' : 'Cancel'} />}
-        </div>
-        )
-    }
 
     useEffect(() => {
         refreshBalance()
     }, [])
     return (
-        <>
+        <div>
             <form className="flex flex-col !gap-2" onSubmit={submit}>
                 <p className="!font-bold">User Name: {chat.from?.name}</p>
                 <p className="!font-bold">User UID: #{chat.from?.id}</p>
@@ -190,6 +115,15 @@ export default function RequestMoney({ chat, onSuccess }: { chat: ChatData, onSu
                         </>
                 }
             </form>
-        </>
+            {
+                moneyRequest
+                && !moneyRequest.rejected_at
+                && !moneyRequest.cancelled_at
+                && !moneyRequest.released_at
+                && moneyRequest.by_me && <div className="mt-4">
+                    <ReportMoneyRequest moneyRequest={moneyRequest} />
+                </div>
+            }
+        </div>
     );
 }

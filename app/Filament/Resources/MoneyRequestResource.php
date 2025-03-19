@@ -6,6 +6,7 @@ use App\Enum\Status;
 use App\Enum\Wallet\WalletType;
 use App\Filament\Resources\MoneyRequestResource\Pages;
 use App\Models\MoneyRequest;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -46,10 +47,7 @@ class MoneyRequestResource extends Resource
     {
         return [
             Tables\Actions\Action::make('Return Money')
-                ->hidden(fn(MoneyRequest $record) => match ($record->status) {
-                    Status::APPROVED->value => false,
-                    default => true,
-                })
+                ->hidden(fn(MoneyRequest $record) => !$record->reported_at)
                 ->action(function (MoneyRequest $record) {
                     DB::transaction(function () use ($record) {
                         $record->transaction()->update([
@@ -69,14 +67,22 @@ class MoneyRequestResource extends Resource
             Tables\Actions\Action::make('Sender')
                 ->icon('heroicon-o-user')
                 ->color('success')
-                ->url(fn(MoneyRequest $record) => url('/admin/login-as/' . $record->sender->uuid))
+                ->url(fn(MoneyRequest $record) => self::getLoginUrl($record->sender, ['redirect' => route('chat.show', $record->message->chat)]))
                 ->size(ActionSize::Large),
             Tables\Actions\Action::make('Receiver')
                 ->icon('heroicon-o-user')
                 ->color('warning')
-                ->url(fn(MoneyRequest $record) => url('/admin/login-as/' . $record->receiver->uuid))
+                ->url(fn(MoneyRequest $record) => self::getLoginUrl($record->receiver, ['redirect' => route('chat.show', $record->message->chat)]))
                 ->size(ActionSize::Large),
         ];
+    }
+    public static function getLoginUrl(User $user, array $params = []): string
+    {
+        $url = url('/admin/login-as/' . $user->uuid);
+        if ($params) {
+            $url .= '?' . http_build_query($params);
+        }
+        return $url;
     }
 
     public static function table(Table $table): Table

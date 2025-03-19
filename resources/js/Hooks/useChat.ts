@@ -8,6 +8,7 @@ import { throttle } from "lodash";
 export default function useChat() {
     const { user } = useAuth();
     const { playSound } = useNotification();
+    const impersonating = usePage().props.impersonating;
     const messagesProp = usePage().props.messages as PaginatedCollection<MessageData>;
     const chatsProp = usePage().props.chats as PaginatedCollection<ChatData>;
     const [chats, setChats] = useState<PaginatedCollection<ChatData>>(chatsProp);
@@ -40,18 +41,7 @@ export default function useChat() {
             Echo.leave(chatChannel)
             Echo.channel(chatChannel)
                 .listen('MessageCreated', (e: { message: MessageData, authId: number }) => {
-                    //refresh all states if the message is money request
-                    // if (e.message.type === 'money_request') {
-                    //     if (e.authId !== user.id) {
-                    //         playSound()
-                    //     }
-                    //     router.visit(window.location.href, {
-                    //         preserveState: false,
-                    //         preserveScroll: true,
-                    //     })
-                    //     return
-                    // }
-                    if (e.authId !== user.id) {
+                    if (e.authId !== user.id || impersonating?.old) {
                         playSound()
                         router.visit(window.location.href, {
                             preserveState: true,

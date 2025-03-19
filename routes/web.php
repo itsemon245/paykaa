@@ -95,6 +95,8 @@ Route::middleware('auth', 'redirect-if-admin', 'verified')->group(function () {
     Route::post('money-request/{moneyRequest}/reject', [MoneyRequestController::class, 'reject'])->name('money.reject');
     Route::post('money-request/{moneyRequest}/request-to-release', [MoneyRequestController::class, 'requestToRelease'])->name('money.request-release');
     Route::post('money-request/{moneyRequest}/release', [MoneyRequestController::class, 'release'])->name('money.release');
+    Route::post('money-request/{moneyRequest}/report', [MoneyRequestController::class, 'report'])->name('money.report');
+
 
     Route::get('referrals', function () {
         $referrals = User::find(auth()->id())->referrals;
@@ -163,7 +165,8 @@ Route::middleware('auth')
                 session()->forget('impersonating');
                 return redirect($url);
             }
-            return redirect(route('dashboard'))->with('success', 'Logged in as user');
+            $redirect = request()->query('redirect', route('dashboard'));
+            return redirect($redirect)->with('success', 'Logged in as user');
         })->name('login-as');
     });
 require __DIR__ . '/auth.php';

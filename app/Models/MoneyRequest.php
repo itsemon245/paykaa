@@ -20,6 +20,7 @@ class MoneyRequest extends Model
         'released_at' => 'datetime',
         'rejected_at' => 'datetime',
         'expires_at' => 'datetime',
+        'reported_at' => 'datetime',
     ];
 
     public function getStatusAttribute(): string

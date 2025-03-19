@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import useBreakpoint from "@/Hooks/useBrakpoints";
 import useMoneyRequest from "@/Hooks/useMoneyRequest";
+import { useConfirmStore } from "@/stores/useConfirmStore";
 import { RouteName } from "@/types";
 import { ChatData, MessageData, MoneyRequestData } from "@/types/_generated";
 import { cn, defaultAvatar } from "@/utils";
@@ -15,36 +16,7 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
     const { processing, accept, reject, cancel, moneyRequest } = useMoneyRequest(message, chat)
 
     const { min } = useBreakpoint();
-
-    const getSeverity = (moneyRequest: MoneyRequestData) => {
-        if (moneyRequest?.cancelled_at) {
-            return "danger"
-        }
-        if (moneyRequest?.status === 'completed') {
-            return "success"
-        }
-        if (moneyRequest?.status === 'waiting for release') {
-            return "warning"
-        }
-        if (moneyRequest?.rejected_at) {
-            return "danger"
-        }
-        if (moneyRequest?.accepted_at) {
-            return undefined
-        }
-        return "warning"
-    }
-
-    const getStatus = (moneyRequest: MoneyRequestData) => {
-        if (moneyRequest?.status === 'approved') {
-            return message.by_me ? "Request release" : "Request Accepted"
-        }
-        if (moneyRequest?.status === 'waiting for release') {
-            return !message.by_me ? "Please Release" : "Waiting for Release"
-        }
-        return moneyRequest?.status
-    }
-
+    const onAction = useConfirmStore(state => state.onAction)
 
     return (
         <div className={cn("message money-request", message.by_me ? "me" : "")}>
@@ -85,15 +57,15 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                         <div className="flex items-center gap-2 justify-center">
                             <Button type="button" onClick={e => {
                                 if (!moneyRequest?.by_me) {
-                                    accept();
+                                    onAction(accept);
                                 }
                             }} variant={moneyRequest?.by_me && moneyRequest?.accepted_at == null ? 'warning' : 'success'} loading={processing} disabled={moneyRequest?.accepted_at != null} className={cn(moneyRequest?.accepted_at && '!cursor-not-allowed col-span-2', moneyRequest?.by_me && 'cursor-not-allowed')}>{moneyRequest?.accepted_at ? 'Accepted' : moneyRequest?.by_me ? 'Pending' : 'Accept'}</Button>
                             {!message.moneyRequest?.accepted_at &&
                                 <Button type="button" onClick={e => {
                                     if (moneyRequest?.by_me) {
-                                        cancel();
+                                        onAction(cancel);
                                     } else {
-                                        reject();
+                                        onAction(reject);
                                     }
                                 }} variant="destructive" loading={processing} disabled={moneyRequest?.cancelled_at != null || moneyRequest?.rejected_at != null} className="disabled:cursor-not-allowed">{
                                         moneyRequest?.cancelled_at != null ? 'Cancelled' : moneyRequest?.rejected_at != null ? 'Rejected' : moneyRequest?.by_me ? 'Cancel' : 'Reject'

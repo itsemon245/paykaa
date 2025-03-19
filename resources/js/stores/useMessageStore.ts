@@ -12,8 +12,8 @@ export const useMessageStore = create<MessageStore>((set, get) => ({
     replyTo: undefined,
     duration: {
         day: 0,
-        hour: 6,
-        minute: 0
+        hour: 0,
+        minute: 30
     },
     setDuration: (duration: PickerValue) => set({ duration }),
     setReplyTo: (replyTo?: MessageData) => set({ replyTo }),

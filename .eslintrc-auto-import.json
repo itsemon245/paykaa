@@ -111,6 +111,9 @@
     "usePickerData": true,
     "PickerItem": true,
     "Countdown": true,
-    "MoneyRequestActions": true
+    "MoneyRequestActions": true,
+    "useCountdown": true,
+    "ReportMoneyRequest": true,
+    "ConfirmationDialog": true
   }
 }

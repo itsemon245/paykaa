@@ -156,4 +156,15 @@ class MoneyRequestController extends Controller
             return back();
         });
     }
+
+    public function report(Request $request, MoneyRequest $moneyRequest)
+    {
+        return backWithError(function () use ($request, $moneyRequest) {
+            $moneyRequest->update([
+                'reported_at' => now(),
+            ]);
+            event(new \App\Events\MessageCreated($moneyRequest->message));
+            return back();
+        });
+    }
 }

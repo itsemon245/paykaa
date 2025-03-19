@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { useState, useEffect } from "react";
 
 export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?: ChatData, onSuccess?: () => void) {
+
     const [processing, setProcessing] = useState(true);
     const [message, setMessage] = useState<MessageData>();
     const [moneyRequest, setMoneyRequest] = useState<MoneyRequestData>();

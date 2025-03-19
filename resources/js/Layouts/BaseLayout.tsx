@@ -32,6 +32,7 @@ export default function BaseLayout({ children }: { children?: any }) {
                 {children}
             </main>
             <Toaster position="top-center" />
+            <ConfirmationDialog />
         </div>
     )
 }

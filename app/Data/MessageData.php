@@ -5,6 +5,7 @@ namespace App\Data;
 use App\Data\Partials\TimestampData;
 use App\Enum\MessageType;
 use App\Models\MoneyRequest;
+use App\Models\User;
 use Carbon\Carbon;
 use Spatie\LaravelData\Attributes\Computed;
 use Spatie\LaravelData\Attributes\Validation\Exists;
@@ -44,6 +45,13 @@ class MessageData extends Data
         $this->by_me = $sender_id === auth()->user()->id;
         if (auth()->user()->isAdmin() && $this->sender_id === 1) {
             $this->is_read = true;
+        }
+        if (session('impersonating.old')) {
+            $oldUser = User::where('uuid', session('impersonating.old'))->first();
+            if ($oldUser?->isAdmin()) {
+                $this->sender_id = $oldUser->id;
+                $this->by_me = $sender_id === $oldUser->id;
+            }
         }
     }
 }

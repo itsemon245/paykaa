@@ -48,6 +48,8 @@ class MoneyRequestData extends Data
         public ?Carbon $rejected_at,
         #[Optional]
         public ?Carbon $expires_at,
+        #[Optional]
+        public ?Carbon $reported_at,
     ) {
         $this->by_me = $sender_id === auth()->id();
     }

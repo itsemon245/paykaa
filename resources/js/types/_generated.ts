@@ -161,6 +161,7 @@ export type MoneyRequestData = {
     released_at?: string;
     rejected_at?: string;
     expires_at?: string;
+    reported_at?: string;
     created_at?: string;
     updated_at?: string;
     created_at_human?: string;
