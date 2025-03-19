@@ -38,7 +38,7 @@ const Message = ({ message, children }: { message: MessageData, children?: React
                 {!message.by_me && (
                     <img
                         className={min('md') ? "avatar-md me-2" : "avatar-sm me-2"}
-                        src={image(chat.from?.avatar)}
+                        src={image(message.from?.avatar)}
                         onError={(e) => {
                             //@ts-ignore
                             e.target.src = defaultAvatar

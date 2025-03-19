@@ -52,7 +52,7 @@ export default function ChatSidebar({
                 </div>
                 */}
                 <span className={cn(
-                    !item.last_message?.is_read && "!font-bold !text-black",
+                    (user.id == 1 && item.last_message?.by_me) ? '' : !item.last_message?.is_read && "!font-bold !text-black",
                 )}>{item.last_message?.created_at_human}</span>
                 {item.is_typing ? <div className="flex items-center gap-1 text-xs md:text-sm text-green-500 font-bold">
                     <div>Typing</div>
@@ -62,7 +62,7 @@ export default function ChatSidebar({
                         (
                             <div className={cn(
                                 "!max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap flex items-center gap-1 max-md:text-xs",
-                                !item.last_message?.is_read && "!font-bold !text-black",
+                                (user.id == 1 && item.last_message.by_me) ? '' : !item.last_message?.is_read && "!font-bold !text-black",
                             )}>
                                 {item.last_message.by_me && <div>You:</div>}
                                 {item.last_message.type === 'image' ? <HeroiconsPhoto20Solid className="w-4 h-auto mt-1" /> : item.last_message.body}</div>

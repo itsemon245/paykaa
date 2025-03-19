@@ -23,7 +23,7 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
             {!message.by_me && (
                 <img
                     className={min('md') ? "avatar-md me-2" : "avatar-sm me-2"}
-                    src={chat.from?.avatar}
+                    src={message.from?.avatar}
                     onError={(e) => {
                         //@ts-ignore
                         e.target.src = defaultAvatar
