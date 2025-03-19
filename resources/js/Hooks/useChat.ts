@@ -33,6 +33,8 @@ export default function useChat() {
         }
     }, [chatsProp])
 
+    const shouldResetMessageBody = useChatStore(state => state.shouldResetMessageBody);
+    const setShouldResetMessageBody = useChatStore(state => state.setShouldResetMessageBody);
     useEffect(() => {
         if (!chats) return
         chats.data.forEach(item => {
@@ -43,10 +45,15 @@ export default function useChat() {
                 .listen('MessageCreated', (e: { message: MessageData, authId: number }) => {
                     if (e.authId !== user.id || impersonating?.old) {
                         playSound()
+                        const oldShouldResetMessageBody = shouldResetMessageBody
+                        setShouldResetMessageBody(false)
                         router.visit(window.location.href, {
                             preserveState: true,
                             preserveScroll: true,
                             only: ['messages', 'chats'],
+                            onSuccess: () => {
+                                setShouldResetMessageBody(oldShouldResetMessageBody)
+                            }
                         })
                     }
                     return

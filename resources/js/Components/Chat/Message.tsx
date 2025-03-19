@@ -49,9 +49,9 @@ const Message = ({ message, children }: { message: MessageData, children?: React
                         alt="avatar"
                     />
                 )}
-                <div className={cn("flex flex-col", message.by_me ? 'items-end' : 'items-start')}>
+                <div className={cn("flex flex-col max-sm:!max-w-[320px] w-max", message.by_me ? 'items-end' : 'items-start')}>
                     {message.parent && <ReplyToMessage onClick={() => gotoReply()} message={message.parent} className={cn(message.by_me ? "rounded-br-none me-1" : "rounded-bl-none ms-1", '-mb-1 cursor-pointer')} />}
-                    <div className={cn("relative group w-max", message.by_me ? 'text-white' : 'text-gray-800')}>
+                    <div className={cn("relative group w-full", message.by_me ? 'text-white' : 'text-gray-800')}>
                         <MessageContextMenu message={message} />
                         <div className={cn("font-medium text !rounded-xl !py-2.5 !px-3 w-full flex items-center justify-center flex-col", message.by_me ? "me !rounded-br-none" : "!rounded-bl-none")}>
                             {message.type === 'text' ? <TextMessage message={message} /> : <ImageMessage message={message} />}

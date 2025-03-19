@@ -17,6 +17,7 @@ export default function Writer() {
     const { user } = useAuth();
     const messageBody = useChatStore(state => state.messageBody);
     const setMessageBody = useChatStore(state => state.setMessageBody);
+    const shouldResetMessageBody = useChatStore(state => state.shouldResetMessageBody);
     const replyTo = useMessageStore(state => state.replyTo)
     const setReplyTo = useMessageStore(state => state.setReplyTo)
     const { data, setData, processing, post } = useForm<Partial<MessageData> & { image: File | null }>({
@@ -110,9 +111,19 @@ export default function Writer() {
             toggleTyping(true);
         }
     }, [data.body]);
+    const [hasNewLine, setHasNewLine] = useState(false)
     useEffect(() => {
         setData('body', messageBody)
+        setHasNewLine(messageBody.includes('\n'))
     }, [messageBody])
+    useEffect(() => {
+        if (shouldResetMessageBody) {
+            router.on('navigate', () => {
+                setMessageBody("")
+                setHasNewLine(false)
+            })
+        }
+    }, [])
     return (
         <>
             <div className="fixed bottom-0 md:left-2 lg:left-[372px] left-0 right-0 md:right-2">
@@ -136,7 +147,7 @@ export default function Writer() {
                 <div className="bottom !p-1 md:!p-2 bg-base-gradient">
                     <form onSubmit={sendMessage} className="text-area relative">
                         <InputTextarea
-                            className="form-control !ps-5 !rounded-full max-sm:text-[16px]"
+                            className={cn("form-control !ps-5 max-sm:text-[16px]", hasNewLine ? '!rounded-lg' : '!rounded-full')}
                             cols={3}
                             placeholder="Message ..."
                             value={messageBody as string}
@@ -148,7 +159,7 @@ export default function Writer() {
                             }}
                             rows={1}
                         ></InputTextarea>
-                        <div className="flex h-full items-center gap-2 absolute top-0 right-0 !pe-3">
+                        <div className={cn("flex h-full gap-2 absolute right-0 !pe-3", hasNewLine ? 'bottom-3 items-end' : 'top-0 items-center')}>
                             <div className='ms-2'>
                                 <input type="file" accept='image/*' id="image-input" onChange={uploadFile} />
                                 <label htmlFor="image-input" className='w-8 h-8 md:w-10 md:h-10 !flex items-center justify-center cursor-pointer !rounded-full border-none' aria-label="Upload">
