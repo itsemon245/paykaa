@@ -22,8 +22,7 @@ export default function useCountdown(moneyRequest: MoneyRequestData) {
 
     const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
     useEffect(() => {
-        const difference = new Date(moneyRequest.expires_at as string).getTime() - new Date().getTime();
-        setExpired(difference <= 0)
+        setExpired(timeLeft.days <= 0 && timeLeft.hours <= 0 && timeLeft.minutes <= 0)
     }, [timeLeft])
 
     useEffect(() => {
