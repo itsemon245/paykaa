@@ -120,6 +120,7 @@ export default function RequestMoney({ chat, onSuccess }: { chat: ChatData, onSu
                 && !moneyRequest.rejected_at
                 && !moneyRequest.cancelled_at
                 && !moneyRequest.released_at
+                && moneyRequest.accepted_at != null
                 && moneyRequest.by_me && <div className="mt-4">
                     <ReportMoneyRequest moneyRequest={moneyRequest} />
                 </div>
