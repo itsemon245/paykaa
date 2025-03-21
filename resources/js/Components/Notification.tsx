@@ -11,6 +11,7 @@ export default function Notification({ notification }: { notification: any }) {
     const moneyRequestType = notification.data.moneyRequestType ?? (moneyRequest.sender_id === user.id ? 'incoming' : 'outgoing');
     const status = !moneyRequest.released_at && !moneyRequest.rejected_at && !moneyRequest.cancelled_at ? 'pending' : moneyRequest.status
     const getSeverity = () => {
+        //@ts-ignore
         const severityMap: Record<Status, TagProps['severity']> = {
             pending: 'warning',
             completed: 'success',
@@ -21,7 +22,7 @@ export default function Notification({ notification }: { notification: any }) {
             approved: 'success',
             failed: 'danger',
         }
-        return severityMap[status]
+        return severityMap[status] ?? 'warning'
     }
 
     useEffect(() => {

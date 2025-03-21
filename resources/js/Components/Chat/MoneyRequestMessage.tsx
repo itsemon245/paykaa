@@ -89,7 +89,6 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                                                 <div>Entire transaction is now locked</div>
                                             </div>
                                             :
-
                                             <>
                                                 <div className={cn("text-center text-base font-bold mb-0.5", message.by_me ? 'text-green-500' : 'text-red-500')}>{message.by_me ? '+' : '-'}{message.moneyRequest?.amount.toFixed(2)} BDT</div>
                                                 <div className="text-sm font-medium">Money request {moneyRequest?.status}</div>
