@@ -9,6 +9,11 @@ export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?
     const [processing, setProcessing] = useState(true);
     const [message, setMessage] = useState<MessageData>();
     const [moneyRequest, setMoneyRequest] = useState<MoneyRequestData>();
+    const pending = useMemo(() => {
+        return moneyRequest?.released_at == null
+            && moneyRequest?.rejected_at == null
+            && moneyRequest?.cancelled_at == null
+    }, [moneyRequest])
     const fetchMessage = async () => {
         console.log("Fetching message")
         const res = await fetch(route('messages.money-requests', { chat: moneyRequestMessage?.chat?.uuid ?? chat?.uuid }))
@@ -166,7 +171,8 @@ export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?
         release,
         reject,
         cancel,
-        requestRelease
+        requestRelease,
+        pending
     }
 }
 

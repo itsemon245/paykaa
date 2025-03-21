@@ -49,7 +49,7 @@ const Message = ({ message, children }: { message: MessageData, children?: React
                         alt="avatar"
                     />
                 )}
-                <div className={cn("flex flex-col max-sm:!max-w-[320px] w-max", message.by_me ? 'items-end' : 'items-start')}>
+                <div className={cn("flex flex-col max-sm:!max-w-[320px] sm:!max-w-[400px] md:!max-w-[600px] w-max", message.by_me ? 'items-end' : 'items-start')}>
                     <div className={cn("group w-full", message.by_me ? 'text-white' : 'text-gray-800')}>
                         {message.parent && <ReplyToMessage onClick={() => gotoReply()} message={message.parent} className={cn(message.by_me ? "rounded-br-none me-1" : "rounded-bl-none ms-1", '-mb-1 cursor-pointer')} />}
                         <div className={cn("relative font-medium text w-full !max-w-max !rounded-xl !py-2.5 !px-3 flex items-center justify-center flex-col", message.by_me ? "me !rounded-br-none" : "!rounded-bl-none")}>

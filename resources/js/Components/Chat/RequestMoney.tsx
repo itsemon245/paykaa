@@ -1,17 +1,27 @@
+import { Button } from "@/components/ui/button";
 import { useMessageStore } from "@/stores/useMessageStore";
 import { RouteName } from "@/types";
 import { ChatData, MoneyRequestData } from "@/types/_generated";
 import { useForm } from "@inertiajs/react";
-import { Button } from "primereact/button";
 import { InputNumber } from "primereact/inputnumber";
 import { FormEvent } from "react";
 import toast from "react-hot-toast";
 
 export default function RequestMoney({ chat, onSuccess }: { chat: ChatData, onSuccess?: () => void }) {
-    const { message, processing: moneyRequestProcessing, moneyRequest } = useMoneyRequest(undefined, chat, onSuccess)
+    const { message, processing: moneyRequestProcessing, moneyRequest, pending } = useMoneyRequest(undefined, chat, onSuccess)
     const { balance, refreshBalance, loadingBalance } = useBalance(chat.from);
     const duration = useMessageStore(state => state.duration)
     const setDuration = useMessageStore(state => state.setDuration)
+    const [formOpened, setFormOpened] = useState<boolean>(true)
+
+    useEffect(() => {
+        if (moneyRequest == undefined) return
+        const done = moneyRequest.cancelled_at != null ||
+            moneyRequest.rejected_at != null ||
+            moneyRequest.released_at != null
+        setFormOpened(!done)
+
+    }, [moneyRequest])
 
     const { post, processing, errors, data, setData } = useForm<Partial<MoneyRequestData & { chat_id: number }>>({
         amount: 0,
@@ -72,13 +82,12 @@ export default function RequestMoney({ chat, onSuccess }: { chat: ChatData, onSu
             }
         })
     }
-
-
     useEffect(() => {
         refreshBalance()
     }, [])
     return (
-        <div>
+        <div className="h-full relative">
+            {!formOpened && <Button type="button" className="absolute top-0 right-4" onClick={e => setFormOpened(true)}>New</Button>}
             <form className="flex flex-col !gap-2" onSubmit={submit}>
                 <p className="!font-bold">User Name: {chat.from?.name}</p>
                 <p className="!font-bold">User UID: #{chat.from?.id}</p>
@@ -93,7 +102,7 @@ export default function RequestMoney({ chat, onSuccess }: { chat: ChatData, onSu
                         <>
                             <div>
                                 {
-                                    message && message.type === 'money_request' ?
+                                    message && message.type === 'money_request' && !formOpened ?
                                         <MoneyRequestActions moneyRequest={moneyRequest} chat={chat} onSuccess={onSuccess} />
                                         :
                                         <>
@@ -108,7 +117,7 @@ export default function RequestMoney({ chat, onSuccess }: { chat: ChatData, onSu
                                                 <label className="text-gray-800 text-md font-bold">Time Limit:</label>
                                                 <TimeSelector />
                                             </div>
-                                            <Button size="small" label={processing ? "Processing..." : "Send Request"} />
+                                            <Button loading={processing}>Send Request</Button>
                                         </>
                                 }
                             </div>
@@ -117,6 +126,7 @@ export default function RequestMoney({ chat, onSuccess }: { chat: ChatData, onSu
             </form>
             {
                 moneyRequest
+                && pending
                 && moneyRequest.expires_at != null
                 && <div className="mt-4">
                     <ReportMoneyRequest moneyRequest={moneyRequest} />

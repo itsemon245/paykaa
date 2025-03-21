@@ -47,8 +47,43 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                 }}>
                     <div className="text-center text-xs font-medium">Money Request</div>
                     <div className="flex items-center justify-center w-full gap-1 flex-wrap my-1">
-                        <div className="text-sm font-medium">{message.by_me ? "You" : `${message.moneyRequest?.from?.name}`} requested</div>
-                        <div className={cn("text-center text-base font-bold mb-0.5", message.by_me ? 'text-green-500' : 'text-red-500')}>{message.by_me ? '+' : '-'}{message.moneyRequest?.amount.toFixed(2)} BDT</div>
+                        {
+                            moneyRequest && (
+                                moneyRequest.released_at != null
+                                && moneyRequest.cancelled_at != null
+                                && moneyRequest.rejected_at != null
+                            ) ?
+                                <>
+                                    {
+                                        moneyRequest.release_requested_at
+                                            ? <>
+                                                {
+                                                    moneyRequest.by_me ?
+                                                        <>
+                                                            <div className={cn("text-center text-sm font-bold", message.by_me ? 'text-green-500' : 'text-red-500')}>{message.by_me ? '+' : '-'}{message.moneyRequest?.amount.toFixed(2)} BDT</div>
+                                                            <div className="text-center text-sm font-medium">request release pending</div>
+                                                        </>
+                                                        :
+                                                        <>
+                                                            <div className="text-sm font-medium">{moneyRequest.from?.name} sent request release, check your money form</div>
+                                                        </>
+
+                                                }
+                                            </>
+                                            :
+                                            <>
+                                                <div className="text-sm font-medium">{message.by_me ? "You" : `${message.moneyRequest?.from?.name}`} requested</div>
+                                                <div className={cn("text-center text-base font-bold mb-0.5", message.by_me ? 'text-green-500' : 'text-red-500')}>{message.by_me ? '+' : '-'}{message.moneyRequest?.amount.toFixed(2)} BDT</div>
+
+                                            </>
+                                    }
+                                </>
+                                :
+                                <>
+                                    <div className={cn("text-center text-base font-bold mb-0.5", message.by_me ? 'text-green-500' : 'text-red-500')}>{message.by_me ? '+' : '-'}{message.moneyRequest?.amount.toFixed(2)} BDT</div>
+                                    <div className="text-sm font-medium">Money request {moneyRequest?.status}</div>
+                                </>
+                        }
                     </div>
                     {message.moneyRequest && <div className="mb-1">
                         <Countdown moneyRequest={message.moneyRequest} />
@@ -80,10 +115,10 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                                     !moneyRequest?.cancelled_at
                                         && !moneyRequest?.rejected_at
                                         ? "warning" : "destructive"
-                                } className="cursor-not-allowed w-full" >{
+                                } className="cursor-not-allowed w-full !capitalize" >{
                                         !moneyRequest?.cancelled_at
                                             && !moneyRequest?.rejected_at
-                                            ? "Pending"
+                                            ? moneyRequest.status
                                             : "Cancelled"
                                     }</Button>
 

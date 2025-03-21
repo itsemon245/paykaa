@@ -8,6 +8,7 @@ import { Button } from 'primereact/button';
 import { cn, storage } from '@/utils';
 import { useChatStore } from '@/stores/useChatStore';
 import { useMessageStore } from '@/stores/useMessageStore';
+import useBreakpoint from '@/Hooks/useBrakpoints';
 
 export default function Writer() {
     const chat = usePage().props.chat as ChatData;
@@ -84,11 +85,12 @@ export default function Writer() {
         setData('image', file);
     }
 
+    const { min } = useBreakpoint()
     const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key !== 'Enter') {
             return;
         }
-        if (e.shiftKey === false) {
+        if (e.shiftKey === false && min("md")) {
             e.preventDefault();
             sendThrottledMessage();
         } else {

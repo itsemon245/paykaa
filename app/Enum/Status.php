@@ -8,6 +8,7 @@ enum Status: string
     case WAITING_FOR_RELEASE = 'waiting for release';
     case PENDING = 'pending';
     case APPROVED = 'approved';
+    case ACCEPTED = 'Request Accepted';
     case FAILED = 'failed';
     case REJECTED = 'rejected';
     case CANCELLED = 'cancelled';

@@ -85,11 +85,12 @@ class MessageController extends Controller
     {
         //only show pending money requests
         $messages = $chat->messages()->whereHas('moneyRequest', function ($query) {
-            $query->where('released_at', null)
-                ->where('rejected_at', null)
-                ->where('cancelled_at', null);
+            // $query->where('released_at', null)
+            //     ->where('rejected_at', null)
+            //     ->where('cancelled_at', null);
         })
             ->with('sender', 'receiver', 'moneyRequest', 'moneyRequest.from')
+            ->limit(1)
             ->paginate();
         return response()->json([
             'messages' => MessageData::collect($messages)
