@@ -47,6 +47,7 @@ class MoneyRequestResource extends Resource
     {
         return [
             Tables\Actions\Action::make('Return Money')
+                ->requiresConfirmation()
                 ->hidden(fn(MoneyRequest $record) => !$record->reported_at || ($record->released_at || $record->cancelled_at || $record->rejected_at))
                 ->action(function (MoneyRequest $record) {
                     DB::transaction(function () use ($record) {
@@ -64,8 +65,31 @@ class MoneyRequestResource extends Resource
                     });
                 })
                 ->icon('heroicon-o-check')
-                ->color('success')
+                ->color('danger')
                 ->size(ActionSize::Large),
+            Tables\Actions\Action::make('Release')
+                ->requiresConfirmation()
+                ->hidden(fn(MoneyRequest $record) => !$record->reported_at || ($record->released_at || $record->cancelled_at || $record->rejected_at))
+                ->action(function (MoneyRequest $record) {
+                    DB::transaction(function () use ($record) {
+                        $record->transaction()->update([
+                            'approved_at' => now(),
+                            'cancelled_at' => null,
+                            'failed_at' => null,
+                        ]);
+                        $record->update([
+                            'released_at' => now(),
+                            'cancelled_at' => null,
+                            'rejected_at' => null,
+                            'reported_at' => null,
+                            'reported_by' => null,
+                        ]);
+                    });
+                })
+                ->icon('heroicon-o-check')
+                ->color('info')
+                ->size(ActionSize::Large),
+
             Tables\Actions\Action::make('Sender')
                 ->icon('heroicon-o-user')
                 ->color('success')
