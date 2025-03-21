@@ -9,7 +9,7 @@ export default function MessageContextMenu({
     const setReplyTo = useMessageStore(state => state.setReplyTo)
     return (
         <div className={cn("absolute top-0 md:opacity-0 group-hover:opacity-100 transition-opacity right-0")}>
-            <MdiReply className="h-5 w-5 cursor-pointer" onClick={() => setReplyTo(message)} />
+            <MdiReply className={cn("h-5 w-5 cursor-pointer", message.type === 'image' && 'text-black')} onClick={() => setReplyTo(message)} />
         </div>
 
     )
