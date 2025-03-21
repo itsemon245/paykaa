@@ -163,6 +163,8 @@ class MoneyRequestController extends Controller
             $moneyRequest->update([
                 'reported_by' => auth()->id(),
                 'reported_at' => now(),
+                'cancelled_at' => null,
+                'rejected_at' => null,
             ]);
             event(new \App\Events\MessageCreated($moneyRequest->message));
             return back();

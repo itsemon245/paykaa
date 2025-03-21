@@ -58,6 +58,8 @@ class MoneyRequestResource extends Resource
                         $record->update([
                             'cancelled_at' => now(),
                             'rejected_at' => null,
+                            'reported_at' => null,
+                            'reported_by' => null,
                         ]);
                     });
                 })
@@ -100,10 +102,11 @@ class MoneyRequestResource extends Resource
                     ->extraAttributes(['class' => 'capitalize'])
                     ->color(fn(string $state): string => match ($state) {
                         Status::PENDING->value => 'warning',
-                        Status::APPROVED->value => 'success',
+                        Status::ACCEPTED->value => 'info',
                         Status::REJECTED->value => 'danger',
                         Status::RELEASED->value => 'success',
                         Status::WAITING_FOR_RELEASE->value => 'warning',
+                        Status::REPORTED->value => 'danger',
                         default => 'info',
                     })
                     ->label('Status'),

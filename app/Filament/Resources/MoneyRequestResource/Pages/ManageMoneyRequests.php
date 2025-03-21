@@ -17,7 +17,10 @@ class ManageMoneyRequests extends ManageRecords
         return [
             'reported' => Tab::make('Reported')
                 ->modifyQueryUsing(fn(Builder $query) => $query->where(function (Builder $builder) {
-                    $builder->whereNotNull('reported_at');
+                    $builder->whereNotNull('reported_at')
+                        ->whereNull('cancelled_at')
+                        ->whereNull('released_at')
+                        ->whereNull('rejected_at');
                 })->where(function (Builder $builder) {
                     $builder->whereNull('cancelled_at');
                 })),

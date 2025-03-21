@@ -12,6 +12,7 @@ use App\Filament\Resources\KycResource;
 use App\Filament\Resources\UserResource;
 use App\Filament\Resources\WithdrawResource;
 use App\Models\Chat;
+use App\Models\MoneyRequest;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -52,6 +53,23 @@ class StatsOverview extends BaseWidget
             )
                 ->icon('heroicon-o-chat-bubble-left-right')
                 ->url(url('/helpline'))
+                ->extraAttributes(['class' => 'cursor-pointer']),
+            Stat::make(
+                'Reported Requests',
+                $this->format(
+                    MoneyRequest::where([
+                        'released_at' => null,
+                        'cancelled_at' => null,
+                        'rejected_at' => null
+                    ])
+                        ->whereNotNull('reported_at')
+                        ->where(fn(Builder $query) => $this->getQuery($query))
+                        ->count()
+                )
+            )
+                ->color('warning')
+                ->icon('heroicon-o-document-currency-bangladeshi')
+                ->url(url('/admin/money-requests'))
                 ->extraAttributes(['class' => 'cursor-pointer']),
 
             Stat::make(
