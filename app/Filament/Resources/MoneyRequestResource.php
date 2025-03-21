@@ -47,7 +47,7 @@ class MoneyRequestResource extends Resource
     {
         return [
             Tables\Actions\Action::make('Return Money')
-                ->hidden(fn(MoneyRequest $record) => !$record->reported_at && ($record->released_at || $record->cancelled_at || $record->rejected_at))
+                ->hidden(fn(MoneyRequest $record) => !$record->reported_at || ($record->released_at || $record->cancelled_at || $record->rejected_at))
                 ->action(function (MoneyRequest $record) {
                     DB::transaction(function () use ($record) {
                         $record->transaction()->update([
