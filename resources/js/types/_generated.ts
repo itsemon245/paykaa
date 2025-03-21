@@ -172,6 +172,8 @@ export type Status =
     | 'waiting for release'
     | 'pending'
     | 'approved'
+    | 'Request Accepted'
+    | 'Reported'
     | 'failed'
     | 'rejected'
     | 'cancelled'

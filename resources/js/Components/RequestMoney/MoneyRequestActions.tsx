@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useConfirmStore } from "@/stores/useConfirmStore";
 import { ChatData, MessageData, MoneyRequestData } from "@/types/_generated";
+import toast from "react-hot-toast";
 
 interface MoneyRequestActionsProps {
     moneyRequest?: MoneyRequestData;
@@ -17,7 +18,14 @@ export default function MoneyRequestActions({
 }: MoneyRequestActionsProps) {
     if (!moneyRequest) return
     // const { accept, release, requestRelease, cancel, processing, reject, pending } = extras ?? useMoneyRequest(undefined, chat, onSuccess)
-    const onAction = useConfirmStore(state => state.onAction)
+    const onActionBase = useConfirmStore(state => state.onAction)
+    const onAction = (callback: (...params: any) => any) => {
+        if (moneyRequest.reported_at) {
+            toast.error("Can not perform action on reported money request");
+            return
+        }
+        onActionBase(callback)
+    }
 
     return (
         <div className="mt-2">

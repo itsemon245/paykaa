@@ -108,21 +108,32 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                             }
                         </div>
                     </> : <>
-                        {
-                            moneyRequest?.released_at ?
-                                <Button variant="success" className="w-full cursor-not-allowed">Completed</Button>
-                                : <Button variant={
-                                    !moneyRequest?.cancelled_at
-                                        && !moneyRequest?.rejected_at
-                                        ? "warning" : "destructive"
-                                } className="cursor-not-allowed w-full !capitalize" >{
-                                        !moneyRequest?.cancelled_at
-                                            && !moneyRequest?.rejected_at
-                                            ? moneyRequest.status
-                                            : "Cancelled"
-                                    }</Button>
+                        <div className="flex items-center gap-2 justify-center">
+                            {
+                                moneyRequest?.released_at ?
+                                    <Button variant="success" className="w-full cursor-not-allowed">Completed</Button>
+                                    : <>
+                                        {
+                                            !moneyRequest?.reported_at ?
+                                                <Button
+                                                    variant={
+                                                        !moneyRequest?.cancelled_at
+                                                            && !moneyRequest?.rejected_at
+                                                            ? "warning" : "destructive"
+                                                    }
+                                                    className="cursor-not-allowed w-full !capitalize" >{
+                                                        !moneyRequest?.cancelled_at
+                                                            && !moneyRequest?.rejected_at
+                                                            ? moneyRequest.status
+                                                            : "Cancelled"
+                                                    }
+                                                </Button>
+                                                : <Button disabled variant="destructive" className="w-full">{moneyRequest.status}</Button>
+                                        }
+                                    </>
 
-                        }
+                            }
+                        </div>
                     </>}
                 </Card>
                 <span className={cn("!text-gray-400 mt-1 !font-normal !text-xs", message.by_me ? 'text-end' : 'text-start')}>{format(parseISO(message.created_at as string), 'hh:mm a')}</span>

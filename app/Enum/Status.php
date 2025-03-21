@@ -9,6 +9,7 @@ enum Status: string
     case PENDING = 'pending';
     case APPROVED = 'approved';
     case ACCEPTED = 'Request Accepted';
+    case REPORTED = 'Reported';
     case FAILED = 'failed';
     case REJECTED = 'rejected';
     case CANCELLED = 'cancelled';

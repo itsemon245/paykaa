@@ -37,6 +37,9 @@ class MoneyRequest extends Model
         if ($this->rejected_at) {
             return Status::REJECTED->value;
         }
+        if ($this->reported_at) {
+            return Status::REPORTED->value;
+        }
         if ($this->accepted_at) {
             return Status::ACCEPTED->value;
         }
