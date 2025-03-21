@@ -146,7 +146,7 @@ export default function Index() {
                                 </div>
                             )}
                             {data.type && (
-                                <Input label="Contact" id="contact" error={errors.contact} value={data.contact} onChange={(e: ChangeEvent<HTMLInputElement>) => setData('contact', e.target.value)} />
+                                <Input label="Contact" id="contact" error={errors.contact} value={data.contact} onChange={(e: ChangeEvent<HTMLInputElement>) => setData('contact', e.target.value)} required />
                             )}
                             {(errors.limit_max || errors.limit_min) &&
                                 <div className="flex gap-3 items-center">

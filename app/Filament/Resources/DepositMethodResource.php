@@ -61,6 +61,7 @@ class DepositMethodResource extends Resource
                     ->label('Service Charge')
                     ->placeholder('0')
                     ->numeric()
+                    ->step(0.01)
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Select::make('is_fixed_amount')

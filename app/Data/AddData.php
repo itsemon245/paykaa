@@ -36,6 +36,7 @@ class AddData extends Data
         public int $owner_id,
         #[Optional, Required, Exists('add_methods', 'id')]
         public int $add_method_id,
+        #[Required()]
         public ?string $contact,
         #[Min(10), Required]
         public float $amount,
