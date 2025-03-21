@@ -114,7 +114,7 @@ export default function RequestMoney({ chat, onSuccess }: { chat: ChatData, onSu
                                         <>
                                             <div className="flex flex-col mb-2">
                                                 <InputLabel htmlFor="amount" className="!font-medium text-lg">Amount</InputLabel>
-                                                <InputNumber className="text-[16px]" required id="amount" onChange={e => setData('amount', e.value ?? undefined)} value={data.amount ? data.amount : null} max={balance} min={1} invalid={errors.amount != null} placeholder="Amount" />
+                                                <InputNumber className="*:!text-[16px]" required id="amount" onChange={e => setData('amount', e.value ?? undefined)} value={data.amount ? data.amount : null} max={balance} min={1} invalid={errors.amount != null} placeholder="Amount" />
                                                 {Object.entries(errors).map(([key, value]) => {
                                                     return <InputError key={key} message={value} />
                                                 })}
