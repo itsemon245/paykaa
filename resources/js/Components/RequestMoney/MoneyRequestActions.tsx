@@ -7,14 +7,16 @@ interface MoneyRequestActionsProps {
     moneyRequest?: MoneyRequestData;
     chat: ChatData;
     onSuccess?: () => void;
+    accept: () => void, release: () => void, requestRelease: () => void, cancel: () => void, processing: boolean, reject: () => void, pending: boolean
 }
 export default function MoneyRequestActions({
     moneyRequest,
     chat,
     onSuccess,
+    accept, release, requestRelease, cancel, processing, reject, pending
 }: MoneyRequestActionsProps) {
     if (!moneyRequest) return
-    const { accept, release, requestRelease, cancel, processing, reject, pending } = useMoneyRequest(undefined, chat, onSuccess)
+    // const { accept, release, requestRelease, cancel, processing, reject, pending } = extras ?? useMoneyRequest(undefined, chat, onSuccess)
     const onAction = useConfirmStore(state => state.onAction)
 
     return (
@@ -50,7 +52,9 @@ export default function MoneyRequestActions({
                             } else {
                                 onAction(reject);
                             }
-                        }} variant="destructive" loading={processing} disabled={moneyRequest.cancelled_at != null || moneyRequest.rejected_at != null} className="disabled:cursor-not-allowed">{
+                        }} variant="destructive" loading={processing} disabled={moneyRequest.cancelled_at != null || moneyRequest.rejected_at != null} className={
+                            cn("disabled:cursor-not-allowed", !pending && 'col-span-2')
+                        }>{
                                 moneyRequest.cancelled_at != null ? 'Cancelled' : moneyRequest.rejected_at != null ? 'Rejected' : moneyRequest.by_me ? 'Cancel' : 'Reject'
                             }</Button>
                     }

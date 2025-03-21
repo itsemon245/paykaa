@@ -11,12 +11,19 @@ const Countdown: React.FC<CountdownProps> = ({ moneyRequest }) => {
     if (moneyRequest.cancelled_at || moneyRequest.rejected_at || moneyRequest.released_at) {
         return
     }
-    const { deliveryTime } = useCountdown(moneyRequest)
+    const { deliveryTime, remainingTime } = useCountdown(moneyRequest)
 
     return (
-        <div className='font-medium text-xs text-red-500 text-center'>
-            Time Limit➠ {deliveryTime}
-        </div>
+        <>
+            <div className='font-medium text-xs !text-primary-500 text-center'>
+                Time Limit➠ {deliveryTime}
+            </div>
+            {
+                moneyRequest.accepted_at && <div className='font-medium text-xs text-red-500 text-center'>
+                    Remaining➠ {remainingTime}
+                </div>
+            }
+        </>
     );
 };
 

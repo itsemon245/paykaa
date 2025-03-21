@@ -9,24 +9,28 @@ export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?
     const [processing, setProcessing] = useState(true);
     const [message, setMessage] = useState<MessageData>();
     const [moneyRequest, setMoneyRequest] = useState<MoneyRequestData>();
+    const [fetching, setFetching] = useState(false)
     const pending = useMemo(() => {
         return moneyRequest?.released_at == null
             && moneyRequest?.rejected_at == null
             && moneyRequest?.cancelled_at == null
     }, [moneyRequest])
     const fetchMessage = async () => {
+        setFetching(true)
         console.log("Fetching message")
         const res = await fetch(route('messages.money-requests', { chat: moneyRequestMessage?.chat?.uuid ?? chat?.uuid }))
         if (!res.ok) {
             toast.error('Failed to fetch pending money request')
             console.log("Error fetching message", res)
+            setFetching(false)
             setProcessing(false)
             return
         }
         const data = await res.json() as { messages: PaginatedCollection<MessageData> }
         if (data.messages) {
             setMessage(data.messages.data[0] ?? undefined);
-            setMoneyRequest(data.messages.data[0]?.moneyRequest as MoneyRequestData);
+            setMoneyRequest(data.messages.data[0]?.moneyRequest);
+            setFetching(false)
             setProcessing(false)
         }
     }
@@ -172,7 +176,8 @@ export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?
         reject,
         cancel,
         requestRelease,
-        pending
+        pending,
+        fetching
     }
 }
 

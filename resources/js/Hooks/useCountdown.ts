@@ -35,11 +35,13 @@ export default function useCountdown(moneyRequest: MoneyRequestData) {
         return () => clearInterval(timer);
     }, [moneyRequest]);
 
-    const deliveryTime = useMemo(() => `${leadingZero(timeLeft.days)}D : ${leadingZero(timeLeft.hours)}H : ${leadingZero(timeLeft.minutes)}M`, [timeLeft]);
+    const deliveryTime = `${leadingZero(moneyRequest.duration?.day)}D : ${leadingZero(moneyRequest.duration?.hour)}H : ${leadingZero(moneyRequest.duration?.minute)}M`;
+    const remainingTime = useMemo(() => `${leadingZero(timeLeft.days)}D : ${leadingZero(timeLeft.hours)}H : ${leadingZero(timeLeft.minutes)}M`, [timeLeft]);
 
     return {
         expired,
-        deliveryTime
+        deliveryTime,
+        remainingTime,
     }
 
 }

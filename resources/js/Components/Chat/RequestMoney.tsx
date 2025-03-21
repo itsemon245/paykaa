@@ -8,19 +8,14 @@ import { FormEvent } from "react";
 import toast from "react-hot-toast";
 
 export default function RequestMoney({ chat, onSuccess }: { chat: ChatData, onSuccess?: () => void }) {
-    const { message, processing: moneyRequestProcessing, moneyRequest, pending } = useMoneyRequest(undefined, chat, onSuccess)
+    const { message, processing: moneyRequestProcessing, moneyRequest, pending, accept, release, requestRelease, cancel, reject } = useMoneyRequest(undefined, chat, onSuccess)
     const { balance, refreshBalance, loadingBalance } = useBalance(chat.from);
     const duration = useMessageStore(state => state.duration)
     const setDuration = useMessageStore(state => state.setDuration)
     const [formOpened, setFormOpened] = useState<boolean>(true)
 
     useEffect(() => {
-        if (moneyRequest == undefined) return
-        const done = moneyRequest.cancelled_at != null ||
-            moneyRequest.rejected_at != null ||
-            moneyRequest.released_at != null
-        setFormOpened(!done)
-
+        setFormOpened(moneyRequest == undefined)
     }, [moneyRequest])
 
     const { post, processing, errors, data, setData } = useForm<Partial<MoneyRequestData & { chat_id: number }>>({
@@ -73,8 +68,8 @@ export default function RequestMoney({ chat, onSuccess }: { chat: ChatData, onSu
             onFinish: () => {
                 setDuration({
                     day: 0,
-                    hour: 6,
-                    minute: 0
+                    hour: 0,
+                    minute: 30
                 })
                 setTimeout(() => {
                     toast.dismiss(toastId)
@@ -87,7 +82,7 @@ export default function RequestMoney({ chat, onSuccess }: { chat: ChatData, onSu
     }, [])
     return (
         <div className="h-full relative">
-            {!formOpened && <Button type="button" className="absolute top-0 right-4" onClick={e => setFormOpened(true)}>New</Button>}
+            {!formOpened && !pending && <Button type="button" className="absolute top-0 right-4" onClick={e => setFormOpened(true)}>New</Button>}
             <form className="flex flex-col !gap-2" onSubmit={submit}>
                 <p className="!font-bold">User Name: {chat.from?.name}</p>
                 <p className="!font-bold">User UID: #{chat.from?.id}</p>
@@ -103,12 +98,23 @@ export default function RequestMoney({ chat, onSuccess }: { chat: ChatData, onSu
                             <div>
                                 {
                                     message && message.type === 'money_request' && !formOpened ?
-                                        <MoneyRequestActions moneyRequest={moneyRequest} chat={chat} onSuccess={onSuccess} />
+                                        <MoneyRequestActions
+                                            moneyRequest={moneyRequest}
+                                            chat={chat}
+                                            onSuccess={onSuccess}
+                                            accept={accept}
+                                            release={release}
+                                            requestRelease={requestRelease}
+                                            cancel={cancel}
+                                            processing={processing}
+                                            reject={reject}
+                                            pending={pending}
+                                        />
                                         :
                                         <>
                                             <div className="flex flex-col mb-2">
                                                 <InputLabel htmlFor="amount" className="!font-medium text-lg">Amount</InputLabel>
-                                                <InputNumber disabled={moneyRequest !== undefined} required id="amount" onChange={e => setData('amount', e.value ?? undefined)} value={data.amount ? data.amount : null} max={balance} min={1} invalid={errors.amount != null} placeholder="Amount" />
+                                                <InputNumber className="text-[16px]" required id="amount" onChange={e => setData('amount', e.value ?? undefined)} value={data.amount ? data.amount : null} max={balance} min={1} invalid={errors.amount != null} placeholder="Amount" />
                                                 {Object.entries(errors).map(([key, value]) => {
                                                     return <InputError key={key} message={value} />
                                                 })}
