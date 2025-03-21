@@ -161,6 +161,7 @@ class MoneyRequestController extends Controller
     {
         return backWithError(function () use ($request, $moneyRequest) {
             $moneyRequest->update([
+                'reported_by' => auth()->id(),
                 'reported_at' => now(),
             ]);
             event(new \App\Events\MessageCreated($moneyRequest->message));

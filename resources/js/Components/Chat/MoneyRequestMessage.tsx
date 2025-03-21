@@ -77,11 +77,24 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
 
                                             </>
                                     }
+
                                 </>
                                 :
                                 <>
-                                    <div className={cn("text-center text-base font-bold mb-0.5", message.by_me ? 'text-green-500' : 'text-red-500')}>{message.by_me ? '+' : '-'}{message.moneyRequest?.amount.toFixed(2)} BDT</div>
-                                    <div className="text-sm font-medium">Money request {moneyRequest?.status}</div>
+                                    {
+                                        moneyRequest?.reported_at
+                                            ?
+                                            <div className="text-sm font-medium">
+                                                <div className="text-center font-bold">Report from {moneyRequest.from?.id == moneyRequest.reported_by ? moneyRequest.from?.name : 'Yourself'}</div>
+                                                <div>Entire transaction is now locked</div>
+                                            </div>
+                                            :
+
+                                            <>
+                                                <div className={cn("text-center text-base font-bold mb-0.5", message.by_me ? 'text-green-500' : 'text-red-500')}>{message.by_me ? '+' : '-'}{message.moneyRequest?.amount.toFixed(2)} BDT</div>
+                                                <div className="text-sm font-medium">Money request {moneyRequest?.status}</div>
+                                            </>
+                                    }
                                 </>
                         }
                     </div>

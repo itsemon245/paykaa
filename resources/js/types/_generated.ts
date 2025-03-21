@@ -146,12 +146,14 @@ export type MoneyRequestData = {
     uuid?: string;
     message?: MessageData;
     from?: UserData;
+    reportedBy?: UserData;
     status: Status;
     by_me: boolean;
     sender_id: number;
     receiver_id: number;
     message_id: number;
     amount: number;
+    reported_by: number | null;
     duration?: DurationData;
     currency?: string;
     note?: string;

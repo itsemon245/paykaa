@@ -50,6 +50,10 @@ class MoneyRequest extends Model
     {
         return $this->belongsTo(User::class, 'sender_id');
     }
+    public function reportedBy(): HasOne
+    {
+        return $this->hasOne(User::class, 'reported_by');
+    }
 
     public function transaction(): HasOne
     {
