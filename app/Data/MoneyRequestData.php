@@ -23,8 +23,6 @@ class MoneyRequestData extends Data
     public MessageData $message;
     #[Optional]
     public ?UserData $from;
-    #[Optional]
-    public ?UserData $reportedBy;
     public Status $status;
     public bool $by_me;
     public function __construct(
