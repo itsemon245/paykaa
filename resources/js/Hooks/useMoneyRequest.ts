@@ -64,7 +64,13 @@ export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?
                 toast.dismiss(toastId)
             },
             only: ['messages', 'chats'],
-            preserveScroll: true
+            preserveScroll: true,
+            onFinish: () => {
+                setProcessing(false)
+                setTimeout(() => {
+                    toast.dismiss(toastId)
+                }, 1000)
+            }
         })
     }
     const release = async () => {
@@ -91,6 +97,12 @@ export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?
                 console.error("Error release request")
                 toast.dismiss(toastId)
             },
+            onFinish: () => {
+                setProcessing(false)
+                setTimeout(() => {
+                    toast.dismiss(toastId)
+                }, 1000)
+            },
             only: ['messages', 'chats'],
             preserveScroll: true
         })
@@ -113,6 +125,12 @@ export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?
                 toast.error("Failed to reject request")
                 console.error("Error rejecting request")
                 toast.dismiss(toastId)
+            },
+            onFinish: () => {
+                setProcessing(false)
+                setTimeout(() => {
+                    toast.dismiss(toastId)
+                }, 1000)
             },
             only: ['messages', 'chats'],
             preserveScroll: true
@@ -138,6 +156,12 @@ export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?
                 console.error("Error cancel request")
                 toast.dismiss(toastId)
             },
+            onFinish: () => {
+                setProcessing(false)
+                setTimeout(() => {
+                    toast.dismiss(toastId)
+                }, 1000)
+            },
             only: ['messages', 'chats'],
             preserveScroll: true
         })
@@ -161,6 +185,12 @@ export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?
                 toast.error("Failed to request release")
                 console.error("Error release request")
                 toast.dismiss(toastId)
+            },
+            onFinish: () => {
+                setProcessing(false)
+                setTimeout(() => {
+                    toast.dismiss(toastId)
+                }, 1000)
             },
             only: ['messages', 'chats'],
             preserveScroll: true

@@ -32,8 +32,8 @@ export default function RequestMoney({ chat, onSuccess }: { chat: ChatData, onSu
     const submit = (e?: FormEvent) => {
         e?.preventDefault()
         if (processing) return
-        if (duration.day === 0 && duration.hour === 0 && duration.minute < 30) {
-            toast.error("Minimum duration is 30 minutes")
+        if (duration.day === 0 && duration.hour === 0 && duration.minute < 5) {
+            toast.error("Minimum duration is 5 minutes")
             return
         }
 

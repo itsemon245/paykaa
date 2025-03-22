@@ -21,7 +21,10 @@ export default function RequestMoneyChatList({ chat }: { chat: ChatData }) {
                 <div className="font-bold text-lg">Request Money</div>
             } className="w-[380px] sm:w-[420px] bg-base-gradient" onHide={() => setVisible(false)}>
                 <div className="my-4 h-full">
-                    <RequestMoney chat={chat} onSuccess={() => setVisible(false)} />
+                    <RequestMoney chat={chat} onSuccess={() => {
+                        console.log("Success")
+                        setVisible(false)
+                    }} />
                 </div>
             </Sidebar>
         </>
