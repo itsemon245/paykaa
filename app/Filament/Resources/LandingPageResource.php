@@ -55,6 +55,13 @@ class LandingPageResource extends Resource
                             ->required()
 
                     ])->columns(2),
+                RichEditor::make('why_us')
+                    ->label('Why Choose Paykaa')
+                    ->columnSpanFull()
+                    ->required(),
+                RichEditor::make('our_mission')
+                    ->columnSpanFull()
+                    ->required(),
                 Fieldset::make('about')
                     ->label('About Us')
                     ->schema([

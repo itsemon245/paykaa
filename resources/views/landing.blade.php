@@ -86,7 +86,9 @@
             })();
         </script>
         @include('landing.partials.hero', ['hero' => $landing->hero])
+        @include('landing.partials.why-us', ['whyUs' => $landing->why_us])
         @include('landing.partials.how-it-works', ['howItWorks' => $landing->how_it_works])
+        @include('landing.partials.our-mission', ['ourMission' => $landing->our_mission])
         @include('landing.partials.payment-methods')
         @include('landing.partials.footer', ['landing' => $landing])
     </div>
