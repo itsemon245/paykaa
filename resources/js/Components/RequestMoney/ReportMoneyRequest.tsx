@@ -47,7 +47,7 @@ export default function ReportMoneyRequest({ moneyRequest }: { moneyRequest: Mon
         return (
             <div className="flex items-center justify-center gap-2 flex-wrap">
                 <div className="text-center">
-                    Seller did not complete the transaction?
+                    {moneyRequest.by_me ? 'Buyer' : 'Seller'} did not complete the transaction?
                 </div>
                 <Button disabled={reported} onClick={handleReport} variant="destructive" size="sm" className="!text-xs disabled:cursor-not-allowed">{
                     reported ? 'Already Reported' : 'Report'

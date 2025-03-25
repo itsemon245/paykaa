@@ -20,22 +20,6 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
 
     return (
         <div className={cn("message money-request", message.by_me ? "me" : "")}>
-            {!message.by_me && (
-                <img
-                    className={min('md') ? "avatar-md me-2" : "avatar-sm me-2"}
-                    src={message.from?.avatar}
-                    onError={(e) => {
-                        //@ts-ignore
-                        e.target.src = defaultAvatar
-                    }}
-
-                    data-toggle="tooltip"
-                    data-placement="top"
-                    title={chat.from?.name}
-                    alt="avatar"
-                />
-            )}
-
             <div>
                 <Card className={cn(message.moneyRequest?.cancelled_at != null || message.moneyRequest?.rejected_at != null || message.moneyRequest?.released_at != null ? "opacity-75 cursor-not-allowed disabled" : '', "max-sm:max-w-[230px]")} pt={{
                     content: {

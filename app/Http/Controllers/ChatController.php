@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Data\ChatData;
 use App\Data\MessageData;
+use App\Data\MoneyRequestData;
 use App\Models\Chat;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -57,9 +58,17 @@ class ChatController extends Controller
         $chat->loadMissing('sender', 'receiver', 'lastMessage');
         // Chat::myChats()->where('uuid', $chat->uuid)->where('is_read', false)->update(['is_read' => true]);
 
+        $pending = MoneyRequestData::from($chat->messages()
+            ->whereHas('moneyRequest', function ($query) {
+                $query->where('released_at', null)
+                    ->where('rejected_at', null)
+                    ->where('cancelled_at', null);
+            })
+            ->first()->moneyRequest);
         return Inertia::render('Chat/Show', [
             'chat' => ChatData::from($chat),
             'chats' => $this->getChats($request),
+            'pendingMoneyRequest' => $pending,
             'messages' => MessageData::collect($chat
                 ->messages()
                 ->with('moneyRequest', 'from', 'parent', 'moneyRequest', 'moneyRequest.from')

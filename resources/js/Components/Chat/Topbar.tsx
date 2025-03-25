@@ -1,12 +1,15 @@
-import { ChatData } from "@/types/_generated";
+import { ChatData, MoneyRequestData } from "@/types/_generated";
 import { defaultAvatar, image } from "@/utils";
 import { Link, usePage } from "@inertiajs/react";
 import { AvatarGroup } from "primereact/avatargroup";
 import { Avatar } from 'primereact/avatar';
 import useBreakpoint from "@/Hooks/useBrakpoints";
+import { cn } from "@/lib/utils";
 
 export default function Topbar() {
     const chat = usePage().props.chat as ChatData;
+    const pendingMoneyRequest = usePage().props.pendingMoneyRequest as MoneyRequestData | null
+    const impoersonating = usePage().props.impersonating
     const { user, isAdmin } = useAuth()
     const { activeStatus } = useActiveStatus(chat.from);
     const { min, max } = useBreakpoint();
@@ -27,7 +30,12 @@ export default function Topbar() {
                                     <Avatar image="/assets/favicon.png" size="large" shape="circle" />
                                 </AvatarGroup> :
                                 <img
-                                    className={min('md') ? "avatar-md" : "avatar-sm"}
+                                    className={
+                                        cn(min('md') ? "avatar-md" : "avatar-sm",
+                                            chat.from?.id != 1 && impoersonating && pendingMoneyRequest ?
+                                                (pendingMoneyRequest.sender_id === chat.from?.id ? "!border-2 !border-green-500" : "!border-2 !border-red-500") : ""
+                                        )
+                                    }
                                     src={image(chat.from?.avatar)}
                                     onError={(e) => {
                                         //@ts-ignore
