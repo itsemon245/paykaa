@@ -53,13 +53,14 @@ class MessageController extends Controller
             if (!$chat->lastMessage) {
                 event(new ChatCreated($chat, auth()->id()));
 
-                if ($messageData->receiver_id === 1) {
+                $instantReply = Setting::select('general')?->first()?->general['instant_reply'] ?? null;
+                if ($messageData->receiver_id === 1 && $instantReply) {
                     Message::create([
                         'chat_id' => $chat->id,
                         'sender_id' => 1,
                         'receiver_id' => auth()->id(),
                         'type' => MessageType::Text->value,
-                        'body' => Setting::select('general')->first()->general['instant_reply'] ?? 'Thank you for your interest in Paykaa. We will get back to you shortly.',
+                        'body' => $instantReply,
                         'created_at' => $now->addSeconds(3),
                         'updated_at' => $now->addSeconds(3),
                     ]);
