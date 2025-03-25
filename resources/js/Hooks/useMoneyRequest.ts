@@ -29,7 +29,8 @@ export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?
         const data = await res.json() as { messages: PaginatedCollection<MessageData> }
         if (data.messages) {
             setMessage(data.messages.data[0] ?? undefined);
-            setMoneyRequest(data.messages.data[0]?.moneyRequest);
+            const request = data.messages.data[0]?.moneyRequest;
+            setMoneyRequest(request);
             setFetching(false)
             setProcessing(false)
         }
@@ -40,9 +41,21 @@ export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?
         } else {
             setProcessing(false)
             setMessage(moneyRequestMessage)
-            setMoneyRequest(moneyRequestMessage?.moneyRequest as MoneyRequestData)
+            const request = moneyRequestMessage?.data ?? moneyRequestMessage?.moneyRequest
+            if (moneyRequestMessage?.data) {
+                console.log("static money-request:", moneyRequestMessage?.data)
+            }
+            setMoneyRequest(request)
         }
     }, [moneyRequestMessage])
+
+    const { user } = useAuth()
+    useEffect(() => {
+        if (!moneyRequest) return
+        if (!message) return
+        moneyRequest.by_me = message.sender_id === user.id
+        moneyRequest.from = message.sender_id === user.id ? user : message.from
+    }, [moneyRequest, message, user])
 
     const accept = async () => {
         if (!moneyRequest || processing) return

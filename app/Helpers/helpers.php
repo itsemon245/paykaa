@@ -30,7 +30,7 @@ function backWithError(callable $callback)
     } catch (\Exception $th) {
         DB::rollBack();
         if (config('app.env') == 'local') {
-            dd($th);
+            throw $th;
         }
         if (request()->expectsJson()) {
             return response()->json([

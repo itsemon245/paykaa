@@ -10,9 +10,18 @@ class Message extends Model
 {
     use HasUuid;
 
+    protected $casts = [
+        'data' => 'array',
+    ];
+
     public function parent()
     {
         return $this->belongsTo(Message::class, 'replied_to');
+    }
+
+    public function getByMeAttribute()
+    {
+        return $this->sender_id === auth()->id();
     }
 
     public function scopeReceived($query)

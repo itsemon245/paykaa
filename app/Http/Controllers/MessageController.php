@@ -90,7 +90,7 @@ class MessageController extends Controller
             //     ->where('rejected_at', null)
             //     ->where('cancelled_at', null);
         })
-            ->with('sender', 'receiver', 'moneyRequest', 'moneyRequest.from')
+            ->with('sender', 'receiver', 'moneyRequest', 'from', 'moneyRequest.from')
             ->limit(1)
             ->paginate();
         return response()->json([
