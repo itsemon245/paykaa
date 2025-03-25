@@ -87,18 +87,20 @@ class MoneyRequestResource extends Resource
                     });
                 })
                 ->icon('heroicon-o-check')
-                ->color('info')
+                ->color('success')
+                ->size(ActionSize::Large),
+            Tables\Actions\Action::make('Buyer')
+                ->requiresConfirmation()
+                ->icon('heroicon-o-user')
+                ->color('danger')
+                ->url(fn(MoneyRequest $record) => self::getLoginUrl($record->receiver, ['redirect' => route('chat.show', $record->message->chat)]))
                 ->size(ActionSize::Large),
 
-            Tables\Actions\Action::make('Sender')
+            Tables\Actions\Action::make('Seller')
+                ->requiresConfirmation()
                 ->icon('heroicon-o-user')
                 ->color('success')
                 ->url(fn(MoneyRequest $record) => self::getLoginUrl($record->sender, ['redirect' => route('chat.show', $record->message->chat)]))
-                ->size(ActionSize::Large),
-            Tables\Actions\Action::make('Receiver')
-                ->icon('heroicon-o-user')
-                ->color('warning')
-                ->url(fn(MoneyRequest $record) => self::getLoginUrl($record->receiver, ['redirect' => route('chat.show', $record->message->chat)]))
                 ->size(ActionSize::Large),
         ];
     }
@@ -129,17 +131,20 @@ class MoneyRequestResource extends Resource
                         Status::ACCEPTED->value => 'info',
                         Status::REJECTED->value => 'danger',
                         Status::RELEASED->value => 'success',
-                        Status::WAITING_FOR_RELEASE->value => 'warning',
+                        Status::WAITING_FOR_RELEASE->value => 'success',
                         Status::REPORTED->value => 'danger',
+                        Status::LOCKED->value => 'danger',
                         default => 'info',
                     })
                     ->label('Status'),
                 Tables\Columns\TextColumn::make('sender_id')
                     ->label('Receiver')
+                    ->copyable()
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('receiver_id')
                     ->label('Sender')
+                    ->copyable()
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('amount')

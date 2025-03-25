@@ -140,7 +140,7 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                                                             : "Cancelled"
                                                     }
                                                 </Button>
-                                                : <Button disabled variant="destructive" className="w-full">{moneyRequest.status}</Button>
+                                                : <Button disabled variant="destructive" className="w-full">Reported</Button>
                                         }
                                     </>
 

@@ -65,7 +65,7 @@ export default function MoneyRequestActions({
                         || moneyRequest.reported_at
                         ? <Button type="button" variant={
                             moneyRequest.released_at ? 'success' : 'destructive'
-                        } className="w-full !capitalize" disabled>{moneyRequest.status}</Button> :
+                        } className="w-full !capitalize" disabled>{moneyRequest.reported_at ? 'Reported' : moneyRequest.status}</Button> :
                         <div className="grid grid-cols-2 items-center gap-2 justify-center">
                             {
                                 pending && <Button type="button" onClick={e => {
