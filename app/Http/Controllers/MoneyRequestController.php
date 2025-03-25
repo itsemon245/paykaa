@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Data\MoneyRequestData;
 use App\Enum\MessageType;
 use App\Enum\Wallet\WalletTransactionType;
 use App\Enum\Wallet\WalletType;
@@ -16,6 +17,27 @@ use Ramsey\Uuid\Uuid;
 
 class MoneyRequestController extends Controller
 {
+    public function moneyRequestMessage(MoneyRequest $moneyRequest, Message $message = null)
+    {
+        $moneyRequest->refresh();
+        $moneyRequest->loadMissing('from', 'message');
+        if (!$message) {
+            $message = Message::create([
+                'chat_id' => $moneyRequest->message->chat_id,
+                'sender_id' => $moneyRequest->sender_id,
+                'receiver_id' => $moneyRequest->receiver_id,
+                'type' => MessageType::MoneyRequest->value,
+                'body' => "Money Request to {$moneyRequest->receiver->name} from " . auth()->user()->name,
+                'data' => MoneyRequestData::from($moneyRequest),
+            ]);
+            return $message;
+        }
+        if ($message->type == MessageType::MoneyRequest->value) {
+            $message->data = MoneyRequestData::from($moneyRequest);
+            $message->save();
+        }
+        return $message;
+    }
     public function request(Request $request)
     {
         return backWithError(function () use ($request) {
@@ -63,7 +85,7 @@ class MoneyRequestController extends Controller
                 'message_id' => $message->id,
                 'duration' => $request->duration,
             ]);
-            event(new \App\Events\MessageCreated($message));
+            event(new \App\Events\MessageCreated($this->moneyRequestMessage($moneyRequest, $message)));
             return back();
         });
     }
@@ -89,7 +111,7 @@ class MoneyRequestController extends Controller
                 'note' => $moneyRequest->note,
                 'payment_number' => $moneyRequest->sender_id,
             ]);
-            event(new \App\Events\MessageCreated($moneyRequest->message));
+            event(new \App\Events\MessageCreated($this->moneyRequestMessage($moneyRequest)));
             return back();
         });
     }
@@ -99,7 +121,7 @@ class MoneyRequestController extends Controller
         return backWithError(function () use ($request, $moneyRequest) {
             $moneyRequest->cancelled_at = now();
             $moneyRequest->save();
-            event(new \App\Events\MessageCreated($moneyRequest->message));
+            event(new \App\Events\MessageCreated($this->moneyRequestMessage($moneyRequest)));
             return back();
         });
     }
@@ -109,7 +131,7 @@ class MoneyRequestController extends Controller
         return backWithError(function () use ($request, $moneyRequest) {
             $moneyRequest->rejected_at = now();
             $moneyRequest->save();
-            event(new \App\Events\MessageCreated($moneyRequest->message));
+            event(new \App\Events\MessageCreated($this->moneyRequestMessage($moneyRequest)));
             return back();
         });
     }
@@ -119,7 +141,7 @@ class MoneyRequestController extends Controller
             $moneyRequest->update([
                 'release_requested_at' => now(),
             ]);
-            event(new \App\Events\MessageCreated($moneyRequest->message));
+            event(new \App\Events\MessageCreated($this->moneyRequestMessage($moneyRequest)));
             return back();
         });
     }
@@ -152,7 +174,7 @@ class MoneyRequestController extends Controller
                 'released_at' => now(),
                 'rejected_at' => null,
             ]);
-            event(new \App\Events\MessageCreated($moneyRequest->message));
+            event(new \App\Events\MessageCreated($this->moneyRequestMessage($moneyRequest)));
             return back();
         });
     }
@@ -166,7 +188,7 @@ class MoneyRequestController extends Controller
                 'cancelled_at' => null,
                 'rejected_at' => null,
             ]);
-            event(new \App\Events\MessageCreated($moneyRequest->message));
+            event(new \App\Events\MessageCreated($this->moneyRequestMessage($moneyRequest)));
             return back();
         });
     }

@@ -25,8 +25,7 @@ class MessageData extends Data
     public ChatData $chat;
     #[TypeScriptOptional]
     public MoneyRequestData $moneyRequest;
-    #[Computed]
-    public bool $by_me;
+    public bool $by_me = false;
     public bool $is_read;
     #[TypeScriptOptional]
     public ?string $body;
@@ -36,13 +35,14 @@ class MessageData extends Data
     public ?int $replied_to;
     #[TypeScriptOptional]
     public ?MessageData $parent;
+    #[TypeScriptOptional]
+    public ?MoneyRequestData $data;
     public function __construct(
         public int $chat_id,
         public int $sender_id,
         public int $receiver_id,
         public MessageType $type = MessageType::Text->value,
     ) {
-        $this->by_me = $sender_id === auth()->user()->id;
         if (auth()->user()->isAdmin() && $this->sender_id === 1) {
             $this->is_read = true;
         }

@@ -130,6 +130,7 @@ export type MessageData = {
     from?: UserData;
     replied_to?: number;
     parent?: MessageData;
+    data?: MoneyRequestData;
     chat_id: number;
     sender_id: number;
     receiver_id: number;
@@ -146,7 +147,6 @@ export type MoneyRequestData = {
     uuid?: string;
     message?: MessageData;
     from?: UserData;
-    reportedBy?: UserData;
     status: Status;
     by_me: boolean;
     sender_id: number;

@@ -10,7 +10,7 @@ const Message = ({ message, children }: { message: MessageData, children?: React
     const { min } = useBreakpoint();
     const { user } = useAuth()
     const messageRef = useRef<HTMLDivElement>(null)
-    if (message.moneyRequest) {
+    if (message.type === 'money_request') {
         return <MoneyRequestMessage message={message} chat={chat} />
     }
     const gotoReply = () => {

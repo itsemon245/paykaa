@@ -16,11 +16,29 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
     const { processing, accept, reject, cancel, moneyRequest } = useMoneyRequest(message, chat)
 
     const { min } = useBreakpoint();
-    const onAction = useConfirmStore(state => state.onAction)
-
+    const onActionBase = useConfirmStore(state => state.onAction)
+    const onAction = (callback: (...params: any) => any) => {
+        if (message.moneyRequest?.reported_at) {
+            toast.error("Can not perform action on reported money request");
+            return
+        }
+        if (message.moneyRequest?.cancelled_at) {
+            toast.error("Can not perform action on cancelled money request");
+            return
+        }
+        if (message.moneyRequest?.rejected_at) {
+            toast.error("Can not perform action on rejected money request");
+            return
+        }
+        if (message.moneyRequest?.released_at) {
+            toast.error("Can not perform action on released money request");
+            return
+        }
+        onActionBase(callback)
+    }
     return (
-        <div className={cn("message money-request", message.by_me ? "me" : "")}>
-            {!message.by_me && (
+        <div className={cn("message money-request", moneyRequest?.by_me ? "me" : "")}>
+            {!moneyRequest?.by_me && (
                 <img
                     className={min('md') ? "avatar-md me-2" : "avatar-sm me-2"}
                     src={message.from?.avatar}
@@ -37,7 +55,7 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
             )}
 
             <div>
-                <Card className={cn(message.moneyRequest?.cancelled_at != null || message.moneyRequest?.rejected_at != null || message.moneyRequest?.released_at != null ? "opacity-75 cursor-not-allowed disabled" : '', "max-sm:max-w-[230px]")} pt={{
+                <Card className={cn(moneyRequest?.cancelled_at != null || moneyRequest?.rejected_at != null || moneyRequest?.released_at != null ? "opacity-75 cursor-not-allowed disabled" : '', "max-sm:max-w-[230px]")} pt={{
                     content: {
                         className: "p-1 md:py-2",
                     },
@@ -54,30 +72,8 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                                 && moneyRequest.rejected_at != null
                             ) ?
                                 <>
-                                    {
-                                        moneyRequest.release_requested_at
-                                            ? <>
-                                                {
-                                                    moneyRequest.by_me ?
-                                                        <>
-                                                            <div className={cn("text-center text-sm font-bold", message.by_me ? 'text-green-500' : 'text-red-500')}>{message.by_me ? '+' : '-'}{message.moneyRequest?.amount.toFixed(2)} BDT</div>
-                                                            <div className="text-center text-sm font-medium">request release pending</div>
-                                                        </>
-                                                        :
-                                                        <>
-                                                            <div className="text-sm font-medium">{moneyRequest.from?.name} sent request release, check your money form</div>
-                                                        </>
-
-                                                }
-                                            </>
-                                            :
-                                            <>
-                                                <div className="text-sm font-medium">{message.by_me ? "You" : `${message.moneyRequest?.from?.name}`} requested</div>
-                                                <div className={cn("text-center text-base font-bold mb-0.5", message.by_me ? 'text-green-500' : 'text-red-500')}>{message.by_me ? '+' : '-'}{message.moneyRequest?.amount.toFixed(2)} BDT</div>
-
-                                            </>
-                                    }
-
+                                    <div className="text-sm font-medium">{moneyRequest?.by_me ? "You" : `${moneyRequest?.from?.name}`} requested</div>
+                                    <div className={cn("text-center text-base font-bold mb-0.5", moneyRequest?.by_me ? 'text-green-500' : 'text-red-500')}>{moneyRequest?.by_me ? '+' : '-'}{moneyRequest?.amount.toFixed(2)} BDT</div>
                                 </>
                                 :
                                 <>
@@ -90,15 +86,35 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                                             </div>
                                             :
                                             <>
-                                                <div className={cn("text-center text-base font-bold mb-0.5", message.by_me ? 'text-green-500' : 'text-red-500')}>{message.by_me ? '+' : '-'}{message.moneyRequest?.amount.toFixed(2)} BDT</div>
-                                                <div className="text-sm font-medium">Money request {moneyRequest?.status == 'Request Accepted' ? 'accepted' : moneyRequest?.status}</div>
+                                                {
+                                                    moneyRequest?.status === 'waiting for release'
+                                                        ? <>
+                                                            {
+                                                                moneyRequest.by_me ?
+                                                                    <>
+                                                                        <div className={cn("text-center text-sm font-bold", moneyRequest?.by_me ? 'text-green-500' : 'text-red-500')}>{moneyRequest?.by_me ? '+' : '-'}{moneyRequest?.amount.toFixed(2)} BDT</div>
+                                                                        <div className="text-center text-sm font-medium">request release pending</div>
+                                                                    </>
+                                                                    :
+                                                                    <>
+                                                                        <div className="text-sm font-medium">{moneyRequest.from?.name} sent request release, check your money form</div>
+                                                                    </>
+                                                            }
+                                                        </>
+                                                        :
+                                                        <>
+                                                            <div className={cn("text-center text-base font-bold mb-0.5", moneyRequest?.by_me ? 'text-green-500' : 'text-red-500')}>{moneyRequest?.by_me ? '+' : '-'}{moneyRequest?.amount.toFixed(2)} BDT</div>
+                                                            <div className="text-sm font-medium">Money request {moneyRequest?.status == 'Request Accepted' ? 'accepted' : (moneyRequest?.status === 'completed' ? 'successful' : moneyRequest?.status?.toLowerCase())}</div>
+                                                        </>
+                                                }
+
                                             </>
                                     }
                                 </>
                         }
                     </div>
-                    {message.moneyRequest && <div className="mb-1">
-                        <Countdown moneyRequest={message.moneyRequest} />
+                    {moneyRequest && <div className="mb-1">
+                        <Countdown moneyRequest={moneyRequest} />
                     </div>}
                     {!moneyRequest?.accepted_at && !moneyRequest?.released_at && !moneyRequest?.cancelled_at && !moneyRequest?.rejected_at ? <>
                         <div className="flex items-center gap-2 justify-center">
@@ -106,15 +122,15 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                                 if (!moneyRequest?.by_me) {
                                     onAction(accept);
                                 }
-                            }} variant={moneyRequest?.by_me && moneyRequest?.accepted_at == null ? 'warning' : 'success'} loading={processing} disabled={moneyRequest?.accepted_at != null} className={cn(moneyRequest?.accepted_at && '!cursor-not-allowed col-span-2', moneyRequest?.by_me && 'cursor-not-allowed')}>{moneyRequest?.accepted_at ? 'Accepted' : moneyRequest?.by_me ? 'Pending' : 'Accept'}</Button>
-                            {!message.moneyRequest?.accepted_at &&
+                            }} variant={moneyRequest?.by_me && moneyRequest?.accepted_at == null ? 'warning' : 'success'} loading={processing} disabled={message.moneyRequest?.accepted_at != null} className={cn(message.moneyRequest?.accepted_at && '!cursor-not-allowed col-span-2', moneyRequest?.by_me && 'cursor-not-allowed')}>{moneyRequest?.accepted_at ? 'Accepted' : moneyRequest?.by_me ? 'Pending' : 'Accept'}</Button>
+                            {!moneyRequest?.accepted_at &&
                                 <Button type="button" onClick={e => {
                                     if (moneyRequest?.by_me) {
                                         onAction(cancel);
                                     } else {
                                         onAction(reject);
                                     }
-                                }} variant="destructive" loading={processing} disabled={moneyRequest?.cancelled_at != null || moneyRequest?.rejected_at != null} className="disabled:cursor-not-allowed">{
+                                }} variant="destructive" loading={processing} disabled={message.moneyRequest?.accepted_at != null || message.moneyRequest?.cancelled_at != null || message.moneyRequest?.rejected_at != null} className="disabled:cursor-not-allowed">{
                                         moneyRequest?.cancelled_at != null ? 'Cancelled' : moneyRequest?.rejected_at != null ? 'Rejected' : moneyRequest?.by_me ? 'Cancel' : 'Reject'
                                     }</Button>
                             }
@@ -148,7 +164,7 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                         </div>
                     </>}
                 </Card>
-                <span className={cn("!text-gray-400 mt-1 !font-normal !text-xs", message.by_me ? 'text-end' : 'text-start')}>{format(parseISO(message.created_at as string), 'hh:mm a')}</span>
+                <span className={cn("!text-gray-400 mt-1 !font-normal !text-xs", moneyRequest?.by_me ? 'text-end' : 'text-start')}>{format(parseISO(message.created_at as string), 'hh:mm a')}</span>
             </div>
         </div >
     )
