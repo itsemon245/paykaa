@@ -1,6 +1,6 @@
 import useBreakpoint from "@/Hooks/useBrakpoints";
 import { useMessageStore } from "@/stores/useMessageStore";
-import { ChatData, MessageData } from "@/types/_generated"
+import { ChatData, MessageData, MoneyRequestData } from "@/types/_generated"
 import { cn, defaultAvatar, image } from "@/utils";
 import { usePage } from "@inertiajs/react";
 import { format, parseISO } from "date-fns"
