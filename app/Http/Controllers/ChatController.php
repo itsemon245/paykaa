@@ -65,6 +65,9 @@ class ChatController extends Controller
                     ->where('cancelled_at', null);
             })
             ->first()?->moneyRequest;
+        if ($pending) {
+            $pending->loadMissing('from');
+        }
         $pending = $pending ? MoneyRequestData::from($pending) : null;
         return Inertia::render('Chat/Show', [
             'chat' => ChatData::from($chat),
