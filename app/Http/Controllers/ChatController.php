@@ -64,7 +64,7 @@ class ChatController extends Controller
                     ->where('rejected_at', null)
                     ->where('cancelled_at', null);
             })
-            ->first()->moneyRequest);
+            ->first()?->moneyRequest);
         return Inertia::render('Chat/Show', [
             'chat' => ChatData::from($chat),
             'chats' => $this->getChats($request),
