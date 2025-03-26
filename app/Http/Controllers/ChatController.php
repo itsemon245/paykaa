@@ -58,13 +58,14 @@ class ChatController extends Controller
         $chat->loadMissing('sender', 'receiver', 'lastMessage');
         // Chat::myChats()->where('uuid', $chat->uuid)->where('is_read', false)->update(['is_read' => true]);
 
-        $pending = MoneyRequestData::from($chat->messages()
+        $pending = $chat->messages()
             ->whereHas('moneyRequest', function ($query) {
                 $query->where('released_at', null)
                     ->where('rejected_at', null)
                     ->where('cancelled_at', null);
             })
-            ->first()?->moneyRequest);
+            ->first()?->moneyRequest;
+        $pending = $pending ? MoneyRequestData::from($pending) : null;
         return Inertia::render('Chat/Show', [
             'chat' => ChatData::from($chat),
             'chats' => $this->getChats($request),
