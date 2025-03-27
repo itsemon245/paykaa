@@ -75,7 +75,7 @@ class ChatController extends Controller
             'pendingMoneyRequest' => $pending,
             'messages' => MessageData::collect($chat
                 ->messages()
-                ->with('moneyRequest', 'from', 'parent', 'moneyRequest', 'moneyRequest.from')
+                ->with('moneyRequest', 'from', 'parent', 'moneyRequest', 'moneyRequest.from', 'ogMoneyRequest', 'ogMoneyRequest.from')
                 ->paginate(120)),
         ]);
     }

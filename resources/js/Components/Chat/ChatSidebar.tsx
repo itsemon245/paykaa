@@ -19,8 +19,8 @@ export default function ChatSidebar({
     const chat = usePage().props.chat as ChatData | undefined;
     const { user, isAdmin } = useAuth();
     const itemTemplate = (chatItem: ChatData, key?: any) => {
-        const item = chatItem;
-        const activeStatus = useMemo(() => item.from?.active_status, [item])
+        const item = chatItem
+        const activeStatus = item.from?.active_status
 
         return (<Link
             href={route().current('helpline') && !isAdmin ? route('helpline') : route('chat.show', { chat: item.uuid })}

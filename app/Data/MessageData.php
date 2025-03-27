@@ -25,6 +25,8 @@ class MessageData extends Data
     public ChatData $chat;
     #[TypeScriptOptional]
     public MoneyRequestData $moneyRequest;
+    #[TypeScriptOptional]
+    public ?MoneyRequestData $ogMoneyRequest;
     public bool $by_me = false;
     public bool $is_read;
     #[TypeScriptOptional]

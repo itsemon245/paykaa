@@ -20,7 +20,7 @@ class MoneyRequestController extends Controller
     public function moneyRequestMessage(MoneyRequest $moneyRequest, Message $message = null)
     {
         $moneyRequest->refresh();
-        $moneyRequest->loadMissing('from', 'message');
+        $moneyRequest->loadMissing('from', 'message', 'message.moneyRequest');
         if (!$message) {
             $message = Message::create([
                 'chat_id' => $moneyRequest->message->chat_id,
@@ -29,6 +29,8 @@ class MoneyRequestController extends Controller
                 'type' => MessageType::MoneyRequest->value,
                 'body' => "Money Request to {$moneyRequest->receiver->name} from " . auth()->user()->name,
                 'data' => MoneyRequestData::from($moneyRequest),
+                'og_money_request_id' => $moneyRequest->id,
+                'created_at' => now()->addSeconds(10),
             ]);
             return $message;
         }
@@ -86,7 +88,7 @@ class MoneyRequestController extends Controller
                 'message_id' => $message->id,
                 'duration' => $request->duration,
             ]);
-            event(new \App\Events\MessageCreated($this->moneyRequestMessage($moneyRequest, $message)));
+            event(new \App\Events\MessageCreated($message));
             return back();
         });
     }
@@ -112,7 +114,8 @@ class MoneyRequestController extends Controller
                 'note' => $moneyRequest->note,
                 'payment_number' => $moneyRequest->sender_id,
             ]);
-            event(new \App\Events\MessageCreated($this->moneyRequestMessage($moneyRequest, $moneyRequest->message)));
+            event(new \App\Events\MessageCreated($moneyRequest->message));
+            // event(new \App\Events\MessageCreated($this->moneyRequestMessage($moneyRequest)));
             return back();
         });
     }
@@ -122,7 +125,7 @@ class MoneyRequestController extends Controller
         return backWithError(function () use ($request, $moneyRequest) {
             $moneyRequest->cancelled_at = now();
             $moneyRequest->save();
-            event(new \App\Events\MessageCreated($this->moneyRequestMessage($moneyRequest, $moneyRequest->message)));
+            event(new \App\Events\MessageCreated($moneyRequest->message));
             return back();
         });
     }
@@ -132,7 +135,7 @@ class MoneyRequestController extends Controller
         return backWithError(function () use ($request, $moneyRequest) {
             $moneyRequest->rejected_at = now();
             $moneyRequest->save();
-            event(new \App\Events\MessageCreated($this->moneyRequestMessage($moneyRequest, $moneyRequest->message)));
+            event(new \App\Events\MessageCreated($moneyRequest->message));
             return back();
         });
     }
@@ -142,7 +145,7 @@ class MoneyRequestController extends Controller
             $moneyRequest->update([
                 'release_requested_at' => now(),
             ]);
-            event(new \App\Events\MessageCreated($this->moneyRequestMessage($moneyRequest)));
+            event(new \App\Events\MessageCreated($moneyRequest->message));
             return back();
         });
     }
@@ -175,7 +178,7 @@ class MoneyRequestController extends Controller
                 'released_at' => now(),
                 'rejected_at' => null,
             ]);
-            event(new \App\Events\MessageCreated($this->moneyRequestMessage($moneyRequest, $moneyRequest->message)));
+            event(new \App\Events\MessageCreated($moneyRequest->message));
             return back();
         });
     }
@@ -189,7 +192,8 @@ class MoneyRequestController extends Controller
                 'cancelled_at' => null,
                 'rejected_at' => null,
             ]);
-            event(new \App\Events\MessageCreated($this->moneyRequestMessage($moneyRequest)));
+            event(new \App\Events\MessageCreated($moneyRequest->message));
+            // event(new \App\Events\MessageCreated($this->moneyRequestMessage($moneyRequest)));
             return back();
         });
     }

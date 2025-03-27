@@ -19,6 +19,11 @@ class Message extends Model
         return $this->belongsTo(Message::class, 'replied_to');
     }
 
+    public function ogMoneyRequest()
+    {
+        return $this->belongsTo(MoneyRequest::class, 'og_money_request_id');
+    }
+
     public function getByMeAttribute()
     {
         return $this->sender_id === auth()->id();

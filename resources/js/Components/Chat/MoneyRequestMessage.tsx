@@ -9,10 +9,13 @@ import { Card } from 'primereact/card';
 import toast from 'react-hot-toast';
 
 export default function MoneyRequestMessage({ message, chat }: { message: MessageData; chat: ChatData }) {
-    const { processing, accept, reject, release, cancel, moneyRequest } = useMoneyRequest(message, chat);
+    const { processing, accept, reject, release, cancel, requestRelease, moneyRequest } = useMoneyRequest(message, chat);
 
     const { min } = useBreakpoint();
     const { user } = useAuth()
+    useEffect(() => {
+        console.log("Message:", message)
+    }, [message])
     const onActionBase = useConfirmStore((state) => state.onAction);
     const onAction = (callback: (...params: any) => any) => {
         if (message.moneyRequest?.reported_at) {
@@ -65,14 +68,14 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                         {moneyRequest?.status == 'pending' && "Money Request Pending"}
                         {moneyRequest?.status == 'Request Accepted' && "Money Request Accepted"}
                         {moneyRequest?.status === 'waiting for release' && <>
-                            {moneyRequest?.by_me ? "Request Release Pending" : `${moneyRequest.from?.name} sent request to release`}
+                            {(moneyRequest?.by_me || message.ogMoneyRequest?.by_me) ? "Request Release Pending" : `${moneyRequest.from?.name} sent request to release`}
                         </>}
                         {
                             !(moneyRequest?.status == 'pending' || moneyRequest?.status == 'waiting for release' || moneyRequest?.status === 'Request Accepted') && `${moneyRequest?.by_me ? 'You' : moneyRequest?.from?.name} have requested money`
                         }
                     </div>
                     {moneyRequest && (
-                        <div className="">
+                        <div className="mb-1">
                             <Countdown moneyRequest={moneyRequest} />
                         </div>
                     )}
@@ -81,18 +84,22 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                         <div className="flex items-center justify-center gap-2">
                             <Button
                                 type="button"
+                                disabled={message.moneyRequest?.accepted_at != null}
                                 onClick={(e) => {
                                     if (!moneyRequest?.by_me) {
                                         onAction(accept);
                                     }
                                 }}
-                                variant="success"
+                                variant={
+                                    moneyRequest?.by_me ? 'warning' : 'success'
+                                }
                                 loading={processing} >
                                 {moneyRequest?.by_me ? 'Pending' : 'Accept'}
                             </Button>
                             {!moneyRequest?.accepted_at && (
                                 <Button
                                     type="button"
+                                    disabled={message.moneyRequest?.rejected_at != null || message.moneyRequest?.cancelled_at != null || message.moneyRequest?.released_at != null || message.moneyRequest?.accepted_at != null}
                                     onClick={(e) => {
                                         if (moneyRequest?.by_me) {
                                             onAction(cancel);
@@ -110,10 +117,26 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                         </div>
                     }
                     {
-                        moneyRequest?.status === 'waiting for release' && moneyRequest?.by_me &&
-                        <Button type="button" onClick={(e) => {
-                            onAction(release);
-                        }} variant="destructive" loading={processing}>
+                        moneyRequest?.status === 'Request Accepted' && moneyRequest?.by_me &&
+                        <Button
+                            onClick={(e) => {
+                                if (moneyRequest?.by_me) {
+                                    onAction(requestRelease);
+                                }
+                            }}
+                            disabled={moneyRequest.release_requested_at != null}
+                            className="text-black bg-[#D8BBFF]"
+                            type='button'>{
+                                moneyRequest.release_requested_at ? 'Release Requested' : 'Request Release'
+                            }</Button>
+                    }
+                    {
+                        moneyRequest?.status === 'waiting for release' && !moneyRequest?.by_me &&
+                        <Button type="button"
+                            disabled={message.moneyRequest?.released_at != null || message.moneyRequest?.rejected_at != null || message.moneyRequest?.cancelled_at != null || message.moneyRequest?.reported_at != null}
+                            onClick={(e) => {
+                                onAction(release);
+                            }} variant="destructive" loading={processing}>
                             Release
                         </Button>
                     }
@@ -132,7 +155,7 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                         </Button>
                     }
                 </div>
-            </Card>
+            </Card >
             <span
                 className={cn(
                     'mt-1 !text-xs !font-normal !text-gray-400',
@@ -140,6 +163,6 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                 )}>
                 {format(parseISO(message.created_at as string), 'hh:mm a')}
             </span>
-        </div>
+        </div >
     );
 }

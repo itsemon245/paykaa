@@ -42,20 +42,17 @@ export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?
             setProcessing(false)
             setMessage(moneyRequestMessage)
             const request = moneyRequestMessage?.data ?? moneyRequestMessage?.moneyRequest
-            if (moneyRequestMessage?.data) {
-                console.log("static money-request:", moneyRequestMessage?.data)
-            }
             setMoneyRequest(request)
         }
     }, [moneyRequestMessage])
 
     const { user } = useAuth()
-    useEffect(() => {
-        if (!moneyRequest) return
-        if (!message) return
-        moneyRequest.by_me = message.sender_id === user.id
-        moneyRequest.from = message.sender_id === user.id ? user : message.from
-    }, [moneyRequest, message, user])
+    // useEffect(() => {
+    //     if (!moneyRequest) return
+    //     if (!message) return
+    //     moneyRequest.by_me = moneyRequest.by_me || message.ogMoneyRequest?.by_me || false
+    //     moneyRequest.from = moneyRequest.from || message.ogMoneyRequest?.from || chat?.from
+    // }, [moneyRequest, message, user, chat])
 
     const accept = async () => {
         if (!moneyRequest || processing) return

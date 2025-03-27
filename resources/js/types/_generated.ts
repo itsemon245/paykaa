@@ -124,6 +124,7 @@ export type MessageData = {
     uuid: string;
     chat?: ChatData;
     moneyRequest?: MoneyRequestData;
+    ogMoneyRequest?: MoneyRequestData;
     by_me: boolean;
     is_read: boolean;
     body?: string;
@@ -179,7 +180,8 @@ export type Status =
     | 'failed'
     | 'rejected'
     | 'cancelled'
-    | 'not verified';
+    | 'not verified'
+    | 'locked';
 export type UserData = {
     id: number;
     uuid: string;
