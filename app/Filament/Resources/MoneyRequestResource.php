@@ -22,6 +22,7 @@ class MoneyRequestResource extends Resource
     protected static ?string $model = MoneyRequest::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Money Transfers';
 
     public static function form(Form $form): Form
     {
