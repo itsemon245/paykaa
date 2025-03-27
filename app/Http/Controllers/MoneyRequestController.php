@@ -34,6 +34,7 @@ class MoneyRequestController extends Controller
         }
         if ($message->type == MessageType::MoneyRequest->value) {
             $message->data = MoneyRequestData::from($moneyRequest);
+            $message->created_at = now();
             $message->save();
         }
         return $message;
@@ -111,7 +112,7 @@ class MoneyRequestController extends Controller
                 'note' => $moneyRequest->note,
                 'payment_number' => $moneyRequest->sender_id,
             ]);
-            event(new \App\Events\MessageCreated($this->moneyRequestMessage($moneyRequest)));
+            event(new \App\Events\MessageCreated($this->moneyRequestMessage($moneyRequest, $moneyRequest->message)));
             return back();
         });
     }
@@ -121,7 +122,7 @@ class MoneyRequestController extends Controller
         return backWithError(function () use ($request, $moneyRequest) {
             $moneyRequest->cancelled_at = now();
             $moneyRequest->save();
-            event(new \App\Events\MessageCreated($this->moneyRequestMessage($moneyRequest)));
+            event(new \App\Events\MessageCreated($this->moneyRequestMessage($moneyRequest, $moneyRequest->message)));
             return back();
         });
     }
@@ -131,7 +132,7 @@ class MoneyRequestController extends Controller
         return backWithError(function () use ($request, $moneyRequest) {
             $moneyRequest->rejected_at = now();
             $moneyRequest->save();
-            event(new \App\Events\MessageCreated($this->moneyRequestMessage($moneyRequest)));
+            event(new \App\Events\MessageCreated($this->moneyRequestMessage($moneyRequest, $moneyRequest->message)));
             return back();
         });
     }
@@ -174,7 +175,7 @@ class MoneyRequestController extends Controller
                 'released_at' => now(),
                 'rejected_at' => null,
             ]);
-            event(new \App\Events\MessageCreated($this->moneyRequestMessage($moneyRequest)));
+            event(new \App\Events\MessageCreated($this->moneyRequestMessage($moneyRequest, $moneyRequest->message)));
             return back();
         });
     }

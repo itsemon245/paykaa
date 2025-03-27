@@ -51,12 +51,11 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                         className: 'px-2',
                     },
                 }}>
-                <div className="text-center text-xs font-medium">Money Request</div>
                 <div className="my-1 flex w-full flex-wrap items-center justify-center gap-1">
                     {moneyRequest &&
-                    moneyRequest.released_at != null &&
-                    moneyRequest.cancelled_at != null &&
-                    moneyRequest.rejected_at != null ? (
+                        moneyRequest.released_at != null &&
+                        moneyRequest.cancelled_at != null &&
+                        moneyRequest.rejected_at != null ? (
                         <>
                             <div className="text-sm font-medium">
                                 {moneyRequest?.by_me ? 'You' : `${moneyRequest?.from?.name}`} requested
@@ -124,8 +123,8 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                                                 {moneyRequest?.status == 'Request Accepted'
                                                     ? 'accepted'
                                                     : moneyRequest?.status === 'completed'
-                                                      ? 'successful'
-                                                      : moneyRequest?.status?.toLowerCase()}
+                                                        ? 'successful'
+                                                        : moneyRequest?.status?.toLowerCase()}
                                             </div>
                                         </>
                                     )}
@@ -140,9 +139,9 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                     </div>
                 )}
                 {!moneyRequest?.accepted_at &&
-                !moneyRequest?.released_at &&
-                !moneyRequest?.cancelled_at &&
-                !moneyRequest?.rejected_at ? (
+                    !moneyRequest?.released_at &&
+                    !moneyRequest?.cancelled_at &&
+                    !moneyRequest?.rejected_at ? (
                     <>
                         <div className="flex items-center justify-center gap-2">
                             <Button
@@ -184,10 +183,10 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                                     {moneyRequest?.cancelled_at != null
                                         ? 'Cancelled'
                                         : moneyRequest?.rejected_at != null
-                                          ? 'Rejected'
-                                          : moneyRequest?.by_me
-                                            ? 'Cancel'
-                                            : 'Reject'}
+                                            ? 'Rejected'
+                                            : moneyRequest?.by_me
+                                                ? 'Cancel'
+                                                : 'Reject'}
                                 </Button>
                             )}
                         </div>
