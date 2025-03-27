@@ -24,7 +24,7 @@ class ManageMoneyRequests extends ManageRecords
                 })->where(function (Builder $builder) {
                     $builder->whereNull('cancelled_at');
                 })),
-            'pending' => Tab::make('All')
+            'pending' => Tab::make('Pending')
                 ->modifyQueryUsing(fn(Builder $query) => $query->where(function (Builder $builder) {
                     $builder->whereNull('cancelled_at')
                         ->whereNull('released_at')
