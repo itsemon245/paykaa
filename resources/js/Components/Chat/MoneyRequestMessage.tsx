@@ -9,7 +9,7 @@ import { Card } from 'primereact/card';
 import toast from 'react-hot-toast';
 
 export default function MoneyRequestMessage({ message, chat }: { message: MessageData; chat: ChatData }) {
-    const { processing, accept, reject, cancel, moneyRequest } = useMoneyRequest(message, chat);
+    const { processing, accept, reject, release, cancel, moneyRequest } = useMoneyRequest(message, chat);
 
     const { min } = useBreakpoint();
     const onActionBase = useConfirmStore((state) => state.onAction);
@@ -51,98 +51,29 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                         className: 'px-2',
                     },
                 }}>
-                <div className="my-1 flex w-full flex-wrap items-center justify-center gap-1">
-                    {moneyRequest &&
-                        moneyRequest.released_at != null &&
-                        moneyRequest.cancelled_at != null &&
-                        moneyRequest.rejected_at != null ? (
-                        <>
-                            <div className="text-sm font-medium">
-                                {moneyRequest?.by_me ? 'You' : `${moneyRequest?.from?.name}`} requested
-                            </div>
-                            <div
-                                className={cn(
-                                    'mb-0.5 text-center text-base font-bold',
-                                    moneyRequest?.by_me ? 'text-green-500' : 'text-red-500',
-                                )}>
-                                {moneyRequest?.by_me ? '+' : '-'}
-                                {moneyRequest?.amount.toFixed(2)} BDT
-                            </div>
-                        </>
-                    ) : (
-                        <>
-                            {moneyRequest?.reported_at ? (
-                                <div className="text-sm font-medium">
-                                    <div className="text-center font-bold">
-                                        Report from{' '}
-                                        {moneyRequest.from?.id == moneyRequest.reported_by
-                                            ? moneyRequest.from?.name
-                                            : 'Yourself'}
-                                    </div>
-                                    <div>Entire transaction is now locked</div>
-                                </div>
-                            ) : (
-                                <>
-                                    {moneyRequest?.status === 'waiting for release' ? (
-                                        <>
-                                            {moneyRequest.by_me ? (
-                                                <>
-                                                    <div
-                                                        className={cn(
-                                                            'text-center text-sm font-bold',
-                                                            moneyRequest?.by_me ? 'text-green-500' : 'text-red-500',
-                                                        )}>
-                                                        {moneyRequest?.by_me ? '+' : '-'}
-                                                        {moneyRequest?.amount.toFixed(2)} BDT
-                                                    </div>
-                                                    <div className="text-center text-sm font-medium">
-                                                        request release pending
-                                                    </div>
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <div className="text-sm font-medium">
-                                                        {moneyRequest.from?.name} sent request release, check your money
-                                                        form
-                                                    </div>
-                                                </>
-                                            )}
-                                        </>
-                                    ) : (
-                                        <>
-                                            <div
-                                                className={cn(
-                                                    'mb-0.5 text-center text-base font-bold',
-                                                    moneyRequest?.by_me ? 'text-green-500' : 'text-red-500',
-                                                )}>
-                                                {moneyRequest?.by_me ? '+' : '-'}
-                                                {moneyRequest?.amount.toFixed(2)} BDT
-                                            </div>
-                                            <div className="text-sm font-medium">
-                                                Money request{' '}
-                                                {moneyRequest?.status == 'Request Accepted'
-                                                    ? 'accepted'
-                                                    : moneyRequest?.status === 'completed'
-                                                        ? 'successful'
-                                                        : moneyRequest?.status?.toLowerCase()}
-                                            </div>
-                                        </>
-                                    )}
-                                </>
-                            )}
-                        </>
-                    )}
-                </div>
-                {moneyRequest && (
-                    <div className="mb-1">
-                        <Countdown moneyRequest={moneyRequest} />
+                <div className="my-1 flex w-full flex-col flex-wrap items-center justify-center gap-1">
+                    <div
+                        className={cn(
+                            'mb-0.5 text-center text-base font-bold',
+                            moneyRequest?.by_me ? 'text-green-500' : 'text-red-500',
+                        )}>
+                        {moneyRequest?.by_me ? '+' : '-'}
+                        {moneyRequest?.amount.toFixed(2)} BDT
                     </div>
-                )}
-                {!moneyRequest?.accepted_at &&
-                    !moneyRequest?.released_at &&
-                    !moneyRequest?.cancelled_at &&
-                    !moneyRequest?.rejected_at ? (
-                    <>
+                    <div className="text-sm font-medium">
+                        {moneyRequest?.status == 'pending' && "Money Request Pending"}
+                        {moneyRequest?.status == 'Request Accepted' && "Money Request Accepted"}
+                        {moneyRequest?.status === 'waiting for release' && <>
+                            {moneyRequest?.by_me ? "Request Release Pending" : `${moneyRequest.from?.name} sent request to release`}
+                        </>}
+                    </div>
+                    {moneyRequest && (
+                        <div className="mb-1">
+                            <Countdown moneyRequest={moneyRequest} />
+                        </div>
+                    )}
+                    {
+                        moneyRequest?.status === 'pending' &&
                         <div className="flex items-center justify-center gap-2">
                             <Button
                                 type="button"
@@ -151,16 +82,9 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                                         onAction(accept);
                                     }
                                 }}
-                                variant={
-                                    moneyRequest?.by_me && moneyRequest?.accepted_at == null ? 'warning' : 'success'
-                                }
-                                loading={processing}
-                                disabled={message.moneyRequest?.accepted_at != null}
-                                className={cn(
-                                    message.moneyRequest?.accepted_at && 'col-span-2 !cursor-not-allowed',
-                                    moneyRequest?.by_me && 'cursor-not-allowed',
-                                )}>
-                                {moneyRequest?.accepted_at ? 'Accepted' : moneyRequest?.by_me ? 'Pending' : 'Accept'}
+                                variant="success"
+                                loading={processing} >
+                                {moneyRequest?.by_me ? 'Pending' : 'Accept'}
                             </Button>
                             {!moneyRequest?.accepted_at && (
                                 <Button
@@ -173,55 +97,23 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                                         }
                                     }}
                                     variant="destructive"
-                                    loading={processing}
-                                    disabled={
-                                        message.moneyRequest?.accepted_at != null ||
-                                        message.moneyRequest?.cancelled_at != null ||
-                                        message.moneyRequest?.rejected_at != null
-                                    }
-                                    className="disabled:cursor-not-allowed">
-                                    {moneyRequest?.cancelled_at != null
-                                        ? 'Cancelled'
-                                        : moneyRequest?.rejected_at != null
-                                            ? 'Rejected'
-                                            : moneyRequest?.by_me
-                                                ? 'Cancel'
-                                                : 'Reject'}
+                                    loading={processing}>
+                                    {moneyRequest?.by_me
+                                        ? 'Cancel'
+                                        : 'Reject'}
                                 </Button>
                             )}
                         </div>
-                    </>
-                ) : (
-                    <>
-                        <div className="flex items-center justify-center gap-2">
-                            {moneyRequest?.released_at ? (
-                                <Button variant="success" className="w-full cursor-not-allowed">
-                                    Completed
-                                </Button>
-                            ) : (
-                                <>
-                                    {!moneyRequest?.reported_at ? (
-                                        <Button
-                                            variant={
-                                                !moneyRequest?.cancelled_at && !moneyRequest?.rejected_at
-                                                    ? 'warning'
-                                                    : 'destructive'
-                                            }
-                                            className="w-full cursor-not-allowed !capitalize">
-                                            {!moneyRequest?.cancelled_at && !moneyRequest?.rejected_at
-                                                ? moneyRequest.status
-                                                : 'Cancelled'}
-                                        </Button>
-                                    ) : (
-                                        <Button disabled variant="destructive" className="w-full">
-                                            Reported
-                                        </Button>
-                                    )}
-                                </>
-                            )}
-                        </div>
-                    </>
-                )}
+                    }
+                    {
+                        moneyRequest?.status === 'waiting for release' && moneyRequest?.by_me &&
+                        <Button type="button" onClick={(e) => {
+                            onAction(release);
+                        }} variant="destructive" loading={processing}>
+                            Release
+                        </Button>
+                    }
+                </div>
             </Card>
             <span
                 className={cn(
