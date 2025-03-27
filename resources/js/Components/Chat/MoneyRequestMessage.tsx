@@ -3,7 +3,7 @@ import useBreakpoint from '@/Hooks/useBrakpoints';
 import useMoneyRequest from '@/Hooks/useMoneyRequest';
 import { useConfirmStore } from '@/stores/useConfirmStore';
 import { ChatData, MessageData } from '@/types/_generated';
-import { cn } from '@/utils';
+import { cn, transform } from '@/utils';
 import { format, parseISO } from 'date-fns';
 import { Card } from 'primereact/card';
 import toast from 'react-hot-toast';
@@ -12,6 +12,7 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
     const { processing, accept, reject, release, cancel, moneyRequest } = useMoneyRequest(message, chat);
 
     const { min } = useBreakpoint();
+    const { user } = useAuth()
     const onActionBase = useConfirmStore((state) => state.onAction);
     const onAction = (callback: (...params: any) => any) => {
         if (message.moneyRequest?.reported_at) {
@@ -51,24 +52,27 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                         className: 'px-2',
                     },
                 }}>
-                <div className="my-1 flex w-full flex-col flex-wrap items-center justify-center gap-1">
+                <div className="my-1 flex w-full flex-col flex-wrap items-center justify-center">
                     <div
                         className={cn(
-                            'mb-0.5 text-center text-base font-bold',
+                            'text-center text-base font-bold',
                             moneyRequest?.by_me ? 'text-green-500' : 'text-red-500',
                         )}>
                         {moneyRequest?.by_me ? '+' : '-'}
                         {moneyRequest?.amount.toFixed(2)} BDT
                     </div>
-                    <div className="text-sm font-medium">
+                    <div className="text-sm font-medium mb-1">
                         {moneyRequest?.status == 'pending' && "Money Request Pending"}
                         {moneyRequest?.status == 'Request Accepted' && "Money Request Accepted"}
                         {moneyRequest?.status === 'waiting for release' && <>
                             {moneyRequest?.by_me ? "Request Release Pending" : `${moneyRequest.from?.name} sent request to release`}
                         </>}
+                        {
+                            !(moneyRequest?.status == 'pending' || moneyRequest?.status == 'waiting for release' || moneyRequest?.status === 'Request Accepted') && `${moneyRequest?.by_me ? 'You' : moneyRequest?.from?.name} have requested money`
+                        }
                     </div>
                     {moneyRequest && (
-                        <div className="mb-1">
+                        <div className="">
                             <Countdown moneyRequest={moneyRequest} />
                         </div>
                     )}
@@ -111,6 +115,20 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                             onAction(release);
                         }} variant="destructive" loading={processing}>
                             Release
+                        </Button>
+                    }
+                    {
+                        !(moneyRequest?.status == 'pending' || moneyRequest?.status == 'waiting for release' || moneyRequest?.status === 'Request Accepted') &&
+                        <Button
+                            disabled
+                            variant={
+                                moneyRequest?.released_at ? 'success' : 'destructive'
+                            }
+                        >
+                            {moneyRequest?.reported_at
+                                ? (moneyRequest.reported_by == user.id ? 'Report submitted' : `Report from ${moneyRequest?.from?.name}`)
+                                : `Transaction ${moneyRequest?.status == 'completed' ? 'Successfull' : transform(moneyRequest?.status, 'title')}`
+                            }
                         </Button>
                     }
                 </div>
