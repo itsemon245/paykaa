@@ -127,6 +127,12 @@ class MoneyRequestResource extends Resource
                     ->datetime("d M, Y h:i A")
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
+                Tables\Columns\TextColumn::make('reported_by')
+                    ->label('Reported By')
+                    ->formatStateUsing(fn(MoneyRequest $record) => $record->reported_by != null ? ($record->sender_id == $record->reported_by ? 'Seller' : 'Buyer') : 'none')
+                    ->badge()
+                    ->color(fn(MoneyRequest $record) => $record->reported_by != null ? ($record->sender_id == $record->reported_by ? 'success' : 'danger') : 'info')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->toggleable(isToggledHiddenByDefault: false)
                     ->badge()
@@ -143,12 +149,12 @@ class MoneyRequestResource extends Resource
                     })
                     ->label('Status'),
                 Tables\Columns\TextColumn::make('sender_id')
-                    ->label('Receiver')
+                    ->label('Seller')
                     ->copyable()
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('receiver_id')
-                    ->label('Sender')
+                    ->label('Buyer')
                     ->copyable()
                     ->searchable()
                     ->sortable(),

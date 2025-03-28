@@ -72,8 +72,16 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                                 {moneyRequest?.status === 'waiting for release' && <>
                                     {(moneyRequest?.by_me) ? "Request Release Pending" : `${moneyRequest.from?.name} sent request to release`}
                                 </>}
+                                {moneyRequest?.status === 'rejected' && "Money Request Rejected"}
+                                {moneyRequest?.status === 'cancelled' && "Money Request Cancelled"}
                                 {
-                                    !(moneyRequest?.status == 'pending' || moneyRequest?.status == 'waiting for release' || moneyRequest?.status === 'Request Accepted') && `${moneyRequest?.by_me ? 'You' : moneyRequest?.from?.name} have requested money`
+                                    !(
+                                        moneyRequest?.status == 'pending'
+                                        || moneyRequest?.status == 'waiting for release'
+                                        || moneyRequest?.status === 'Request Accepted'
+                                        || moneyRequest?.status === 'cancelled'
+                                        || moneyRequest?.status === 'rejected'
+                                    ) && `${moneyRequest?.by_me ? 'You' : moneyRequest?.from?.name} have requested money`
                                 }
                             </>
                         }
@@ -140,7 +148,7 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                             disabled={message.ogMoneyRequest?.released_at != null || message.ogMoneyRequest?.rejected_at != null || message.ogMoneyRequest?.cancelled_at != null || message.ogMoneyRequest?.reported_at != null}
                             onClick={(e) => {
                                 onAction(release);
-                            }} variant="destructive" loading={processing}>
+                            }} variant="warning" loading={processing}>
                             Release
                         </Button>
                     }
@@ -153,7 +161,7 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                             }
                         >
                             {moneyRequest?.reported_at
-                                ? (moneyRequest.reported_by == user.id ? 'Report submitted' : `Report from ${moneyRequest?.from?.name}`)
+                                ? (moneyRequest.reported_by == user.id ? 'Report submitted' : `Reported by ${moneyRequest?.from?.name}`)
                                 : `Transaction ${moneyRequest?.status == 'completed' ? 'Successfull' : transform(moneyRequest?.status, 'title')}`
                             }
                         </Button>
