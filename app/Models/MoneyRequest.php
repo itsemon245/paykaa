@@ -49,6 +49,14 @@ class MoneyRequest extends Model
         return Status::PENDING->value;
     }
 
+    public function releaseMessage(): BelongsTo
+    {
+        return $this->belongsTo(Message::class, 'release_message_id');
+    }
+    public function reportMessage(): BelongsTo
+    {
+        return $this->belongsTo(Message::class, 'report_message_id');
+    }
     public function sender(): BelongsTo
     {
         return $this->belongsTo(User::class, 'sender_id');

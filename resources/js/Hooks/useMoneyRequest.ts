@@ -42,7 +42,10 @@ export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?
             setProcessing(false)
             setMessage(moneyRequestMessage)
             const request = moneyRequestMessage?.data ?? moneyRequestMessage?.moneyRequest
-            setMoneyRequest(request)
+            if (request) {
+                request.by_me = request?.sender_id === user?.id
+                setMoneyRequest(request)
+            }
         }
     }, [moneyRequestMessage])
 

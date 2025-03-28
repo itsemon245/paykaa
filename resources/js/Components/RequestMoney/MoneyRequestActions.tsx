@@ -28,6 +28,8 @@ export default function MoneyRequestActions({
         onActionBase(callback)
     }
 
+    const { user } = useAuth()
+
     return (
         <div className="mt-2">
             {moneyRequest.accepted_at
@@ -65,7 +67,7 @@ export default function MoneyRequestActions({
                         || moneyRequest.reported_at
                         ? <Button type="button" variant={
                             moneyRequest.released_at ? 'success' : 'destructive'
-                        } className="w-full !capitalize" disabled>{moneyRequest.reported_at ? 'Reported' : moneyRequest.status}</Button> :
+                        } className="w-full !capitalize" disabled>{moneyRequest.reported_at ? (moneyRequest.reported_by == user.id ? 'Report submitted' : `Report from ${moneyRequest?.from?.name}`) : moneyRequest.status}</Button> :
                         <div className="grid grid-cols-2 items-center gap-2 justify-center">
                             {
                                 pending && <Button type="button" onClick={e => {

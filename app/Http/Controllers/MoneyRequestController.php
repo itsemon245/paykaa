@@ -17,10 +17,10 @@ use Ramsey\Uuid\Uuid;
 
 class MoneyRequestController extends Controller
 {
-    public function moneyRequestMessage(MoneyRequest $moneyRequest, Message $message = null)
+    public function moneyRequestMessage(MoneyRequest $moneyRequest, Message $message = null, $messageType = null)
     {
         $moneyRequest->refresh();
-        $moneyRequest->loadMissing('from', 'message', 'message.moneyRequest');
+        $moneyRequest->loadMissing('from');
         if (!$message) {
             $message = Message::create([
                 'chat_id' => $moneyRequest->message->chat_id,
@@ -30,13 +30,20 @@ class MoneyRequestController extends Controller
                 'body' => "Money Request to {$moneyRequest->receiver->name} from " . auth()->user()->name,
                 'data' => MoneyRequestData::from($moneyRequest),
                 'og_money_request_id' => $moneyRequest->id,
-                'created_at' => now()->addSeconds(10),
             ]);
+            if ($messageType == 'release') {
+                $moneyRequest->release_message_id = $message->id;
+                $moneyRequest->save();
+            }
+            if ($messageType == 'report') {
+                $moneyRequest->report_message_id = $message->id;
+                $moneyRequest->save();
+            }
             return $message;
         }
         if ($message->type == MessageType::MoneyRequest->value) {
             $message->data = MoneyRequestData::from($moneyRequest);
-            $message->created_at = now();
+            $message->og_money_request_id = $moneyRequest->id;
             $message->save();
         }
         return $message;
@@ -88,7 +95,7 @@ class MoneyRequestController extends Controller
                 'message_id' => $message->id,
                 'duration' => $request->duration,
             ]);
-            event(new \App\Events\MessageCreated($message));
+            event(new \App\Events\MessageCreated($this->moneyRequestMessage($moneyRequest, $moneyRequest->message)));
             return back();
         });
     }
@@ -114,8 +121,7 @@ class MoneyRequestController extends Controller
                 'note' => $moneyRequest->note,
                 'payment_number' => $moneyRequest->sender_id,
             ]);
-            event(new \App\Events\MessageCreated($moneyRequest->message));
-            // event(new \App\Events\MessageCreated($this->moneyRequestMessage($moneyRequest)));
+            event(new \App\Events\MessageCreated($this->moneyRequestMessage($moneyRequest, $moneyRequest->message)));
             return back();
         });
     }
@@ -125,7 +131,7 @@ class MoneyRequestController extends Controller
         return backWithError(function () use ($request, $moneyRequest) {
             $moneyRequest->cancelled_at = now();
             $moneyRequest->save();
-            event(new \App\Events\MessageCreated($moneyRequest->message));
+            event(new \App\Events\MessageCreated($this->moneyRequestMessage($moneyRequest, $moneyRequest->message)));
             return back();
         });
     }
@@ -135,7 +141,7 @@ class MoneyRequestController extends Controller
         return backWithError(function () use ($request, $moneyRequest) {
             $moneyRequest->rejected_at = now();
             $moneyRequest->save();
-            event(new \App\Events\MessageCreated($moneyRequest->message));
+            event(new \App\Events\MessageCreated($this->moneyRequestMessage($moneyRequest, $moneyRequest->message)));
             return back();
         });
     }
@@ -145,7 +151,7 @@ class MoneyRequestController extends Controller
             $moneyRequest->update([
                 'release_requested_at' => now(),
             ]);
-            event(new \App\Events\MessageCreated($moneyRequest->message));
+            event(new \App\Events\MessageCreated($this->moneyRequestMessage($moneyRequest, messageType: 'release')));
             return back();
         });
     }
@@ -178,7 +184,7 @@ class MoneyRequestController extends Controller
                 'released_at' => now(),
                 'rejected_at' => null,
             ]);
-            event(new \App\Events\MessageCreated($moneyRequest->message));
+            event(new \App\Events\MessageCreated($this->moneyRequestMessage($moneyRequest, $moneyRequest->releaseMessage)));
             return back();
         });
     }
@@ -192,8 +198,7 @@ class MoneyRequestController extends Controller
                 'cancelled_at' => null,
                 'rejected_at' => null,
             ]);
-            event(new \App\Events\MessageCreated($moneyRequest->message));
-            // event(new \App\Events\MessageCreated($this->moneyRequestMessage($moneyRequest)));
+            event(new \App\Events\MessageCreated($this->moneyRequestMessage($moneyRequest, messageType: 'report')));
             return back();
         });
     }

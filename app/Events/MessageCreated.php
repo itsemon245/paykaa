@@ -3,6 +3,7 @@
 namespace App\Events;
 
 use App\Data\MessageData;
+use App\Data\MoneyRequestData;
 use App\Enum\MessageType;
 use App\Models\Message;
 use App\Models\User;

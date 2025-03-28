@@ -14,7 +14,7 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
     const { min } = useBreakpoint();
     const { user } = useAuth()
     useEffect(() => {
-        console.log("Message:", message)
+        message.ogMoneyRequest = message.ogMoneyRequest || message.moneyRequest
     }, [message])
     const onActionBase = useConfirmStore((state) => state.onAction);
     const onAction = (callback: (...params: any) => any) => {
@@ -68,7 +68,7 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                         {moneyRequest?.status == 'pending' && "Money Request Pending"}
                         {moneyRequest?.status == 'Request Accepted' && "Money Request Accepted"}
                         {moneyRequest?.status === 'waiting for release' && <>
-                            {(moneyRequest?.by_me || message.ogMoneyRequest?.by_me) ? "Request Release Pending" : `${moneyRequest.from?.name} sent request to release`}
+                            {(moneyRequest?.by_me) ? "Request Release Pending" : `${moneyRequest.from?.name} sent request to release`}
                         </>}
                         {
                             !(moneyRequest?.status == 'pending' || moneyRequest?.status == 'waiting for release' || moneyRequest?.status === 'Request Accepted') && `${moneyRequest?.by_me ? 'You' : moneyRequest?.from?.name} have requested money`
@@ -99,7 +99,7 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                             {!moneyRequest?.accepted_at && (
                                 <Button
                                     type="button"
-                                    disabled={message.moneyRequest?.rejected_at != null || message.moneyRequest?.cancelled_at != null || message.moneyRequest?.released_at != null || message.moneyRequest?.accepted_at != null}
+                                    disabled={message.ogMoneyRequest?.rejected_at != null || message.ogMoneyRequest?.cancelled_at != null || message.ogMoneyRequest?.released_at != null || message.ogMoneyRequest?.accepted_at != null}
                                     onClick={(e) => {
                                         if (moneyRequest?.by_me) {
                                             onAction(cancel);
@@ -124,16 +124,16 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                                     onAction(requestRelease);
                                 }
                             }}
-                            disabled={moneyRequest.release_requested_at != null}
+                            disabled={message.ogMoneyRequest?.released_at != null || message.ogMoneyRequest?.rejected_at != null || message.ogMoneyRequest?.cancelled_at != null || message.ogMoneyRequest?.reported_at != null || message.ogMoneyRequest?.release_requested_at != null}
                             className="text-black bg-[#D8BBFF]"
                             type='button'>{
-                                moneyRequest.release_requested_at ? 'Release Requested' : 'Request Release'
+                                message.ogMoneyRequest?.release_requested_at ? 'Release Requested' : 'Request Release'
                             }</Button>
                     }
                     {
                         moneyRequest?.status === 'waiting for release' && !moneyRequest?.by_me &&
                         <Button type="button"
-                            disabled={message.moneyRequest?.released_at != null || message.moneyRequest?.rejected_at != null || message.moneyRequest?.cancelled_at != null || message.moneyRequest?.reported_at != null}
+                            disabled={message.ogMoneyRequest?.released_at != null || message.ogMoneyRequest?.rejected_at != null || message.ogMoneyRequest?.cancelled_at != null || message.ogMoneyRequest?.reported_at != null}
                             onClick={(e) => {
                                 onAction(release);
                             }} variant="destructive" loading={processing}>
