@@ -1,5 +1,9 @@
 <?php
 
+use App\Data\MoneyRequestData;
+use App\Enum\MessageType;
+use App\Models\Message;
+use App\Models\MoneyRequest;
 use Illuminate\Support\Facades\DB;
 
 
@@ -45,4 +49,36 @@ function backWithError(callable $callback)
 function useImage(string $url): string
 {
     return str($url)->startsWith('http') ? $url : asset("storage/" . $url);
+}
+
+function moneyRequestMessage(MoneyRequest $moneyRequest, Message $message = null, $messageType = null)
+{
+    $moneyRequest->refresh();
+    $moneyRequest->loadMissing('from');
+    if (!$message) {
+        $message = Message::create([
+            'chat_id' => $moneyRequest->message->chat_id,
+            'sender_id' => $moneyRequest->sender_id,
+            'receiver_id' => $moneyRequest->receiver_id,
+            'type' => MessageType::MoneyRequest->value,
+            'body' => "Money Request to {$moneyRequest->receiver->name} from " . auth()->user()->name,
+            'data' => MoneyRequestData::from($moneyRequest),
+            'og_money_request_id' => $moneyRequest->id,
+        ]);
+        if ($messageType == 'release') {
+            $moneyRequest->release_message_id = $message->id;
+            $moneyRequest->save();
+        }
+        if ($messageType == 'report') {
+            $moneyRequest->report_message_id = $message->id;
+            $moneyRequest->save();
+        }
+        return $message;
+    }
+    if ($message->type == MessageType::MoneyRequest->value) {
+        $message->data = MoneyRequestData::from($moneyRequest);
+        $message->og_money_request_id = $moneyRequest->id;
+        $message->save();
+    }
+    return $message;
 }

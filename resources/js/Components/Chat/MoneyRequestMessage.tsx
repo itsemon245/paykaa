@@ -65,13 +65,17 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                         {moneyRequest?.amount.toFixed(2)} BDT
                     </div>
                     <div className="text-sm font-medium mb-1">
-                        {moneyRequest?.status == 'pending' && "Money Request Pending"}
-                        {moneyRequest?.status == 'Request Accepted' && "Money Request Accepted"}
-                        {moneyRequest?.status === 'waiting for release' && <>
-                            {(moneyRequest?.by_me) ? "Request Release Pending" : `${moneyRequest.from?.name} sent request to release`}
-                        </>}
                         {
-                            !(moneyRequest?.status == 'pending' || moneyRequest?.status == 'waiting for release' || moneyRequest?.status === 'Request Accepted') && `${moneyRequest?.by_me ? 'You' : moneyRequest?.from?.name} have requested money`
+                            (moneyRequest?.cancelled_at != null || moneyRequest?.released_at != null) && message.ogMoneyRequest?.admin_note ? message.ogMoneyRequest?.admin_note : <>
+                                {moneyRequest?.status == 'pending' && "Money Request Pending"}
+                                {moneyRequest?.status == 'Request Accepted' && "Money Request Accepted"}
+                                {moneyRequest?.status === 'waiting for release' && <>
+                                    {(moneyRequest?.by_me) ? "Request Release Pending" : `${moneyRequest.from?.name} sent request to release`}
+                                </>}
+                                {
+                                    !(moneyRequest?.status == 'pending' || moneyRequest?.status == 'waiting for release' || moneyRequest?.status === 'Request Accepted') && `${moneyRequest?.by_me ? 'You' : moneyRequest?.from?.name} have requested money`
+                                }
+                            </>
                         }
                     </div>
                     {moneyRequest && (

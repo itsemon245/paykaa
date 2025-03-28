@@ -37,21 +37,28 @@ export default function MoneyRequestActions({
                 && <div className="text-center !text-red-500 text-xs !font-bold">Locked</div>}
             <div className="relative justify-center text-lg font-medium mb-1 flex flex-wrap items-center md:gap-2">
                 {
-                    moneyRequest.released_at
-                        || moneyRequest.rejected_at
-                        || moneyRequest.cancelled_at
-                        || moneyRequest.reported_at
-                        ? <div className="flex items-center gap-2 justify-center">
-                            <div className={cn("font-bold text-center", moneyRequest?.by_me ? 'text-green-500' : 'text-red-500')}>{(moneyRequest.by_me ? '+' : '-') + moneyRequest?.amount} BDT </div>
-                            <div className="text-center"> Money request {moneyRequest?.status == 'Request Accepted' ? 'accepted' : (moneyRequest?.status === 'completed' ? 'successful' : moneyRequest?.status?.toLowerCase())}</div>
+                    moneyRequest.admin_note ? <>
+                        <div className={cn("font-bold text-center", moneyRequest?.by_me ? 'text-green-500' : 'text-red-500')}>{(moneyRequest.by_me ? '+' : '-') + moneyRequest?.amount} BDT </div>
+                        <div className="text-center">{moneyRequest.admin_note}</div>
+                    </> : <>
+                        {
+                            moneyRequest.released_at
+                                || moneyRequest.rejected_at
+                                || moneyRequest.cancelled_at
+                                || moneyRequest.reported_at
+                                ? <div className="flex items-center gap-2 justify-center">
+                                    <div className={cn("font-bold text-center", moneyRequest?.by_me ? 'text-green-500' : 'text-red-500')}>{(moneyRequest.by_me ? '+' : '-') + moneyRequest?.amount} BDT </div>
+                                    <div className="text-center"> Money request {moneyRequest?.status == 'Request Accepted' ? 'accepted' : (moneyRequest?.status === 'completed' ? 'successful' : moneyRequest?.status?.toLowerCase())}</div>
 
-                        </div> : <>
-                            <div className="text-center">
-                                {moneyRequest.by_me ? "You have " : `${moneyRequest?.from?.name} has `}
-                                requested
-                            </div>
-                            <div className={cn("font-bold text-center", moneyRequest?.by_me ? 'text-green-500' : 'text-red-500')}>{(moneyRequest.by_me ? '+' : '-') + moneyRequest?.amount} BDT </div>
-                        </>
+                                </div> : <>
+                                    <div className="text-center">
+                                        {moneyRequest.by_me ? "You have " : `${moneyRequest?.from?.name} has `}
+                                        requested
+                                    </div>
+                                    <div className={cn("font-bold text-center", moneyRequest?.by_me ? 'text-green-500' : 'text-red-500')}>{(moneyRequest.by_me ? '+' : '-') + moneyRequest?.amount} BDT </div>
+                                </>
+                        }
+                    </>
                 }
             </div>
             {

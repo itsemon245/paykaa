@@ -150,6 +150,7 @@ export type MoneyRequestData = {
     from?: UserData;
     status: Status;
     by_me: boolean;
+    admin_note?: string;
     sender_id: number;
     receiver_id: number;
     message_id: number;

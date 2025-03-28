@@ -25,6 +25,8 @@ class MoneyRequestData extends Data
     public ?UserData $from;
     public Status $status;
     public bool $by_me;
+    #[Optional]
+    public ?string $admin_note;
     public function __construct(
         public int $sender_id,
         public int $receiver_id,

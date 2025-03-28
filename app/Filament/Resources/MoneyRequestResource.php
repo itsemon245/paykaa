@@ -62,7 +62,9 @@ class MoneyRequestResource extends Resource
                             'rejected_at' => null,
                             'reported_at' => null,
                             'reported_by' => null,
+                            'admin_note' => "Money returned by PayKaa Team",
                         ]);
+                        event(new \App\Events\MessageCreated(moneyRequestMessage($record, $record->reportMessage)));
                     });
                 })
                 ->icon('heroicon-o-check')
@@ -80,11 +82,13 @@ class MoneyRequestResource extends Resource
                         ]);
                         $record->update([
                             'released_at' => now(),
+                            'admin_note' => "Money released by PayKaa Team",
                             'cancelled_at' => null,
                             'rejected_at' => null,
                             'reported_at' => null,
                             'reported_by' => null,
                         ]);
+                        event(new \App\Events\MessageCreated(moneyRequestMessage($record, $record->reportMessage)));
                     });
                 })
                 ->icon('heroicon-o-check')
