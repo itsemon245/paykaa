@@ -1,12 +1,12 @@
 import type React from "react"
 import { Edit2 } from "lucide-react"
-import type { Recipient } from "@/types"
-import { Button } from "primereact/button"
 import { defaultAvatar, image } from "@/utils"
 import { Password } from "primereact/password"
 import { UserData } from "@/types/_generated"
 import toast from "react-hot-toast"
 import { useForm } from "@inertiajs/react"
+import { Button } from "@/components/ui/button"
+import useBreakpoint from "@/Hooks/useBrakpoints"
 
 interface TransactionFormProps {
     recipient: UserData
@@ -38,6 +38,7 @@ export default function TransactionForm({
             password: password,
         })
     }, [amount, password])
+    const { min } = useBreakpoint()
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
@@ -137,13 +138,15 @@ export default function TransactionForm({
                     />
                 </div>
 
-                <button
+                <Button
                     type="submit"
-                    className="text-center w-full !bg-primary text-white rounded-md py-2 mt-4 font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full text-center mt-4 mb-2"
+                    size={min("md") ? "lg" : "default"}
                     disabled={!amount || !password}
+                    loading={processing}
                 >
-                    {processing ? "Verifying..." : "Next"}
-                </button>
+                    Next
+                </Button>
             </div>
         </form>
     )
