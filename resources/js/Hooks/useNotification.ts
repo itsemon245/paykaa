@@ -5,7 +5,7 @@ export default function useNotification() {
     const playSound = (src?: string) => {
         if (config.app.env === 'local') return;
         try {
-            if (!src) src = "/assets/chat/audio/notification.wav";
+            if (!src) src = "/assets/chat/audio/notification.mp3";
             const audio = new Audio(src);
             audio.volume = 1;
             audio.loop = false;
