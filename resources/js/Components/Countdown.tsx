@@ -16,7 +16,7 @@ const Countdown: React.FC<CountdownProps> = ({ moneyRequest }) => {
     return (
         <>
             {
-                moneyRequest.status != 'pending' && moneyRequest.status !== 'waiting for release' && <div className='font-medium text-xs !text-primary-500 text-center'>
+                moneyRequest.status !== 'waiting for release' && <div className='font-medium text-xs !text-primary-500 text-center'>
                     Time Limit➠ {deliveryTime}
                 </div>
             }
