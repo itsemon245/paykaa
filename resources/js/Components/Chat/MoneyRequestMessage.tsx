@@ -64,7 +64,7 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                         {moneyRequest?.by_me ? '+' : '-'}
                         {moneyRequest?.amount.toFixed(2)} BDT
                     </div>
-                    <div className="text-sm font-medium mb-1">
+                    <div className="text-sm text-center font-medium mb-1">
                         {
                             (moneyRequest?.cancelled_at != null || moneyRequest?.released_at != null) && message.ogMoneyRequest?.admin_note
                                 ? message.ogMoneyRequest?.admin_note
@@ -93,7 +93,9 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                                                 }
                                             </>
                                             :
-                                            "Money Request Reported"
+                                            (
+                                                moneyRequest?.reported_by != user.id && <div className="text-red-500">{`This transaction has been reported by ${moneyRequest?.from?.name}`}</div>
+                                            )
                                     }
                                 </>
                         }
@@ -155,7 +157,7 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                             }</Button>
                     }
                     {
-                        moneyRequest?.status === 'waiting for release' && !moneyRequest?.by_me &&
+                        moneyRequest?.status === 'waiting for release' && !moneyRequest?.by_me && !moneyRequest?.reported_at &&
                         <Button type="button"
                             disabled={message.ogMoneyRequest?.released_at != null || message.ogMoneyRequest?.rejected_at != null || message.ogMoneyRequest?.cancelled_at != null || message.ogMoneyRequest?.reported_at != null}
                             onClick={(e) => {
@@ -165,18 +167,29 @@ export default function MoneyRequestMessage({ message, chat }: { message: Messag
                         </Button>
                     }
                     {
-                        !(moneyRequest?.status == 'pending' || moneyRequest?.status == 'waiting for release' || moneyRequest?.status === 'Request Accepted') &&
-                        <Button
-                            disabled
-                            variant={
-                                moneyRequest?.released_at ? 'success' : 'destructive'
-                            }
-                        >
-                            {moneyRequest?.reported_at
-                                ? (moneyRequest.reported_by == user.id ? 'Report submitted' : `Reported by ${moneyRequest?.from?.name}`)
-                                : `Transaction ${moneyRequest?.status == 'completed' ? 'Successfull' : transform(moneyRequest?.status, 'title')}`
-                            }
-                        </Button>
+                        moneyRequest?.reported_at && moneyRequest.reported_by == user.id
+                            ?
+                            <Button
+                                disabled
+                                variant="destructive"
+                            >
+                                Report submitted
+                            </Button>
+                            : <>
+                                {
+                                    !(moneyRequest?.status == 'pending' || moneyRequest?.status == 'waiting for release' || moneyRequest?.status === 'Request Accepted') &&
+                                    <Button
+                                        disabled
+                                        variant={
+                                            moneyRequest?.released_at ? 'success' : 'destructive'
+                                        }
+                                    >
+                                        {
+                                            `Transaction ${moneyRequest?.status == 'completed' ? 'Successfull' : transform(moneyRequest?.status, 'title')}`
+                                        }
+                                    </Button>
+                                }
+                            </>
                     }
                 </div>
             </Card >

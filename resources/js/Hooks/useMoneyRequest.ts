@@ -1,5 +1,5 @@
 import { PaginatedCollection, RouteName } from "@/types";
-import { ChatData, MessageData, MoneyRequestData } from "@/types/_generated";
+import { ChatData, MessageData, MoneyRequestData, UserData } from "@/types/_generated";
 import { router } from "@inertiajs/react";
 import toast from "react-hot-toast";
 import { useState, useEffect } from "react";
@@ -43,8 +43,11 @@ export default function useMoneyRequest(moneyRequestMessage?: MessageData, chat?
             setMessage(moneyRequestMessage)
             const request = moneyRequestMessage?.data ?? moneyRequestMessage?.moneyRequest
             if (request) {
-                request.by_me = request?.sender_id === user?.id
-                setMoneyRequest(request)
+                setMoneyRequest({
+                    ...request,
+                    by_me: request?.sender_id === user?.id,
+                    from: message?.ogMoneyRequest?.from ?? request?.from,
+                })
             }
         }
     }, [moneyRequestMessage])

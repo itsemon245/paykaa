@@ -51,14 +51,14 @@ function useImage(string $url): string
     return str($url)->startsWith('http') ? $url : asset("storage/" . $url);
 }
 
-function moneyRequestMessage(MoneyRequest $moneyRequest, Message $message = null, $messageType = null)
+function moneyRequestMessage(MoneyRequest $moneyRequest, Message $message = null, $messageType = null, $senderId = null): Message
 {
     $moneyRequest->refresh();
     $moneyRequest->loadMissing('from');
     if (!$message) {
         $message = Message::create([
             'chat_id' => $moneyRequest->message->chat_id,
-            'sender_id' => $moneyRequest->sender_id,
+            'sender_id' => $senderId ?? $moneyRequest->sender_id,
             'receiver_id' => $moneyRequest->receiver_id,
             'type' => MessageType::MoneyRequest->value,
             'body' => "Money Request to {$moneyRequest->receiver->name} from " . auth()->user()->name,

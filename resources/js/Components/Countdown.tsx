@@ -15,9 +15,12 @@ const Countdown: React.FC<CountdownProps> = ({ moneyRequest }) => {
 
     return (
         <>
-            <div className='font-medium text-xs !text-primary-500 text-center'>
-                Time Limit➠ {deliveryTime}
-            </div>
+            {
+                moneyRequest.status != 'pending' && moneyRequest.status !== 'waiting for release' && <div className='font-medium text-xs !text-primary-500 text-center'>
+                    Time Limit➠ {deliveryTime}
+                </div>
+            }
+
             {
                 moneyRequest.accepted_at && <div className='font-medium text-xs text-red-500 text-center'>
                     Remaining➠ {remainingTime}

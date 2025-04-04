@@ -64,7 +64,7 @@ class MoneyRequestResource extends Resource
                             'reported_by' => null,
                             'admin_note' => "Money returned by PayKaa Team",
                         ]);
-                        event(new \App\Events\MessageCreated(moneyRequestMessage($record, $record->reportMessage)));
+                        event(new \App\Events\MessageCreated(moneyRequestMessage($record, senderId: auth()->id())));
                     });
                 })
                 ->icon('heroicon-o-check')
@@ -88,7 +88,7 @@ class MoneyRequestResource extends Resource
                             'reported_at' => null,
                             'reported_by' => null,
                         ]);
-                        event(new \App\Events\MessageCreated(moneyRequestMessage($record, $record->reportMessage)));
+                        event(new \App\Events\MessageCreated(moneyRequestMessage($record, senderId: auth()->id())));
                     });
                 })
                 ->icon('heroicon-o-check')
