@@ -6,6 +6,8 @@ export default function useTyping(chat?: ChatData) {
     const [isTyping, setIsTyping] = useState(false);
     const toggleTyping = useCallback(
         throttle(async (is_typing: boolean) => {
+            //return early to disable for now
+            return;
             if (!chat) {
                 return;
             }
