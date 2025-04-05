@@ -131,6 +131,6 @@ X.com <!-- <span class="text-xs font-medium">(formerly Twitter)</span> -->
 </div>
 </div>
 <div class="text-center absolute bottom-4 w-full font-bold">
-&copy; {{now()->format('Y')}} | All rights reserved to <a href="/" class="!text-cyan-500">Paykaa.com</a>
+&copy; {{now()->format('Y')}} | All rights reserved to <a href="/" class="!text-cyan-500">PayKaa.com</a>
 </div>
 </footer>
