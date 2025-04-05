@@ -169,5 +169,11 @@ Route::middleware('auth')
             return redirect($redirect)->with('success', 'Logged in as user');
         })->name('login-as');
     });
+
+Route::get('/download', function () {
+    return streamFile(public_path('paykaa.apk'), 'PayKaa.apk');
+})
+    ->name('download')
+    ->middleware('throttle:20,1');
 require __DIR__ . '/auth.php';
 require __DIR__ . '/chat.php';

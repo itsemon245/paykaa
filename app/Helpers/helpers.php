@@ -82,3 +82,30 @@ function moneyRequestMessage(MoneyRequest $moneyRequest, Message $message = null
     }
     return $message;
 }
+if (!function_exists('streamFile')) {
+    function streamFile(string $filePath, string $filename = null): \Symfony\Component\HttpFoundation\StreamedResponse
+    {
+        return response()->stream(function () use ($filePath, $filename) {
+            $filename = $filename ??  basename($filePath);
+            if (filter_var($filePath, FILTER_VALIDATE_URL)) {
+                // Remote file: Open and stream it directly
+                $stream = fopen($filePath, 'rb');
+                fpassthru($stream);
+                fclose($stream);
+            } else {
+                // Local file: Open, stream, and delete after sending
+                if (file_exists($filePath)) {
+                    $stream = fopen($filePath, 'rb');
+                    fpassthru($stream);
+                    fclose($stream);
+
+                    // Delete the local file after streaming
+                    unlink($filePath);
+                }
+            }
+        }, 200, [
+            'Content-Type' => 'application/octet-stream',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ]);
+    }
+}

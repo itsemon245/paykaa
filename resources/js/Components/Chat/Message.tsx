@@ -7,6 +7,10 @@ import { format, parseISO } from "date-fns"
 
 const Message = ({ message, children }: { message: MessageData, children?: React.ReactNode }) => {
     const pendingMoneyRequest = usePage().props.pendingMoneyRequest as MoneyRequestData | null
+    const moneyRequestData = useMemo(() => {
+        if (message.type !== 'money_request') return undefined;
+        return message.data || message.moneyRequest
+    }, [message])
     const impoersonating = usePage().props.impersonating
     useEffect(() => {
         console.log("pendingMoneyRequest", pendingMoneyRequest)
@@ -69,8 +73,13 @@ const Message = ({ message, children }: { message: MessageData, children?: React
                         </div>
                     </div>
                 }
-
             </div>
+            {moneyRequestData && (
+                moneyRequestData.released_at != null
+                || moneyRequestData.rejected_at != null
+                || moneyRequestData.cancelled_at != null
+            ) && <div className="h-0.5 rounded-full bg-gray-300 w-full mt-1 mb-3"></div>}
+
         </div>
     )
 }
