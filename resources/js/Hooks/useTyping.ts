@@ -11,7 +11,7 @@ export default function useTyping(chat?: ChatData) {
             if (!chat) {
                 return;
             }
-            const url = route('chat.typing', { chat: chat.uuid, is_typing: is_typing });
+            const url = route('chat.typing', { chat: chat?.uuid ?? '', is_typing: is_typing });
             const res = await fetch(url)
             if (!res.ok) {
                 console.error('Error while toggling typing', res);
